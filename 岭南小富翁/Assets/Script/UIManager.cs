@@ -152,7 +152,7 @@ public class UIManager : MonoBehaviour
         if (rollDiceButton != null)
         {
             // 绑定点击事件
-            rollDiceButton.onClick.AddListener(OnRollDiceButtonClicked);
+            //rollDiceButton.onClick.AddListener(OnRollDiceButtonClicked);
             Debug.Log("骰子按钮创建并绑定完成");
         }
     }

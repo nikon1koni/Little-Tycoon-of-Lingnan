@@ -1571,8 +1571,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76a5594ce0f4a834aaae92717534990e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rollDiceButton: {fileID: 0}
-  diceResultText: {fileID: 0}
+  rollDiceButton: {fileID: 1949729216}
+  diceResultText: {fileID: 1074774998}
   diceAnimationText: {fileID: 0}
   minDiceValue: 1
   maxDiceValue: 6
@@ -1580,7 +1580,7 @@ MonoBehaviour:
   animationInterval: 0.1
   rollSound: {fileID: 0}
   stopSound: {fileID: 0}
-  gameManager: {fileID: 0}
+  gameManager: {fileID: 1389010070}
 --- !u!1001 &1496163880
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2113,6 +2113,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 9123799610750929568, guid: aff015bda24537844a1b2478884fff64, type: 3}
   m_PrefabInstance: {fileID: 2489646323342258838}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1949729216 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5303455666143314566, guid: aff015bda24537844a1b2478884fff64, type: 3}
+  m_PrefabInstance: {fileID: 2489646323342258838}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1954434768
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2323,12 +2334,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3252075290957491671, guid: aff015bda24537844a1b2478884fff64, type: 3}
       propertyPath: m_Layer
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5303455666143314566, guid: aff015bda24537844a1b2478884fff64, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1407563755}
+    - target: {fileID: 5303455666143314566, guid: aff015bda24537844a1b2478884fff64, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: StartRollDice
+      objectReference: {fileID: 0}
+    - target: {fileID: 8953137978501067843, guid: aff015bda24537844a1b2478884fff64, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9123799610750929568, guid: aff015bda24537844a1b2478884fff64, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

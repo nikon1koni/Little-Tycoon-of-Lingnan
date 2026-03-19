@@ -272,7 +272,7 @@ public class GameManager : MonoBehaviour
         // 如果有DiceController，使用它掷骰子
         if (diceController != null)
         {
-            diceController.RollDice();
+            diceController.StartRollDice();
         }
         else
         {
@@ -314,11 +314,16 @@ public class GameManager : MonoBehaviour
     // 检查是否可以掷骰子
     public bool CanRollDice()
     {
-        return isGameStarted &&
-               currentState == GameState.PlayerTurn &&
-               !isMoving &&
-               currentPlayer != null &&
-               !currentPlayer.isInJail;
+        bool canRoll = isGameStarted &&
+                           currentState == GameState.PlayerTurn &&
+                           !isMoving &&
+                           currentPlayer != null &&
+                           !currentPlayer.isInJail;
+
+        // 添加调试日志
+        Debug.Log($"CanRollDice: {canRoll} | State: {currentState} | isMoving: {isMoving} | Player: {currentPlayer?.playerName}");
+
+        return canRoll;
     }
 
     // 开始移动玩家
@@ -427,8 +432,10 @@ public class GameManager : MonoBehaviour
         else
         {
             // 其他格子，延迟后结束移动
-            StartCoroutine(EndMoveAfterDelay(1f));
+            StartCoroutine(EndMoveAfterDelay(0.2f));
         }
+
+
     }
 
     // 处理地产格子
@@ -458,6 +465,19 @@ public class GameManager : MonoBehaviour
         {
             // 已经有主，结束移动
             StartCoroutine(EndMoveAfterDelay(1f));
+        }
+    }
+    public void OnPlayerMoveComplete()
+    {
+        // 移动完成后立即启用按钮，准备下一次操作
+        if (rollDiceButton != null)
+        {
+            rollDiceButton.interactable = true;
+        }
+
+        if (uiManager != null)
+        {
+            uiManager.SetRollDiceButtonInteractable(true);
         }
     }
 

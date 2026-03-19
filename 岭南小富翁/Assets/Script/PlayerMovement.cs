@@ -59,29 +59,34 @@ public class PlayerMovement : MonoBehaviour
 
         for (int i = 0; i < steps; i++)
         {
-            // 计算下一个格子
             int nextIndex = (player.currentTileIndex + 1) % allTiles.Count;
             BoardTile nextTile = allTiles[nextIndex];
 
-            // 执行跳跃动画
+            // 恢复原来的jumpDuration (0.5f)
             yield return StartCoroutine(JumpToTile(nextTile));
 
             // 更新玩家位置
             player.currentTile = nextTile;
             player.currentTileIndex = nextIndex;
 
-            // 短暂停留
-            yield return new WaitForSeconds(landingDelay);
+            // 缩短落地延迟
+            yield return new WaitForSeconds(0.05f);  // 从0.1f改为0.05f
 
-            // 如果是最后一步，触发格子事件
+            // 最后一步处理格子事件
             if (i == steps - 1)
             {
-                yield return new WaitForSeconds(0.2f);
+                yield return new WaitForSeconds(0.1f);  // 给玩家一点时间看结果
                 nextTile.OnLanded(player);
             }
         }
 
         isMoving = false;
+
+        // 通知GameManager移动结束
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.OnPlayerMoveComplete();
+        }
     }
 
     // 方法1：抛物线跳跃（有弧线）
@@ -89,19 +94,21 @@ public class PlayerMovement : MonoBehaviour
     {
         Vector3 startPos = transform.position;
         Vector3 endPos = targetTile.transform.position;
-        endPos.y = originalY;  // 保持原始Y高度
+        endPos.y = originalY;
 
+        // 使用public的jumpDuration变量 (应该是0.5f)
+        float duration = jumpDuration;  // 重要：使用变量而不是硬编码
         float elapsed = 0f;
 
-        while (elapsed < jumpDuration)
+        while (elapsed < duration)
         {
             elapsed += Time.deltaTime;
-            float t = elapsed / jumpDuration;
+            float t = elapsed / duration;
 
             // 计算当前高度（抛物线）
             float height = Mathf.Sin(t * Mathf.PI) * jumpHeight;
 
-            // 水平位置（线性插值）
+            // 水平位置
             Vector3 horizontalPos = Vector3.Lerp(startPos, endPos, t);
 
             // 最终位置 = 水平位置 + 高度
@@ -111,14 +118,10 @@ public class PlayerMovement : MonoBehaviour
                 horizontalPos.z
             );
 
-            // 可选：跳跃时轻微缩放（弹跳效果）
-            float scaleFactor = 1 + Mathf.Sin(t * Mathf.PI) * 0.1f;
-            transform.localScale = originalScale * scaleFactor;
-
             yield return null;
         }
 
-        // 确保最终位置准确
+        // 确保位置精确
         transform.position = endPos;
         transform.localScale = originalScale;
     }

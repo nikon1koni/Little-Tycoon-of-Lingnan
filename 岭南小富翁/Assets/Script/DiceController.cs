@@ -12,8 +12,8 @@ public class DiceController : MonoBehaviour
     [Header("骰子设置")]
     public int minDiceValue = 1;
     public int maxDiceValue = 6;
-    public float animationDuration = 1f;
-    public float animationInterval = 0.1f;
+    public float animationDuration = 0.3f;
+    public float animationInterval = 0.05f;
 
     [Header("音效")]
     public AudioClip rollSound;
@@ -38,52 +38,68 @@ public class DiceController : MonoBehaviour
         if (diceResultText != null)
             diceResultText.text = "准备";
 
-        // 绑定按钮事件
-        if (rollDiceButton != null)
-        {
-            rollDiceButton.onClick.AddListener(OnRollDiceClicked);
-        }
+        //// 绑定按钮事件
+        //if (rollDiceButton != null)
+        //{
+        //    rollDiceButton.onClick.AddListener(OnRollDiceClicked);
+        //}
     }
 
-    // 按钮点击事件
-    public void OnRollDiceClicked()
+    public void StartRollDice()
     {
-        if (!isRolling && gameManager != null && gameManager.CanRollDice())
+        if (!isRolling)
         {
             StartCoroutine(RollDice());
         }
+        else
+        {
+            Debug.Log("骰子正在滚动中，忽略重复点击");
+        }
+
     }
+    // 按钮点击事件
+    //public void OnRollDiceClicked()
+    //{
+    //    if (!isRolling && gameManager != null && gameManager.CanRollDice())
+    //    {
+    //        StartCoroutine(RollDice());
+    //    }
+    //}
 
     public IEnumerator RollDice()
     {
         isRolling = true;
 
+        // 关键修改1：立即生成结果，而不是等动画结束
+        currentDiceValue = Random.Range(minDiceValue, maxDiceValue + 1);
+        Debug.Log($"立即生成骰子结果: {currentDiceValue}");
+
+        // 关键修改2：立即通知GameManager开始移动
+        if (gameManager != null)
+        {
+            gameManager.OnDiceRolled(currentDiceValue);
+        }
+
         // 禁用按钮
         if (rollDiceButton != null)
             rollDiceButton.interactable = false;
 
-        // 播放音效
+        // 播放骰子动画（后台运行，不阻塞移动）
         if (rollSound != null)
             audioSource.PlayOneShot(rollSound);
 
-        // 骰子动画
+        // 骰子动画（快速完成，0.3秒）
         float elapsed = 0f;
         while (elapsed < animationDuration)
         {
             elapsed += Time.deltaTime;
-
-            // 随机显示数字
             int randomValue = Random.Range(minDiceValue, maxDiceValue + 1);
 
-            // 更新UI
             if (diceAnimationText != null)
                 diceAnimationText.text = randomValue.ToString();
 
             yield return new WaitForSeconds(animationInterval);
         }
-
-        // 最终结果
-        currentDiceValue = Random.Range(minDiceValue, maxDiceValue + 1);
 
         // 显示最终结果
         if (diceResultText != null)
@@ -96,20 +112,10 @@ public class DiceController : MonoBehaviour
         if (stopSound != null)
             audioSource.PlayOneShot(stopSound);
 
-        Debug.Log($"掷骰结果: {currentDiceValue}");
-
-        // 通知GameManager
-        if (gameManager != null)
-        {
-            gameManager.OnDiceRolled(currentDiceValue);
-        }
-
-        // 重新启用按钮
-        yield return new WaitForSeconds(0.5f);
-        if (rollDiceButton != null)
-            rollDiceButton.interactable = true;
-
         isRolling = false;
+
+        // 注意：按钮在玩家移动结束后由GameManager重新启用
+        // 这里不再启用按钮
     }
 
     // 获取骰子值
