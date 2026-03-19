@@ -1087,7 +1087,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1576,7 +1576,7 @@ MonoBehaviour:
   diceAnimationText: {fileID: 0}
   minDiceValue: 1
   maxDiceValue: 6
-  animationDuration: 1
+  animationDuration: 0.5
   animationInterval: 0.1
   rollSound: {fileID: 0}
   stopSound: {fileID: 0}
@@ -2328,6 +2328,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1059109602}
     m_Modifications:
+    - target: {fileID: 66043966725783754, guid: aff015bda24537844a1b2478884fff64, type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 3252075290957491671, guid: aff015bda24537844a1b2478884fff64, type: 3}
       propertyPath: m_Name
       value: RollDiceButton
@@ -2429,7 +2433,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 8953137978501067843, guid: aff015bda24537844a1b2478884fff64, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aff015bda24537844a1b2478884fff64, type: 3}
