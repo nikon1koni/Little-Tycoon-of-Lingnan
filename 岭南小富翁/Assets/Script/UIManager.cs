@@ -37,6 +37,11 @@ public class UIManager : MonoBehaviour
     [Header("设置")]
     public Vector2 diceButtonPosition = new Vector2(-200, -100);
 
+    [Header("建筑UI")]
+    public GameObject buildingSelectionPanelPrefab;  //建筑选择面板预制体
+    public GameObject buildingInfoPanelPrefab;       //建筑信息面板预制体
+    private GameObject currentBuildingSelectionPanel; //当前显示的面板
+
     // 当前显示的UI类型
     private UIType currentUIType = UIType.Game;
 
@@ -113,7 +118,126 @@ public class UIManager : MonoBehaviour
             }
         }
     }
+    public void ShowBuildingSelectionUI(BoardTile buildableTile, Player player)
+    {
+        if (buildingSelectionPanelPrefab == null)
+        {
+            Debug.LogWarning("建筑选择面板预制体未设置");
+            return;
+        }
 
+        // 关闭其他UI
+        HidePropertyPurchasePanel();
+
+        // 创建或激活面板
+        if (currentBuildingSelectionPanel == null)
+        {
+            currentBuildingSelectionPanel = Instantiate(buildingSelectionPanelPrefab, mainCanvas.transform);
+        }
+        else
+        {
+            currentBuildingSelectionPanel.SetActive(true);
+        }
+
+        // 设置面板位置
+        currentBuildingSelectionPanel.transform.SetAsLastSibling();
+
+        // 获取UI组件
+        Text tileNameText = currentBuildingSelectionPanel.transform.Find("TileName")?.GetComponent<Text>();
+        Text priceText = currentBuildingSelectionPanel.transform.Find("Price")?.GetComponent<Text>();
+        Transform buildingGrid = currentBuildingSelectionPanel.transform.Find("BuildingGrid");
+        Button closeButton = currentBuildingSelectionPanel.transform.Find("CloseButton")?.GetComponent<Button>();
+        Button buyButton = currentBuildingSelectionPanel.transform.Find("BuyButton")?.GetComponent<Button>();
+
+        // 更新信息
+        if (tileNameText != null)
+            tileNameText.text = buildableTile.tileName;
+
+        if (priceText != null)
+            priceText.text = $"地块价格: {buildableTile.propertyPrice} 元";
+
+        // 动态创建建筑选项按钮
+        if (buildingGrid != null && buildableTile.availableBuildings.Count > 0)
+        {
+            // 清空现有选项
+            foreach (Transform child in buildingGrid)
+            {
+                Destroy(child.gameObject);
+            }
+
+            // 为每个可建建筑创建按钮
+            for (int i = 0; i < buildableTile.availableBuildings.Count; i++)
+            {
+                GameObject buildingPrefab = buildableTile.availableBuildings[i];
+                GameObject buildingButton = new GameObject($"BuildingButton_{i}");
+                buildingButton.transform.SetParent(buildingGrid);
+
+                // 添加按钮组件
+                Button btn = buildingButton.AddComponent<Button>();
+                Image img = buildingButton.AddComponent<Image>();
+
+                // 设置建筑预览
+                // 这里可以根据需要添加预览图片等
+
+                // 添加点击事件
+                int index = i; // 闭包捕获
+                btn.onClick.AddListener(() => OnBuildingSelected(buildableTile, player, index));
+            }
+        }
+
+        // 绑定按钮事件
+        if (buyButton != null)
+        {
+            buyButton.onClick.RemoveAllListeners();
+            buyButton.onClick.AddListener(() => OnPurchaseBuildingTile(buildableTile, player));
+        }
+
+        if (closeButton != null)
+        {
+            closeButton.onClick.RemoveAllListeners();
+            closeButton.onClick.AddListener(() => HideBuildingSelectionUI());
+        }
+    }
+
+    // 新增方法：隐藏建筑选择界面
+    public void HideBuildingSelectionUI()
+    {
+        if (currentBuildingSelectionPanel != null)
+        {
+            currentBuildingSelectionPanel.SetActive(false);
+        }
+    }
+
+    // 建筑选择回调
+    void OnBuildingSelected(BoardTile tile, Player player, int buildingIndex)
+    {
+        Debug.Log($"选择了建筑 {buildingIndex}");
+        // 这里可以显示建筑详细信息或直接确认选择
+    }
+
+    // 购买建筑地块
+    void OnPurchaseBuildingTile(BoardTile tile, Player player)
+    {
+        if (player.BuyProperty(tile))
+        {
+            // 购买成功后，格子类型变为BuildingSite
+            tile.tileType = BoardTile.TileType.BuildingSite;
+            HideBuildingSelectionUI();
+
+            // 显示建筑放置界面
+            ShowBuildingPlacementUI(tile, player);
+
+            tile.isBuildable = false;
+            tile.availableBuildings.Clear(); //清除可建造选项，防止后续UI显示升级
+        }
+    }
+
+    // 显示建筑放置界面
+    public void ShowBuildingPlacementUI(BoardTile tile, Player player)
+    {
+        Debug.Log($"显示建筑放置界面: {tile.tileName}");
+        // 这里可以添加建筑放置的具体逻辑
+    }
     void CreateCanvas()
     {
         GameObject canvasObj = new GameObject("Canvas");

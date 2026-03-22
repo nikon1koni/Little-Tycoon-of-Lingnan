@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -17,6 +19,11 @@ public class BoardTile : MonoBehaviour
     [Header("Events")]
     public UnityEvent onPlayerLanded;
 
+    [Header("建筑属性 (如果是可建筑格子)")]
+    public bool isBuildable = false;
+    public GameObject currentBuilding = null;  // 当前建筑对象
+    public List<GameObject> availableBuildings = new List<GameObject>(); // 可选的建筑预制体
+
     public enum TileType
     {
         Start,
@@ -28,7 +35,11 @@ public class BoardTile : MonoBehaviour
         Tax,
         Jail,
         GoToJail,
-        FreeParking
+        FreeParking,
+        Normal,
+        Buildable,         //可建筑的格子（非道路）
+        BuildingSite       //已放置建筑的地块
+
     }
 
     void Start()
@@ -66,6 +77,9 @@ public class BoardTile : MonoBehaviour
                     break;
                 case TileType.FreeParking:
                     renderer.material.color = Color.white;
+                    break;
+                case TileType.Normal:
+                    renderer.material.color = Color.gray;  // 设置为灰色，表示普通格子
                     break;
                 default:
                     renderer.material.color = Color.white;
@@ -120,9 +134,49 @@ public class BoardTile : MonoBehaviour
             case TileType.FreeParking:
                 HandleFreeParking(player);
                 break;
+            case TileType.Normal:  //普通格子不执行任何功能
+                Debug.Log($"{player.playerName} 经过普通格子 [{tileName}]，无特殊事件");
+                break;
+            case TileType.Buildable:  //可建筑格子
+                HandleBuildableTileLanding(player);
+                break;
+
+        }
+    }
+    void HandleBuildableTileLanding(Player player)
+    {
+        Debug.Log($"{player.playerName} 抵达了可建造地块 [{tileName}]");
+
+        if (ownerPlayer == null)
+        {
+            // 情况1：无主地块 -> 触发购买/建造流程
+            Debug.Log($"可建造地块 [{tileName}] 无主，购买价格: {propertyPrice} 元");
+
+            // 延迟显示建筑选择UI，给玩家一个反应时间
+            StartCoroutine(DelayedBuildingSelection(player));
+        }
+        else if (ownerPlayer == player)
+        {
+            Debug.Log($"这是 {player.playerName} 自己拥有的可建造地块 [{tileName}]。");
+        }
+        else
+        {
+            Debug.Log($"{player.playerName} 经过了 {ownerPlayer.playerName} 拥有的建筑地块 [{tileName}]。");
         }
     }
 
+    // 延迟显示建筑选择
+    IEnumerator DelayedBuildingSelection(Player player)
+    {
+        // 等待一小段时间让动画完成
+        yield return new WaitForSeconds(0.5f);
+
+        // 显示建筑选择界面
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.ShowBuildingSelectionUI(this, player);
+        }
+    }
     void HandlePropertyLanding(Player player)
     {
         if (ownerPlayer == null)
@@ -138,20 +192,7 @@ public class BoardTile : MonoBehaviour
             // 自己的地产
             Debug.Log($"这是 {player.playerName} 自己的地产 [{tileName}]。");
         }
-        else
-        {
-            // 别人的地产，需要支付租金
-            Debug.Log($"这片地产 [{tileName}] 属于 {ownerPlayer.playerName}。需要支付租金: {baseRent} 元");
 
-            if (player.PayRent(baseRent, ownerPlayer.gameObject))
-            {
-                Debug.Log($"{player.playerName} 成功支付了租金！");
-            }
-            else
-            {
-                Debug.LogWarning($"{player.playerName} 支付租金失败！");
-            }
-        }
     }
 
     void DrawChanceCard(Player player)

@@ -51,6 +51,8 @@ public class GameManager : MonoBehaviour
         Moving,           // 移动中
         ProcessingTile,   // 处理格子事件
         BuyingProperty,   // 购买地产中
+        BuildingSelection,    //建筑选择状态
+        BuildingPlacement,    //建筑放置状态
         GameOver          // 游戏结束
     }
 
@@ -195,7 +197,45 @@ public class GameManager : MonoBehaviour
             Debug.Log($"{player.playerName} 放置在起点，现金: {player.cash}");
         }
     }
+    void HandlePropertyTile()
+    {
+        BoardTile tile = currentPlayer.currentTile;
 
+        if (tile.ownerPlayer == null)
+        {
+            // 检查格子类型
+            if (tile.tileType == BoardTile.TileType.Buildable)
+            {
+                // 建筑格子：显示建筑选择界面
+                currentState = GameState.BuildingSelection;
+                Debug.Log($"{tile.tileName} 是建筑地块，价格: {tile.propertyPrice} 元");
+
+                if (uiManager != null)
+                {
+                    uiManager.ShowBuildingSelectionUI(tile, currentPlayer);
+                }
+            }
+            else
+            {
+                // 普通地产：显示购买面板
+                currentState = GameState.BuyingProperty;
+                Debug.Log($"{tile.tileName} 可购买，价格: {tile.propertyPrice} 元");
+
+                if (uiManager != null)
+                {
+                    uiManager.ShowPropertyPurchasePanel(tile, currentPlayer);
+                }
+                else
+                {
+                    AutoDecidePurchase(tile);
+                }
+            }
+        }
+        else
+        {
+            StartCoroutine(EndMoveAfterDelay(1f));
+        }
+    }
     // 获取起点格子
     BoardTile GetStartTile()
     {
@@ -404,6 +444,7 @@ public class GameManager : MonoBehaviour
                 uiManager.ShowToast($"经过起点，获得{salary}元薪水！", 2f);
             }
         }
+
     }
 
     // 处理当前格子事件
@@ -438,35 +479,6 @@ public class GameManager : MonoBehaviour
 
     }
 
-    // 处理地产格子
-    void HandlePropertyTile()
-    {
-        BoardTile tile = currentPlayer.currentTile;
-
-        if (tile.ownerPlayer == null)
-        {
-            // 无主地产，可以购买
-            currentState = GameState.BuyingProperty;
-
-            Debug.Log($"{tile.tileName} 可以购买，价格: {tile.propertyPrice} 元");
-
-            // 显示购买UI
-            if (uiManager != null)
-            {
-                uiManager.ShowPropertyPurchasePanel(tile, currentPlayer);
-            }
-            else
-            {
-                // 没有UI管理器，自动决定是否购买
-                AutoDecidePurchase(tile);
-            }
-        }
-        else
-        {
-            // 已经有主，结束移动
-            StartCoroutine(EndMoveAfterDelay(1f));
-        }
-    }
     public void OnPlayerMoveComplete()
     {
         // 移动完成后立即启用按钮，准备下一次操作
