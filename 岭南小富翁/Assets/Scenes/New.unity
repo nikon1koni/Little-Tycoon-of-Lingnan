@@ -2294,9 +2294,29 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5303455666143314566, guid: aff015bda24537844a1b2478884fff64, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5303455666143314566, guid: aff015bda24537844a1b2478884fff64, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
+<<<<<<< Updated upstream
       objectReference: {fileID: 1407563755}
+=======
+      objectReference: {fileID: 1389010070}
+    - target: {fileID: 5303455666143314566, guid: aff015bda24537844a1b2478884fff64, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnRollDiceButtonClicked
+      objectReference: {fileID: 0}
+    - target: {fileID: 5303455666143314566, guid: aff015bda24537844a1b2478884fff64, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GameManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8953137978501067843, guid: aff015bda24537844a1b2478884fff64, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+>>>>>>> Stashed changes
     - target: {fileID: 9123799610750929568, guid: aff015bda24537844a1b2478884fff64, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
