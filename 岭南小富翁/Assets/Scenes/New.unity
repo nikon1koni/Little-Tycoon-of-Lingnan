@@ -2541,6 +2541,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3358783375424448212, guid: 023fff05565ec6542b1f8fb20ad2e68a, type: 3}
+      propertyPath: m_Name
+      value: CloseButton
+      objectReference: {fileID: 0}
     - target: {fileID: 4541344045740257370, guid: 023fff05565ec6542b1f8fb20ad2e68a, type: 3}
       propertyPath: m_Name
       value: BuildingSelectionPanel
@@ -2550,7 +2554,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 993115949}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6937928049873640203, guid: 023fff05565ec6542b1f8fb20ad2e68a, type: 3}
+    - {fileID: 4210198975811667677, guid: 023fff05565ec6542b1f8fb20ad2e68a, type: 3}
+    - {fileID: 3447599937741720418, guid: 023fff05565ec6542b1f8fb20ad2e68a, type: 3}
+    - {fileID: 4807682782793052142, guid: 023fff05565ec6542b1f8fb20ad2e68a, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 023fff05565ec6542b1f8fb20ad2e68a, type: 3}
