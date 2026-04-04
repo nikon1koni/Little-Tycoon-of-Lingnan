@@ -214,50 +214,49 @@ public class UIManager : MonoBehaviour
     // === 核心修改：隐藏建筑选择UI（不销毁，只是隐藏）===
     public void HideBuildingSelectionUI(bool keepButtons = false)
     {
-        Debug.Log($"UIManager: 隐藏建筑选择面板，保持按钮: {keepButtons}");
+        Debug.Log($"隐藏建筑选择UI，keepButtons={keepButtons}");
 
-        // 1. 清除高亮
+        // 清除相关UI元素
         ClearTileHighlights();
-
-        // 2. 清除持久Toast（如果有）
         HidePersistentToast();
 
-        // 【新增】3. 如果不是保持按钮状态，清除所有建筑按钮
-        if (!keepButtons)
-        {
-            ClearBuildingButtons();
-        }
-
+        // 隐藏面板
         if (buildingSelectionPanel != null)
         {
             buildingSelectionPanel.SetActive(false);
-            Debug.Log("UIManager: 建筑选择面板已隐藏");
         }
 
-        // 4. 根据参数决定是否重置选择状态
+        // 根据参数决定是否隐藏按钮容器
+        if (buildingButtonContainer != null)
+        {
+            if (keepButtons)
+            {
+                // 只隐藏容器，不销毁按钮
+                buildingButtonContainer.gameObject.SetActive(false);
+            }
+            else
+            {
+                // 完全关闭时清除所有按钮
+                ClearBuildingButtons();
+            }
+        }
+
+        // 重置状态
         if (!keepButtons)
         {
-            // 完全关闭时的重置逻辑
             selectedBuildingData = null;
             currentBuildingPlayer = null;
             isBuildingSelected = false;
 
-            // 通知GameManager购买阶段结束
             if (GameManager.Instance != null)
             {
                 GameManager.Instance.OnBuildingPurchaseCompleted();
             }
         }
-        else
-        {
-            // 只隐藏面板，不清除按钮和选择状态
-            Debug.Log("保持建筑按钮和选择状态");
-        }
 
-        // 5. 重新启用骰子按钮
+        // 恢复骰子按钮交互
         SetRollDiceButtonInteractable(true);
     }
-
     // 根据规模过滤建筑
     private List<BuildingData> FilterBuildingsByScale(int tileScale)
     {
@@ -288,27 +287,28 @@ public class UIManager : MonoBehaviour
     // 取消建筑选择
     private void OnCancelBuildingSelection()
     {
-        Debug.Log("取消建筑选择");
+        Debug.Log("按ESC取消建筑选择，返回建筑面板");
 
-        // 1. 清除持久Toast
+        // 1. 清除Toast和高亮
         HidePersistentToast();
-
-        // 2. 清除地块高亮
         ClearTileHighlights();
 
-        // 3. 重新打开建筑选择面板
+        // 2. 重新显示建筑选择面板
         if (buildingSelectionPanel != null)
         {
             buildingSelectionPanel.SetActive(true);
-            Debug.Log("建筑选择面板已重新打开");
         }
 
-        // 4. 重置选择状态
+        // 3. 重新显示建筑按钮容器
+        if (buildingButtonContainer != null)
+        {
+            buildingButtonContainer.gameObject.SetActive(true);
+        }
+
+        // 4. 重置选择状态但保留按钮
         selectedBuildingData = null;
         isBuildingSelected = false;
-
-        // 注意：不清除buildingButtonContainer中的按钮
-        // 保持按钮存在，用户可以重新选择
+        Debug.Log("已返回建筑选择面板，建筑按钮已重新显示");
     }
 
 
@@ -376,19 +376,26 @@ public class UIManager : MonoBehaviour
         selectedBuildingData = building;
         isBuildingSelected = true;
 
-        // 1. 暂时关闭建筑选择面板
+        // 【修改点1】隐藏建筑选择面板
         if (buildingSelectionPanel != null)
         {
             buildingSelectionPanel.SetActive(false);
         }
 
-        // 2. 在左下角显示持久Toast
-        ShowPersistentToast($"已选择: {building.buildingName}");
+        // 【修改点2】同时隐藏存放所有建筑按钮的容器！
+        if (buildingButtonContainer != null && buildingButtonContainer.gameObject.activeSelf)
+        {
+            buildingButtonContainer.gameObject.SetActive(false);
+            Debug.Log("已隐藏建筑按钮容器。");
+        }
 
-        // 3. 高亮可放置的地块
+        // 3. 在左下角显示持久Toast
+        ShowPersistentToast($"已选择: {building.buildingName}\n点击地图上的高亮地块放置，或按ESC取消。");
+
+        // 4. 高亮可放置的地块
         HighlightPlaceableTiles(currentBuildingPlayer, (int)building.requiredScale);
 
-        Debug.Log("建筑面板已暂时关闭，等待放置或按ESC取消");
+        Debug.Log("已进入建筑放置模式。");
     }
     private void ShowPersistentToast(string message)
     {
