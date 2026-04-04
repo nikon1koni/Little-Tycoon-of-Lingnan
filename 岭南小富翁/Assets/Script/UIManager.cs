@@ -281,8 +281,14 @@ public class UIManager : MonoBehaviour
 
         foreach (Transform child in buildingButtonContainer)
         {
-            Destroy(child.gameObject);
+            // 检查是否是返回按钮
+            if (child.name == "Btn_Return" || child.name.StartsWith("Btn_"))
+            {
+                Destroy(child.gameObject);
+            }
         }
+
+        Debug.Log("已清除所有建筑按钮和返回按钮");
     }
 
     // 取消建筑选择
@@ -382,10 +388,13 @@ public class UIManager : MonoBehaviour
             buildingSelectionPanel.SetActive(false);
         }
 
-        // 2. 在左下角显示持久Toast
+        // 【新增】2. 清除建筑按钮
+        ClearBuildingButtons();
+
+        // 3. 在左下角显示持久Toast
         ShowPersistentToast($"已选择: {building.buildingName}");
 
-        // 3. 高亮可放置的地块
+        // 4. 高亮可放置的地块
         HighlightPlaceableTiles(currentBuildingPlayer, (int)building.requiredScale);
 
         Debug.Log("建筑面板已暂时关闭，等待放置或按ESC取消");
@@ -464,6 +473,7 @@ public class UIManager : MonoBehaviour
 
     private void HighlightPlaceableTiles(Player player, int requiredScale)
     {
+        // 1. 清除之前的高亮
         ClearTileHighlights();
 
         if (BoardManager.Instance == null)
@@ -472,48 +482,81 @@ public class UIManager : MonoBehaviour
             return;
         }
 
-        Debug.Log($"开始高亮可放置地块，需求规模: {requiredScale}");
+        Debug.Log($"=== 开始高亮可放置地块 ===");
         Debug.Log($"玩家: {player.playerName}");
+        Debug.Log($"需求规模: {requiredScale}");
+        Debug.Log($"总地块数: {BoardManager.Instance.allTiles.Count}");
 
         int highlightCount = 0;
+        int checkedCount = 0;
 
         foreach (BoardTile tile in BoardManager.Instance.allTiles)
         {
-            // 记录地块信息
-            Debug.Log($"检查地块: {tile.tileName}, 类型: {tile.tileType}, 规模: {tile.tileScale}, 所有者: {tile.ownerPlayer?.playerName ?? "无主"}");
+            checkedCount++;
 
-            // 检查地块是否可放置建筑
-            if (IsTilePlaceable(tile, player, requiredScale))
+            // 跳过起始格子
+            if (tile.tileType == BoardTile.TileType.Start)
             {
-                // 额外检查：确保不是起始格子
-                if (tile.tileType == BoardTile.TileType.Start)
-                {
-                    Debug.LogError($"严重错误：{tile.tileName} 是起始格子，不应该被高亮！");
-                    continue;
-                }
+                Debug.Log($"跳过起始格子: {tile.tileName}");
+                continue;
+            }
 
+            // 检查地块是否可放置
+            bool isPlaceable = IsTilePlaceable(tile, player, requiredScale);
+
+            if (isPlaceable)
+            {
                 // 保存原始颜色
                 MeshRenderer renderer = tile.GetComponentInChildren<MeshRenderer>();
                 if (renderer != null)
                 {
+                    // 1. 保存原始颜色
                     originalTileColors[tile] = renderer.material.color;
+
+                    // 2. 设置高亮颜色
                     renderer.material.color = Color.green;
+
+                    // 3. 添加到高亮列表
                     highlightableTiles.Add(tile);
                     highlightCount++;
 
-                    // 添加点击检测组件
+                    // 【核心修改点】4. 绑定点击事件
                     AddTileClickHandler(tile);
-
-                    Debug.Log($" 高亮地块: {tile.tileName}, 规模: {tile.tileScale}, 类型: {tile.tileType}");
+                    Debug.Log($"✅ 高亮并绑定点击: {tile.tileName}");
                 }
+                else
+                {
+                    Debug.LogWarning($"地块 {tile.tileName} 没有 MeshRenderer，无法高亮");
+                }
+            }
+            else
+            {
+                // 记录不可放置的原因（可选，用于调试）
+                //if (enableDebugLogs)
+                //{
+                //    Debug.Log($"❌ 跳过地块: {tile.tileName} (不可放置)");
+                //}
             }
         }
 
-        Debug.Log($" 高亮了 {highlightCount} 个可放置地块");
+        Debug.Log($"=== 高亮完成 ===");
+        Debug.Log($"检查了 {checkedCount} 个地块");
+        Debug.Log($"高亮了 {highlightCount} 个可放置地块");
 
         if (highlightCount == 0)
         {
             ShowToast("没有可放置的地块，请检查地块规模和所有权", 2f);
+
+            // 【可选】如果没有可放置地块，自动取消选择
+            if (isBuildingSelected)
+            {
+                Debug.Log("没有可放置地块，自动取消选择");
+                OnCancelBuildingSelection();
+            }
+        }
+        else
+        {
+            ShowToast($"找到 {highlightCount} 个可放置地块，请点击选择", 2f);
         }
     }
     public bool IsTileHighlighted(BoardTile tile)
@@ -532,8 +575,9 @@ public class UIManager : MonoBehaviour
         }
 
         // 条件1: 地块必须是可建造类型
-        if (tile.tileType != BoardTile.TileType.Buildable &&
-            tile.tileType != BoardTile.TileType.BuildingSite)
+        bool isBuildableType = (tile.tileType == BoardTile.TileType.Buildable ||
+                               tile.tileType == BoardTile.TileType.BuildingSite);
+        if (!isBuildableType)
         {
             Debug.Log($"[高亮检查] 地块 {tile.tileName} 不是可建造类型: {tile.tileType}");
             return false;
@@ -560,28 +604,74 @@ public class UIManager : MonoBehaviour
             Debug.Log($"[高亮检查] 地块 {tile.tileName} 不属于玩家");
         }
 
+        // 条件5: 检查地块是否允许建造
+        if (!tile.isBuildable)
+        {
+            Debug.Log($"[高亮检查] 地块 {tile.tileName} 的 isBuildable 为 false");
+            return false;
+        }
+
         return isOwned;
     }
+    private void HideReturnButton()
+    {
+        if (buildingButtonContainer == null) return;
 
+        Transform returnButton = buildingButtonContainer.Find("Btn_Return");
+        if (returnButton != null)
+        {
+            Destroy(returnButton.gameObject);
+        }
+    }
 
     // 为地块添加点击处理器
     private void AddTileClickHandler(BoardTile tile)
     {
-        // 移除现有的事件触发器
-        EventTrigger existingTrigger = tile.GetComponent<EventTrigger>();
-        if (existingTrigger != null)
-            Destroy(existingTrigger);
+        if (tile == null)
+        {
+            Debug.LogWarning("AddTileClickHandler: tile 为 null");
+            return;
+        }
 
-        // 添加新的事件触发器
-        EventTrigger trigger = tile.gameObject.AddComponent<EventTrigger>();
+        try
+        {
+            // 移除现有的事件触发器（避免重复）
+            EventTrigger existingTrigger = tile.GetComponent<EventTrigger>();
+            if (existingTrigger != null)
+            {
+                // 只销毁我们添加的事件触发器
+                if (existingTrigger.triggers.Count == 1 &&
+                    existingTrigger.triggers[0].eventID == EventTriggerType.PointerClick)
+                {
+                    Destroy(existingTrigger);
+                }
+            }
 
-        // 创建点击事件
-        EventTrigger.Entry entry = new EventTrigger.Entry();
-        entry.eventID = EventTriggerType.PointerClick;
-        entry.callback.AddListener((data) => OnTileClickedForPlacement(tile));
+            // 添加新的事件触发器
+            EventTrigger trigger = tile.gameObject.AddComponent<EventTrigger>();
 
-        trigger.triggers.Add(entry);
+            // 创建点击事件
+            EventTrigger.Entry clickEntry = new EventTrigger.Entry();
+            clickEntry.eventID = EventTriggerType.PointerClick;
+
+            // 使用闭包捕获当前 tile
+            BoardTile currentTile = tile;
+            clickEntry.callback.AddListener((eventData) =>
+            {
+                Debug.Log($"地块 {currentTile.tileName} 被点击");
+                OnTileClickedForPlacement(currentTile);
+            });
+
+            trigger.triggers.Add(clickEntry);
+
+            Debug.Log($"✅ 成功为 {tile.tileName} 绑定点击事件");
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"为地块 {tile.tileName} 添加点击处理器失败: {e.Message}");
+        }
     }
+
 
     // 地块被点击（用于放置建筑）
     private void OnTileClickedForPlacement(BoardTile tile)
@@ -594,19 +684,38 @@ public class UIManager : MonoBehaviour
 
         Debug.Log($"尝试在 {tile.tileName} 上放置 {selectedBuildingData.buildingName}");
 
+        // 详细的检查步骤
+        Debug.Log($"=== 放置建筑详细检查 ===");
+        Debug.Log($"1. 玩家现金: {currentBuildingPlayer.cash}, 建筑价格: {selectedBuildingData.purchasePrice}");
+
         // 检查玩家资金
         if (currentBuildingPlayer.cash < selectedBuildingData.purchasePrice)
         {
+            Debug.LogError("资金不足！");
             ShowToast("资金不足，无法购买建筑！", 2f);
             return;
         }
+        Debug.Log($"2. 资金检查通过");
 
-        // 检查地块是否仍然可放置
-        if (!IsTilePlaceable(tile, currentBuildingPlayer, (int)selectedBuildingData.requiredScale))
+        // 详细检查地块是否可放置
+        bool isPlaceable = IsTilePlaceable(tile, currentBuildingPlayer, (int)selectedBuildingData.requiredScale);
+        Debug.Log($"3. 地块可放置性检查: {isPlaceable}");
+
+        if (!isPlaceable)
         {
+            // 添加详细的检查信息
+            Debug.Log($"地块 {tile.tileName} 检查详情：");
+            Debug.Log($"  - 地块类型: {tile.tileType}");
+            Debug.Log($"  - 地块规模: {tile.tileScale}, 需求规模: {selectedBuildingData.requiredScale}");
+            Debug.Log($"  - 现有建筑: {tile.currentBuilding != null}");
+            Debug.Log($"  - 地块所有者: {tile.ownerPlayer?.playerName ?? "无主"}");
+            Debug.Log($"  - 当前玩家: {currentBuildingPlayer.playerName}");
+
             ShowToast("此地块无法放置该建筑！", 2f);
             return;
         }
+
+        Debug.Log($"4. 所有检查通过，开始购买放置");
 
         // 购买并放置建筑
         if (PurchaseAndPlaceBuilding(tile, selectedBuildingData, currentBuildingPlayer))
@@ -616,9 +725,54 @@ public class UIManager : MonoBehaviour
             // 清除高亮
             ClearTileHighlights();
 
+            // 【新增】隐藏返回按钮
+            HideReturnButton();
+
             // 隐藏建筑选择面板
             HideBuildingSelectionUI();
         }
+    }
+    // 创建返回按钮
+    private void CreateReturnButton()
+    {
+        if (buildingButtonContainer == null) return;
+
+        // 创建返回按钮对象
+        GameObject returnButtonObj = new GameObject("Btn_Return");
+        returnButtonObj.transform.SetParent(buildingButtonContainer);
+
+        // 添加UI组件
+        Image image = returnButtonObj.AddComponent<Image>();
+        Button button = returnButtonObj.AddComponent<Button>();
+
+        // 设置返回按钮样式
+        image.color = Color.yellow;  // 黄色背景，与建筑按钮区分
+
+        // 设置按钮大小
+        RectTransform rt = returnButtonObj.GetComponent<RectTransform>();
+        rt.sizeDelta = new Vector2(100, 100);
+
+        // 添加返回文本
+        GameObject textObj = new GameObject("ReturnText");
+        textObj.transform.SetParent(returnButtonObj.transform);
+        Text text = textObj.AddComponent<Text>();
+        text.text = "返回\n(Esc)";
+        text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        text.fontSize = 12;
+        text.alignment = TextAnchor.MiddleCenter;
+        text.color = Color.black;
+
+        RectTransform textRt = textObj.GetComponent<RectTransform>();
+        textRt.anchorMin = new Vector2(0, 0);
+        textRt.anchorMax = new Vector2(1, 1);
+        textRt.offsetMin = Vector2.zero;
+        textRt.offsetMax = Vector2.zero;
+
+        // 绑定点击事件 - 调用ESC取消功能
+        button.onClick.AddListener(() => {
+            Debug.Log("返回按钮被点击");
+            OnCancelBuildingSelection();
+        });
     }
 
     // 购买并放置建筑
@@ -669,34 +823,45 @@ public class UIManager : MonoBehaviour
     // 清除地块高亮
     private void ClearTileHighlights()
     {
+        Debug.Log($"开始清除 {highlightableTiles.Count} 个地块的高亮");
+
         foreach (BoardTile tile in highlightableTiles)
         {
             MeshRenderer renderer = tile.GetComponentInChildren<MeshRenderer>();
             if (renderer != null)
             {
-                // 特殊处理起始格子
-                if (tile.tileType == BoardTile.TileType.Start)
+                // 恢复原始颜色
+                if (originalTileColors.ContainsKey(tile))
                 {
-                    // 起始格子恢复为起始颜色
-                    //enderer.material.color = new Color(0f, 0.8f, 0f);
+                    renderer.material.color = originalTileColors[tile];
                 }
                 else
                 {
-                    // 其他格子调用 UpdateTileVisual 恢复正确颜色
+                    // 调用地块自身的视觉更新方法
                     tile.UpdateTileVisual();
                 }
+            }
 
-                // 移除事件触发器
-                EventTrigger trigger = tile.GetComponent<EventTrigger>();
-                if (trigger != null)
+            // 【关键】移除事件触发器
+            EventTrigger trigger = tile.GetComponent<EventTrigger>();
+            if (trigger != null)
+            {
+                // 检查是否是我们添加的简单触发器
+                bool isSimpleTrigger = trigger.triggers.Count == 1 &&
+                                      trigger.triggers[0].eventID == EventTriggerType.PointerClick;
+
+                if (isSimpleTrigger)
+                {
                     Destroy(trigger);
+                    Debug.Log($"已移除 {tile.tileName} 的点击事件");
+                }
             }
         }
 
         originalTileColors.Clear();
         highlightableTiles.Clear();
 
-        Debug.Log("已清除所有地块高亮，起始格子恢复为起始颜色");
+        Debug.Log("已清除所有地块高亮和点击事件");
     }
 
     // 辅助方法：从BuildingData获取BuildingType

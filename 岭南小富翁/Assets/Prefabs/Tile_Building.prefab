@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: 5465103964800882420}
   - component: {fileID: 235769867052846331}
   m_Layer: 0
-  m_Name: Tile_Buiding
+  m_Name: Tile_Building
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -151,8 +151,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afe2b2606aa673b448a64ae0caa59920, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileID: 0
-  tileName: "\u5EFA\u7B51\u683C"
+  tileID: 1
+  tileName: "\u5EFA\u7B51\u683C\u5B50"
   tileType: 11
   propertyPrice: 100
   propertyColor: {r: 1, g: 1, b: 1, a: 1}

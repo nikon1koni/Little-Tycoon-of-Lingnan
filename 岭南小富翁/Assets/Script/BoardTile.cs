@@ -229,9 +229,9 @@ public class BoardTile : MonoBehaviour
                 Debug.Log($"{player.playerName} 停留在普通地块 [{tileName}]");
                 break;
 
-            case TileType.Buildable:  // 可建造地块
-                HandleBuildableTileLanding(player);
-                break;
+            //case TileType.Buildable:  // 可建造地块
+            //    HandleBuildableTileLanding(player);
+            //    break;
 
             case TileType.BuildingSite:  // 建筑地块
                 HandleBuildingSiteLanding(player);
