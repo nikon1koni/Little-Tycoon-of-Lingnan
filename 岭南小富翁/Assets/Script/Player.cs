@@ -21,6 +21,17 @@ public class Player : MonoBehaviour
     [HideInInspector] public BoardTile currentTile;  // 当前所在格子
     [HideInInspector] public int currentTileIndex = 0;  // 当前格子索引
 
+    // 在Player类中添加以下字段
+    [Header("Buff状态")]
+    public bool hasDiceBoost = false;
+    public int diceBoostValue = 0;
+    public float incomeMultiplier = 1.0f;
+    public float luckBoost = 0f;
+    public float moveSpeedMultiplier = 1.0f;
+
+    [Header("当前生效的Buff")]
+    public List<BoardTile> activeBuffs = new List<BoardTile>();
+
     // 引用组件
     private PlayerMovement playerMovement;
 
@@ -164,7 +175,49 @@ public class Player : MonoBehaviour
             return targetIndex - currentIndex;
         }
     }
+    // 获取骰子点数（带加成）
+    public int GetDiceValueWithBoost(int baseValue)
+    {
+        if (hasDiceBoost)
+        {
+            int boostedValue = baseValue + diceBoostValue;
+            Debug.Log($"{playerName} 骰子加成: {baseValue} + {diceBoostValue} = {boostedValue}");
+            return Mathf.Clamp(boostedValue, 1, 12); // 限制最大12点
+        }
+        return baseValue;
+    }
 
+    // 获取收入（带加成）
+    public int GetIncomeWithMultiplier(int baseIncome)
+    {
+        float multiplier = incomeMultiplier;
+        int finalIncome = Mathf.RoundToInt(baseIncome * multiplier);
+        if (multiplier > 1.0f)
+        {
+            Debug.Log($"{playerName} 收入加成: {baseIncome} × {multiplier} = {finalIncome}");
+        }
+        return finalIncome;
+    }
+
+    // 添加buff
+    public void AddBuff(BoardTile buffSource)
+    {
+        if (!activeBuffs.Contains(buffSource))
+        {
+            activeBuffs.Add(buffSource);
+            Debug.Log($"{playerName} 获得buff: {buffSource.tileName}");
+        }
+    }
+
+    // 移除buff
+    public void RemoveBuff(BoardTile buffSource)
+    {
+        if (activeBuffs.Contains(buffSource))
+        {
+            activeBuffs.Remove(buffSource);
+            Debug.Log($"{playerName} 失去buff: {buffSource.tileName}");
+        }
+    }
     // 检查是否破产
     public bool CheckBankruptcy()
     {

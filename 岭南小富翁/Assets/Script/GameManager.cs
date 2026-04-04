@@ -140,10 +140,15 @@ public class GameManager : MonoBehaviour
     {
         GameObject tempObj = new GameObject("StartPurchaseTile_Dummy");
         BoardTile tile = tempObj.AddComponent<BoardTile>();
-        tile.tileName = "起点建筑商店";
-        tile.tileType = BoardTile.TileType.Buildable;
-        tile.propertyPrice = 100; // 基础价格，可根据需要调整
+        tile.tileName = "建筑地块"; // 不要使用"起点商店"
+        tile.tileType = BoardTile.TileType.Buildable; // 必须是可建造类型，不是起始类型
+        tile.propertyPrice = 100;
         tile.isBuildable = true;
+        tile.tileScale = Random.Range(1, 4);
+
+        // 设置为当前玩家拥有，防止被误认为可购买
+        tile.ownerPlayer = currentPlayer;
+
         return tile;
     }
 
@@ -901,5 +906,32 @@ public class GameManager : MonoBehaviour
                 return player;
         }
         return null;
+    }
+
+    void CheckStartTiles()
+    {
+        if (boardManager != null)
+        {
+            Debug.Log("=== 检查起始格子 ===");
+            foreach (BoardTile tile in boardManager.allTiles)
+            {
+                if (tile.tileType == BoardTile.TileType.Start)
+                {
+                    Debug.Log($"找到起始格子: {tile.tileName}, ID: {tile.tileID}");
+
+                    // 检查是否被错误地标记为可建造
+                    if (tile.isBuildable)
+                    {
+                        Debug.LogError($"错误：起始格子 {tile.tileName} 被标记为可建造！");
+                    }
+
+                    // 检查是否有建筑
+                    if (tile.currentBuilding != null)
+                    {
+                        Debug.LogError($"错误：起始格子 {tile.tileName} 上有建筑！");
+                    }
+                }
+            }
+        }
     }
 }
