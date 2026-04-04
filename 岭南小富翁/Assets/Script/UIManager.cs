@@ -57,6 +57,15 @@ public class UIManager : MonoBehaviour
     public Image upgradeBuildingImage;
     public Button closeUpgradePanelButton;
 
+    [Header("左下角Toast")]
+    public GameObject persistentToastPanel; // 持久显示的Toast面板
+    public Text persistentToastText;        // Toast文本组件
+    public Vector2 toastPosition = new Vector2(20, 20); // 左下角位置
+
+    // 新增状态变量
+    private bool isBuildingSelected = false; // 是否已选择建筑
+    private GameObject activePersistentToast; // 当前活动的持久Toast
+
     // 当前选中的用于升级的地块
     private BoardTile upgradeSelectedTile = null;
     private Player upgradeSelectedPlayer = null;
@@ -92,7 +101,14 @@ public class UIManager : MonoBehaviour
         public Image playerColorImage;
         public Player player;
     }
-
+    void Update()
+    {
+        // 检测ESC键取消建筑选择
+        if (isBuildingSelected && Input.GetKeyDown(KeyCode.Escape))
+        {
+            OnCancelBuildingSelection();
+        }
+    }
     void Awake()
     {
         if (Instance == null)
@@ -189,7 +205,6 @@ public class UIManager : MonoBehaviour
             });
         }
 
-        // 修改点2：移除这里的HighlightPlaceableTiles调用！
         // 不在这里高亮，而是在玩家选择建筑后高亮
 
         // 8. 禁用骰子按钮
@@ -197,12 +212,21 @@ public class UIManager : MonoBehaviour
     }
 
     // === 核心修改：隐藏建筑选择UI（不销毁，只是隐藏）===
-    public void HideBuildingSelectionUI()
+    public void HideBuildingSelectionUI(bool keepButtons = false)
     {
-        Debug.Log("UIManager: 隐藏建筑选择面板");
+        Debug.Log($"UIManager: 隐藏建筑选择面板，保持按钮: {keepButtons}");
 
-        // 首先清除高亮
+        // 1. 清除高亮
         ClearTileHighlights();
+
+        // 2. 清除持久Toast（如果有）
+        HidePersistentToast();
+
+        // 【新增】3. 如果不是保持按钮状态，清除所有建筑按钮
+        if (!keepButtons)
+        {
+            ClearBuildingButtons();
+        }
 
         if (buildingSelectionPanel != null)
         {
@@ -210,18 +234,27 @@ public class UIManager : MonoBehaviour
             Debug.Log("UIManager: 建筑选择面板已隐藏");
         }
 
-        // 重置选中状态
-        selectedBuildingData = null;
-        selectedBoardTile = null;
-        currentBuildingPlayer = null;
-
-        // 通知GameManager购买阶段结束
-        if (GameManager.Instance != null)
+        // 4. 根据参数决定是否重置选择状态
+        if (!keepButtons)
         {
-            GameManager.Instance.OnBuildingPurchaseCompleted();
+            // 完全关闭时的重置逻辑
+            selectedBuildingData = null;
+            currentBuildingPlayer = null;
+            isBuildingSelected = false;
+
+            // 通知GameManager购买阶段结束
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.OnBuildingPurchaseCompleted();
+            }
+        }
+        else
+        {
+            // 只隐藏面板，不清除按钮和选择状态
+            Debug.Log("保持建筑按钮和选择状态");
         }
 
-        // 重新启用骰子按钮
+        // 5. 重新启用骰子按钮
         SetRollDiceButtonInteractable(true);
     }
 
@@ -251,6 +284,33 @@ public class UIManager : MonoBehaviour
             Destroy(child.gameObject);
         }
     }
+
+    // 取消建筑选择
+    private void OnCancelBuildingSelection()
+    {
+        Debug.Log("取消建筑选择");
+
+        // 1. 清除持久Toast
+        HidePersistentToast();
+
+        // 2. 清除地块高亮
+        ClearTileHighlights();
+
+        // 3. 重新打开建筑选择面板
+        if (buildingSelectionPanel != null)
+        {
+            buildingSelectionPanel.SetActive(true);
+            Debug.Log("建筑选择面板已重新打开");
+        }
+
+        // 4. 重置选择状态
+        selectedBuildingData = null;
+        isBuildingSelected = false;
+
+        // 注意：不清除buildingButtonContainer中的按钮
+        // 保持按钮存在，用户可以重新选择
+    }
+
 
     // 创建建筑按钮
     private void CreateBuildingButtons(List<BuildingData> buildings)
@@ -314,21 +374,91 @@ public class UIManager : MonoBehaviour
         Debug.Log($"选中建筑: {building.buildingName}, 价格: {building.purchasePrice}");
 
         selectedBuildingData = building;
+        isBuildingSelected = true;
 
-        // 更新UI显示
-        if (selectedBuildingText != null)
-            selectedBuildingText.text = $"已选择: {building.buildingName}";
+        // 1. 暂时关闭建筑选择面板
+        if (buildingSelectionPanel != null)
+        {
+            buildingSelectionPanel.SetActive(false);
+        }
 
-        if (selectedBuildingImage != null && building.buildingIcon != null)
-            selectedBuildingImage.sprite = building.buildingIcon;
+        // 2. 在左下角显示持久Toast
+        ShowPersistentToast($"已选择: {building.buildingName}");
 
-        if (buildingPriceText != null)
-            buildingPriceText.text = $"价格: {building.purchasePrice}金币";
-
-        // 修改点3：现在高亮可放置的地块
+        // 3. 高亮可放置的地块
         HighlightPlaceableTiles(currentBuildingPlayer, (int)building.requiredScale);
 
-        ShowToast($"已选择{building.buildingName}，请点击地图上的绿色地块放置建筑", 3f);
+        Debug.Log("建筑面板已暂时关闭，等待放置或按ESC取消");
+    }
+    private void ShowPersistentToast(string message)
+    {
+        // 清除现有的Toast
+        HidePersistentToast();
+
+        // 创建或获取Toast面板
+        if (persistentToastPanel != null)
+        {
+            activePersistentToast = Instantiate(persistentToastPanel, mainCanvas.transform);
+            activePersistentToast.name = "PersistentToast";
+
+            // 获取文本组件
+            Text toastText = activePersistentToast.GetComponentInChildren<Text>();
+            if (toastText != null)
+            {
+                toastText.text = message;
+            }
+
+            // 设置位置（左下角）
+            RectTransform rt = activePersistentToast.GetComponent<RectTransform>();
+            rt.anchorMin = new Vector2(0, 0);
+            rt.anchorMax = new Vector2(0, 0);
+            rt.pivot = new Vector2(0, 0);
+            rt.anchoredPosition = toastPosition;
+
+            activePersistentToast.SetActive(true);
+        }
+        else
+        {
+            // 如果没有预制体，动态创建
+            activePersistentToast = new GameObject("PersistentToast");
+            activePersistentToast.transform.SetParent(mainCanvas.transform);
+
+            Image bg = activePersistentToast.AddComponent<Image>();
+            bg.color = new Color(0, 0, 0, 0.7f);
+
+            GameObject textObj = new GameObject("ToastText");
+            textObj.transform.SetParent(activePersistentToast.transform);
+            Text text = textObj.AddComponent<Text>();
+            text.text = message;
+            text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            text.fontSize = 16;
+            text.color = Color.white;
+            text.alignment = TextAnchor.MiddleLeft;
+
+            // 设置尺寸和位置
+            RectTransform rt = activePersistentToast.GetComponent<RectTransform>();
+            rt.sizeDelta = new Vector2(200, 40);
+            rt.anchorMin = new Vector2(0, 0);
+            rt.anchorMax = new Vector2(0, 0);
+            rt.pivot = new Vector2(0, 0);
+            rt.anchoredPosition = toastPosition;
+
+            // 文本填充父对象
+            RectTransform textRt = textObj.GetComponent<RectTransform>();
+            textRt.anchorMin = Vector2.zero;
+            textRt.anchorMax = Vector2.one;
+            textRt.offsetMin = new Vector2(10, 0);
+            textRt.offsetMax = Vector2.zero;
+        }
+    }
+
+    private void HidePersistentToast()
+    {
+        if (activePersistentToast != null)
+        {
+            Destroy(activePersistentToast);
+            activePersistentToast = null;
+        }
     }
 
 

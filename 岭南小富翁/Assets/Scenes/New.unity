@@ -1528,6 +1528,9 @@ MonoBehaviour:
   nextLevelText: {fileID: 0}
   upgradeBuildingImage: {fileID: 0}
   closeUpgradePanelButton: {fileID: 0}
+  persistentToastPanel: {fileID: 5435831469665823402, guid: bf222e44b0c27d24e99e6fb409ca38e7, type: 3}
+  persistentToastText: {fileID: 0}
+  toastPosition: {x: 20, y: 20}
 --- !u!4 &1054191489 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4607143146159652540, guid: d79548990247a1449a08ddcef731d330, type: 3}
