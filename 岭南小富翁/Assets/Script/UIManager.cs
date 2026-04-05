@@ -591,7 +591,7 @@ public class UIManager : MonoBehaviour
     }
 
     // 地块被点击（用于放置建筑）
-    private void OnTileClickedForPlacement(BoardTile tile)
+    public void OnTileClickedForPlacement(BoardTile tile)
     {
         if (selectedBuildingData == null || currentBuildingPlayer == null)
         {
