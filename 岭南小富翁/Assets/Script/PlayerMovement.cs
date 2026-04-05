@@ -56,37 +56,107 @@ public class PlayerMovement : MonoBehaviour
     {
         isMoving = true;
         List<BoardTile> allTiles = BoardManager.Instance.allTiles;
+        int stepsMoved = 0;
 
-        for (int i = 0; i < steps; i++)
+        // 关键修复1：验证当前位置
+        if (player.currentTile.tileID < 0)
         {
-            int nextIndex = (player.currentTileIndex + 1) % allTiles.Count;
-            BoardTile nextTile = allTiles[nextIndex];
-
-            // 恢复原来的jumpDuration (0.5f)
-            yield return StartCoroutine(JumpToTile(nextTile));
-
-            // 更新玩家位置
-            player.currentTile = nextTile;
-            player.currentTileIndex = nextIndex;
-
-            // 缩短落地延迟
-            yield return new WaitForSeconds(0.05f);  // 从0.1f改为0.05f
-
-            // 最后一步处理格子事件
-            if (i == steps - 1)
+            Debug.LogError($"错误：玩家当前位置 {player.currentTile.tileName} 是建筑格子 (ID: {player.currentTile.tileID})");
+            // 自动纠正到最近的可寻路格子
+            BoardTile correctedTile = FindNearestWalkableTile();
+            if (correctedTile != null)
             {
-                yield return new WaitForSeconds(0.1f);  // 给玩家一点时间看结果
-                nextTile.OnLanded(player);
+                Debug.Log($"纠正位置到: {correctedTile.tileName}");
+                MoveToTileImmediate(correctedTile);
+                player.currentTile = correctedTile;
+                player.currentTileIndex = allTiles.IndexOf(correctedTile);
             }
         }
 
+        Debug.Log($"移动开始: 从 {player.currentTile.tileName} (ID: {player.currentTile.tileID}) 开始，目标 {steps} 步");
+
+        while (stepsMoved < steps)
+        {
+            // 关键修复2：确保从正确的起点开始
+            int currentTileIndex = allTiles.IndexOf(player.currentTile);
+            if (currentTileIndex < 0)
+            {
+                Debug.LogError("找不到玩家当前位置的索引");
+                break;
+            }
+
+            int startIndex = (currentTileIndex + 1) % allTiles.Count;
+            int currentSearchIndex = startIndex;
+            bool foundValidTile = false;
+
+            // 查找下一个可寻路格子
+            int searchCount = 0;
+            do
+            {
+                BoardTile candidateTile = allTiles[currentSearchIndex];
+                searchCount++;
+
+                if (candidateTile.tileID >= 0) // 合法可寻路格子
+                {
+                    Debug.Log($"第{stepsMoved + 1}步: 从 {player.currentTile.tileName} 移动到 {candidateTile.tileName} (ID: {candidateTile.tileID})");
+
+                    // 移动动画
+                    yield return StartCoroutine(JumpToTile(candidateTile));
+
+                    // 更新位置
+                    player.currentTile = candidateTile;
+                    player.currentTileIndex = currentSearchIndex;
+                    stepsMoved++;
+                    foundValidTile = true;
+
+                    yield return new WaitForSeconds(0.05f);
+                    break;
+                }
+                else
+                {
+                    Debug.Log($"跳过了建筑格子: {candidateTile.tileName} (ID: {candidateTile.tileID})");
+                }
+
+                currentSearchIndex = (currentSearchIndex + 1) % allTiles.Count;
+
+            } while (currentSearchIndex != startIndex && searchCount < allTiles.Count);
+
+            if (!foundValidTile)
+            {
+                Debug.LogError("没有找到可移动的目标格子！已搜索所有格子");
+                break;
+            }
+        }
+
+        Debug.Log($"移动完成: 总共移动了 {stepsMoved} 步");
+
         isMoving = false;
 
-        // 通知GameManager移动结束
         if (GameManager.Instance != null)
         {
             GameManager.Instance.OnPlayerMoveComplete();
         }
+    }
+
+    // 查找最近的可寻路格子
+    private BoardTile FindNearestWalkableTile()
+    {
+        List<BoardTile> allTiles = BoardManager.Instance.allTiles;
+        int currentIndex = allTiles.IndexOf(player.currentTile);
+
+        if (currentIndex < 0) return null;
+
+        // 向前查找
+        for (int i = 1; i < allTiles.Count; i++)
+        {
+            int forwardIndex = (currentIndex + i) % allTiles.Count;
+            if (allTiles[forwardIndex].tileID >= 0)
+            {
+                return allTiles[forwardIndex];
+            }
+        }
+
+        return null;
     }
 
     // 方法1：抛物线跳跃（有弧线）
