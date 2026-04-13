@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
+using System.Diagnostics;
 
 public class UIManager : MonoBehaviour
 {
@@ -124,7 +125,7 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("=== 初始化UI ===");
+        UnityEngine.Debug.Log("=== 初始化UI ===");
         InitializeUI();
 
         // 【修改点2】确保游戏开始时，建筑选择面板是隐藏的
@@ -132,11 +133,11 @@ public class UIManager : MonoBehaviour
         if (buildingSelectionPanel != null)
         {
             buildingSelectionPanel.SetActive(false);
-            Debug.Log("UIManager: 已确保 BuildingSelectionPanel 初始为隐藏状态。");
+            UnityEngine.Debug.Log("UIManager: 已确保 BuildingSelectionPanel 初始为隐藏状态。");
         }
         else
         {
-            Debug.LogWarning("UIManager: buildingSelectionPanel 未在Inspector中赋值，请拖拽场景中的面板对象。");
+            UnityEngine.Debug.LogWarning("UIManager: buildingSelectionPanel 未在Inspector中赋值，请拖拽场景中的面板对象。");
         }
     }
 
@@ -151,7 +152,7 @@ public class UIManager : MonoBehaviour
         if (gameOverPanel != null) gameOverPanel.SetActive(false);
         if (propertyPurchasePanel != null) propertyPurchasePanel.SetActive(false);
 
-        Debug.Log("UI初始化完成");
+        UnityEngine.Debug.Log("UI初始化完成");
     }
 
     // === 核心修改：显示建筑选择UI（整合版，包含建筑规模和点击放置功能）===
@@ -161,7 +162,7 @@ public class UIManager : MonoBehaviour
         selectedBoardTile = buildableTile;
         currentBuildingPlayer = player;
 
-        Debug.Log($"UIManager: 显示建筑选择面板，地块规模: {buildableTile.tileScale}");
+        UnityEngine.Debug.Log($"UIManager: 显示建筑选择面板，地块规模: {buildableTile.tileScale}");
 
         // 1. 关闭其他可能冲突的UI
         HidePropertyPurchasePanel();
@@ -169,7 +170,7 @@ public class UIManager : MonoBehaviour
         // 2. 激活面板
         if (buildingSelectionPanel == null)
         {
-            Debug.LogError("UIManager: BuildingSelectionPanel 引用为空！");
+            UnityEngine.Debug.LogError("UIManager: BuildingSelectionPanel 引用为空！");
             return;
         }
 
@@ -200,7 +201,7 @@ public class UIManager : MonoBehaviour
         {
             closeButton.onClick.RemoveAllListeners();
             closeButton.onClick.AddListener(() => {
-                Debug.Log("UIManager: 关闭按钮被点击");
+                UnityEngine.Debug.Log("UIManager: 关闭按钮被点击");
                 HideBuildingSelectionUI();
             });
         }
@@ -214,7 +215,7 @@ public class UIManager : MonoBehaviour
     // === 核心修改：隐藏建筑选择UI（不销毁，只是隐藏）===
     public void HideBuildingSelectionUI(bool keepButtons = false)
     {
-        Debug.Log($"隐藏建筑选择UI，keepButtons={keepButtons}");
+        UnityEngine.Debug.Log($"隐藏建筑选择UI，keepButtons={keepButtons}");
 
         // 清除相关UI元素
         ClearTileHighlights();
@@ -287,7 +288,7 @@ public class UIManager : MonoBehaviour
     // 取消建筑选择
     private void OnCancelBuildingSelection()
     {
-        Debug.Log("按ESC取消建筑选择，返回建筑面板");
+        UnityEngine.Debug.Log("按ESC取消建筑选择，返回建筑面板");
 
         // 1. 清除Toast和高亮
         HidePersistentToast();
@@ -308,7 +309,7 @@ public class UIManager : MonoBehaviour
         // 4. 重置选择状态但保留按钮
         selectedBuildingData = null;
         isBuildingSelected = false;
-        Debug.Log("已返回建筑选择面板，建筑按钮已重新显示");
+        UnityEngine.Debug.Log("已返回建筑选择面板，建筑按钮已重新显示");
     }
 
 
@@ -317,7 +318,7 @@ public class UIManager : MonoBehaviour
     {
         if (buildingButtonContainer == null)
         {
-            Debug.LogWarning("buildingButtonContainer 为空，无法创建建筑按钮");
+            UnityEngine.Debug.LogWarning("buildingButtonContainer 为空，无法创建建筑按钮");
             return;
         }
 
@@ -371,7 +372,7 @@ public class UIManager : MonoBehaviour
     // 建筑被选中时的处理
     private void OnBuildingSelected(BuildingData building)
     {
-        Debug.Log($"选中建筑: {building.buildingName}, 价格: {building.purchasePrice}");
+        UnityEngine.Debug.Log($"选中建筑: {building.buildingName}, 价格: {building.purchasePrice}");
 
         selectedBuildingData = building;
         isBuildingSelected = true;
@@ -386,7 +387,7 @@ public class UIManager : MonoBehaviour
         if (buildingButtonContainer != null && buildingButtonContainer.gameObject.activeSelf)
         {
             buildingButtonContainer.gameObject.SetActive(false);
-            Debug.Log("已隐藏建筑按钮容器。");
+            UnityEngine.Debug.Log("已隐藏建筑按钮容器。");
         }
 
         // 3. 在左下角显示持久Toast
@@ -395,7 +396,7 @@ public class UIManager : MonoBehaviour
         // 4. 高亮可放置的地块
         HighlightPlaceableTiles(currentBuildingPlayer, (int)building.requiredScale);
 
-        Debug.Log("已进入建筑放置模式。");
+        UnityEngine.Debug.Log("已进入建筑放置模式。");
     }
     private void ShowPersistentToast(string message)
     {
@@ -475,19 +476,19 @@ public class UIManager : MonoBehaviour
 
         if (BoardManager.Instance == null)
         {
-            Debug.LogWarning("BoardManager.Instance 为空，无法高亮地块");
+            UnityEngine.Debug.LogWarning("BoardManager.Instance 为空，无法高亮地块");
             return;
         }
 
-        Debug.Log($"开始高亮可放置地块，需求规模: {requiredScale}");
-        Debug.Log($"玩家: {player.playerName}");
+        UnityEngine.Debug.Log($"开始高亮可放置地块，需求规模: {requiredScale}");
+        UnityEngine.Debug.Log($"玩家: {player.playerName}");
 
         int highlightCount = 0;
 
         foreach (BoardTile tile in BoardManager.Instance.allTiles)
         {
             // 记录地块信息
-            Debug.Log($"检查地块: {tile.tileName}, 类型: {tile.tileType}, 规模: {tile.tileScale}, 所有者: {tile.ownerPlayer?.playerName ?? "无主"}");
+            UnityEngine.Debug.Log($"检查地块: {tile.tileName}, 类型: {tile.tileType}, 规模: {tile.tileScale}, 所有者: {tile.ownerPlayer?.playerName ?? "无主"}");
 
             // 检查地块是否可放置建筑
             if (IsTilePlaceable(tile, player, requiredScale))
@@ -495,7 +496,7 @@ public class UIManager : MonoBehaviour
                 // 额外检查：确保不是起始格子
                 if (tile.tileType == BoardTile.TileType.Start)
                 {
-                    Debug.LogError($"严重错误：{tile.tileName} 是起始格子，不应该被高亮！");
+                    UnityEngine.Debug.LogError($"严重错误：{tile.tileName} 是起始格子，不应该被高亮！");
                     continue;
                 }
 
@@ -511,12 +512,12 @@ public class UIManager : MonoBehaviour
                     // 添加点击检测组件
                     AddTileClickHandler(tile);
 
-                    Debug.Log($" 高亮地块: {tile.tileName}, 规模: {tile.tileScale}, 类型: {tile.tileType}");
+                    UnityEngine.Debug.Log($" 高亮地块: {tile.tileName}, 规模: {tile.tileScale}, 类型: {tile.tileType}");
                 }
             }
         }
 
-        Debug.Log($" 高亮了 {highlightCount} 个可放置地块");
+        UnityEngine.Debug.Log($" 高亮了 {highlightCount} 个可放置地块");
 
         if (highlightCount == 0)
         {
@@ -534,7 +535,7 @@ public class UIManager : MonoBehaviour
         // 条件0: 绝对不能是起始格子
         if (tile.tileType == BoardTile.TileType.Start)
         {
-            Debug.Log($"[高亮检查] 地块 {tile.tileName} 是起始格子，绝对不可放置建筑");
+            UnityEngine.Debug.Log($"[高亮检查] 地块 {tile.tileName} 是起始格子，绝对不可放置建筑");
             return false;
         }
 
@@ -542,21 +543,21 @@ public class UIManager : MonoBehaviour
         if (tile.tileType != BoardTile.TileType.Buildable &&
             tile.tileType != BoardTile.TileType.BuildingSite)
         {
-            Debug.Log($"[高亮检查] 地块 {tile.tileName} 不是可建造类型: {tile.tileType}");
+            UnityEngine.Debug.Log($"[高亮检查] 地块 {tile.tileName} 不是可建造类型: {tile.tileType}");
             return false;
         }
 
         // 条件2: 地块规模符合要求
         if (tile.tileScale < requiredScale)
         {
-            Debug.Log($"[高亮检查] 地块 {tile.tileName} 规模不足: {tile.tileScale} < {requiredScale}");
+            UnityEngine.Debug.Log($"[高亮检查] 地块 {tile.tileName} 规模不足: {tile.tileScale} < {requiredScale}");
             return false;
         }
 
         // 条件3: 地块没有建筑
         if (tile.currentBuilding != null)
         {
-            Debug.Log($"[高亮检查] 地块 {tile.tileName} 已有建筑");
+            UnityEngine.Debug.Log($"[高亮检查] 地块 {tile.tileName} 已有建筑");
             return false;
         }
 
@@ -564,7 +565,7 @@ public class UIManager : MonoBehaviour
         bool isOwned = tile.ownerPlayer == null || tile.ownerPlayer == player;
         if (!isOwned)
         {
-            Debug.Log($"[高亮检查] 地块 {tile.tileName} 不属于玩家");
+            UnityEngine.Debug.Log($"[高亮检查] 地块 {tile.tileName} 不属于玩家");
         }
 
         return isOwned;
@@ -574,6 +575,7 @@ public class UIManager : MonoBehaviour
     // 为地块添加点击处理器
     private void AddTileClickHandler(BoardTile tile)
     {
+        UnityEngine.Debug.Log($"UIManager: 为地块 {tile.tileName} 添加点击处理器");
         // 移除现有的事件触发器
         EventTrigger existingTrigger = tile.GetComponent<EventTrigger>();
         if (existingTrigger != null)
@@ -588,6 +590,10 @@ public class UIManager : MonoBehaviour
         entry.callback.AddListener((data) => OnTileClickedForPlacement(tile));
 
         trigger.triggers.Add(entry);
+        entry.callback.AddListener((data) => {
+            UnityEngine.Debug.Log($"点击事件触发: 地块 {tile.tileName} 被点击");
+            OnTileClickedForPlacement(tile);
+        });
     }
 
     // 地块被点击（用于放置建筑）
@@ -595,11 +601,11 @@ public class UIManager : MonoBehaviour
     {
         if (selectedBuildingData == null || currentBuildingPlayer == null)
         {
-            Debug.LogWarning("未选择建筑或玩家不存在");
+            UnityEngine.Debug.LogWarning("未选择建筑或玩家不存在");
             return;
         }
 
-        Debug.Log($"尝试在 {tile.tileName} 上放置 {selectedBuildingData.buildingName}");
+        UnityEngine.Debug.Log($"尝试在 {tile.tileName} 上放置 {selectedBuildingData.buildingName}");
 
         // 检查玩家资金
         if (currentBuildingPlayer.cash < selectedBuildingData.purchasePrice)
@@ -618,7 +624,7 @@ public class UIManager : MonoBehaviour
         // 购买并放置建筑
         if (PurchaseAndPlaceBuilding(tile, selectedBuildingData, currentBuildingPlayer))
         {
-            Debug.Log($"建筑 {selectedBuildingData.buildingName} 放置成功！");
+            UnityEngine.Debug.Log($"建筑 {selectedBuildingData.buildingName} 放置成功！");
 
             // 清除高亮
             ClearTileHighlights();
@@ -703,7 +709,7 @@ public class UIManager : MonoBehaviour
         originalTileColors.Clear();
         highlightableTiles.Clear();
 
-        Debug.Log("已清除所有地块高亮，起始格子恢复为起始颜色");
+        UnityEngine.Debug.Log("已清除所有地块高亮，起始格子恢复为起始颜色");
     }
 
     // 辅助方法：从BuildingData获取BuildingType
@@ -730,7 +736,7 @@ public class UIManager : MonoBehaviour
             mainCanvas = FindObjectOfType<Canvas>();
             if (mainCanvas == null)
             {
-                Debug.LogWarning("没有找到Canvas，正在创建...");
+                UnityEngine.Debug.LogWarning("没有找到Canvas，正在创建...");
                 CreateCanvas();
             }
         }
@@ -748,14 +754,14 @@ public class UIManager : MonoBehaviour
 
         canvasObj.AddComponent<GraphicRaycaster>();
 
-        Debug.Log("已创建Canvas");
+        UnityEngine.Debug.Log("已创建Canvas");
     }
 
     void CreateRollDiceButton()
     {
         if (rollDiceButtonPrefab == null)
         {
-            Debug.LogWarning("掷骰子按钮预制体未设置");
+            UnityEngine.Debug.LogWarning("掷骰子按钮预制体未设置");
             return;
         }
 
@@ -768,14 +774,14 @@ public class UIManager : MonoBehaviour
         rollDiceButton = buttonObj.GetComponent<Button>();
         if (rollDiceButton != null)
         {
-            Debug.Log("掷骰子按钮创建成功");
+            UnityEngine.Debug.Log("掷骰子按钮创建成功");
         }
     }
 
     // 注意：这个方法是给按钮的OnClick事件使用的
     public void OnRollDiceButtonClicked()
     {
-        Debug.Log("UIManager: 点击掷骰子按钮");
+        UnityEngine.Debug.Log("UIManager: 点击掷骰子按钮");
 
         if (GameManager.Instance != null)
         {
@@ -783,7 +789,7 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("GameManager.Instance 为空，无法处理掷骰子");
+            UnityEngine.Debug.LogError("GameManager.Instance 为空，无法处理掷骰子");
         }
     }
 
@@ -845,7 +851,7 @@ public class UIManager : MonoBehaviour
                 break;
         }
 
-        Debug.Log($"切换到 {uiType} 界面");
+        UnityEngine.Debug.Log($"切换到 {uiType} 界面");
     }
 
     public void SwitchToMenuUI() => SwitchUI(UIType.Menu);
@@ -857,7 +863,7 @@ public class UIManager : MonoBehaviour
     {
         if (propertyPurchasePanel == null)
         {
-            Debug.LogWarning("地产购买面板预制体未设置");
+            UnityEngine.Debug.LogWarning("地产购买面板预制体未设置");
             return;
         }
 
@@ -939,7 +945,7 @@ public class UIManager : MonoBehaviour
     {
         if (playerInfoPrefab == null)
         {
-            Debug.LogWarning("玩家信息UI预制体未设置");
+            UnityEngine.Debug.LogWarning("玩家信息UI预制体未设置");
             return;
         }
 
@@ -1022,7 +1028,7 @@ public class UIManager : MonoBehaviour
     {
         if (buildingUpgradePanel == null)
         {
-            Debug.LogWarning("升级面板未设置");
+            UnityEngine.Debug.LogWarning("升级面板未设置");
             return;
         }
 
@@ -1100,7 +1106,7 @@ public class UIManager : MonoBehaviour
                 string nextFunctionDesc = GetBuildingFunctionDescription(
                     buildingData.nextLevelBuilding,
                     upgradeSelectedTile.buildingLevel + 1);
-                Debug.Log($"升级后功能: {nextFunctionDesc}");
+                UnityEngine.Debug.Log($"升级后功能: {nextFunctionDesc}");
             }
         }
 
