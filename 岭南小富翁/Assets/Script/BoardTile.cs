@@ -89,6 +89,22 @@ public class BoardTile : MonoBehaviour
     void Start()
     {
         //UpdateTileVisual(); // 更新地块颜色
+        if (GetComponent<Collider>() == null)
+        {
+            Debug.Log("没有碰撞体，添加碰撞体-BoardTile");
+            BoxCollider collider = gameObject.AddComponent<BoxCollider>();
+            collider.size = Vector3.one;
+
+            // 确保 Collider 启用
+            GetComponent<Collider>().enabled = true;
+
+            // 设置合适的 Layer
+            //gameObject.layer = LayerMask.NameToLayer("Tile");
+
+            Debug.Log($"BoardTile {tileName} 初始化: Collider={GetComponent<Collider>() != null}, Layer={LayerMask.LayerToName(gameObject.layer)}");
+
+        }
+
     }
 
     void Update()
