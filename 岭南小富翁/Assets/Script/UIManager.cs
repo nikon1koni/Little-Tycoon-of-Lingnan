@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using System.Diagnostics;
 using static BoardTile;
-
+using TMPro; 
 public class UIManager : MonoBehaviour
 {
     // 单例模式
@@ -63,6 +63,11 @@ public class UIManager : MonoBehaviour
     public GameObject persistentToastPanel; // 持久显示的Toast面板
     public Text persistentToastText;        // Toast文本组件
     public Vector2 toastPosition = new Vector2(20, 20); // 左下角位置
+
+    [Header("玩家资金显示")]
+    [SerializeField] private GameObject cashDisplayPanel; // 整个面板，方便开关
+    [SerializeField] private TextMeshProUGUI cashText;    // 显示具体金额的文本
+    public TextMeshProUGUI CashText => cashText;
 
     // 新增状态变量
     private bool isBuildingSelected = false; // 是否已选择建筑
