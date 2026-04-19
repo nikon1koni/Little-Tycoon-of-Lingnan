@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using System.Diagnostics;
 using static BoardTile;
-using TMPro; 
+using TMPro;
+
 public class UIManager : MonoBehaviour
 {
     // 单例模式
@@ -108,6 +109,7 @@ public class UIManager : MonoBehaviour
         public Image playerColorImage;
         public Player player;
     }
+
     void Update()
     {
         // 检测ESC键取消建筑选择
@@ -116,6 +118,7 @@ public class UIManager : MonoBehaviour
             OnCancelBuildingSelection();
         }
     }
+
     void Awake()
     {
         if (Instance == null)
@@ -158,8 +161,31 @@ public class UIManager : MonoBehaviour
         if (gameOverPanel != null) gameOverPanel.SetActive(false);
         if (propertyPurchasePanel != null) propertyPurchasePanel.SetActive(false);
 
+        // === 新增：初始化资金显示 ===
+        if (GameManager.Instance != null && GameManager.Instance.currentPlayer != null)
+        {
+            UpdateCashDisplay(GameManager.Instance.currentPlayer.cash);
+        }
+        // === 新增结束 ===
+
         UnityEngine.Debug.Log("UI初始化完成");
     }
+
+    // === 新增：更新独立的资金显示面板 ===
+    public void UpdateCashDisplay(int cashAmount)
+    {
+        // 检查 cashText 引用是否有效
+        if (cashText != null)
+        {
+            // 更新文本内容
+            cashText.text = $"{cashAmount}";
+        }
+        else
+        {
+            UnityEngine.Debug.LogWarning("UIManager: cashText 引用为空，资金显示将不会更新。请检查Inspector中是否为'Cash Text'字段赋值。");
+        }
+    }
+    // === 新增结束 ===
 
     // === 核心修改：显示建筑选择UI（整合版，包含建筑规模和点击放置功能）===
     public void ShowBuildingSelectionUI(BoardTile buildableTile, Player player)
@@ -264,6 +290,7 @@ public class UIManager : MonoBehaviour
         // 恢复骰子按钮交互
         SetRollDiceButtonInteractable(true);
     }
+
     // 根据规模过滤建筑
     private List<BuildingData> FilterBuildingsByScale(int tileScale)
     {
@@ -317,7 +344,6 @@ public class UIManager : MonoBehaviour
         isBuildingSelected = false;
         UnityEngine.Debug.Log("已返回建筑选择面板，建筑按钮已重新显示");
     }
-
 
     // 创建建筑按钮
     private void CreateBuildingButtons(List<BuildingData> buildings)
@@ -404,6 +430,7 @@ public class UIManager : MonoBehaviour
 
         UnityEngine.Debug.Log("已进入建筑放置模式。");
     }
+
     private void ShowPersistentToast(string message)
     {
         // 清除现有的Toast
@@ -475,7 +502,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-
     private void HighlightPlaceableTiles(Player player, int requiredScale)
     {
         ClearTileHighlights();
@@ -530,6 +556,7 @@ public class UIManager : MonoBehaviour
             ShowToast("没有可放置的地块，请检查地块规模和所有权", 2f);
         }
     }
+
     public bool IsTileHighlighted(BoardTile tile)
     {
         return highlightableTiles.Contains(tile);
@@ -563,12 +590,10 @@ public class UIManager : MonoBehaviour
         return isPlaceable;
     }
 
-
     // 为地块添加点击处理器
     private void AddTileClickHandler(BoardTile tile)
     {
         UnityEngine.Debug.Log($"UIManager: 为地块 {tile.tileName} 添加点击处理器");
-
 
         // 添加新的事件触发器
         EventTrigger trigger = tile.gameObject.AddComponent<EventTrigger>();
@@ -583,7 +608,6 @@ public class UIManager : MonoBehaviour
         });
 
         trigger.triggers.Add(entry);
-
     }
 
     // 地块被点击（用于放置建筑）
@@ -729,7 +753,7 @@ public class UIManager : MonoBehaviour
                 if (tile.tileType == BoardTile.TileType.Start)
                 {
                     // 起始格子恢复为起始颜色
-                    //enderer.material.color = new Color(0f, 0.8f, 0f);
+                    // renderer.material.color = new Color(0f, 0.8f, 0f);
                 }
                 else
                 {
@@ -741,7 +765,7 @@ public class UIManager : MonoBehaviour
                 EventTrigger trigger = tile.GetComponent<EventTrigger>();
                 if (trigger != null)
                 {
-
+                    // 可以在这里移除触发器，但为了安全，我们不清除
                 }
             }
         }
@@ -864,6 +888,10 @@ public class UIManager : MonoBehaviour
         {
             currentTileText.text = $"位置: {player.currentTile.tileName}";
         }
+
+        // === 新增：同时更新独立资金显示面板 ===
+        UpdateCashDisplay(player.cash);
+        // === 新增结束 ===
     }
 
     public void SwitchUI(UIType uiType)
@@ -1063,6 +1091,7 @@ public class UIManager : MonoBehaviour
         text.transform.SetAsLastSibling();
         Destroy(toastObj, duration);
     }
+
     // 显示建筑升级面板
     public void ShowBuildingUpgradeUI(BoardTile tile, Player player)
     {
@@ -1266,6 +1295,7 @@ public class UIManager : MonoBehaviour
         // 恢复骰子按钮
         SetRollDiceButtonInteractable(true);
     }
+
     void OnDestroy()
     {
         if (rollDiceButton != null)
@@ -1273,5 +1303,4 @@ public class UIManager : MonoBehaviour
             rollDiceButton.onClick.RemoveAllListeners();
         }
     }
-
 }
