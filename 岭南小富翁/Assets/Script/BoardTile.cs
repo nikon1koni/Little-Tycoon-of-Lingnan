@@ -171,6 +171,7 @@ public class BoardTile : MonoBehaviour
             case TileType.Property:
             case TileType.Railroad:
             case TileType.Utility:
+            case TileType.Normal:
                 HandlePropertyLanding(player);
                 break;
 
@@ -241,6 +242,7 @@ public class BoardTile : MonoBehaviour
                 Debug.Log($"玩家 {player.playerName} 降落在 {tileName} 上，类型: {tileType}");
                 break;
         }
+
 
         Debug.Log($"准备进入检查Debug");
         // === 新增：检查关联建筑并触发收入 ===
