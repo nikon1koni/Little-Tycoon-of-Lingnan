@@ -1,190 +1,178 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class BuildingTileGenerator : MonoBehaviour
 {
-    [Header("建筑格子预制体")]
-    public GameObject buildingTilePrefab;
-
     [Header("生成设置")]
-    public int minBuildingTiles = 5;  // 最少建筑格子数量
-    public int maxBuildingTiles = 15; // 最多建筑格子数量
+    public int buildingTileCount = 5; // 要生成的建筑地块数量
+    public List<Vector2> spawnPositions = new List<Vector2>(); // 生成位置
+    public GameObject buildingTilePrefab; // 建筑地块预制体
 
-    [Header("规模分布")]
-    [Range(0, 1)] public float smallScaleProbability = 0.5f;   // 小建筑格子概率
-    [Range(0, 1)] public float mediumScaleProbability = 0.3f;  // 中建筑格子概率
-    [Range(0, 1)] public float largeScaleProbability = 0.2f;   // 大建筑格子概率
+    [Header("地块属性")]
+    [Range(1, 4)] public int minTileScale = 1;
+    [Range(1, 4)] public int maxTileScale = 4;
+    [Range(50, 1000)] public int minPrice = 100;
+    [Range(50, 1000)] public int maxPrice = 500;
 
-    [Header("位置生成")]
-    public Vector2 mapBounds = new Vector2(20, 20); // 地图边界
-    public float minDistanceBetweenTiles = 2f;      // 格子最小间距
-    public float minDistanceFromRoad = 1f;         // 距离道路的最小距离
+    [Header("关联设置")]
+    public bool enableTileLinking = true; // 是否启用地块关联
+    [Range(1, 5)] public int maxLinkedTilesPerProperty = 3; // 每个属性地块最大关联数量
 
     private List<BoardTile> generatedBuildingTiles = new List<BoardTile>();
+    private List<BoardTile> allPropertyTiles = new List<BoardTile>();
 
     void Start()
     {
         GenerateBuildingTiles();
+
+        if (enableTileLinking)
+        {
+            LinkTilesToProperties();
+        }
     }
 
-    public void GenerateBuildingTiles()
+    // 生成建筑地块
+    void GenerateBuildingTiles()
     {
-        // 清除现有建筑格子
-        ClearExistingTiles();
+        Debug.Log($"开始生成 {buildingTileCount} 个建筑地块");
 
-        // 随机生成数量
-        int tileCount = Random.Range(minBuildingTiles, maxBuildingTiles + 1);
-
-        for (int i = 0; i < tileCount; i++)
+        if (buildingTilePrefab == null)
         {
-            GenerateSingleBuildingTile(i);
-        }
-
-        Debug.Log($"生成 {tileCount} 个建筑格子");
-    }
-
-    private void GenerateSingleBuildingTile(int index)
-    {
-        // 生成随机位置（不依赖道路）
-        Vector3 position = GenerateRandomPosition();
-
-        // 确保位置不与其他格子重叠
-        int attempts = 0;
-        while (IsPositionOccupied(position) && attempts < 100)
-        {
-            position = GenerateRandomPosition();
-            attempts++;
-        }
-
-        if (attempts >= 100)
-        {
-            Debug.LogWarning($"无法为建筑格子 {index} 找到合适位置");
+            Debug.LogError("建筑地块预制体未设置");
             return;
         }
 
-        // 实例化建筑格子
-        GameObject tileObj = Instantiate(buildingTilePrefab, position, Quaternion.identity, transform);
-        tileObj.name = $"BuildingTile_{index}";
+        // 获取所有属性地块
+        FindAllPropertyTiles();
 
-        // 获取BoardTile组件
-        BoardTile tile = tileObj.GetComponent<BoardTile>();
-        if (tile == null)
+        // 生成建筑地块
+        for (int i = 0; i < buildingTileCount; i++)
         {
-            Debug.LogError("建筑格子预制体缺少BoardTile组件");
-            Destroy(tileObj);
-            return;
+            Vector3 spawnPosition = GetSpawnPosition(i);
+
+            GameObject tileObj = Instantiate(buildingTilePrefab, spawnPosition, Quaternion.identity);
+            tileObj.name = $"BuildingTile_{i}";
+
+            BoardTile tile = tileObj.GetComponent<BoardTile>();
+            if (tile != null)
+            {
+                SetupBuildingTile(tile, i);
+                generatedBuildingTiles.Add(tile);
+            }
         }
 
-        // 随机分配规模
-        int scale = DetermineTileScale();
-        tile.tileScale = scale;
-        tile.tileName = $"{GetScaleName(scale)}建筑地";
+        Debug.Log($"成功生成 {generatedBuildingTiles.Count} 个建筑地块");
+    }
+
+    // 获取生成位置
+    Vector3 GetSpawnPosition(int index)
+    {
+        if (spawnPositions != null && index < spawnPositions.Count)
+        {
+            Vector2 pos = spawnPositions[index];
+            return new Vector3(pos.x, 0, pos.y);
+        }
+        else
+        {
+            // 随机生成位置
+            float x = Random.Range(-10f, 10f);
+            float z = Random.Range(-10f, 10f);
+            return new Vector3(x, 0, z);
+        }
+    }
+
+    // 设置建筑地块属性
+    void SetupBuildingTile(BoardTile tile, int index)
+    {
+        tile.tileName = $"建筑地块_{index}";
+        tile.tileID = 1000 + index; // 给一个高ID避免冲突
+        tile.tileScale = Random.Range(minTileScale, maxTileScale + 1);
+        tile.propertyPrice = Random.Range(minPrice, maxPrice + 1);
         tile.tileType = BoardTile.TileType.Buildable;
         tile.isBuildable = true;
 
-        // 根据规模设置价格
-        tile.propertyPrice = GetPriceByScale(scale);
+        // 设置租金
+        tile.rentPrice = tile.propertyPrice / 10;
 
-        // 设置地块颜色（根据规模）
-        SetTileColorByScale(tile, scale);
-
-        // 添加到列表
-        generatedBuildingTiles.Add(tile);
-
-        // 注册到BoardManager
-        if (BoardManager.Instance != null)
-        {
-            BoardManager.Instance.allTiles.Add(tile);
-        }
+        Debug.Log($"生成建筑地块: {tile.tileName}, 规模: {tile.tileScale}, 价格: {tile.propertyPrice}");
     }
 
-    private Vector3 GenerateRandomPosition()
+    // 查找所有属性地块
+    void FindAllPropertyTiles()
     {
-        float x = Random.Range(-mapBounds.x / 2, mapBounds.x / 2);
-        float z = Random.Range(-mapBounds.y / 2, mapBounds.y / 2);
+        BoardTile[] allTiles = FindObjectsOfType<BoardTile>();
+        allPropertyTiles.Clear();
 
-        return new Vector3(x, 0, z);
-    }
-
-    private bool IsPositionOccupied(Vector3 position)
-    {
-        foreach (BoardTile tile in generatedBuildingTiles)
+        foreach (BoardTile tile in allTiles)
         {
-            if (Vector3.Distance(tile.transform.position, position) < minDistanceBetweenTiles)
+            if (tile.tileType == BoardTile.TileType.Property)
             {
-                return true;
+                allPropertyTiles.Add(tile);
             }
         }
-        return false;
+
+        Debug.Log($"找到 {allPropertyTiles.Count} 个属性地块");
     }
 
-    private int DetermineTileScale()
+    // 将建筑地块关联到属性地块
+    void LinkTilesToProperties()
     {
-        float randomValue = Random.Range(0f, 1f);
-
-        if (randomValue < smallScaleProbability)
-            return 1;
-        else if (randomValue < smallScaleProbability + mediumScaleProbability)
-            return 2;
-        else
-            return 3;
-    }
-
-    private string GetScaleName(int scale)
-    {
-        switch (scale)
+        if (allPropertyTiles.Count == 0 || generatedBuildingTiles.Count == 0)
         {
-            case 1: return "小型";
-            case 2: return "中型";
-            case 3: return "大型";
-            default: return "未知";
+            Debug.LogWarning("没有足够的属性地块或建筑地块进行关联");
+            return;
         }
-    }
 
-    private int GetPriceByScale(int scale)
-    {
-        switch (scale)
-        {
-            case 1: return Random.Range(100, 300);
-            case 2: return Random.Range(300, 600);
-            case 3: return Random.Range(600, 1000);
-            default: return 100;
-        }
-    }
+        int linksCreated = 0;
 
-    private void SetTileColorByScale(BoardTile tile, int scale)
-    {
-        MeshRenderer renderer = tile.GetComponentInChildren<MeshRenderer>();
-        if (renderer != null)
+        // 为每个属性地块随机关联一些建筑地块
+        foreach (BoardTile propertyTile in allPropertyTiles)
         {
-            switch (scale)
+            int linksToCreate = Random.Range(1, Mathf.Min(maxLinkedTilesPerProperty, generatedBuildingTiles.Count) + 1);
+
+            List<BoardTile> availableBuildingTiles = new List<BoardTile>(generatedBuildingTiles);
+
+            for (int i = 0; i < linksToCreate; i++)
             {
-                case 1: // 小 - 浅蓝色
-                    renderer.material.color = new Color(0.7f, 0.9f, 1f);
-                    break;
-                case 2: // 中 - 浅绿色
-                    renderer.material.color = new Color(0.7f, 1f, 0.7f);
-                    break;
-                case 3: // 大 - 浅黄色
-                    renderer.material.color = new Color(1f, 1f, 0.7f);
-                    break;
+                if (availableBuildingTiles.Count == 0) break;
+
+                int randomIndex = Random.Range(0, availableBuildingTiles.Count);
+                BoardTile buildingTile = availableBuildingTiles[randomIndex];
+
+                // 建立关联
+                propertyTile.AddLinkedBuildingTile(buildingTile);
+                Debug.Log($"关联: 属性地块 {propertyTile.tileName} -> 建筑地块 {buildingTile.tileName}");
+
+                availableBuildingTiles.RemoveAt(randomIndex);
+                linksCreated++;
             }
         }
+
+        Debug.Log($"成功创建 {linksCreated} 个地块关联");
     }
 
-    private void ClearExistingTiles()
+    // 手动关联两个地块
+    public void LinkTilesManually(BoardTile propertyTile, BoardTile buildingTile)
     {
-        foreach (BoardTile tile in generatedBuildingTiles)
+        if (propertyTile == null || buildingTile == null)
         {
-            if (tile != null)
-            {
-                if (BoardManager.Instance != null)
-                {
-                    BoardManager.Instance.allTiles.Remove(tile);
-                }
-                Destroy(tile.gameObject);
-            }
+            Debug.LogError("无法关联，地块为空");
+            return;
         }
-        generatedBuildingTiles.Clear();
+
+        propertyTile.AddLinkedBuildingTile(buildingTile);
+        Debug.Log($"手动关联: {propertyTile.tileName} -> {buildingTile.tileName}");
+    }
+
+    // 获取所有生成的建筑地块
+    public List<BoardTile> GetGeneratedBuildingTiles()
+    {
+        return generatedBuildingTiles;
+    }
+
+    // 获取所有属性地块
+    public List<BoardTile> GetAllPropertyTiles()
+    {
+        return allPropertyTiles;
     }
 }
