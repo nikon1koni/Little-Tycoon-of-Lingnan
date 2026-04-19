@@ -57,7 +57,8 @@ public class BoardTile : MonoBehaviour
         GoToJail,       // 进监狱
         Buildable,      // 可建造地皮
         BuildingSite,   // 建筑地块
-        Event           // 事件
+        Event,           // 事件
+        Normal
     }
 
     // 建筑类型枚举
@@ -241,6 +242,7 @@ public class BoardTile : MonoBehaviour
                 break;
         }
 
+        Debug.Log($"准备进入检查Debug");
         // === 新增：检查关联建筑并触发收入 ===
         if (enableLinkedIncome && linkedBuildingTiles != null && linkedBuildingTiles.Count > 0)
         {

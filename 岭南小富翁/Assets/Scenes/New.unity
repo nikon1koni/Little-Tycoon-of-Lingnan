@@ -2338,31 +2338,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afe2b2606aa673b448a64ae0caa59920, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileID: -1
   tileName: "\u5EFA\u7B51\u683C\u5B50"
-  tileType: 11
-  propertyPrice: 100
-  propertyColor: {r: 1, g: 1, b: 1, a: 1}
-  ownerPlayer: {fileID: 0}
-  onPlayerLanded:
-    m_PersistentCalls:
-      m_Calls: []
-  isBuildable: 1
-  currentBuilding: {fileID: 0}
-  availableBuildings: []
+  tileID: -1
   tileScale: 3
-  allowedScale: 3
+  propertyPrice: 100
+  rentPrice: 10
+  tileType: 10
+  isBuildable: 1
+  currentBuildingData: {fileID: 0}
   currentBuildingType: 0
   buildingLevel: 0
-  canBeUpgraded: 1
-  maxUpgradeLevel: 3
-  upgradeCheckInterval: 5
-  currentBuildingData: {fileID: 0}
-  nextBuildingData: {fileID: 0}
-  currentBuffOwner: {fileID: 0}
-  buffExpireTime: 0
-  currentBuffValue: 0
-  currentBuffEffect: 0
+  currentBuilding: {fileID: 0}
+  ownerPlayer: {fileID: 0}
+  linkedBuildingTiles:
+  - {fileID: 2006192392}
+  incomeInterval: 5
+  enableLinkedIncome: 1
+  enableAutoIncome: 0
+  autoIncomeInterval: 10
+  tileNameText: {fileID: 0}
+  tileRenderer: {fileID: 0}
+  defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  ownedColor: {r: 0, g: 0, b: 1, a: 1}
+  buildableColor: {r: 0, g: 1, b: 0, a: 1}
+  buffedPlayers: []
+  buffDuration: 0
 --- !u!23 &1427236974
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3380,6 +3380,14 @@ PrefabInstance:
       propertyPath: tileType
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
+      propertyPath: linkedBuildingTiles.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
+      propertyPath: linkedBuildingTiles.Array.data[0]
+      value: 
+      objectReference: {fileID: 1427236973}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3390,6 +3398,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4607143146159652540, guid: d79548990247a1449a08ddcef731d330, type: 3}
   m_PrefabInstance: {fileID: 2006192389}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2006192392 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
+  m_PrefabInstance: {fileID: 2006192389}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afe2b2606aa673b448a64ae0caa59920, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2030048797
 PrefabInstance:
   m_ObjectHideFlags: 0
