@@ -38,7 +38,7 @@ public class BoardTile : MonoBehaviour
     public Color ownedColor = Color.blue; // 被拥有时的颜色
     public Color buildableColor = Color.green; // 可建造时的颜色
 
-    [Header("事件系统")]
+    [Header("Buff效果系统")]
     public List<Player> buffedPlayers = new List<Player>(); // 受影响的玩家
     public float buffDuration = 0f; // Buff持续时间
 
