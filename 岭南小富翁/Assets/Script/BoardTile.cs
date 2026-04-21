@@ -151,7 +151,15 @@ public class BoardTile : MonoBehaviour
     // 玩家降落在地块上
     public virtual void OnLanded(Player player)
     {
+        Debug.Log($"OnLanded 被调用！玩家: {player.playerName}, 地块: {tileName}, 类型: {tileType}");
+
+        Debug.Log($"=== 玩家 {player.playerName} 降落在 {tileName} 上，类型: {tileType} ===");
+        Debug.Log($"enableLinkedIncome: {enableLinkedIncome}");
+        Debug.Log($"linkedBuildingTiles数量: {linkedBuildingTiles?.Count ?? 0}");
+
         Debug.Log($"玩家 {player.playerName} 降落在 {tileName} 上");
+
+
 
         switch (tileType)
         {
@@ -248,6 +256,7 @@ public class BoardTile : MonoBehaviour
 
 
         Debug.Log($"准备进入检查Debug");
+        Debug.Log($"准备进入检查关联建筑收益，tileType: {tileType}");
         // === 新增：检查关联建筑并触发收入 ===
         if (enableLinkedIncome && linkedBuildingTiles != null && linkedBuildingTiles.Count > 0)
         {
@@ -321,6 +330,14 @@ public class BoardTile : MonoBehaviour
     private void TriggerLinkedBuildingIncome(Player player)
     {
         Debug.Log($"=== [调试] 开始为玩家 [{player.playerName}] 检查地块 [{tileName}] 的关联收入 ===");
+
+        Debug.Log($"=== 开始检查关联收入 ===");
+        Debug.Log($"触发地块: {tileName}");
+        Debug.Log($"当前玩家: {player.playerName}");
+        Debug.Log($"enableLinkedIncome: {enableLinkedIncome}");
+        Debug.Log($"linkedBuildingTiles数量: {linkedBuildingTiles?.Count ?? 0}");
+
+
 
         // 1. 检查总开关和列表
         if (!enableLinkedIncome)
@@ -444,6 +461,8 @@ public class BoardTile : MonoBehaviour
         {
             Debug.LogWarning($"=== [调试] 关联收入检查结束，未产生任何收入。 ===");
         }
+
+
     }
 
     // 检查建筑是否可以产生收入 - 调试版本
