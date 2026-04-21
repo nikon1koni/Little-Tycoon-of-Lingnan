@@ -756,6 +756,8 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("建筑购买完成，可以开始移动");
 
+        isMoving = false;//重置移动标志
+
         // 切换状态为玩家回合
         currentState = GameState.PlayerTurn;
         isPlayerTurn = true;
