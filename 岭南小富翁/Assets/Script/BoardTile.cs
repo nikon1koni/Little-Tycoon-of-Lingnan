@@ -939,4 +939,53 @@ public class BoardTile : MonoBehaviour
         enableAutoIncome = enabled;
         autoIncomeInterval = interval;
     }
+
+    public bool EnableLinkedIncome
+    {
+        get { return enableLinkedIncome; }
+        set { enableLinkedIncome = value; }
+    }
+
+    public List<BoardTile> LinkedBuildingTiles
+    {
+        get
+        {
+            if (linkedBuildingTiles == null)
+                linkedBuildingTiles = new List<BoardTile>();
+            return linkedBuildingTiles;
+        }
+        set { linkedBuildingTiles = value; }
+    }
+
+    public float IncomeInterval
+    {
+        get { return incomeInterval; }
+        set { incomeInterval = Mathf.Max(1.0f, value); }
+    }
+
+    // 提供安全的字典访问方法
+    public float GetLastIncomeTime(BoardTile buildingTile)
+    {
+        if (buildingTile == null) return 0f;
+
+        if (lastIncomeTime.ContainsKey(buildingTile))
+            return lastIncomeTime[buildingTile];
+
+        return 0f; // 从未产生过收入
+    }
+
+    public void SetLastIncomeTime(BoardTile buildingTile, float time)
+    {
+        if (buildingTile == null) return;
+
+        if (!lastIncomeTime.ContainsKey(buildingTile))
+            lastIncomeTime.Add(buildingTile, time);
+        else
+            lastIncomeTime[buildingTile] = time;
+    }
+
+    public bool ContainsBuildingTile(BoardTile buildingTile)
+    {
+        return lastIncomeTime.ContainsKey(buildingTile);
+    }
 }
