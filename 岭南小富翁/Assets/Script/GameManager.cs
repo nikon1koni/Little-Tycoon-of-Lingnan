@@ -237,11 +237,110 @@ public class GameManager : MonoBehaviour
             // === 新增结束 ===
         }
     }
+    //旧版
+    //void HandlePropertyTile()
+    //{
+    //    BoardTile tile = currentPlayer.currentTile;
+
+    //    if (tile.ownerPlayer == null)
+    //    {
+    //        if (tile.tileType == BoardTile.TileType.Buildable)
+    //        {
+    //            currentState = GameState.BuildingSelection;
+    //            Debug.Log($"{tile.tileName} 是可建造地块，价格: {tile.propertyPrice} 元");
+
+    //            if (uiManager != null)
+    //            {
+    //                uiManager.ShowBuildingSelectionUI(tile, currentPlayer);
+    //            }
+    //        }
+    //        else
+    //        {
+    //            currentState = GameState.BuyingProperty;
+    //            Debug.Log($"{tile.tileName} 可购买，价格: {tile.propertyPrice} 元");
+
+    //            if (uiManager != null)
+    //            {
+    //                uiManager.ShowPropertyPurchasePanel(tile, currentPlayer);
+    //            }
+    //            else
+    //            {
+    //                AutoDecidePurchase(tile);
+    //            }
+    //        }
+    //    }
+    //    else
+    //    {
+    //        StartCoroutine(EndMoveAfterDelay(1f));
+    //    }
+    //}
 
     void HandlePropertyTile()
     {
         BoardTile tile = currentPlayer.currentTile;
 
+        // ========== 新增：检查关联建筑收入 ==========
+        // 检查是否有关联建筑需要产生收入
+        if (tile.EnableLinkedIncome &&
+            tile.LinkedBuildingTiles != null &&
+            tile.LinkedBuildingTiles.Count > 0)
+        {
+            Debug.Log($"=== 检查 {tile.tileName} 的关联建筑收入 ===");
+
+            float currentTime = Time.time;
+            int totalIncome = 0;
+
+            foreach (BoardTile buildingTile in tile.LinkedBuildingTiles)
+            {
+                if (buildingTile == null) continue;
+
+                // 检查所有者
+                if (buildingTile.ownerPlayer == null || buildingTile.ownerPlayer != currentPlayer)
+                    continue;
+
+                // 检查建筑数据
+                if (buildingTile.currentBuildingData == null)
+                    continue;
+
+                // 检查功能类型
+                if (buildingTile.currentBuildingData.functionType != BuildingData.BuildingFunctionType.Income &&
+                    buildingTile.currentBuildingData.functionType != BuildingData.BuildingFunctionType.Mixed)
+                    continue;
+
+                // 检查冷却时间
+                float lastTime = tile.GetLastIncomeTime(buildingTile);
+                if (lastTime > 0 && (currentTime - lastTime) < buildingTile.IncomeInterval)
+                {
+                    Debug.Log($"建筑 {buildingTile.tileName} 冷却中，跳过");
+                    continue;
+                }
+
+                // 计算收入
+                int income = buildingTile.currentBuildingData.GetIncomeAmount(buildingTile.buildingLevel);
+                if (income > 0)
+                {
+                    currentPlayer.ReceiveCash(income);
+                    totalIncome += income;
+
+                    // 更新最后收入时间
+                    tile.SetLastIncomeTime(buildingTile, currentTime);
+
+                    Debug.Log($"从关联建筑 {buildingTile.tileName} 获得收入: {income} 元");
+                }
+            }
+
+            if (totalIncome > 0)
+            {
+                Debug.Log($"=== 总计关联收入: {totalIncome} 元 ===");
+                if (uiManager != null)
+                {
+                    uiManager.ShowToast($"关联收入: {totalIncome} 元", 2f);
+                }
+            }
+        }
+        // ========== 新增结束 ==========
+
+        // 原有逻辑保持不变
         if (tile.ownerPlayer == null)
         {
             if (tile.tileType == BoardTile.TileType.Buildable)
@@ -274,7 +373,97 @@ public class GameManager : MonoBehaviour
             StartCoroutine(EndMoveAfterDelay(1f));
         }
     }
+    private void CheckLinkedBuildingIncome(BoardTile tile, Player player)
+    {
+        if (tile == null || player == null) return;
 
+        // 检查是否有关联建筑
+        if (tile.EnableLinkedIncome &&
+            tile.LinkedBuildingTiles != null &&
+            tile.LinkedBuildingTiles.Count > 0)
+        {
+            Debug.Log($"=== 检查 {tile.tileName} 的关联建筑收入 ===");
+            Debug.Log($"地块类型: {tile.tileType}, 关联建筑数: {tile.LinkedBuildingTiles.Count}");
+
+            float currentTime = Time.time;
+            int totalIncome = 0;
+
+            foreach (BoardTile buildingTile in tile.LinkedBuildingTiles)
+            {
+                if (buildingTile == null)
+                {
+                    Debug.Log("关联建筑为空，跳过");
+                    continue;
+                }
+
+                // 检查所有者
+                if (buildingTile.ownerPlayer == null)
+                {
+                    Debug.Log($"建筑 {buildingTile.tileName} 无所有者，跳过");
+                    continue;
+                }
+
+                if (buildingTile.ownerPlayer != player)
+                {
+                    Debug.Log($"建筑 {buildingTile.tileName} 不属于当前玩家，跳过");
+                    continue;
+                }
+
+                // 检查建筑数据
+                if (buildingTile.currentBuildingData == null)
+                {
+                    Debug.Log($"建筑 {buildingTile.tileName} 无建筑数据，跳过");
+                    continue;
+                }
+
+                // 检查功能类型
+                if (buildingTile.currentBuildingData.functionType != BuildingData.BuildingFunctionType.Income &&
+                    buildingTile.currentBuildingData.functionType != BuildingData.BuildingFunctionType.Mixed)
+                {
+                    Debug.Log($"建筑 {buildingTile.tileName} 不是收入型建筑，跳过");
+                    continue;
+                }
+
+                // 检查冷却时间
+                float lastTime = tile.GetLastIncomeTime(buildingTile);
+                if (lastTime > 0 && (currentTime - lastTime) < buildingTile.IncomeInterval)
+                {
+                    Debug.Log($"建筑 {buildingTile.tileName} 冷却中，跳过");
+                    continue;
+                }
+
+                // 计算收入
+                int income = buildingTile.currentBuildingData.GetIncomeAmount(buildingTile.buildingLevel);
+                if (income > 0)
+                {
+                    player.ReceiveCash(income);
+                    totalIncome += income;
+
+                    // 更新最后收入时间
+                    tile.SetLastIncomeTime(buildingTile, currentTime);
+
+                    Debug.Log($"从关联建筑 {buildingTile.tileName} 获得收入: {income} 元");
+                }
+            }
+
+            if (totalIncome > 0)
+            {
+                Debug.Log($"=== 总计关联收入: {totalIncome} 元 ===");
+                if (uiManager != null)
+                {
+                    uiManager.ShowToast($"关联收入: {totalIncome} 元", 2f);
+                }
+            }
+            else
+            {
+                Debug.Log("未产生关联收入，可能条件不满足");
+            }
+        }
+        else
+        {
+            Debug.Log($"地块 {tile.tileName} 无关联建筑或关联收入未开启");
+        }
+    }
     BoardTile GetStartTile()
     {
         if (boardManager != null && boardManager.allTiles.Count > 0)
@@ -492,7 +681,36 @@ public class GameManager : MonoBehaviour
             OnBuildingPurchaseCompleted();
         }
     }
+    //旧版
+    //void ProcessCurrentTile()
+    //{
+    //    if (currentPlayer == null || currentPlayer.currentTile == null)
+    //    {
+    //        EndMove();
+    //        return;
+    //    }
 
+    //    currentState = GameState.ProcessingTile;
+
+    //    Debug.Log($"{currentPlayer.playerName} 到达 {currentPlayer.currentTile.tileName}");
+
+    //    // 处理起点：也需要触发购买
+    //    if (currentPlayer.currentTile.tileType == BoardTile.TileType.Start)
+    //    {
+    //        // BoardTile中的处理可能会被触发
+    //        currentPlayer.currentTile.OnLanded(currentPlayer);
+    //    }
+    //    else if (currentPlayer.currentTile.tileType == BoardTile.TileType.Property ||
+    //             currentPlayer.currentTile.tileType == BoardTile.TileType.Railroad ||
+    //             currentPlayer.currentTile.tileType == BoardTile.TileType.Utility)
+    //    {
+    //        HandlePropertyTile();
+    //    }
+    //    else
+    //    {
+    //        StartCoroutine(EndMoveAfterDelay(0.2f));
+    //    }
+    //}
     void ProcessCurrentTile()
     {
         if (currentPlayer == null || currentPlayer.currentTile == null)
@@ -505,15 +723,32 @@ public class GameManager : MonoBehaviour
 
         Debug.Log($"{currentPlayer.playerName} 到达 {currentPlayer.currentTile.tileName}");
 
-        // 处理起点：也需要触发购买
-        if (currentPlayer.currentTile.tileType == BoardTile.TileType.Start)
+        BoardTile currentTile = currentPlayer.currentTile;
+
+        // ========== 关键修复：为所有需要关联收入的地块类型检查关联收入 ==========
+        // 包括 Normal 类型的地块
+        bool shouldCheckLinkedIncome =
+            currentTile.tileType == BoardTile.TileType.Normal ||
+            currentTile.tileType == BoardTile.TileType.Property ||
+            currentTile.tileType == BoardTile.TileType.Railroad ||
+            currentTile.tileType == BoardTile.TileType.Utility ||
+            currentTile.tileType == BoardTile.TileType.Buildable ||
+            currentTile.tileType == BoardTile.TileType.BuildingSite;
+
+        if (shouldCheckLinkedIncome)
         {
-            // BoardTile中的处理可能会被触发
-            currentPlayer.currentTile.OnLanded(currentPlayer);
+            CheckLinkedBuildingIncome(currentTile, currentPlayer);
         }
-        else if (currentPlayer.currentTile.tileType == BoardTile.TileType.Property ||
-                 currentPlayer.currentTile.tileType == BoardTile.TileType.Railroad ||
-                 currentPlayer.currentTile.tileType == BoardTile.TileType.Utility)
+        // ========== 修复结束 ==========
+
+        // 原有处理逻辑保持不变
+        if (currentTile.tileType == BoardTile.TileType.Start)
+        {
+            currentTile.OnLanded(currentPlayer);
+        }
+        else if (currentTile.tileType == BoardTile.TileType.Property ||
+                 currentTile.tileType == BoardTile.TileType.Railroad ||
+                 currentTile.tileType == BoardTile.TileType.Utility)
         {
             HandlePropertyTile();
         }
@@ -522,7 +757,6 @@ public class GameManager : MonoBehaviour
             StartCoroutine(EndMoveAfterDelay(0.2f));
         }
     }
-
     public void OnPlayerMoveComplete()
     {
         if (rollDiceButton != null)
