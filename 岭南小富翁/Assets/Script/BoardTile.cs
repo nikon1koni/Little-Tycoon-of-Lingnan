@@ -4,6 +4,9 @@ using TMPro;
 
 public class BoardTile : MonoBehaviour
 {
+    [Header("建筑类型")]
+    public BoardTile.BuildingType buildingType = BoardTile.BuildingType.None; //自动读取类型
+
     [Header("地块基本信息")]
     public string tileName = "地块";
     public int tileID = 0;
@@ -485,8 +488,60 @@ public class BoardTile : MonoBehaviour
 
         if (data != null)
         {
-            Debug.Log($"为地块 {tileName} 设置建筑: {data.buildingName} 等级 {level}");
+            // 自动读取并设置建筑类型
+            currentBuildingType = GetBuildingTypeFromData(data);
+
+            Debug.Log($"地块 {tileName}: 设置建筑 {data.buildingName}, 类型: {currentBuildingType}, 等级: {level}");
+
+            // 验证功能类型
+            if (data.functionType != BuildingData.BuildingFunctionType.Income &&
+                data.functionType != BuildingData.BuildingFunctionType.Mixed)
+            {
+                Debug.LogWarning($"注意：此建筑的功能类型是 {data.functionType}，关联收入系统需要 Income 或 Mixed 类型");
+            }
         }
+        else
+        {
+            currentBuildingType = BuildingType.None;
+            Debug.Log($"地块 {tileName}: 清除建筑数据，类型重置为 None");
+        }
+    }
+    private BoardTile.BuildingType GetBuildingTypeFromData(BuildingData data)
+    {
+        if (data == null)
+        {
+            Debug.LogWarning("GetBuildingTypeFromData: 传入的建筑数据为 null");
+            return BuildingType.None;
+        }
+
+        // 直接读取 BuildingData 中的 buildingType 字段
+        BoardTile.BuildingType type = data.buildingType;
+
+        if (type == BuildingType.None)
+        {
+            // 如果字段未设置，回退到名称匹配
+            Debug.LogWarning($"建筑数据 {data.buildingName} 的 buildingType 字段未设置，尝试从名称推断");
+            return InferBuildingTypeFromName(data.buildingName);
+        }
+        else
+        {
+            Debug.Log("自动读取失败，手动映射");
+            Debug.Log($"GetBuildingTypeFromData: 从 {data.buildingName} 读取到建筑类型: {type}");
+            return type;
+        }
+    }
+    private BuildingType InferBuildingTypeFromName(string buildingName)
+    {
+        string name = buildingName.ToLower();
+        //手动映射
+        if (name.Contains("small") || name.Contains("小房屋"))
+            return BuildingType.SmallHouse;
+        else if (name.Contains("medium") || name.Contains("中房屋"))
+            return BuildingType.MediumHouse;
+        else if (name.Contains("large") || name.Contains("大房屋"))
+            return BuildingType.LargeHouse;
+        else
+            return BuildingType.Special;
     }
 
     // 获取升级成本

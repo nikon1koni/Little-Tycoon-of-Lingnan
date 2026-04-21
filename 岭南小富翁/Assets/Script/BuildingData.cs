@@ -3,6 +3,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewBuildingData", menuName = "Building/Building Data")]
 public class BuildingData : ScriptableObject
 {
+    [Header("建筑类型")]
+    public BoardTile.BuildingType buildingType = BoardTile.BuildingType.None;
+
     [Header("等级系统")]
     public bool isFinalLevel = false; // 是否为最终等级
 
