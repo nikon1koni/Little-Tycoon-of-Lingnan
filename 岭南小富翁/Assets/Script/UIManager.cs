@@ -985,14 +985,14 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void ShowGameOverPanel(string winnerName)
+    public void ShowGameOverPanel(string Name)
     {
         SwitchToGameOverUI();
 
         Text winnerText = gameOverPanel.transform.Find("WinnerText")?.GetComponent<Text>();
         if (winnerText != null)
         {
-            winnerText.text = $"{winnerName} 获胜";
+            winnerText.text = $"{Name} 失败";
         }
     }
 
