@@ -39,6 +39,15 @@ public class GameManager : MonoBehaviour
     public int salaryAmount = 200;
     public int jailTurns = 3;
 
+    [Header("压力系统")]
+    public bool enablePressureSystem = true;
+
+    private int diceRollCount = 0;          // 骰子总次数
+    private int pressureInterval = 1;        // 当前间隔（回合数）
+    private int nextPressureAt = 1;          // 下一次触发在第几个回合
+    public float basePressureCost = 50f;   // 初始压力金额
+    public float pressureMultiplier = 1.2f; // 每次增长倍率
+
     [Header("调试")]
     public bool enableDebugKeys = true;
 
@@ -567,8 +576,68 @@ public class GameManager : MonoBehaviour
         lastDiceValue = value;
         Debug.Log($"骰子结果: {value}");
 
+        diceRollCount++;//骰子数+1
+        Debug.Log($"当前骰子总次数: {diceRollCount}");
+        CheckPressureTrigger();
+
         UpdateUI();
         StartMovePlayer();
+
+    }
+
+    private void CheckPressureTrigger()
+    {
+        if (!enablePressureSystem)
+            return;
+
+        int currentRound = diceRollCount / 6;
+
+        if (currentRound >= nextPressureAt)
+        {
+            TriggerPressure();
+        }
+    }
+
+    private void TriggerPressure()
+    {
+        Debug.Log($"压力触发！第 {nextPressureAt} 个压力回合");
+
+        int cost = Mathf.RoundToInt(basePressureCost);
+
+        foreach (Player p in players)
+        {
+            if (p.isBankrupt)
+                continue;
+
+            bool success = p.PayCash(cost);
+
+            if (!success || p.cash < 0)
+            {
+                p.isBankrupt = true;
+
+                if (UIManager.Instance != null)
+                {
+                    UIManager.Instance.ShowGameOverPanel(p.playerName);
+                }
+
+                GameOver();
+                return;
+            }
+        }
+
+        //更新下一轮
+        nextPressureAt += pressureInterval;
+        pressureInterval++;
+
+        basePressureCost *= pressureMultiplier;
+
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.ShowToast(
+                $"收税！需要支付 {cost} 金币",
+                3f
+            );
+        }
     }
 
     // === 重要修改3: 投骰子条件检查 ===
@@ -1016,6 +1085,10 @@ public class GameManager : MonoBehaviour
     {
         if (!enableDebugKeys) return;
 
+        Debug_Test();
+    }
+    private void Debug_Test()
+    {
         if (Input.GetKeyDown(KeyCode.Space))
         {
             TestRollDice();
@@ -1050,6 +1123,11 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.G))
         {
             DebugGameState();
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            TriggerPressure();
         }
     }
 

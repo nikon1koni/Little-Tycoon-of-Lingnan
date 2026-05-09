@@ -1092,6 +1092,7 @@ public class UIManager : MonoBehaviour
         Destroy(toastObj, duration);
     }
 
+
     // 显示建筑升级面板
     public void ShowBuildingUpgradeUI(BoardTile tile, Player player)
     {
