@@ -638,7 +638,7 @@ public class GameManager : MonoBehaviour
             //    3f
             //);
             UIManager.Instance.ShowTurnAnnouncement(
-                $"第 {nextPressureAt} 回合---政府征税 {cost} 金币"
+                $"第 {nextPressureAt} 回合   征税 {cost} 金币"
             );
         }
     }
