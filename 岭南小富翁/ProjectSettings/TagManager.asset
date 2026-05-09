@@ -1,3 +1,43 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:cfb12cdf6be8ccbb8d5b037c9a0e3ade73643b818782d02fa16322cd6b9381eb
-size 443
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags: []
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - DiceButton
+  - Water
+  - UI
+  - Culling Mask
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
