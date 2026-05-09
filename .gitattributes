@@ -1,0 +1,2 @@
+*.asset filter=lfs diff=lfs merge=lfs -text
+岭南小富翁/Assets/TextMesh[[:space:]]Pro/Fonts/ZiKuJiangHuGuFengTi-2[[:space:]]SDF.asset filter=lfs diff=lfs merge=lfs -text
