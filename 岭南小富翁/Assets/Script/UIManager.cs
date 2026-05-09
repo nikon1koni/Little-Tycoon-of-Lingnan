@@ -68,6 +68,13 @@ public class UIManager : MonoBehaviour
     [Header("玩家资金显示")]
     [SerializeField] private GameObject cashDisplayPanel; // 整个面板，方便开关
     [SerializeField] private TextMeshProUGUI cashText;    // 显示具体金额的文本
+
+    [Header("回合公告UI")]
+    public GameObject turnAnnouncePanel;   // 面板
+
+    public TextMeshProUGUI turnAnnounceText;           // 文本
+    public float announceDuration = 2.5f;  // 显示时长
+
     public TextMeshProUGUI CashText => cashText;
 
     // 新增状态变量
@@ -1092,6 +1099,22 @@ public class UIManager : MonoBehaviour
         Destroy(toastObj, duration);
     }
 
+    public void ShowTurnAnnouncement(string msg)
+    {
+        if (turnAnnouncePanel == null || turnAnnounceText == null)
+            return;
+
+        turnAnnouncePanel.SetActive(true);
+        turnAnnounceText.text = msg;
+
+        CancelInvoke(nameof(HideTurnAnnouncement));
+        Invoke(nameof(HideTurnAnnouncement), announceDuration);
+    }
+    private void HideTurnAnnouncement()
+    {
+        if (turnAnnouncePanel != null)
+            turnAnnouncePanel.SetActive(false);
+    }
 
     // 显示建筑升级面板
     public void ShowBuildingUpgradeUI(BoardTile tile, Player player)

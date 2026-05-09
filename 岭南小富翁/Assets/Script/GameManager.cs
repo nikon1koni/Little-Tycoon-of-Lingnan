@@ -633,9 +633,12 @@ public class GameManager : MonoBehaviour
 
         if (UIManager.Instance != null)
         {
-            UIManager.Instance.ShowToast(
-                $"收税！需要支付 {cost} 金币",
-                3f
+            //UIManager.Instance.ShowToast(
+            //    $"征税！需要支付 {cost} 金币",
+            //    3f
+            //);
+            UIManager.Instance.ShowTurnAnnouncement(
+                $"第 {nextPressureAt} 回合---政府征税 {cost} 金币"
             );
         }
     }
