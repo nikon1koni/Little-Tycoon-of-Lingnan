@@ -151,16 +151,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afe2b2606aa673b448a64ae0caa59920, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileID: 1
+  buildingType: 0
   tileName: "\u5730\u4EA7\u683C\u5B50"
-  tileType: 1
+  tileID: 1
+  tileScale: 1
   propertyPrice: 100
-  baseRent: 20
-  propertyColor: {r: 1, g: 1, b: 1, a: 1}
+  rentPrice: 10
+  tileType: 1
+  isBuildable: 0
+  currentBuildingData: {fileID: 0}
+  currentBuildingType: 0
+  buildingLevel: 0
+  currentBuilding: {fileID: 0}
   ownerPlayer: {fileID: 0}
-  onPlayerLanded:
-    m_PersistentCalls:
-      m_Calls: []
+  linkedBuildingTiles: []
+  incomeInterval: 5
+  enableLinkedIncome: 1
+  enableAutoIncome: 0
+  autoIncomeInterval: 10
+  tileNameText: {fileID: 0}
+  tileRenderer: {fileID: 0}
+  defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  ownedColor: {r: 0, g: 0, b: 1, a: 1}
+  buildableColor: {r: 0, g: 1, b: 0, a: 1}
+  buffedPlayers: []
+  buffDuration: 0
 --- !u!65 &235769867052846331
 BoxCollider:
   m_ObjectHideFlags: 0
