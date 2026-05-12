@@ -12,8 +12,8 @@ public class Dice3DController : MonoBehaviour
     public Text diceResultText;
 
     [Header("旋转参数")]
-    public float rotationSpeed = 720f; // 每秒旋转角度
-    public float rollDuration = 2f; // 滚动持续时间
+    public float rotationSpeed = 1200f; // 初始旋转速度 (度/秒)
+    public float rollDuration = 2f;     // 总滚动时间 (秒)
 
     [Header("音效")]
     public AudioClip rollSound;
@@ -47,10 +47,7 @@ public class Dice3DController : MonoBehaviour
             audioSource = gameObject.AddComponent<AudioSource>();
         }
 
-        // 初始化每个点数的旋转角度
         InitializeFaceRotations();
-
-        // 骰子初始旋转到1点
         SetDiceFace(1);
 
         if (diceResultText != null)
@@ -66,7 +63,6 @@ public class Dice3DController : MonoBehaviour
         }
     }
 
-    // 初始化每个点数对应的旋转
     void InitializeFaceRotations()
     {
         faceRotations[1] = Quaternion.Euler(face1Rotation);
@@ -77,7 +73,6 @@ public class Dice3DController : MonoBehaviour
         faceRotations[6] = Quaternion.Euler(face6Rotation);
     }
 
-    // 设置骰子显示特定点数
     public void SetDiceFace(int value)
     {
         if (dice3D != null && value >= 1 && value <= 6)
@@ -86,7 +81,6 @@ public class Dice3DController : MonoBehaviour
         }
     }
 
-    // 开始掷骰子
     public void StartRollDice()
     {
         if (!isRolling)
@@ -99,76 +93,79 @@ public class Dice3DController : MonoBehaviour
         }
     }
 
-    // 3D骰子滚动协程
     IEnumerator RollDice3D()
     {
         isRolling = true;
 
-        // 1. 禁用按钮
         if (rollDiceButton != null)
             rollDiceButton.interactable = false;
 
-        // 2. 清空UI
         if (diceResultText != null)
             diceResultText.text = "?";
 
-        // 3. 播放滚动音效
         if (rollSound != null)
             audioSource.PlayOneShot(rollSound);
 
-        // 4. 随机决定最终点数
         currentDiceValue = Random.Range(1, 7);
         Debug.Log($"骰子将显示: {currentDiceValue}点");
 
-        // 5. 骰子疯狂旋转
+        Quaternion targetRotation = faceRotations[currentDiceValue];
+        
+        // 确定一个稳定的随机旋转轴（整个动画过程中保持一致）
+        Vector3 rotationAxis = Random.onUnitSphere.normalized;
+        
         float elapsed = 0f;
-        Vector3 randomRotationAxis = Random.onUnitSphere;
+        Quaternion startRotation = dice3D.transform.localRotation;
 
         while (elapsed < rollDuration)
         {
             elapsed += Time.deltaTime;
-
-            // 随机旋转
-            dice3D.transform.Rotate(
-                Random.Range(-rotationSpeed, rotationSpeed) * Time.deltaTime,
-                Random.Range(-rotationSpeed, rotationSpeed) * Time.deltaTime,
-                Random.Range(-rotationSpeed, rotationSpeed) * Time.deltaTime
-            );
-
+            float t = Mathf.Clamp01(elapsed / rollDuration);
+            
+            // 计算当前速度：使用指数衰减曲线，开始快，逐渐变慢
+            // 公式：speed = initialSpeed * e^(-k * t^2) 其中 k 控制减速程度
+            float speedCurve = Mathf.Exp(-2.5f * t * t);
+            float currentSpeed = rotationSpeed * speedCurve;
+            
+            // 计算当前帧的旋转量
+            float rotationThisFrame = currentSpeed * Time.deltaTime;
+            
+            // 应用旋转：绕着固定的轴旋转
+            dice3D.transform.localRotation *= 
+                Quaternion.AngleAxis(rotationThisFrame, rotationAxis);
+            
             yield return null;
         }
-
-        // 6. 平滑旋转到目标点数
-        Quaternion startRotation = dice3D.transform.localRotation;
-        Quaternion targetRotation = faceRotations[currentDiceValue];
-
-        // 先做一个完整的额外旋转增加视觉效果
-        float smoothTime = 0.5f;
+        
+        // 最后平滑过渡到目标位置（确保精确停在目标点数）
+        float smoothTime = 0.4f;
         float smoothElapsed = 0f;
-
+        Quaternion rotationBeforeSmooth = dice3D.transform.localRotation;
+        
         while (smoothElapsed < smoothTime)
         {
             smoothElapsed += Time.deltaTime;
-            float t = smoothElapsed / smoothTime;
-
-            // 使用Slerp平滑过渡
-            dice3D.transform.localRotation = Quaternion.Slerp(startRotation, targetRotation, t);
-
+            float t = Mathf.Clamp01(smoothElapsed / smoothTime);
+            
+            // 使用 SmoothStep 让过渡更加自然
+            float smoothT = SmoothStep(t);
+            
+            // 从当前位置 Slerp 到目标位置
+            dice3D.transform.localRotation = 
+                Quaternion.Slerp(rotationBeforeSmooth, targetRotation, smoothT);
+            
             yield return null;
         }
 
-        // 7. 确保最终位置准确
+        // 最终精确定位
         dice3D.transform.localRotation = targetRotation;
 
-        // 8. 播放停止音效
         if (stopSound != null)
             audioSource.PlayOneShot(stopSound);
 
-        // 9. 更新UI显示结果
         if (diceResultText != null)
             diceResultText.text = currentDiceValue.ToString();
 
-        // 10. 通知GameManager
         if (gameManager != null)
         {
             gameManager.OnDiceRolled(currentDiceValue);
@@ -179,19 +176,22 @@ public class Dice3DController : MonoBehaviour
         isRolling = false;
     }
 
-    // 获取当前骰子值
+    // SmoothStep 缓动函数：开始慢，中间快，结束慢
+    float SmoothStep(float t)
+    {
+        return t * t * (3f - 2f * t);
+    }
+
     public int GetDiceValue()
     {
         return currentDiceValue;
     }
 
-    // 是否可以掷骰子
     public bool CanRoll()
     {
         return !isRolling;
     }
 
-    // 重置骰子
     public void ResetDice()
     {
         currentDiceValue = 0;
