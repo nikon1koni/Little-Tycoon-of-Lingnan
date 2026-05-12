@@ -1,11 +1,11 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class BoardGenerator : MonoBehaviour
 {
-    public GameObject gridTilePrefab; // ÍÏÈë GridTile Ô¤ÖÆÌå
-    public int rows = 3; // ÁâÐÎÐÐÊý£¨¸ù¾ÝÄãµÄµØÍ¼µ÷Õû£©
-    public float tileSize = 1f; // ¸ñ×Ó´óÐ¡£¨ÓëÆ½ÃæËõ·Å¶ÔÓ¦£©
-    public Vector2 offset = new Vector2(0, 0); // ¸ñ×Ó¼äµÄÆ«ÒÆ
+    public GameObject gridTilePrefab; // ï¿½ï¿½ï¿½ï¿½ GridTile Ô¤ï¿½ï¿½ï¿½ï¿½
+    public int rows = 3; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Äµï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    public float tileSize = 1f; // ï¿½ï¿½ï¿½Ó´ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Æ½ï¿½ï¿½ï¿½ï¿½ï¿½Å¶ï¿½Ó¦ï¿½ï¿½
+    public Vector2 offset = new Vector2(0, 0); // ï¿½ï¿½ï¿½Ó¼ï¿½ï¿½Æ«ï¿½ï¿½
 
     void Start()
     {
@@ -16,17 +16,17 @@ public class BoardGenerator : MonoBehaviour
     {
         for (int row = 0; row < rows; row++)
         {
-            // ¼ÆËãµ±Ç°ÐÐµÄ¸ñ×ÓÊýÁ¿£¨ÁâÐÎ£ºµÚnÐÐÓÐ 2n+1 ¸ö£¿»ò¸ù¾ÝÄãµÄµØÍ¼µ÷Õû£©
-            int tileCount = row + 1; // Ê¾Àý£ºµÚÒ»ÐÐ1¸ö£¬µÚ¶þÐÐ2¸ö£¿ÐèÆ¥ÅäÄãµÄµØÍ¼£¡
+            // ï¿½ï¿½ï¿½ãµ±Ç°ï¿½ÐµÄ¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î£ï¿½ï¿½ï¿½nï¿½ï¿½ï¿½ï¿½ 2n+1 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Äµï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+            int tileCount = row + 1; // Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½1ï¿½ï¿½ï¿½ï¿½ï¿½Ú¶ï¿½ï¿½ï¿½2ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½ï¿½Äµï¿½Í¼ï¿½ï¿½
             for (int col = 0; col < tileCount; col++)
             {
-                // ÊµÀý»¯¸ñ×Ó
+                // Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 GameObject tile = Instantiate(gridTilePrefab, transform);
-                // ¼ÆËãÎ»ÖÃ£¨ÁâÐÎµÄ×ø±êÂß¼­£ºxºÍzÆ«ÒÆ£¬ÈÃ¸ñ×Ó³ÊÁâÐÎÅÅÁÐ£©
+                // ï¿½ï¿½ï¿½ï¿½Î»ï¿½Ã£ï¿½ï¿½ï¿½ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½xï¿½ï¿½zÆ«ï¿½Æ£ï¿½ï¿½Ã¸ï¿½ï¿½Ó³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½
                 float x = (col - tileCount / 2f) * tileSize + offset.x;
                 float z = (row - rows / 2f) * tileSize + offset.y;
                 tile.transform.position = new Vector3(x, 0, z);
-                // £¨¿ÉÑ¡£©ÉèÖÃ¸ñ×ÓµÄÐý×ª£¬ÈÃÁâÐÎ¸ü×ÔÈ»£¨Èç 45¶È£¿Ðè²âÊÔ£©
+                // ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½Ã¸ï¿½ï¿½Óµï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¸ï¿½ï¿½ï¿½È»ï¿½ï¿½ï¿½ï¿½ 45ï¿½È£ï¿½ï¿½ï¿½ï¿½ï¿½Ô£ï¿½
                 tile.transform.rotation = Quaternion.Euler(0, 45, 0);
             }
         }

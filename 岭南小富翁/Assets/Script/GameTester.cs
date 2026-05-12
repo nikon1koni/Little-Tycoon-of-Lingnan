@@ -1,11 +1,11 @@
-// GameTester.cs - ÓÃÓÚ²âÊÔ
+ï»¿// GameTester.cs - ï¿½ï¿½ï¿½Ú²ï¿½ï¿½ï¿½
 using UnityEngine;
 
 public class GameTester : MonoBehaviour
 {
     void Update()
     {
-        // ¿ìËÙ²âÊÔ¿ì½Ý¼ü
+        // ï¿½ï¿½ï¿½Ù²ï¿½ï¿½Ô¿ï¿½Ý¼ï¿½
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (GameManager.Instance != null)
@@ -16,13 +16,13 @@ public class GameTester : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            // ÖØÖÃÓÎÏ·
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï·
             UnityEngine.SceneManagement.SceneManager.LoadScene(0);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            // Ö±½ÓÌøµ½¸ñ×Ó1
+            // Ö±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1
             JumpToTile(1);
         }
     }
@@ -38,7 +38,7 @@ public class GameTester : MonoBehaviour
         if (tile != null && player != null)
         {
             player.MoveToTile(tile, true);
-            Debug.Log($"Ìø×ªµ½: {tile.tileName}");
+            Debug.Log($"ï¿½ï¿½×ªï¿½ï¿½: {tile.tileName}");
         }
     }
 }

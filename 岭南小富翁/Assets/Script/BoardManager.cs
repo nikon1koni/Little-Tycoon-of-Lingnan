@@ -23,30 +23,30 @@ public class BoardManager : MonoBehaviour
 
     void InitializeBoard()
     {
-        // ×Ô¶¯»ñÈ¡ËùÓĞ¸ñ×Ó£¨È·±£¸ñ×ÓÊÇBoardManagerµÄ×ÓÎïÌå£©
+        // è‡ªåŠ¨è·å–æ‰€æœ‰æ ¼å­ï¼ˆç¡®ä¿è¿™äº›æ ¼å­æ˜¯BoardManagerçš„å­å¯¹è±¡ï¼‰
         allTiles.Clear();
         BoardTile[] tiles = GetComponentsInChildren<BoardTile>();
         allTiles.AddRange(tiles);
 
-        // °´TileIDÅÅĞò
+        // æŒ‰TileIDæ’åº
         allTiles.Sort((a, b) => a.tileID.CompareTo(b.tileID));
 
-        Debug.Log($"ÆåÅÌ³õÊ¼»¯Íê³É£¬¹²ÓĞ {allTiles.Count} ¸ö¸ñ×Ó");
+        Debug.Log($"æ£‹ç›˜åˆå§‹åŒ–å®Œæˆï¼Œå…±æœ‰ {allTiles.Count} ä¸ªæ ¼å­");
     }
 
     public BoardTile GetTileAfterSteps(BoardTile currentTile, int steps)
     {
         if (allTiles.Count == 0)
         {
-            Debug.LogError("ÆåÅÌÃ»ÓĞ¸ñ×Ó£¡");
+            Debug.LogError("æ£‹ç›˜æ²¡æœ‰æ ¼å­ï¼");
             return null;
         }
 
         int currentIndex = allTiles.IndexOf(currentTile);
         if (currentIndex == -1)
         {
-            Debug.LogError("µ±Ç°¸ñ×Ó²»ÔÚÆåÅÌÁĞ±íÖĞ£¡");
-            return allTiles[0]; // Ä¬ÈÏ·µ»ØÆğµã
+            Debug.LogError("å½“å‰æ ¼å­ä¸åœ¨æ£‹ç›˜åˆ—è¡¨ä¸­ï¼");
+            return allTiles[0]; // é»˜è®¤è¿”å›èµ·ç‚¹
         }
 
         int targetIndex = (currentIndex + steps) % allTiles.Count;
@@ -60,7 +60,7 @@ public class BoardManager : MonoBehaviour
             if (tile.tileID == id) return tile;
         }
 
-        Debug.LogWarning($"Î´ÕÒµ½IDÎª {id} µÄ¸ñ×Ó");
+        Debug.LogWarning($"æœªæ‰¾åˆ°IDä¸º {id} çš„æ ¼å­");
         return allTiles.Count > 0 ? allTiles[0] : null;
     }
 }

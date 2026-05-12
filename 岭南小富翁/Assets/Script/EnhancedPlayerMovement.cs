@@ -1,31 +1,31 @@
-// EnhancedPlayerMovement.cs
+ï»¿// EnhancedPlayerMovement.cs
 using System.Collections;
 using UnityEngine;
 
 public class EnhancedPlayerMovement : MonoBehaviour
 {
-    [Header("ÌøÔ¾ÉèÖÃ")]
+    [Header("ï¿½ï¿½Ô¾ï¿½ï¿½ï¿½ï¿½")]
     public float jumpPower = 2f;
     public float jumpSpeed = 5f;
     public AnimationCurve jumpCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
-    [Header("Ðý×ªÐ§¹û")]
+    [Header("ï¿½ï¿½×ªÐ§ï¿½ï¿½")]
     public float rotationSpeed = 360f;
     public bool rotateDuringJump = true;
 
-    [Header("Ëõ·ÅÐ§¹û")]
+    [Header("ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½")]
     public float squashAmount = 0.2f;
     public float stretchAmount = 0.3f;
 
-    [Header("ÍÏÎ²Ð§¹û")]
+    [Header("ï¿½ï¿½Î²Ð§ï¿½ï¿½")]
     public bool enableTrail = true;
     public float trailTime = 0.2f;
 
-    [Header("Ó°×ÓÐ§¹û")]
+    [Header("Ó°ï¿½ï¿½Ð§ï¿½ï¿½")]
     public GameObject shadowPrefab;
     private GameObject shadow;
 
-    [Header("ÒôÐ§")]
+    [Header("ï¿½ï¿½Ð§")]
     public AudioClip jumpSound;
     public AudioClip landSound;
 
@@ -38,7 +38,7 @@ public class EnhancedPlayerMovement : MonoBehaviour
     {
         originalScale = transform.localScale;
 
-        // ³õÊ¼»¯ÍÏÎ²Ð§¹û
+        // ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Î²Ð§ï¿½ï¿½
         if (enableTrail)
         {
             trail = gameObject.AddComponent<TrailRenderer>();
@@ -49,7 +49,7 @@ public class EnhancedPlayerMovement : MonoBehaviour
             trail.endColor = new Color(1, 1, 1, 0);
         }
 
-        // ´´½¨Ó°×Ó
+        // ï¿½ï¿½ï¿½ï¿½Ó°ï¿½ï¿½
         if (shadowPrefab != null)
         {
             shadow = Instantiate(shadowPrefab, transform.position, Quaternion.identity);
@@ -58,7 +58,7 @@ public class EnhancedPlayerMovement : MonoBehaviour
         }
     }
 
-    // Ö÷ÒÆ¶¯·½·¨
+    // ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½
     public void JumpToNextTile(BoardTile targetTile, int stepCount = 1)
     {
         if (isJumping) return;
@@ -71,25 +71,25 @@ public class EnhancedPlayerMovement : MonoBehaviour
 
         for (int i = 0; i < steps; i++)
         {
-            // »ñÈ¡µ±Ç°ºÍÄ¿±êÎ»ÖÃ
+            // ï¿½ï¿½È¡ï¿½ï¿½Ç°ï¿½ï¿½Ä¿ï¿½ï¿½Î»ï¿½ï¿½
             Vector3 startPos = transform.position;
             BoardTile nextTile = GetNextTile(targetTile, i);
             Vector3 endPos = nextTile.transform.position;
             endPos.y = startPos.y;
 
-            // µ¥´ÎÌøÔ¾
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¾
             yield return StartCoroutine(SingleJump(startPos, endPos));
 
-            // ÂäµØÐ§¹û
+            // ï¿½ï¿½ï¿½Ð§ï¿½ï¿½
             yield return StartCoroutine(LandingEffect());
 
-            // ¶ÌÔÝÍ£¶Ù
+            // ï¿½ï¿½ï¿½ï¿½Í£ï¿½ï¿½
             yield return new WaitForSeconds(0.1f);
         }
 
         isJumping = false;
 
-        // ´¥·¢¸ñ×ÓÊÂ¼þ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
         if (steps > 0)
         {
             targetTile.OnLanded(GetComponent<Player>());
@@ -105,7 +105,7 @@ public class EnhancedPlayerMovement : MonoBehaviour
         Vector3 controlPoint = (startPos + endPos) / 2;
         controlPoint.y += jumpPower;
 
-        // ²¥·ÅÌøÔ¾ÒôÐ§
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¾ï¿½ï¿½Ð§
         if (jumpSound != null)
             AudioSource.PlayClipAtPoint(jumpSound, transform.position, 0.5f);
 
@@ -115,20 +115,20 @@ public class EnhancedPlayerMovement : MonoBehaviour
             float t = elapsed / duration;
             float curveT = jumpCurve.Evaluate(t);
 
-            // ±´Èû¶ûÇúÏß¼ÆËãÎ»ÖÃ
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½Î»ï¿½ï¿½
             Vector3 position = CalculateBezierPoint(startPos, controlPoint, endPos, curveT);
             transform.position = position;
 
-            // Ðý×ªÐ§¹û
+            // ï¿½ï¿½×ªÐ§ï¿½ï¿½
             if (rotateDuringJump)
             {
                 transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
             }
 
-            // Ëõ·ÅÐ§¹û£¨À­Éì£©
+            // ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ì£©
             ApplyJumpSquashAndStretch(t);
 
-            // ¸üÐÂÓ°×ÓÎ»ÖÃ
+            // ï¿½ï¿½ï¿½ï¿½Ó°ï¿½ï¿½Î»ï¿½ï¿½
             if (shadow != null)
             {
                 shadow.transform.position = new Vector3(position.x, 0, position.z);
@@ -138,7 +138,7 @@ public class EnhancedPlayerMovement : MonoBehaviour
             yield return null;
         }
 
-        // È·±£×îÖÕÎ»ÖÃ×¼È·
+        // È·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½×¼È·
         transform.position = endPos;
     }
 
@@ -159,14 +159,14 @@ public class EnhancedPlayerMovement : MonoBehaviour
     {
         Vector3 newScale = originalScale;
 
-        if (t < 0.5f) // ÉÏÉý½×¶Î£ºÀ­Éì
+        if (t < 0.5f) // ï¿½ï¿½ï¿½ï¿½ï¿½×¶Î£ï¿½ï¿½ï¿½ï¿½ï¿½
         {
             float stretchT = t * 2;
             newScale.y = originalScale.y * (1 + stretchAmount * stretchT);
             newScale.x = originalScale.x * (1 - squashAmount * stretchT * 0.5f);
             newScale.z = originalScale.z * (1 - squashAmount * stretchT * 0.5f);
         }
-        else // ÏÂ½µ½×¶Î£ºÑ¹±â
+        else // ï¿½Â½ï¿½ï¿½×¶Î£ï¿½Ñ¹ï¿½ï¿½
         {
             float squashT = (t - 0.5f) * 2;
             newScale.y = originalScale.y * (1 - squashAmount * squashT);
@@ -179,11 +179,11 @@ public class EnhancedPlayerMovement : MonoBehaviour
 
     IEnumerator LandingEffect()
     {
-        // ²¥·ÅÂäµØÒôÐ§
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§
         if (landSound != null)
             AudioSource.PlayClipAtPoint(landSound, transform.position, 0.5f);
 
-        // ÂäµØÕð¶¯Ð§¹û
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½
         Vector3 originalPos = transform.position;
         float shakeAmount = 0.1f;
         float shakeDuration = 0.1f;
@@ -201,7 +201,7 @@ public class EnhancedPlayerMovement : MonoBehaviour
         transform.position = originalPos;
         transform.localScale = originalScale;
 
-        // ÖØÖÃÓ°×Ó
+        // ï¿½ï¿½ï¿½ï¿½Ó°ï¿½ï¿½
         if (shadow != null)
         {
             shadow.transform.localScale = Vector3.one;
@@ -210,8 +210,8 @@ public class EnhancedPlayerMovement : MonoBehaviour
 
     BoardTile GetNextTile(BoardTile targetTile, int stepOffset)
     {
-        // ¸ù¾Ýµ±Ç°Íæ¼ÒÎ»ÖÃ¼ÆËãÏÂÒ»¸ö¸ñ×Ó
-        // ÕâÀïÐèÒª½áºÏÄãµÄBoardManagerÂß¼­
+        // ï¿½ï¿½ï¿½Ýµï¿½Ç°ï¿½ï¿½ï¿½Î»ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½BoardManagerï¿½ß¼ï¿½
         if (BoardManager.Instance == null) return targetTile;
 
         Player player = GetComponent<Player>();
@@ -225,7 +225,7 @@ public class EnhancedPlayerMovement : MonoBehaviour
         return targetTile;
     }
 
-    // ÖØÖÃÎªÕý³£×´Ì¬
+    // ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½×´Ì¬
     void ResetToNormal()
     {
         transform.localScale = originalScale;

@@ -1,42 +1,42 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    public Transform target;  // Òª¸úËæµÄÎïÌå
-    public Vector3 offset = new Vector3(0, 2, -5);  // ÉãÏñ»úÏà¶ÔÓÚÄ¿±êµÄÆ«ÒÆ
-    public float smoothSpeed = 0.125f;  // Æ½»¬¸úËæµÄËÙ¶È
+    public Transform target;  // Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    public Vector3 offset = new Vector3(0, 2, -5);  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½Æ«ï¿½ï¿½
+    public float smoothSpeed = 0.125f;  // Æ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½
 
-    [Header("ÉãÏñ»ú½Ç¶È¿ØÖÆ")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¶È¿ï¿½ï¿½ï¿½")]
     [Range(-90, 90)]
-    public float pitch = 20f;  // ¸©Ñö½Ç (XÖáÐý×ª)
+    public float pitch = 20f;  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (Xï¿½ï¿½ï¿½ï¿½×ª)
     [Range(-180, 180)]
-    public float yaw = 0f;    // Æ«º½½Ç (YÖáÐý×ª)
+    public float yaw = 0f;    // Æ«ï¿½ï¿½ï¿½ï¿½ (Yï¿½ï¿½ï¿½ï¿½×ª)
     [Range(-180, 180)]
-    public float roll = 0f;    // ¹ö×ª½Ç (ZÖáÐý×ª)
+    public float roll = 0f;    // ï¿½ï¿½×ªï¿½ï¿½ (Zï¿½ï¿½ï¿½ï¿½×ª)
 
-    [Header("¾àÀë¿ØÖÆ")]
-    public float distance = 5f;  // ÉãÏñ»ú¾àÀë
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")]
+    public float distance = 5f;  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public float minDistance = 1f;
     public float maxDistance = 20f;
 
-    [Header("½Ç¶È²åÖµ")]
+    [Header("ï¿½Ç¶È²ï¿½Öµ")]
     public bool smoothRotation = true;
     public float rotationSmoothSpeed = 5f;
 
-    // ÓÃÓÚ´æ´¢µ±Ç°Ðý×ª
+    // ï¿½ï¿½ï¿½Ú´æ´¢ï¿½ï¿½Ç°ï¿½ï¿½×ª
     private Quaternion currentRotation;
 
     private void Start()
     {
         if (target == null)
         {
-            Debug.LogWarning("CameraFollow: Ã»ÓÐÉèÖÃÄ¿±ê£¬½«ÔÚÔËÐÐÊ±²éÕÒPlayer±êÇ©µÄÎïÌå");
+            Debug.LogWarning("CameraFollow: Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ê£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½Playerï¿½ï¿½Ç©ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             if (player != null)
                 target = player.transform;
         }
 
-        // ³õÊ¼»¯µ±Ç°Ðý×ª
+        // ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½×ª
         currentRotation = Quaternion.Euler(pitch, yaw, roll);
     }
 
@@ -44,10 +44,10 @@ public class CameraFollow : MonoBehaviour
     {
         if (target == null) return;
 
-        // ¸ù¾Ý½Ç¶È´´½¨Ðý×ª
+        // ï¿½ï¿½ï¿½Ý½Ç¶È´ï¿½ï¿½ï¿½ï¿½ï¿½×ª
         Quaternion targetRotation = Quaternion.Euler(pitch, yaw, roll);
 
-        // Æ½»¬Ðý×ª»òÁ¢¼´Ó¦ÓÃ
+        // Æ½ï¿½ï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½
         if (smoothRotation)
         {
             currentRotation = Quaternion.Slerp(currentRotation, targetRotation,
@@ -58,27 +58,27 @@ public class CameraFollow : MonoBehaviour
             currentRotation = targetRotation;
         }
 
-        // ¼ÆËãÆ«ÒÆ·½Ïò
+        // ï¿½ï¿½ï¿½ï¿½Æ«ï¿½Æ·ï¿½ï¿½ï¿½
         Vector3 rotatedOffset = currentRotation * new Vector3(0, 0, -distance);
 
-        // ¼ÆËãÄ¿±êÎ»ÖÃ
+        // ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½Î»ï¿½ï¿½
         Vector3 desiredPosition = target.position + rotatedOffset;
 
-        // Ê¹ÓÃ²åÖµÆ½»¬ÒÆ¶¯ÉãÏñ»ú
+        // Ê¹ï¿½Ã²ï¿½ÖµÆ½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
         transform.position = smoothedPosition;
 
-        // ÈÃÉãÏñ»úÊ¼ÖÕ¿´ÏòÄ¿±ê
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½Õ¿ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½
         transform.LookAt(target);
     }
 
-    // ÔÚ±à¼­Æ÷ÖÐÊµÊ±Ô¤ÀÀ
+    // ï¿½Ú±à¼­ï¿½ï¿½ï¿½ï¿½ÊµÊ±Ô¤ï¿½ï¿½
     private void OnValidate()
     {
-        // ÏÞÖÆ¾àÀëÔÚºÏÀí·¶Î§ÄÚ
+        // ï¿½ï¿½ï¿½Æ¾ï¿½ï¿½ï¿½ï¿½Úºï¿½ï¿½ï¿½ï¿½Î§ï¿½ï¿½
         distance = Mathf.Clamp(distance, minDistance, maxDistance);
 
-        // ÔÚ±à¼­Æ÷Ä£Ê½ÏÂÔ¤ÀÀ½Ç¶È±ä»¯
+        // ï¿½Ú±à¼­ï¿½ï¿½Ä£Ê½ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½Ç¶È±ä»¯
         if (Application.isPlaying && target != null)
         {
             Quaternion targetRotation = Quaternion.Euler(pitch, yaw, roll);

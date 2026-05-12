@@ -1,22 +1,22 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
 public class BuildingTileGenerator : MonoBehaviour
 {
-    [Header("Éú³ÉÉèÖÃ")]
-    public int buildingTileCount = 5; // ÒªÉú³ÉµÄ½¨ÖþµØ¿éÊýÁ¿
-    public List<Vector2> spawnPositions = new List<Vector2>(); // Éú³ÉÎ»ÖÃ
-    public GameObject buildingTilePrefab; // ½¨ÖþµØ¿éÔ¤ÖÆÌå
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")]
+    public int buildingTileCount = 5; // Òªï¿½ï¿½ï¿½ÉµÄ½ï¿½ï¿½ï¿½ï¿½Ø¿ï¿½ï¿½ï¿½ï¿½ï¿½
+    public List<Vector2> spawnPositions = new List<Vector2>(); // ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
+    public GameObject buildingTilePrefab; // ï¿½ï¿½ï¿½ï¿½ï¿½Ø¿ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½
 
-    [Header("µØ¿éÊôÐÔ")]
+    [Header("ï¿½Ø¿ï¿½ï¿½ï¿½ï¿½ï¿½")]
     [Range(1, 4)] public int minTileScale = 1;
     [Range(1, 4)] public int maxTileScale = 4;
     [Range(50, 1000)] public int minPrice = 100;
     [Range(50, 1000)] public int maxPrice = 500;
 
-    [Header("¹ØÁªÉèÖÃ")]
-    public bool enableTileLinking = true; // ÊÇ·ñÆôÓÃµØ¿é¹ØÁª
-    [Range(1, 5)] public int maxLinkedTilesPerProperty = 3; // Ã¿¸öÊôÐÔµØ¿é×î´ó¹ØÁªÊýÁ¿
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")]
+    public bool enableTileLinking = true; // ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ÃµØ¿ï¿½ï¿½ï¿½ï¿½
+    [Range(1, 5)] public int maxLinkedTilesPerProperty = 3; // Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ÔµØ¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
     private List<BoardTile> generatedBuildingTiles = new List<BoardTile>();
     private List<BoardTile> allPropertyTiles = new List<BoardTile>();
@@ -31,21 +31,21 @@ public class BuildingTileGenerator : MonoBehaviour
         }
     }
 
-    // Éú³É½¨ÖþµØ¿é
+    // ï¿½ï¿½ï¿½É½ï¿½ï¿½ï¿½ï¿½Ø¿ï¿½
     void GenerateBuildingTiles()
     {
-        Debug.Log($"¿ªÊ¼Éú³É {buildingTileCount} ¸ö½¨ÖþµØ¿é");
+        Debug.Log($"ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ {buildingTileCount} ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¿ï¿½");
 
         if (buildingTilePrefab == null)
         {
-            Debug.LogError("½¨ÖþµØ¿éÔ¤ÖÆÌåÎ´ÉèÖÃ");
+            Debug.LogError("ï¿½ï¿½ï¿½ï¿½ï¿½Ø¿ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½Î´ï¿½ï¿½ï¿½ï¿½");
             return;
         }
 
-        // »ñÈ¡ËùÓÐÊôÐÔµØ¿é
+        // ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÔµØ¿ï¿½
         FindAllPropertyTiles();
 
-        // Éú³É½¨ÖþµØ¿é
+        // ï¿½ï¿½ï¿½É½ï¿½ï¿½ï¿½ï¿½Ø¿ï¿½
         for (int i = 0; i < buildingTileCount; i++)
         {
             Vector3 spawnPosition = GetSpawnPosition(i);
@@ -61,10 +61,10 @@ public class BuildingTileGenerator : MonoBehaviour
             }
         }
 
-        Debug.Log($"³É¹¦Éú³É {generatedBuildingTiles.Count} ¸ö½¨ÖþµØ¿é");
+        Debug.Log($"ï¿½É¹ï¿½ï¿½ï¿½ï¿½ï¿½ {generatedBuildingTiles.Count} ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¿ï¿½");
     }
 
-    // »ñÈ¡Éú³ÉÎ»ÖÃ
+    // ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
     Vector3 GetSpawnPosition(int index)
     {
         if (spawnPositions != null && index < spawnPositions.Count)
@@ -74,30 +74,30 @@ public class BuildingTileGenerator : MonoBehaviour
         }
         else
         {
-            // Ëæ»úÉú³ÉÎ»ÖÃ
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
             float x = Random.Range(-10f, 10f);
             float z = Random.Range(-10f, 10f);
             return new Vector3(x, 0, z);
         }
     }
 
-    // ÉèÖÃ½¨ÖþµØ¿éÊôÐÔ
+    // ï¿½ï¿½ï¿½Ã½ï¿½ï¿½ï¿½ï¿½Ø¿ï¿½ï¿½ï¿½ï¿½ï¿½
     void SetupBuildingTile(BoardTile tile, int index)
     {
-        tile.tileName = $"½¨ÖþµØ¿é_{index}";
-        tile.tileID = 1000 + index; // ¸øÒ»¸ö¸ßID±ÜÃâ³åÍ»
+        tile.tileName = $"ï¿½ï¿½ï¿½ï¿½ï¿½Ø¿ï¿½_{index}";
+        tile.tileID = 1000 + index; // ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½IDï¿½ï¿½ï¿½ï¿½ï¿½Í»
         tile.tileScale = Random.Range(minTileScale, maxTileScale + 1);
         tile.propertyPrice = Random.Range(minPrice, maxPrice + 1);
         tile.tileType = BoardTile.TileType.Buildable;
         tile.isBuildable = true;
 
-        // ÉèÖÃ×â½ð
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         tile.rentPrice = tile.propertyPrice / 10;
 
-        Debug.Log($"Éú³É½¨ÖþµØ¿é: {tile.tileName}, ¹æÄ£: {tile.tileScale}, ¼Û¸ñ: {tile.propertyPrice}");
+        Debug.Log($"ï¿½ï¿½ï¿½É½ï¿½ï¿½ï¿½ï¿½Ø¿ï¿½: {tile.tileName}, ï¿½ï¿½Ä£: {tile.tileScale}, ï¿½Û¸ï¿½: {tile.propertyPrice}");
     }
 
-    // ²éÕÒËùÓÐÊôÐÔµØ¿é
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÔµØ¿ï¿½
     void FindAllPropertyTiles()
     {
         BoardTile[] allTiles = FindObjectsOfType<BoardTile>();
@@ -111,21 +111,21 @@ public class BuildingTileGenerator : MonoBehaviour
             }
         }
 
-        Debug.Log($"ÕÒµ½ {allPropertyTiles.Count} ¸öÊôÐÔµØ¿é");
+        Debug.Log($"ï¿½Òµï¿½ {allPropertyTiles.Count} ï¿½ï¿½ï¿½ï¿½ï¿½ÔµØ¿ï¿½");
     }
 
-    // ½«½¨ÖþµØ¿é¹ØÁªµ½ÊôÐÔµØ¿é
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÔµØ¿ï¿½
     void LinkTilesToProperties()
     {
         if (allPropertyTiles.Count == 0 || generatedBuildingTiles.Count == 0)
         {
-            Debug.LogWarning("Ã»ÓÐ×ã¹»µÄÊôÐÔµØ¿é»ò½¨ÖþµØ¿é½øÐÐ¹ØÁª");
+            Debug.LogWarning("Ã»ï¿½ï¿½ï¿½ã¹»ï¿½ï¿½ï¿½ï¿½ï¿½ÔµØ¿ï¿½ï¿½ï¿½ï¿½ï¿½Ø¿ï¿½ï¿½ï¿½Ð¹ï¿½ï¿½ï¿½");
             return;
         }
 
         int linksCreated = 0;
 
-        // ÎªÃ¿¸öÊôÐÔµØ¿éËæ»ú¹ØÁªÒ»Ð©½¨ÖþµØ¿é
+        // ÎªÃ¿ï¿½ï¿½ï¿½ï¿½ï¿½ÔµØ¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»Ð©ï¿½ï¿½ï¿½ï¿½ï¿½Ø¿ï¿½
         foreach (BoardTile propertyTile in allPropertyTiles)
         {
             int linksToCreate = Random.Range(1, Mathf.Min(maxLinkedTilesPerProperty, generatedBuildingTiles.Count) + 1);
@@ -139,38 +139,38 @@ public class BuildingTileGenerator : MonoBehaviour
                 int randomIndex = Random.Range(0, availableBuildingTiles.Count);
                 BoardTile buildingTile = availableBuildingTiles[randomIndex];
 
-                // ½¨Á¢¹ØÁª
+                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 propertyTile.AddLinkedBuildingTile(buildingTile);
-                Debug.Log($"¹ØÁª: ÊôÐÔµØ¿é {propertyTile.tileName} -> ½¨ÖþµØ¿é {buildingTile.tileName}");
+                Debug.Log($"ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½ÔµØ¿ï¿½ {propertyTile.tileName} -> ï¿½ï¿½ï¿½ï¿½ï¿½Ø¿ï¿½ {buildingTile.tileName}");
 
                 availableBuildingTiles.RemoveAt(randomIndex);
                 linksCreated++;
             }
         }
 
-        Debug.Log($"³É¹¦´´½¨ {linksCreated} ¸öµØ¿é¹ØÁª");
+        Debug.Log($"ï¿½É¹ï¿½ï¿½ï¿½ï¿½ï¿½ {linksCreated} ï¿½ï¿½ï¿½Ø¿ï¿½ï¿½ï¿½ï¿½");
     }
 
-    // ÊÖ¶¯¹ØÁªÁ½¸öµØ¿é
+    // ï¿½Ö¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¿ï¿½
     public void LinkTilesManually(BoardTile propertyTile, BoardTile buildingTile)
     {
         if (propertyTile == null || buildingTile == null)
         {
-            Debug.LogError("ÎÞ·¨¹ØÁª£¬µØ¿éÎª¿Õ");
+            Debug.LogError("ï¿½Þ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¿ï¿½Îªï¿½ï¿½");
             return;
         }
 
         propertyTile.AddLinkedBuildingTile(buildingTile);
-        Debug.Log($"ÊÖ¶¯¹ØÁª: {propertyTile.tileName} -> {buildingTile.tileName}");
+        Debug.Log($"ï¿½Ö¶ï¿½ï¿½ï¿½ï¿½ï¿½: {propertyTile.tileName} -> {buildingTile.tileName}");
     }
 
-    // »ñÈ¡ËùÓÐÉú³ÉµÄ½¨ÖþµØ¿é
+    // ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÉµÄ½ï¿½ï¿½ï¿½ï¿½Ø¿ï¿½
     public List<BoardTile> GetGeneratedBuildingTiles()
     {
         return generatedBuildingTiles;
     }
 
-    // »ñÈ¡ËùÓÐÊôÐÔµØ¿é
+    // ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÔµØ¿ï¿½
     public List<BoardTile> GetAllPropertyTiles()
     {
         return allPropertyTiles;

@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -81,7 +81,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // �ƶ�ָ������������ڣ�
+    // 移动指定的步数，带动画
     public void MoveSteps(int steps)
     {
         if (isMoving) return;
@@ -90,37 +90,37 @@ public class PlayerMovement : MonoBehaviour
         StartCoroutine(MoveWithJumpAnimation(steps));
     }
 
-    // ��Ծ�ƶ�Э��
+    // 跳跃移动协程
     IEnumerator MoveWithJumpAnimation(int steps)
     {
         isMoving = true;
         List<BoardTile> allTiles = BoardManager.Instance.allTiles;
         int stepsMoved = 0;
 
-        // �ؼ��޸�1����֤��ǰλ��
+        // 关键修复1：确保当前位置
         if (player.currentTile.tileID < 0)
         {
-            Debug.LogError($"������ҵ�ǰλ�� {player.currentTile.tileName} �ǽ������� (ID: {player.currentTile.tileID})");
-            // �Զ�����������Ŀ�Ѱ·����
+            Debug.LogError($"错误：当前位置 {player.currentTile.tileName} 是无效地块 (ID: {player.currentTile.tileID})");
+            // 自动寻找附近的可行走地块
             BoardTile correctedTile = FindNearestWalkableTile();
             if (correctedTile != null)
             {
-                Debug.Log($"����λ�õ�: {correctedTile.tileName}");
+                Debug.Log($"修正位置到: {correctedTile.tileName}");
                 MoveToTileImmediate(correctedTile);
                 player.currentTile = correctedTile;
                 player.currentTileIndex = allTiles.IndexOf(correctedTile);
             }
         }
 
-        Debug.Log($"�ƶ���ʼ: �� {player.currentTile.tileName} (ID: {player.currentTile.tileID}) ��ʼ��Ŀ�� {steps} ��");
+        Debug.Log($"移动开始: 从 {player.currentTile.tileName} (ID: {player.currentTile.tileID}) 开始移动 {steps} 步");
 
         while (stepsMoved < steps)
         {
-            // �ؼ��޸�2��ȷ������ȷ����㿪ʼ
+            // 关键修复2：确保从正确的地块开始
             int currentTileIndex = allTiles.IndexOf(player.currentTile);
             if (currentTileIndex < 0)
             {
-                Debug.LogError("�Ҳ�����ҵ�ǰλ�õ�����");
+                Debug.LogError("找不到当前位置的地块！");
                 break;
             }
 
@@ -128,21 +128,21 @@ public class PlayerMovement : MonoBehaviour
             int currentSearchIndex = startIndex;
             bool foundValidTile = false;
 
-            // ������һ����Ѱ·����
+            // 寻找下一个可行走地块
             int searchCount = 0;
             do
             {
                 BoardTile candidateTile = allTiles[currentSearchIndex];
                 searchCount++;
 
-                if (candidateTile.tileID >= 0) // �Ϸ���Ѱ·����
+                if (candidateTile.tileID >= 0) // 合法的可行走地块
                 {
-                    Debug.Log($"��{stepsMoved + 1}��: �� {player.currentTile.tileName} �ƶ��� {candidateTile.tileName} (ID: {candidateTile.tileID})");
+                    Debug.Log($"第{stepsMoved + 1}步: 从 {player.currentTile.tileName} 移动到 {candidateTile.tileName} (ID: {candidateTile.tileID})");
 
-                    // �ƶ�����
+                    // 移动到目标
                     yield return StartCoroutine(JumpToTile(candidateTile));
 
-                    // ����λ��
+                    // 更新位置
                     player.currentTile = candidateTile;
                     player.currentTileIndex = currentSearchIndex;
                     stepsMoved++;
@@ -153,7 +153,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log($"�����˽�������: {candidateTile.tileName} (ID: {candidateTile.tileID})");
+                    Debug.Log($"跳过了无效地块: {candidateTile.tileName} (ID: {candidateTile.tileID})");
                 }
 
                 currentSearchIndex = (currentSearchIndex + 1) % allTiles.Count;
@@ -162,12 +162,12 @@ public class PlayerMovement : MonoBehaviour
 
             if (!foundValidTile)
             {
-                Debug.LogError("û���ҵ����ƶ���Ŀ����ӣ����������и���");
+                Debug.LogError("没有找到可移动的目标地块，请检查地图配置！");
                 break;
             }
         }
 
-        Debug.Log($"�ƶ����: �ܹ��ƶ��� {stepsMoved} ��");
+        Debug.Log($"移动完成: 总共移动了 {stepsMoved} 步");
 
         isMoving = false;
 
@@ -177,7 +177,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // ��������Ŀ�Ѱ·����
+    // 寻找附近的可行走地块
     private BoardTile FindNearestWalkableTile()
     {
         List<BoardTile> allTiles = BoardManager.Instance.allTiles;
@@ -185,7 +185,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (currentIndex < 0) return null;
 
-        // ��ǰ����
+        // 向前寻找
         for (int i = 1; i < allTiles.Count; i++)
         {
             int forwardIndex = (currentIndex + i) % allTiles.Count;
@@ -198,15 +198,15 @@ public class PlayerMovement : MonoBehaviour
         return null;
     }
 
-    // ����1����������Ծ���л��ߣ�
+    // 方案1：简单的正弦波跳跃动画
     IEnumerator JumpToTile(BoardTile targetTile)
     {
         Vector3 startPos = transform.position;
         Vector3 endPos = targetTile.transform.position;
         endPos.y = baseY;
 
-        // ʹ��public��jumpDuration���� (Ӧ����0.5f)
-        float duration = jumpDuration;  // ��Ҫ��ʹ�ñ���������Ӳ����
+        // 使用public的jumpDuration参数 (应该是0.5f)
+        float duration = jumpDuration;  // 注意：使用参数而不是硬编码
         float elapsed = 0f;
 
         while (elapsed < duration)
@@ -214,13 +214,13 @@ public class PlayerMovement : MonoBehaviour
             elapsed += Time.deltaTime;
             float t = elapsed / duration;
 
-            // ���㵱ǰ�߶ȣ������ߣ�
+            // 计算当前高度（正弦曲线）
             float height = Mathf.Sin(t * Mathf.PI) * jumpHeight;
 
-            // ˮƽλ��
+            // 水平位置
             Vector3 horizontalPos = Vector3.Lerp(startPos, endPos, t);
 
-            // ����λ�� = ˮƽλ�� + �߶�
+            // 最终位置 = 水平位置 + 高度
             transform.position = new Vector3(
                 horizontalPos.x,
                 baseY + height,
@@ -230,22 +230,22 @@ public class PlayerMovement : MonoBehaviour
             yield return null;
         }
 
-        // ȷ��λ�þ�ȷ
+        // 确保位置正确
         transform.position = endPos;
         transform.localScale = originalScale;
     }
 
-    // ����2��˲����Ծ���޶�����ֱ������
+    // 方案2：抛物线跳跃（瞬移方式，直接跳过去）
     IEnumerator TeleportJumpToTile(BoardTile targetTile)
     {
-        // ��������
+        // 起始位置
         Vector3 startPos = transform.position;
         Vector3 midPos = (startPos + targetTile.transform.position) / 2;
         midPos.y += jumpHeight;
 
         float halfDuration = jumpDuration / 2;
 
-        // ǰ��Σ�������
+        // 前半段：跳到空中
         float elapsed = 0f;
         while (elapsed < halfDuration)
         {
@@ -253,13 +253,13 @@ public class PlayerMovement : MonoBehaviour
             float t = elapsed / halfDuration;
             transform.position = Vector3.Lerp(startPos, midPos, t);
 
-            // ��΢��ת
+            // 轻微旋转
             transform.Rotate(Vector3.up, 180f * Time.deltaTime);
 
             yield return null;
         }
 
-        // ���Σ�������
+        // 后半段：跳下来
         elapsed = 0f;
         while (elapsed < halfDuration)
         {
@@ -267,24 +267,24 @@ public class PlayerMovement : MonoBehaviour
             float t = elapsed / halfDuration;
             transform.position = Vector3.Lerp(midPos, targetTile.transform.position, t);
 
-            // ��΢��ת
+            // 轻微旋转
             transform.Rotate(Vector3.up, 180f * Time.deltaTime);
 
             yield return null;
         }
 
-        // ������ת
+        // 重置旋转
         transform.rotation = Quaternion.identity;
     }
 
-    // ����3������Ч�������Ƶ��ɣ�
+    // 方案3：弹跳效果（多次弹跳完成）
     IEnumerator BounceJumpToTile(BoardTile targetTile)
     {
         Vector3 startPos = transform.position;
         Vector3 endPos = targetTile.transform.position;
         endPos.y = baseY;
 
-        int bounceCount = 3;  // ��������
+        int bounceCount = 3;  // 弹跳次数
         float bounceHeight = jumpHeight;
 
         for (int bounce = 0; bounce < bounceCount; bounce++)
@@ -297,10 +297,10 @@ public class PlayerMovement : MonoBehaviour
                 elapsed += Time.deltaTime;
                 float t = elapsed / bounceDuration;
 
-                // ���Ҳ�ʵ�ֵ���
+                // 使用正弦实现弹跳
                 float height = Mathf.Sin(t * Mathf.PI) * bounceHeight;
 
-                // ˮƽ�ƶ��ٶȲ�ͬ
+                // 水平移动速度不同
                 float horizontalT = (bounce + t) / bounceCount;
                 Vector3 horizontalPos = Vector3.Lerp(startPos, endPos, horizontalT);
 
@@ -313,14 +313,14 @@ public class PlayerMovement : MonoBehaviour
                 yield return null;
             }
 
-            // ÿ�ε����߶ȼ���
+            // 每次弹跳高度递减
             bounceHeight *= 0.6f;
         }
 
         transform.position = endPos;
     }
 
-    // �����ƶ������ӣ��޶�����
+    // 立即移动到目标位置，无动画
     public void MoveToTileImmediate(BoardTile tile)
     {
         if (tile == null) return;
@@ -332,7 +332,7 @@ public class PlayerMovement : MonoBehaviour
         currentTile = tile;
     }
 
-    // ֱ�Ӵ��͵�ָ������
+    // 直接传送到指定地块
     public void TeleportToTile(BoardTile targetTile, bool withAnimation = false)
     {
         if (targetTile == null) return;
@@ -353,7 +353,7 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator TeleportWithEffect(BoardTile targetTile)
     {
-        // ����Ч��������ʧ
+        // 消失效果：逐渐消失
         float disappearTime = 0.3f;
         float elapsed = 0f;
         Vector3 originalScale = transform.localScale;
@@ -366,11 +366,11 @@ public class PlayerMovement : MonoBehaviour
             yield return null;
         }
 
-        // �ƶ���Ŀ��λ��
+        // 移动到目标位置
         MoveToTileImmediate(targetTile);
         UpdatePlayerTileInfo(targetTile);
 
-        // �ٳ���
+        // 再次出现
         elapsed = 0f;
         while (elapsed < disappearTime)
         {
@@ -392,10 +392,10 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // ��Ծʱ������Ч����ѡ��
+    // 跳跃时播放音效（可选）
     void PlayJumpSound()
     {
-        // �����AudioSource���
+        // 需要添加AudioSource组件
         AudioSource audioSource = GetComponent<AudioSource>();
         if (audioSource != null)
         {
@@ -403,7 +403,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // ��Ծʱ����Ч������ѡ��
+    // 跳跃时播放粒子效果（可选）
     void PlayJumpParticle()
     {
         ParticleSystem particles = GetComponent<ParticleSystem>();

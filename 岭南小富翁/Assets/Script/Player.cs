@@ -3,36 +3,36 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [Header("Íæ¼ÒĞÅÏ¢")]
-    public string playerName = "Íæ¼Ò1";
+    [Header("ç©å®¶ä¿¡æ¯")]
+    public string playerName = "ç©å®¶1";
     public int playerID = 1;
     public Color playerColor = Color.red;
 
-    [Header("²ÆÎñĞÅÏ¢")]
-    public int cash = 1500;  // ³õÊ¼ÏÖ½ğ
-    public List<BoardTile> ownedProperties = new List<BoardTile>();  // ÓµÓĞµÄµØ²ú
+    [Header("é‡‘é’±ä¿¡æ¯")]
+    public int cash = 1500;  // åˆå§‹èµ„é‡‘
+    public List<BoardTile> ownedProperties = new List<BoardTile>();  // æ‹¥æœ‰çš„åœ°äº§
 
-    [Header("×´Ì¬ĞÅÏ¢")]
+    [Header("çŠ¶æ€ä¿¡æ¯")]
     public bool isInJail = false;
     public int jailTurnsRemaining = 0;
     public bool isBankrupt = false;
 
-    [Header("Î»ÖÃĞÅÏ¢")]
-    [HideInInspector] public BoardTile currentTile;  // µ±Ç°ËùÔÚ¸ñ×Ó
-    [HideInInspector] public int currentTileIndex = 0;  // µ±Ç°Ë÷Òı
+    [Header("ä½ç½®ä¿¡æ¯")]
+    [HideInInspector] public BoardTile currentTile;  // å½“å‰æ‰€åœ¨æ ¼å­
+    [HideInInspector] public int currentTileIndex = 0;  // å½“å‰ç´¢å¼•
 
-    // Íæ¼ÒÊôĞÔ
-    [Header("Buff×´Ì¬")]
+    // ç©å®¶å±æ€§
+    [Header("BuffçŠ¶æ€")]
     public bool hasDiceBoost = false;
     public int diceBoostValue = 0;
     public float incomeMultiplier = 1.0f;
     public float luckBoost = 0f;
     public float moveSpeedMultiplier = 1.0f;
 
-    [Header("µ±Ç°ÉúĞ§Buff")]
+    [Header("å½“å‰ç”Ÿæ•ˆBuff")]
     public List<BoardTile> activeBuffs = new List<BoardTile>();
 
-    // ÒıÓÃ
+    // å¼•ç”¨
     private PlayerMovement playerMovement;
 
     void Start()
@@ -40,16 +40,16 @@ public class Player : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();
         if (playerMovement == null)
         {
-            Debug.LogWarning($"Íæ¼Ò {playerName} È±ÉÙ PlayerMovement ×é¼ş");
+            Debug.LogWarning($"ç©å®¶ {playerName} ç¼ºå°‘ PlayerMovement ç»„ä»¶");
         }
 
-        // ÉèÖÃÍæ¼ÒÑÕÉ«
+        // è®¾ç½®ç©å®¶é¢œè‰²
         SetPlayerColor();
     }
 
     void SetPlayerColor()
     {
-        // ÉèÖÃÍæ¼ÒµÄÑÕÉ«
+        // æŸ¥æ‰¾å¹¶è®¾ç½®é¢œè‰²
         MeshRenderer renderer = GetComponentInChildren<MeshRenderer>();
         if (renderer != null)
         {
@@ -57,22 +57,22 @@ public class Player : MonoBehaviour
         }
     }
 
-    // ¸¶Ç®
+    // ä»˜é’±
     public bool PayCash(int amount)
     {
         if (cash >= amount)
         {
             cash -= amount;
-            Debug.Log($"{playerName} Ö§¸¶ {amount} Ôª£¬Ê£ÓàÏÖ½ğ: {cash}");
+            Debug.Log($"{playerName} æ”¯ä»˜ {amount} å…ƒï¼Œå‰©ä½™èµ„é‡‘: {cash}");
 
-            // === ĞÂÔö´úÂë¿ªÊ¼£ºÍ¨ÖªUI¸üĞÂ¶ÀÁ¢×Ê½ğÏÔÊ¾Ãæ°å ===
+            // === å…³è”æ”¶å…¥å¼€å§‹ï¼šé€šçŸ¥UIæ›´æ–°æ˜¾ç¤º ===
             if (UIManager.Instance != null)
             {
                 UIManager.Instance.UpdateCashDisplay(cash);
             }
-            // === ĞÂÔö´úÂë½áÊø ===
+            // === å…³è”æ”¶å…¥ç»“æŸ ===
 
-            // Í¬Ê±È·±£ÓÎÏ·Ö÷UIÒ²¸üĞÂ£¨GameManager.UpdateUI() »á´¦ÀíÆäËûUI£©
+            // åŒæ—¶ç¡®ä¿æ¸¸æˆUIä¹Ÿæ›´æ–°ï¼ŒGameManager.UpdateUI() ä¼šå¤„ç†æ•´ä½“UI
             if (GameManager.Instance != null)
             {
                 GameManager.Instance.UpdateUI();
@@ -82,32 +82,32 @@ public class Player : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"{playerName} ×Ê½ğ²»×ã£¡ĞèÒª {amount} Ôªµ«Ö»ÓĞ {cash} Ôª");
+            Debug.LogWarning($"{playerName} é’±ä¸å¤Ÿï¼éœ€è¦ {amount} å…ƒï¼Œåªæœ‰ {cash} å…ƒ");
             return false;
         }
     }
 
-    // ÊÕÇ®
+    // æ”¶é’±
     public void ReceiveCash(int amount)
     {
         cash += amount;
-        Debug.Log($"{playerName} ÊÕµ½ {amount} Ôª£¬×Ü¼Æ: {cash} Ôª");
+        Debug.Log($"{playerName} æ”¶åˆ° {amount} å…ƒï¼Œæ€»è®¡: {cash} å…ƒ");
 
-        // === ĞÂÔö´úÂë¿ªÊ¼£ºÍ¨ÖªUI¸üĞÂ¶ÀÁ¢×Ê½ğÏÔÊ¾Ãæ°å ===
+        // === å…³è”æ”¶å…¥å¼€å§‹ï¼šé€šçŸ¥UIæ›´æ–°æ˜¾ç¤º ===
         if (UIManager.Instance != null)
         {
             UIManager.Instance.UpdateCashDisplay(cash);
         }
-        // === ĞÂÔö´úÂë½áÊø ===
+        // === å…³è”æ”¶å…¥ç»“æŸ ===
 
-        // Í¬Ê±È·±£ÓÎÏ·Ö÷UIÒ²¸üĞÂ
+        // åŒæ—¶ç¡®ä¿æ¸¸æˆUIä¹Ÿæ›´æ–°
         if (GameManager.Instance != null)
         {
             GameManager.Instance.UpdateUI();
         }
     }
 
-    // ¹ºÂòµØ²ú
+    // è´­ä¹°åœ°äº§
     public bool BuyProperty(BoardTile property)
     {
         if (property == null) return false;
@@ -116,13 +116,13 @@ public class Player : MonoBehaviour
             property.tileType != BoardTile.TileType.Railroad &&
             property.tileType != BoardTile.TileType.Utility)
         {
-            Debug.LogWarning($"ÎŞ·¨¹ºÂò {property.tileName}£¬ÒòÎªËü²»ÊÇ¿É¹ºÂòµÄµØ²úÀàĞÍ");
+            Debug.LogWarning($"æ— æ³•è´­ä¹° {property.tileName}ï¼Œå› ä¸ºè¿™ä¸æ˜¯å¯è´­ä¹°çš„åœ°äº§ç±»å‹");
             return false;
         }
 
         if (property.ownerPlayer != null)
         {
-            Debug.LogWarning($"{property.tileName} ÒÑ¾­ÓĞÖ÷ÈËÁË");
+            Debug.LogWarning($"{property.tileName} å·²ç»æœ‰ä¸»äººäº†");
             return false;
         }
 
@@ -130,19 +130,19 @@ public class Player : MonoBehaviour
         {
             property.ownerPlayer = this;
             ownedProperties.Add(property);
-            Debug.Log($"{playerName} ³É¹¦¹ºÂòÁË {property.tileName}");
+            Debug.Log($"{playerName} æˆåŠŸè´­ä¹°äº† {property.tileName}");
             return true;
         }
 
         return false;
     }
 
-    // Ö§¸¶×â½ğ
+    // æ”¯ä»˜ç§Ÿé‡‘
     public bool PayRent(int rentAmount, GameObject owner)
     {
         if (PayCash(rentAmount))
         {
-            // °ÑÇ®¸øµØÖ÷
+            // ä»˜é’±ç»™æ‰€æœ‰è€…
             Player ownerPlayer = owner.GetComponent<Player>();
             if (ownerPlayer != null)
             {
@@ -153,14 +153,14 @@ public class Player : MonoBehaviour
         return false;
     }
 
-    // ÒÆ¶¯µ½Ö¸¶¨µØ¿é
+    // ç§»åŠ¨åˆ°æŒ‡å®šæ ¼å­
     public void MoveToTile(BoardTile tile, bool teleport = false)
     {
         if (tile == null) return;
 
         if (playerMovement != null && !teleport)
         {
-            // ×ß²½ÊıÒÆ¶¯
+            // å¸¦åŠ¨ç”»ç§»åŠ¨
             int steps = GetStepsToTile(tile);
             if (steps > 0)
             {
@@ -169,17 +169,17 @@ public class Player : MonoBehaviour
         }
         else
         {
-            // Ë²ÒÆ£¬²»²¥·ÅĞ§¹û
+            // ç¬ç§»ï¼Œæ— åŠ¨ç”»æ•ˆæœ
             transform.position = tile.transform.position + Vector3.up * 0.5f;
             currentTile = tile;
             currentTileIndex = BoardManager.Instance?.allTiles.IndexOf(tile) ?? 0;
 
-            // ´¥·¢µØ¿éÊÂ¼ş
+            // è§¦å‘å¸ƒæ ¼äº‹ä»¶
             tile.OnLanded(this);
         }
     }
 
-    // ¼ÆËãµ½Ä¿±êµØ¿éµÄ²½Êı
+    // è®¡ç®—åˆ°ç›®æ ‡æ ¼å­çš„æ­¥æ•°
     private int GetStepsToTile(BoardTile targetTile)
     {
         if (BoardManager.Instance == null || currentTile == null || targetTile == null)
@@ -194,7 +194,7 @@ public class Player : MonoBehaviour
 
         if (targetIndex <= currentIndex)
         {
-            // ĞèÒªÈÆÒ»È¦
+            // éœ€è¦ç»•ä¸€åœˆ
             return (allTiles.Count - currentIndex) + targetIndex;
         }
         else
@@ -203,57 +203,57 @@ public class Player : MonoBehaviour
         }
     }
 
-    // »ñÈ¡´øÓĞ¼Ó³ÉµÄ÷»×ÓÖµ
+    // è·å–å¸¦æœ‰åŠ æˆçš„éª°å­å€¼
     public int GetDiceValueWithBoost(int baseValue)
     {
         if (hasDiceBoost)
         {
             int boostedValue = baseValue + diceBoostValue;
-            Debug.Log($"{playerName} »ñµÃ÷»×Ó¼Ó³É: {baseValue} + {diceBoostValue} = {boostedValue}");
-            return Mathf.Clamp(boostedValue, 1, 12); // ×î´ó12µã
+            Debug.Log($"{playerName} è·å¾—éª°å­åŠ æˆ: {baseValue} + {diceBoostValue} = {boostedValue}");
+            return Mathf.Clamp(boostedValue, 1, 12); // æœ€å¤§12ç‚¹
         }
         return baseValue;
     }
 
-    // »ñÈ¡´øÊÕÈë±¶ÂÊµÄÊÕÈë
+    // è·å–æ”¶å…¥å€ç‡çš„å®é™…å€¼
     public int GetIncomeWithMultiplier(int baseIncome)
     {
         float multiplier = incomeMultiplier;
         int finalIncome = Mathf.RoundToInt(baseIncome * multiplier);
         if (multiplier > 1.0f)
         {
-            Debug.Log($"{playerName} »ñµÃÊÕÈë±¶ÂÊ: {baseIncome} ¡Á {multiplier} = {finalIncome}");
+            Debug.Log($"{playerName} è·å¾—æ”¶å…¥å€ç‡: {baseIncome} * {multiplier} = {finalIncome}");
         }
         return finalIncome;
     }
 
-    // Ìí¼Óbuff
+    // æ·»åŠ buff
     public void AddBuff(BoardTile buffSource)
     {
         if (!activeBuffs.Contains(buffSource))
         {
             activeBuffs.Add(buffSource);
-            Debug.Log($"{playerName} »ñµÃbuff: {buffSource.tileName}");
+            Debug.Log($"{playerName} è·å¾—buff: {buffSource.tileName}");
         }
     }
 
-    // ÒÆ³ıbuff
+    // ç§»é™¤buff
     public void RemoveBuff(BoardTile buffSource)
     {
         if (activeBuffs.Contains(buffSource))
         {
             activeBuffs.Remove(buffSource);
-            Debug.Log($"{playerName} Ê§È¥buff: {buffSource.tileName}");
+            Debug.Log($"{playerName} å¤±å»buff: {buffSource.tileName}");
         }
     }
 
-    // ¼ì²éÊÇ·ñÆÆ²ú
+    // æ£€æŸ¥æ˜¯å¦ç ´äº§
     public bool CheckBankruptcy()
     {
         if (cash < 0)
         {
             isBankrupt = true;
-            Debug.Log($"{playerName} ÆÆ²úÁË£¡");
+            Debug.Log($"{playerName} ç ´äº§äº†ï¼");
             return true;
         }
         return false;

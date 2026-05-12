@@ -1,69 +1,69 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
 public class BoardTile : MonoBehaviour
 {
-    [Header("½¨ÖşÀàĞÍ")]
-    public BoardTile.BuildingType buildingType = BoardTile.BuildingType.None; //×Ô¶¯¶ÁÈ¡ÀàĞÍ
+    [Header("å»ºç­‘ç±»å‹")]
+    public BoardTile.BuildingType buildingType = BoardTile.BuildingType.None; //è‡ªåŠ¨è·å–å»ºç­‘
 
-    [Header("µØ¿é»ù±¾ĞÅÏ¢")]
-    public string tileName = "µØ¿é";
+    [Header("åœ°å—åŸºæœ¬ä¿¡æ¯")]
+    public string tileName = "åœ°å—";
     public int tileID = 0;
-    public int tileScale = 1; // µØ¿é¹æÄ£
-    public int propertyPrice = 100; // µØ¿é¼Û¸ñ
-    public int rentPrice = 10; // ×â½ğ
+    public int tileScale = 1; // åœ°å—è§„æ¨¡
+    public int propertyPrice = 100; // åœ°å—ä»·æ ¼
+    public int rentPrice = 10; // ç§Ÿé‡‘
     public TileType tileType = TileType.Property;
-    public bool isBuildable = false; // ÊÇ·ñ¿É½¨Ôì
+    public bool isBuildable = false; // æ˜¯å¦å¯å»ºé€ 
 
-    [Header("½¨ÖşÏµÍ³")]
-    public BuildingData currentBuildingData; // µ±Ç°½¨ÖşÊı¾İ
+    [Header("å»ºç­‘ç³»ç»Ÿ")]
+    public BuildingData currentBuildingData; // å½“å‰å»ºç­‘æ•°æ®
     public BuildingType currentBuildingType = BuildingType.None;
-    public int buildingLevel = 0; // ½¨ÖşµÈ¼¶
-    public GameObject currentBuilding; // µ±Ç°½¨ÖşÄ£ĞÍ
-    public Player ownerPlayer; // µØ¿éËùÓĞÕß
+    public int buildingLevel = 0; // å»ºç­‘ç­‰çº§
+    public GameObject currentBuilding; // å½“å‰å»ºç­‘æ¨¡å‹
+    public Player ownerPlayer; // åœ°å—æ‹¥æœ‰è€…
 
-    [Header("½¨Öş¹ØÁªÏµÍ³ - ĞÂÔö¹¦ÄÜ")]
-    [SerializeField] private List<BoardTile> linkedBuildingTiles; // ¹ØÁªµÄ½¨ÖşµØ¿é
-    [SerializeField] private float incomeInterval = 5.0f; // ÊÕÈë¼ä¸ô£¨Ãë£©
-    private Dictionary<BoardTile, float> lastIncomeTime = new Dictionary<BoardTile, float>(); // ÉÏ´Î²úÉúÊÕÈëµÄÊ±¼ä
-    [SerializeField] private bool enableLinkedIncome = true; // ÊÇ·ñÆôÓÃ¹ØÁªÊÕÈë
+    [Header("å…³è”æ”¶å…¥ç³»ç»Ÿ - è¢«åŠ¨æ”¶å…¥")]
+    [SerializeField] private List<BoardTile> linkedBuildingTiles; // å…³è”çš„å»ºç­‘åœ°å—
+    [SerializeField] private float incomeInterval = 5.0f; // æ”¶å…¥é—´éš”(ç§’)
+    private Dictionary<BoardTile, float> lastIncomeTime = new Dictionary<BoardTile, float>(); // ä¸Šæ¬¡è·å¾—æ”¶å…¥çš„æ—¶é—´
+    [SerializeField] private bool enableLinkedIncome = true; // æ˜¯å¦å¯ç”¨å…³è”æ”¶å…¥
 
-    [Header("×Ô¶¯ÊÕÈëÏµÍ³")]
-    [SerializeField] private bool enableAutoIncome = false; // ÊÇ·ñÆôÓÃ×Ô¶¯ÊÕÈë
-    [SerializeField] private float autoIncomeInterval = 10.0f; // ×Ô¶¯ÊÕÈë¼ä¸ô
+    [Header("è‡ªåŠ¨æ”¶å…¥ç³»ç»Ÿ")]
+    [SerializeField] private bool enableAutoIncome = false; // æ˜¯å¦å¯ç”¨è‡ªåŠ¨æ”¶å…¥
+    [SerializeField] private float autoIncomeInterval = 10.0f; // è‡ªåŠ¨æ”¶å…¥é—´éš”
     private float lastAutoIncomeTime = 0f;
 
-    [Header("UIÏÔÊ¾")]
-    public TextMeshProUGUI tileNameText; // µØ¿éÃû³ÆÎÄ±¾
-    public MeshRenderer tileRenderer; // µØ¿éäÖÈ¾Æ÷
+    [Header("UIæ˜¾ç¤º")]
+    public TextMeshProUGUI tileNameText; // åœ°å—åç§°æ–‡æœ¬
+    public MeshRenderer tileRenderer; // åœ°å—æ¸²æŸ“å™¨
   
+ 
 
+    [Header("Buffæ•ˆæœç³»ç»Ÿ")]
+    public List<Player> buffedPlayers = new List<Player>(); // å—å½±å“çš„ç©å®¶
+    public float buffDuration = 0f; // BuffæŒç»­æ—¶é—´
 
-    [Header("BuffĞ§¹ûÏµÍ³")]
-    public List<Player> buffedPlayers = new List<Player>(); // ÊÜÓ°ÏìµÄÍæ¼Ò
-    public float buffDuration = 0f; // Buff³ÖĞøÊ±¼ä
-
-    // µØ¿éÀàĞÍÃ¶¾Ù
+    // åœ°å—ç±»å‹æšä¸¾
     public enum TileType
     {
-        Start,          // Æğµã
-        Property,       // µØ²ú
-        Railroad,       // ÌúÂ·
-        Utility,        // ¹«ÓÃÊÂÒµ
-        Chance,         // »ú»á¿¨
-        CommunityChest, // ÉçÇø»ù½ğ
-        Tax,            // Ë°
-        Jail,           // ¼àÓü
-        FreeParking,    // Ãâ·ÑÍ£³µ
-        GoToJail,       // ½ø¼àÓü
-        Buildable,      // ¿É½¨ÔìµØÆ¤
-        BuildingSite,   // ½¨ÖşµØ¿é
-        Event,           // ÊÂ¼ş
+        Start,          // èµ·ç‚¹
+        Property,       // åœ°äº§
+        Railroad,       // é“è·¯
+        Utility,        // å…¬å…±äº‹ä¸š
+        Chance,         // æœºä¼šå¡
+        CommunityChest, // ç¤¾åŒºç¦åˆ©
+        Tax,            // ç¨
+        Jail,           // ç›‘ç‹±
+        FreeParking,    // å…è´¹åœè½¦
+        GoToJail,       // è¿›ç›‘ç‹±
+        Buildable,      // å¯å»ºé€ åœ°å—
+        BuildingSite,   // å»ºç­‘åœ°å—
+        Event,           // äº‹ä»¶
         Normal
     }
 
-    // ½¨ÖşÀàĞÍÃ¶¾Ù
+    // å»ºç­‘ç±»å‹æšä¸¾
     public enum BuildingType
     {
         None,
@@ -76,7 +76,7 @@ public class BoardTile : MonoBehaviour
         Special
     }
 
-    // µØ¿éÊÂ¼şÃ¶¾Ù
+    // åœ°å—äº‹ä»¶æšä¸¾
     public enum TileEvent
     {
         None,
@@ -91,7 +91,7 @@ public class BoardTile : MonoBehaviour
     {
         InitializeTile();
 
-        // ³¢ÊÔ»ñÈ¡×é¼ş
+        // å°è¯•è·å–ç»„ä»¶
         if (tileRenderer == null)
         {
             tileRenderer = GetComponentInChildren<MeshRenderer>();
@@ -107,7 +107,7 @@ public class BoardTile : MonoBehaviour
 
     void Update()
     {
-        // ×Ô¶¯ÊÕÈëÏµÍ³
+        // è‡ªåŠ¨æ”¶å…¥ç³»ç»Ÿ
         if (enableAutoIncome &&
             currentBuildingData != null &&
             ownerPlayer != null &&
@@ -121,7 +121,7 @@ public class BoardTile : MonoBehaviour
             }
         }
 
-        // ¸üĞÂBuff³ÖĞøÊ±¼ä
+        // æ£€æŸ¥BuffæŒç»­æ—¶é—´
         if (buffDuration > 0)
         {
             buffDuration -= Time.deltaTime;
@@ -134,46 +134,45 @@ public class BoardTile : MonoBehaviour
 
     void InitializeTile()
     {
-        // ÉèÖÃÄ¬ÈÏÖµ
+        // è®¾ç½®é»˜è®¤å€¼
         if (string.IsNullOrEmpty(tileName))
         {
-            tileName = $"µØ¿é_{tileID}";
+            tileName = $"åœ°å—_{tileID}";
         }
 
-        // ¸üĞÂÏÔÊ¾
+        // æ›´æ–°æ˜¾ç¤º
         if (tileNameText != null)
         {
             tileNameText.text = tileName;
         }
     }
 
-    // Íæ¼Ò½µÂäÔÚµØ¿éÉÏ
+    // ç©å®¶ç«™åˆ°åœ°å—ä¸Š
     public virtual void OnLanded(Player player)
     {
-        Debug.Log($"OnLanded ±»µ÷ÓÃ£¡Íæ¼Ò: {player.playerName}, µØ¿é: {tileName}, ÀàĞÍ: {tileType}");
+        Debug.Log($"OnLanded è¢«è°ƒç”¨ï¼Œç©å®¶: {player.playerName}, åœ°å—: {tileName}, ç±»å‹: {tileType}");
 
-        Debug.Log($"=== Íæ¼Ò {player.playerName} ½µÂäÔÚ {tileName} ÉÏ£¬ÀàĞÍ: {tileType} ===");
+        Debug.Log($"=== ç©å®¶ {player.playerName} ç«™åœ¨ {tileName} ä¸Šï¼Œç±»å‹: {tileType} ===");
         Debug.Log($"enableLinkedIncome: {enableLinkedIncome}");
-        Debug.Log($"linkedBuildingTilesÊıÁ¿: {linkedBuildingTiles?.Count ?? 0}");
+        Debug.Log($"linkedBuildingTilesæ•°é‡: {linkedBuildingTiles?.Count ?? 0}");
 
-        Debug.Log($"Íæ¼Ò {player.playerName} ½µÂäÔÚ {tileName} ÉÏ");
-
+        Debug.Log($"ç©å®¶ {player.playerName} ç«™åœ¨ {tileName} ä¸Š");
 
 
         switch (tileType)
         {
             case TileType.Start:
-                Debug.Log($"{player.playerName} µ½´ïÆğµã");
-                // Æğµã¿ÉÄÜ´¥·¢Ò»Ğ©ÊÂ¼ş£¬±ÈÈç»ñµÃ×Ê½ğ
+                Debug.Log($"{player.playerName} åˆ°è¾¾èµ·ç‚¹");
+                // è¿™é‡Œå¯ä»¥æ·»åŠ ä¸€äº›äº‹ä»¶ï¼Œæ¯”å¦‚å‘å·¥èµ„
                 if (GameManager.Instance != null)
                 {
                     int salary = GameManager.Instance.salaryAmount;
                     player.ReceiveCash(salary);
-                    Debug.Log($"{player.playerName} »ñµÃÆğµã¹¤×Ê: {salary} Ôª");
+                    Debug.Log($"{player.playerName} åˆ°è¾¾èµ·ç‚¹å·¥èµ„: {salary} å…ƒ");
 
                     if (UIManager.Instance != null)
                     {
-                        UIManager.Instance.ShowToast($"¾­¹ıÆğµã£¬»ñµÃ{salary}Ôª¹¤×Ê", 2f);
+                        UIManager.Instance.ShowToast($"åˆ°è¾¾èµ·ç‚¹ï¼Œè·å¾—{salary}å…ƒå·¥èµ„", 2f);
                     }
                 }
                 break;
@@ -198,8 +197,8 @@ public class BoardTile : MonoBehaviour
                 break;
 
             case TileType.Jail:
-                // Ö»ÊÇ·ÃÎÊ¼àÓü
-                Debug.Log($"{player.playerName} ·ÃÎÊ¼àÓü");
+                // åªæ˜¯è·¯è¿‡ç›‘ç‹±
+                Debug.Log($"{player.playerName} è·¯è¿‡ç›‘ç‹±");
                 break;
 
             case TileType.GoToJail:
@@ -207,15 +206,15 @@ public class BoardTile : MonoBehaviour
                 break;
 
             case TileType.FreeParking:
-                Debug.Log($"{player.playerName} ÔÚÃâ·ÑÍ£³µ");
+                Debug.Log($"{player.playerName} åœ¨å…è´¹åœè½¦");
                 break;
 
             case TileType.Buildable:
-                // ¿É½¨ÔìµØ¿é
-                Debug.Log($"{player.playerName} µ½´ï¿É½¨ÔìµØ¿é: {tileName}");
+                // å¯å»ºé€ åœ°å—
+                Debug.Log($"{player.playerName} æ¥åˆ°å¯å»ºé€ åœ°å—: {tileName}");
                 if (ownerPlayer == null)
                 {
-                    // ÏÔÊ¾¹ºÂò½çÃæ
+                    // æ˜¾ç¤ºå»ºç­‘é€‰æ‹©UI
                     if (UIManager.Instance != null)
                     {
                         UIManager.Instance.ShowBuildingSelectionUI(this, player);
@@ -224,16 +223,16 @@ public class BoardTile : MonoBehaviour
                 break;
 
             case TileType.BuildingSite:
-                // ½¨ÖşµØ¿é
-                Debug.Log($"{player.playerName} µ½´ï½¨ÖşµØ¿é: {tileName}");
+                // å»ºç­‘åœ°å—
+                Debug.Log($"{player.playerName} æ¥åˆ°å»ºç­‘åœ°å—: {tileName}");
                 if (ownerPlayer != null && ownerPlayer != player)
                 {
-                    // Ö§¸¶×â½ğ
+                    // æ”¯ä»˜ç§Ÿé‡‘
                     PayRent(player);
                 }
                 else
                 {
-                    // ×Ô¼ºµÄµØ¿é£¬¿ÉÒÔÉı¼¶
+                    // è‡ªå·±çš„åœ°å—ï¼Œå¯ä»¥å‡çº§å»ºç­‘
                     if (ownerPlayer == player && currentBuildingData != null)
                     {
                         if (UIManager.Instance != null)
@@ -249,28 +248,28 @@ public class BoardTile : MonoBehaviour
                 break;
 
             default:
-                Debug.Log($"Íæ¼Ò {player.playerName} ½µÂäÔÚ {tileName} ÉÏ£¬ÀàĞÍ: {tileType}");
+                Debug.Log($"ç©å®¶ {player.playerName} ç«™åœ¨ {tileName} ä¸Šï¼Œç±»å‹: {tileType}");
                 break;
         }
 
 
-        Debug.Log($"×¼±¸½øÈë¼ì²éDebug");
-        Debug.Log($"×¼±¸½øÈë¼ì²é¹ØÁª½¨ÖşÊÕÒæ£¬tileType: {tileType}");
-        // === ĞÂÔö£º¼ì²é¹ØÁª½¨Öş²¢´¥·¢ÊÕÈë ===
+        Debug.Log($"å¼ºåˆ¶è§¦å‘Debug");
+        Debug.Log($"å¼ºåˆ¶è§¦å‘å…³è”æ”¶å…¥æ£€æŸ¥ï¼ŒtileType: {tileType}");
+        // === å¼ºåˆ¶è§¦å‘å…³è”æ”¶å…¥æ£€æŸ¥ ===
         if (enableLinkedIncome && linkedBuildingTiles != null && linkedBuildingTiles.Count > 0)
         {
-            Debug.Log($"¼ì²éµØ¿é {tileName} µÄ {linkedBuildingTiles.Count} ¸ö¹ØÁª½¨Öş");
+            Debug.Log($"è¯¥åœ°å— {tileName} æœ‰ {linkedBuildingTiles.Count} ä¸ªå…³è”å»ºç­‘");
             TriggerLinkedBuildingIncome(player);
         }
     }
 
-    // ´¦ÀíÊôĞÔµØ¿é×ÅÂ½
+    // å¤„ç†ç©å®¶ç«™åˆ°åœ°äº§ä¸Š
     private void HandlePropertyLanding(Player player)
     {
         if (ownerPlayer == null)
         {
-            // ÎŞÖ÷Ö®µØ£¬¿ÉÒÔ¹ºÂò
-            Debug.Log($"{tileName} ¿É¹ºÂò£¬¼Û¸ñ: {propertyPrice} Ôª");
+            // æ— ä¸»åœ°äº§ï¼Œå¯ä»¥è´­ä¹°
+            Debug.Log($"{tileName} å¯ä»¥è´­ä¹°ï¼Œä»·æ ¼: {propertyPrice} å…ƒ");
 
             if (UIManager.Instance != null)
             {
@@ -279,21 +278,21 @@ public class BoardTile : MonoBehaviour
         }
         else if (ownerPlayer == player)
         {
-            // ×Ô¼ºµÄµØ¿é
-            Debug.Log($"{player.playerName} ·ÃÎÊ×Ô¼ºµÄµØ¿é: {tileName}");
+            // è‡ªå·±çš„åœ°äº§
+            Debug.Log($"{player.playerName} ç«™åœ¨è‡ªå·±çš„åœ°äº§: {tileName}");
         }
         else
         {
-            // ±ğÈËµÄµØ¿é£¬Ö§¸¶×â½ğ
+            // åˆ«äººçš„åœ°äº§ï¼Œæ”¯ä»˜ç§Ÿé‡‘
             PayRent(player);
         }
     }
 
-    // Ö§¸¶×â½ğ
+    // æ”¯ä»˜ç§Ÿé‡‘
     private void PayRent(Player player)
     {
         int rent = CalculateRent();
-        Debug.Log($"{player.playerName} ĞèÒªÖ§¸¶×â½ğ {rent} Ôª¸ø {ownerPlayer.playerName}");
+        Debug.Log($"{player.playerName} éœ€è¦æ”¯ä»˜ç§Ÿé‡‘ {rent} å…ƒç»™ {ownerPlayer.playerName}");
 
         if (player.PayCash(rent))
         {
@@ -301,21 +300,21 @@ public class BoardTile : MonoBehaviour
 
             if (UIManager.Instance != null)
             {
-                UIManager.Instance.ShowToast($"Ö§¸¶×â½ğ {rent} Ôª¸ø {ownerPlayer.playerName}", 2f);
+                UIManager.Instance.ShowToast($"æ”¯ä»˜ç§Ÿé‡‘ {rent} å…ƒç»™ {ownerPlayer.playerName}", 2f);
             }
         }
         else
         {
-            Debug.LogWarning($"{player.playerName} ÎŞ·¨Ö§¸¶×â½ğ£¬¿ÉÄÜĞèÒªÆÆ²ú´¦Àí");
+            Debug.LogWarning($"{player.playerName} æ— æ³•æ”¯ä»˜ç§Ÿé‡‘ï¼Œå¯èƒ½éœ€è¦ç ´äº§");
         }
     }
 
-    // ¼ÆËã×â½ğ
+    // è®¡ç®—ç§Ÿé‡‘
     public int CalculateRent()
     {
         int baseRent = rentPrice;
 
-        // Èç¹ûÓĞ½¨Öş£¬Ôö¼Ó×â½ğ
+        // å¦‚æœæœ‰å»ºç­‘ï¼Œå¢åŠ å»ºç­‘æ”¶å…¥
         if (currentBuildingData != null)
         {
             baseRent += currentBuildingData.GetIncomeAmount(buildingLevel);
@@ -324,86 +323,85 @@ public class BoardTile : MonoBehaviour
         return baseRent;
     }
 
-    // === ĞÂÔö£º´¥·¢¹ØÁª½¨ÖşÊÕÈë ===
-    // ´¥·¢¹ØÁª½¨ÖşµÄÊÕÈë¹¦ÄÜ - µ÷ÊÔ°æ±¾
+    // === å…³è”æ”¶å…¥è§¦å‘å‡½æ•° ===
+    // å¤„ç†å…³è”å»ºç­‘çš„æ”¶å…¥åŠŸèƒ½ - è°ƒè¯•ç‰ˆæœ¬
     private void TriggerLinkedBuildingIncome(Player player)
     {
-        Debug.Log($"=== [µ÷ÊÔ] ¿ªÊ¼ÎªÍæ¼Ò [{player.playerName}] ¼ì²éµØ¿é [{tileName}] µÄ¹ØÁªÊÕÈë ===");
+        Debug.Log($"=== [è°ƒè¯•] å¼€å§‹ä¸ºç©å®¶ [{player.playerName}] æ£€æŸ¥åœ°å— [{tileName}] çš„å…³è”æ”¶å…¥ ===");
 
-        Debug.Log($"=== ¿ªÊ¼¼ì²é¹ØÁªÊÕÈë ===");
-        Debug.Log($"´¥·¢µØ¿é: {tileName}");
-        Debug.Log($"µ±Ç°Íæ¼Ò: {player.playerName}");
+        Debug.Log($"=== å¼€å§‹å…³è”æ”¶å…¥æ£€æŸ¥ ===");
+        Debug.Log($"å½“å‰åœ°å—: {tileName}");
+        Debug.Log($"å½“å‰ç©å®¶: {player.playerName}");
         Debug.Log($"enableLinkedIncome: {enableLinkedIncome}");
-        Debug.Log($"linkedBuildingTilesÊıÁ¿: {linkedBuildingTiles?.Count ?? 0}");
+        Debug.Log($"linkedBuildingTilesæ•°é‡: {linkedBuildingTiles?.Count ?? 0}");
 
 
-
-        // 1. ¼ì²é×Ü¿ª¹ØºÍÁĞ±í
+        // 1. æ£€æŸ¥æ˜¯å¦å¯ä»¥æ£€æŸ¥åˆ—è¡¨
         if (!enableLinkedIncome)
         {
-            Debug.LogWarning($"  [Ê§°Ü] ×Ü¿ª¹Ø 'enableLinkedIncome' Îª false£¬¹¦ÄÜÒÑ½ûÓÃ¡£");
+            Debug.LogWarning($"  [å¤±è´¥] è¯¥åœ°å— 'enableLinkedIncome' ä¸º falseï¼Œç›´æ¥è·³è¿‡");
             return;
         }
 
         if (linkedBuildingTiles == null || linkedBuildingTiles.Count == 0)
         {
-            Debug.LogWarning($"  [Ê§°Ü] ¹ØÁª½¨ÖşÁĞ±íÎª¿Õ»ò³¤¶ÈÎª0£¬Ö±½Ó·µ»Ø¡£");
+            Debug.LogWarning($"  [å¤±è´¥] å…³è”å»ºç­‘åˆ—è¡¨ä¸ºç©ºæˆ–é•¿åº¦ä¸º0ï¼Œç›´æ¥è¿”å›");
             return;
         }
-        Debug.Log($"  [ĞÅÏ¢] ¹ØÁª½¨ÖşµØ¿éÊıÁ¿: {linkedBuildingTiles.Count}");
+        Debug.Log($"  [ä¿¡æ¯] å…³è”å»ºç­‘åœ°å—æ•°é‡: {linkedBuildingTiles.Count}");
 
-        // 2. ¼ÇÂ¼µ±Ç°Ê±¼ä
+        // 2. è®°å½•å½“å‰æ—¶é—´
         float currentTime = Time.time;
         bool anyIncomeGenerated = false;
         int totalIncome = 0;
 
-        // 3. ±éÀúËùÓĞ¹ØÁª½¨Öş
+        // 3. éå†æ‰€æœ‰å…³è”å»ºç­‘
         for (int i = 0; i < linkedBuildingTiles.Count; i++)
         {
             BoardTile buildingTile = linkedBuildingTiles[i];
-            Debug.Log($"  -- ¼ì²é¹ØÁª½¨Öş [{i + 1}/{linkedBuildingTiles.Count}]: {buildingTile?.tileName ?? "NULL"} --");
+            Debug.Log($"  -- æ£€æŸ¥å»ºç­‘ [{i + 1}/{linkedBuildingTiles.Count}]: {buildingTile?.tileName ?? "NULL"} --");
 
             if (buildingTile == null)
             {
-                Debug.LogWarning($"    [Ìø¹ı] Êı×éÖĞµÄµÚ {i + 1} ¸ö½¨ÖşµØ¿éÎª null¡£");
+                Debug.LogWarning($"    [è­¦å‘Š] åˆ—è¡¨ä¸­çš„ç¬¬ {i + 1} ä¸ªå…³è”å»ºç­‘ä¸º null");
                 continue;
             }
 
-            // 4. ¼ì²éÀäÈ´Ê±¼ä
+            // 4. æ£€æŸ¥å†·å´æ—¶é—´
             if (CanGenerateIncome(buildingTile, currentTime))
             {
-                Debug.Log($"    [Í¨¹ı] ÀäÈ´Ê±¼ä¼ì²é¡£");
+                Debug.Log($"    [é€šè¿‡] å†·å´æ—¶é—´åˆæ ¼");
 
-                // 5. ¼ì²é½¨ÖşËùÓĞÕß
+                // 5. æ£€æŸ¥å»ºç­‘æ‹¥æœ‰è€…
                 if (buildingTile.ownerPlayer != null)
                 {
-                    Debug.Log($"    [ĞÅÏ¢] ½¨ÖşËùÓĞÕß: {buildingTile.ownerPlayer.playerName}£¬ µ±Ç°Íæ¼Ò: {player.playerName}");
+                    Debug.Log($"    [ä¿¡æ¯] å»ºç­‘æ‹¥æœ‰è€…: {buildingTile.ownerPlayer.playerName}ï¼Œ å½“å‰ç©å®¶: {player.playerName}");
 
                     if (buildingTile.ownerPlayer == player)
                     {
-                        Debug.Log($"    [Í¨¹ı] ½¨ÖşËùÓĞÕßÊÇµ±Ç°Íæ¼Ò¡£");
+                        Debug.Log($"    [é€šè¿‡] å»ºç­‘æ‹¥æœ‰è€…æ˜¯å½“å‰ç©å®¶");
 
-                        // 6. ¼ì²é½¨ÖşÊı¾İ
+                        // 6. æ£€æŸ¥å»ºç­‘æ•°æ®
                         if (buildingTile.currentBuildingData != null)
                         {
-                            Debug.Log($"    [ĞÅÏ¢] ½¨ÖşÊı¾İ: {buildingTile.currentBuildingData.buildingName}, ¹¦ÄÜÀàĞÍ: {buildingTile.currentBuildingData.functionType}");
+                            Debug.Log($"    [ä¿¡æ¯] å»ºç­‘åç§°: {buildingTile.currentBuildingData.buildingName}, åŠŸèƒ½ç±»å‹: {buildingTile.currentBuildingData.functionType}");
 
-                            // 7. ¼ì²éÊÇ·ñ¾ßÓĞÊÕÈë¹¦ÄÜ
+                            // 7. æ£€æŸ¥æ˜¯å¦æ˜¯æ”¶å…¥åŠŸèƒ½
                             if (buildingTile.currentBuildingData.functionType == BuildingData.BuildingFunctionType.Income ||
                                 buildingTile.currentBuildingData.functionType == BuildingData.BuildingFunctionType.Mixed)
                             {
-                                // 8. ¼ÆËãÊÕÈë
+                                // 8. è®¡ç®—æ”¶å…¥
                                 int incomeAmount = buildingTile.currentBuildingData.GetIncomeAmount(buildingTile.buildingLevel);
-                                Debug.Log($"    [ĞÅÏ¢] ½¨ÖşµÈ¼¶: {buildingTile.buildingLevel}, ¼ÆËãÊÕÈë: {incomeAmount}");
+                                Debug.Log($"    [ä¿¡æ¯] å»ºç­‘ç­‰çº§: {buildingTile.buildingLevel}, æ”¶å…¥é‡‘é¢: {incomeAmount}");
 
                                 if (incomeAmount > 0)
                                 {
-                                    // 9. ¸øÍæ¼ÒÇ®
+                                    // 9. ç»™ç©å®¶é’±
                                     player.ReceiveCash(incomeAmount);
                                     totalIncome += incomeAmount;
-                                    Debug.Log($"    [³É¹¦] ¡Ì ÎªÍæ¼Ò {player.playerName} ·¢·Å½¨Öş {buildingTile.currentBuildingData.buildingName} µÄÊÕÈë: {incomeAmount} Ôª");
+                                    Debug.Log($"    [æˆåŠŸ] ä¸ºç©å®¶ {player.playerName} ä»å»ºç­‘ {buildingTile.currentBuildingData.buildingName} è·å¾—æ”¶å…¥: {incomeAmount} å…ƒ");
 
-                                    // 10. ¸üĞÂÉÏ´Î²úÉúÊÕÈëµÄÊ±¼ä
+                                    // 10. æ›´æ–°ä¸Šæ¬¡è·å¾—æ”¶å…¥çš„æ—¶é—´
                                     if (!lastIncomeTime.ContainsKey(buildingTile))
                                     {
                                         lastIncomeTime.Add(buildingTile, currentTime);
@@ -416,71 +414,71 @@ public class BoardTile : MonoBehaviour
                                 }
                                 else
                                 {
-                                    Debug.LogWarning($"    [Ê§°Ü] ¼ÆËã³öµÄÊÕÈë½ğ¶îÎª 0 »ò¸ºÊı¡£");
+                                    Debug.LogWarning($"    [å¤±è´¥] è¯¥å»ºç­‘çš„æ”¶å…¥ä¸º 0ï¼Œè·³è¿‡");
                                 }
                             }
                             else
                             {
-                                Debug.LogWarning($"    [Ê§°Ü] ½¨Öş¹¦ÄÜÀàĞÍ²»ÊÇ Income »ò Mixed¡£µ±Ç°ÀàĞÍ: {buildingTile.currentBuildingData.functionType}");
+                                Debug.LogWarning($"    [å¤±è´¥] è¯¥å»ºç­‘åŠŸèƒ½ç±»å‹ä¸æ˜¯ Income æˆ– Mixedï¼Œå½“å‰ç±»å‹: {buildingTile.currentBuildingData.functionType}");
                             }
                         }
                         else
                         {
-                            Debug.LogWarning($"    [Ê§°Ü] ½¨ÖşµØ¿éÉÏÃ»ÓĞ½¨ÖşÊı¾İ (currentBuildingData Îª null)¡£");
+                            Debug.LogWarning($"    [å¤±è´¥] è¯¥å»ºç­‘åœ°å—æ²¡æœ‰å»ºç­‘æ•°æ® (currentBuildingData ä¸º null)");
                         }
                     }
                     else
                     {
-                        Debug.LogWarning($"    [Ê§°Ü] ½¨ÖşËùÓĞÕß²»ÊÇµ±Ç°Íæ¼Ò¡£");
+                        Debug.LogWarning($"    [å¤±è´¥] è¯¥å»ºç­‘æ‹¥æœ‰è€…ä¸æ˜¯å½“å‰ç©å®¶");
                     }
                 }
                 else
                 {
-                    Debug.LogWarning($"    [Ê§°Ü] ½¨ÖşµØ¿éÃ»ÓĞËùÓĞÕß (ownerPlayer Îª null)¡£");
+                    Debug.LogWarning($"    [å¤±è´¥] è¯¥å»ºç­‘åœ°å—æ²¡æœ‰æ‹¥æœ‰è€… (ownerPlayer ä¸º null)");
                 }
             }
             else
             {
-                Debug.Log($"    [Ìø¹ı] Î´Í¨¹ıÀäÈ´Ê±¼ä¼ì²é¡£");
+                Debug.Log($"    [è·³è¿‡] æœªé€šè¿‡å†·å´æ—¶é—´æ£€æŸ¥");
             }
         }
 
-        // 11. ×îÖÕ½á¹û»ã×Ü
+        // 11. æ€»ç»“ç»“æœ
         if (anyIncomeGenerated && totalIncome > 0)
         {
-            Debug.Log($"=== [µ÷ÊÔ] ¹ØÁªÊÕÈë¼ì²é½áÊø£¬×Ü¼ÆÎªÍæ¼Ò {player.playerName} ·¢·Å: {totalIncome} Ôª ===");
+            Debug.Log($"=== [è°ƒè¯•] å…³è”æ”¶å…¥æ£€æŸ¥å®Œæˆï¼Œä¸ºç©å®¶ {player.playerName} è·å¾—: {totalIncome} å…ƒ ===");
 
-            // ÏÔÊ¾UIÌáÊ¾
+            // æ˜¾ç¤ºUIæç¤º
             if (UIManager.Instance != null)
             {
-                UIManager.Instance.ShowToast($"¹ØÁª½¨ÖşÊÕÈë: {totalIncome} Ôª", 2f);
+                UIManager.Instance.ShowToast($"å…³è”å»ºç­‘æ”¶å…¥: {totalIncome} å…ƒ", 2f);
             }
         }
         else
         {
-            Debug.LogWarning($"=== [µ÷ÊÔ] ¹ØÁªÊÕÈë¼ì²é½áÊø£¬Î´²úÉúÈÎºÎÊÕÈë¡£ ===");
+            Debug.LogWarning($"=== [è°ƒè¯•] å…³è”æ”¶å…¥æ£€æŸ¥å®Œæˆï¼Œæœªäº§ç”Ÿä»»ä½•æ”¶å…¥ã€‚ ===");
         }
 
 
     }
 
-    // ¼ì²é½¨ÖşÊÇ·ñ¿ÉÒÔ²úÉúÊÕÈë - µ÷ÊÔ°æ±¾
+    // æ£€æŸ¥æ˜¯å¦å¯ä»¥äº§ç”Ÿæ”¶å…¥ - è°ƒè¯•ç‰ˆæœ¬
     private bool CanGenerateIncome(BoardTile buildingTile, float currentTime)
     {
         if (!lastIncomeTime.ContainsKey(buildingTile))
         {
-            Debug.Log($"    [ĞÅÏ¢] ½¨Öş {buildingTile.tileName} ´ÓÎ´²úÉú¹ıÊÕÈë£¬ÔÊĞí²úÉú¡£");
+            Debug.Log($"    [ä¿¡æ¯] å»ºç­‘ {buildingTile.tileName} è¿˜ä»æœªäº§ç”Ÿè¿‡æ”¶å…¥ï¼Œå¯ä»¥äº§ç”Ÿ");
             return true;
         }
 
         float timeSinceLastIncome = currentTime - lastIncomeTime[buildingTile];
         bool canGenerate = timeSinceLastIncome >= incomeInterval;
 
-        Debug.Log($"    [ĞÅÏ¢] ½¨Öş {buildingTile.tileName} ÉÏ´ÎÊÕÈëÓÚ {timeSinceLastIncome:F1} ÃëÇ°£¬¼ä¸ôÒªÇó {incomeInterval} Ãë£¬ÔÊĞí²úÉú: {canGenerate}");
+        Debug.Log($"    [ä¿¡æ¯] å»ºç­‘ {buildingTile.tileName} ä¸Šæ¬¡æ”¶å…¥è·ä»Š {timeSinceLastIncome:F1} ç§’ï¼Œéœ€è¦é—´éš” {incomeInterval} ç§’ï¼Œå¯ä»¥äº§ç”Ÿ: {canGenerate}");
         return canGenerate;
     }
 
-    // === ĞÂÔö£ºÉú³É×Ô¶¯ÊÕÈë ===
+    // === å¤„ç†è‡ªåŠ¨æ”¶å…¥ ===
     private void GenerateAutoIncome()
     {
         if (currentBuildingData == null || ownerPlayer == null) return;
@@ -489,16 +487,16 @@ public class BoardTile : MonoBehaviour
         if (incomeAmount > 0)
         {
             ownerPlayer.ReceiveCash(incomeAmount);
-            Debug.Log($"½¨Öş {currentBuildingData.buildingName} ×Ô¶¯²úÉúÊÕÈë: {incomeAmount} Ôª");
+            Debug.Log($"å»ºç­‘ {currentBuildingData.buildingName} è‡ªåŠ¨äº§ç”Ÿæ”¶å…¥: {incomeAmount} å…ƒ");
 
             if (UIManager.Instance != null)
             {
-                UIManager.Instance.ShowToast($"½¨Öş×Ô¶¯ÊÕÈë: {incomeAmount} Ôª", 2f);
+                UIManager.Instance.ShowToast($"å»ºç­‘è‡ªåŠ¨æ”¶å…¥: {incomeAmount} å…ƒ", 2f);
             }
         }
     }
 
-    // ÉèÖÃ½¨ÖşÊı¾İ
+    // è®¾ç½®å»ºç­‘æ•°æ®
     public void SetBuildingData(BuildingData data, int level = 1)
     {
         currentBuildingData = data;
@@ -506,63 +504,63 @@ public class BoardTile : MonoBehaviour
 
         if (data != null)
         {
-            // ×Ô¶¯¶ÁÈ¡²¢ÉèÖÃ½¨ÖşÀàĞÍ
+            // è‡ªåŠ¨è·å–å»ºç­‘ç±»å‹
             currentBuildingType = GetBuildingTypeFromData(data);
 
-            Debug.Log($"µØ¿é {tileName}: ÉèÖÃ½¨Öş {data.buildingName}, ÀàĞÍ: {currentBuildingType}, µÈ¼¶: {level}");
+            Debug.Log($"åœ°å— {tileName}: è®¾ç½®å»ºç­‘ {data.buildingName}, ç±»å‹: {currentBuildingType}, ç­‰çº§: {level}");
 
-            // ÑéÖ¤¹¦ÄÜÀàĞÍ
+            // æ£€æŸ¥å»ºç­‘ç±»å‹
             if (data.functionType != BuildingData.BuildingFunctionType.Income &&
                 data.functionType != BuildingData.BuildingFunctionType.Mixed)
             {
-                Debug.LogWarning($"×¢Òâ£º´Ë½¨ÖşµÄ¹¦ÄÜÀàĞÍÊÇ {data.functionType}£¬¹ØÁªÊÕÈëÏµÍ³ĞèÒª Income »ò Mixed ÀàĞÍ");
+                Debug.LogWarning($"æ³¨æ„ï¼šè¯¥å»ºç­‘çš„åŠŸèƒ½ç±»å‹ä¸º {data.functionType}ï¼Œå…³è”æ”¶å…¥ç³»ç»Ÿéœ€è¦ Income æˆ– Mixed ç±»å‹");
             }
         }
         else
         {
             currentBuildingType = BuildingType.None;
-            Debug.Log($"µØ¿é {tileName}: Çå³ı½¨ÖşÊı¾İ£¬ÀàĞÍÖØÖÃÎª None");
+            Debug.Log($"åœ°å— {tileName}: æ¸…é™¤å»ºç­‘æ•°æ®ï¼Œå»ºç­‘ç±»å‹ä¸º None");
         }
     }
     private BoardTile.BuildingType GetBuildingTypeFromData(BuildingData data)
     {
         if (data == null)
         {
-            Debug.LogWarning("GetBuildingTypeFromData: ´«ÈëµÄ½¨ÖşÊı¾İÎª null");
+            Debug.LogWarning("GetBuildingTypeFromData: ä¼ å…¥çš„å»ºç­‘æ•°æ®ä¸º null");
             return BuildingType.None;
         }
 
-        // Ö±½Ó¶ÁÈ¡ BuildingData ÖĞµÄ buildingType ×Ö¶Î
+        // ç›´æ¥è¯»å– BuildingData ä¸­çš„ buildingType å­—æ®µ
         BoardTile.BuildingType type = data.buildingType;
 
         if (type == BuildingType.None)
         {
-            // Èç¹û×Ö¶ÎÎ´ÉèÖÃ£¬»ØÍËµ½Ãû³ÆÆ¥Åä
-            Debug.LogWarning($"½¨ÖşÊı¾İ {data.buildingName} µÄ buildingType ×Ö¶ÎÎ´ÉèÖÃ£¬³¢ÊÔ´ÓÃû³ÆÍÆ¶Ï");
+            // å¦‚æœå­—æ®µæœªè®¾ç½®ï¼Œå°è¯•ä»åç§°åŒ¹é…
+            Debug.LogWarning($"è¯¥å»ºç­‘ {data.buildingName} çš„ buildingType å­—æ®µæœªè®¾ç½®ï¼Œå°è¯•ä»åç§°æ¨æ–­");
             return InferBuildingTypeFromName(data.buildingName);
         }
         else
         {
-            Debug.Log("×Ô¶¯¶ÁÈ¡Ê§°Ü£¬ÊÖ¶¯Ó³Éä");
-            Debug.Log($"GetBuildingTypeFromData: ´Ó {data.buildingName} ¶ÁÈ¡µ½½¨ÖşÀàĞÍ: {type}");
+            Debug.Log("è‡ªåŠ¨è·å–æˆåŠŸï¼Œå­—æ®µåŒ¹é…");
+            Debug.Log($"GetBuildingTypeFromData: ä» {data.buildingName} è·å–åˆ°å»ºç­‘ç±»å‹: {type}");
             return type;
         }
     }
     private BuildingType InferBuildingTypeFromName(string buildingName)
     {
         string name = buildingName.ToLower();
-        //ÊÖ¶¯Ó³Éä
-        if (name.Contains("small") || name.Contains("Ğ¡·¿Îİ"))
+        //å­—æ®µåŒ¹é…
+        if (name.Contains("small") || name.Contains("å°æˆ¿å­"))
             return BuildingType.SmallHouse;
-        else if (name.Contains("medium") || name.Contains("ÖĞ·¿Îİ"))
+        else if (name.Contains("medium") || name.Contains("ä¸­æˆ¿å­"))
             return BuildingType.MediumHouse;
-        else if (name.Contains("large") || name.Contains("´ó·¿Îİ"))
+        else if (name.Contains("large") || name.Contains("å¤§æˆ¿å­"))
             return BuildingType.LargeHouse;
         else
             return BuildingType.Special;
     }
 
-    // »ñÈ¡Éı¼¶³É±¾
+    // è·å–å»ºç­‘å‡çº§æˆæœ¬
     public int GetUpgradeCost()
     {
         if (currentBuildingData == null || currentBuildingData.nextLevelBuilding == null)
@@ -571,7 +569,7 @@ public class BoardTile : MonoBehaviour
         return currentBuildingData.nextLevelBuilding.purchasePrice;
     }
 
-    // ¼ì²éÊÇ·ñ¿ÉÒÔÉı¼¶
+    // æ£€æŸ¥æ˜¯å¦å¯ä»¥å‡çº§å»ºç­‘
     public bool CanUpgradeBuilding(Player player)
     {
         if (currentBuildingData == null || currentBuildingData.nextLevelBuilding == null)
@@ -581,27 +579,27 @@ public class BoardTile : MonoBehaviour
 
         if (player.cash < GetUpgradeCost()) return false;
 
-        // ¼ì²é¹æÄ£ÏŞÖÆ
+        // æ£€æŸ¥åœ°å—è§„æ¨¡
         if (!CheckScaleForUpgrade(currentBuildingData.nextLevelBuilding.requiredScale))
             return false;
 
         return true;
     }
 
-    // ¼ì²é¹æÄ£ÊÇ·ñÂú×ãÉı¼¶ÒªÇó
+    // æ£€æŸ¥åœ°å—è§„æ¨¡æ˜¯å¦æ»¡è¶³å‡çº§è¦æ±‚
     public bool CheckScaleForUpgrade(BuildingData.Scale requiredScale)
     {
         return tileScale >= (int)requiredScale;
     }
 
-    // »ñÈ¡ÏÂÒ»¼¶½¨Öş
+    // è·å–ä¸‹ä¸€çº§å»ºç­‘
     public BuildingData GetNextUpgradeBuilding()
     {
         if (currentBuildingData == null) return null;
         return currentBuildingData.nextLevelBuilding;
     }
 
-    // Éı¼¶½¨Öş
+    // å‡çº§å»ºç­‘
     public bool UpgradeBuilding(Player player)
     {
         if (!CanUpgradeBuilding(player)) return false;
@@ -611,19 +609,19 @@ public class BoardTile : MonoBehaviour
         if (player.PayCash(upgradeCost))
         {
             buildingLevel++;
-            Debug.Log($"{player.playerName} Éı¼¶ÁË {tileName} ÉÏµÄ½¨Öşµ½µÈ¼¶ {buildingLevel}");
+            Debug.Log($"{player.playerName} å‡çº§äº† {tileName} ä¸Šçš„å»ºç­‘åˆ°ç­‰çº§ {buildingLevel}");
 
-            // ¸üĞÂ½¨ÖşÄ£ĞÍ
+            // æ›´æ–°å»ºç­‘æ¨¡å‹
             if (currentBuildingData.nextLevelBuilding != null &&
                 currentBuildingData.nextLevelBuilding.buildingPrefab != null)
             {
-                // Ïú»Ù¾É½¨Öş
+                // é”€æ¯æ—§å»ºç­‘
                 if (currentBuilding != null)
                 {
                     Destroy(currentBuilding);
                 }
 
-                // ´´½¨ĞÂ½¨Öş
+                // åˆ›å»ºæ–°å»ºç­‘
                 GameObject newBuilding = Instantiate(
                     currentBuildingData.nextLevelBuilding.buildingPrefab,
                     transform.position + Vector3.up * 0.5f,
@@ -639,7 +637,7 @@ public class BoardTile : MonoBehaviour
         return false;
     }
 
-    // Ó¦ÓÃBuffĞ§¹û
+    // åº”ç”¨Buffæ•ˆæœ
     public void ApplyBuffToPlayer(Player player)
     {
         if (currentBuildingData == null) return;
@@ -654,23 +652,23 @@ public class BoardTile : MonoBehaviour
             {
                 case BuildingData.BuffEffect.MoveSpeedBoost:
                     player.moveSpeedMultiplier += buffValue;
-                    Debug.Log($"{player.playerName} »ñµÃÒÆ¶¯ËÙ¶È¼Ó³É: {buffValue * 100}%");
+                    Debug.Log($"{player.playerName} è·å¾—ç§»åŠ¨é€Ÿåº¦åŠ æˆ: {buffValue * 100}%");
                     break;
 
                 case BuildingData.BuffEffect.DiceBoost:
                     player.hasDiceBoost = true;
                     player.diceBoostValue = Mathf.RoundToInt(buffValue);
-                    Debug.Log($"{player.playerName} »ñµÃ÷»×Ó¼Ó³É: +{player.diceBoostValue}");
+                    Debug.Log($"{player.playerName} è·å¾—éª°å­åŠ æˆ: +{player.diceBoostValue}");
                     break;
 
                 case BuildingData.BuffEffect.IncomeMultiplier:
                     player.incomeMultiplier += buffValue;
-                    Debug.Log($"{player.playerName} »ñµÃÊÕÈë±¶ÂÊ: {buffValue * 100}%");
+                    Debug.Log($"{player.playerName} è·å¾—æ”¶å…¥å€ç‡: {buffValue * 100}%");
                     break;
 
                 case BuildingData.BuffEffect.LuckBoost:
                     player.luckBoost += buffValue;
-                    Debug.Log($"{player.playerName} »ñµÃĞÒÔË¼Ó³É: {buffValue * 100}%");
+                    Debug.Log($"{player.playerName} è·å¾—å¹¸è¿åŠ æˆ: {buffValue * 100}%");
                     break;
             }
 
@@ -679,7 +677,7 @@ public class BoardTile : MonoBehaviour
         }
     }
 
-    // Çå³ıBuffĞ§¹û
+    // æ¸…é™¤Buffæ•ˆæœ
     private void ClearBuffs()
     {
         foreach (Player player in buffedPlayers)
@@ -714,10 +712,10 @@ public class BoardTile : MonoBehaviour
         buffDuration = 0f;
     }
 
-    // »æÖÆ»ú»á¿¨
+    // æŠ½å–æœºä¼šå¡
     private void DrawChanceCard(Player player)
     {
-        // ¼òµ¥µÄ»ú»á¿¨ÊµÏÖ
+        // ç®€å•çš„æœºä¼šå¡å®ç°
         int random = Random.Range(1, 4);
 
         switch (random)
@@ -725,34 +723,34 @@ public class BoardTile : MonoBehaviour
             case 1:
                 int gain = Random.Range(20, 101);
                 player.ReceiveCash(gain);
-                Debug.Log($"{player.playerName} ³éµ½»ú»á¿¨: »ñµÃ {gain} Ôª");
+                Debug.Log($"{player.playerName} æŠ½åˆ°æœºä¼šå¡: è·å¾— {gain} å…ƒ");
                 break;
 
             case 2:
                 int lose = Random.Range(20, 101);
                 if (player.PayCash(lose))
                 {
-                    Debug.Log($"{player.playerName} ³éµ½»ú»á¿¨: ËğÊ§ {lose} Ôª");
+                    Debug.Log($"{player.playerName} æŠ½åˆ°æœºä¼šå¡: æŸå¤± {lose} å…ƒ");
                 }
                 break;
 
             case 3:
-                // ÒÆ¶¯µ½Ëæ»úµØ¿é
+                // ç§»åŠ¨åˆ°éšæœºåœ°å—
                 if (BoardManager.Instance != null && BoardManager.Instance.allTiles.Count > 0)
                 {
                     int randomTileIndex = Random.Range(0, BoardManager.Instance.allTiles.Count);
                     BoardTile targetTile = BoardManager.Instance.allTiles[randomTileIndex];
                     player.MoveToTile(targetTile, true);
-                    Debug.Log($"{player.playerName} ³éµ½»ú»á¿¨: ÒÆ¶¯µ½ {targetTile.tileName}");
+                    Debug.Log($"{player.playerName} æŠ½åˆ°æœºä¼šå¡: ç§»åŠ¨åˆ° {targetTile.tileName}");
                 }
                 break;
         }
     }
 
-    // »æÖÆÉçÇø»ù½ğ¿¨
+    // æŠ½å–å…¬å…±ç¦åˆ©å¡
     private void DrawCommunityChestCard(Player player)
     {
-        // ¼òµ¥µÄÉçÇø»ù½ğ¿¨ÊµÏÖ
+        // ç®€å•çš„å…¬å…±ç¦åˆ©å®ç°
         int random = Random.Range(1, 4);
 
         switch (random)
@@ -760,50 +758,50 @@ public class BoardTile : MonoBehaviour
             case 1:
                 int gain = Random.Range(50, 201);
                 player.ReceiveCash(gain);
-                Debug.Log($"{player.playerName} ³éµ½ÉçÇø»ù½ğ¿¨: »ñµÃ {gain} Ôª");
+                Debug.Log($"{player.playerName} æŠ½åˆ°å…¬å…±ç¦åˆ©: è·å¾— {gain} å…ƒ");
                 break;
 
             case 2:
                 int tax = Random.Range(50, 201);
                 if (player.PayCash(tax))
                 {
-                    Debug.Log($"{player.playerName} ³éµ½ÉçÇø»ù½ğ¿¨: ½ÉË° {tax} Ôª");
+                    Debug.Log($"{player.playerName} æŠ½åˆ°å…¬å…±ç¦åˆ©: çº³ç¨ {tax} å…ƒ");
                 }
                 break;
 
             case 3:
                 player.AddBuff(this);
-                Debug.Log($"{player.playerName} ³éµ½ÉçÇø»ù½ğ¿¨: »ñµÃÁÙÊ±Buff");
+                Debug.Log($"{player.playerName} æŠ½åˆ°å…¬å…±ç¦åˆ©: è·å¾—ä¸´æ—¶Buff");
                 break;
         }
     }
 
-    // Ö§¸¶Ë°¿î
+    // æ”¯ä»˜ç¨é‡‘
     private void PayTax(Player player)
     {
-        int taxAmount = propertyPrice / 10; // Ë°ÎªµØ²ú¼ÛÖµµÄ10%
+        int taxAmount = propertyPrice / 10; // ç¨ä¸ºåœ°äº§ä»·å€¼çš„10%
 
         if (player.PayCash(taxAmount))
         {
-            Debug.Log($"{player.playerName} Ö§¸¶Ë°¿î: {taxAmount} Ôª");
+            Debug.Log($"{player.playerName} æ”¯ä»˜ç¨é‡‘: {taxAmount} å…ƒ");
         }
     }
 
-    // ËÍ½ø¼àÓü
+    // é€è¿›ç›‘ç‹±
     private void SendToJail(Player player)
     {
         player.isInJail = true;
         player.jailTurnsRemaining = 3;
 
-        Debug.Log($"{player.playerName} ±»ËÍ½ø¼àÓü£¬Ê£Óà {player.jailTurnsRemaining} »ØºÏ");
+        Debug.Log($"{player.playerName} è¢«é€è¿›ç›‘ç‹±ï¼Œå‰©ä½™ {player.jailTurnsRemaining} å›åˆ");
 
         if (UIManager.Instance != null)
         {
-            UIManager.Instance.ShowToast($"{player.playerName} ½ø¼àÓüÁË£¡", 2f);
+            UIManager.Instance.ShowToast($"{player.playerName} è¿›ç›‘ç‹±äº†ï¼", 2f);
         }
     }
 
-    // ´¥·¢Ëæ»úÊÂ¼ş
+    // è§¦å‘éšæœºäº‹ä»¶
     private void TriggerRandomEvent(Player player)
     {
         TileEvent randomEvent = (TileEvent)Random.Range(1, 6);
@@ -813,14 +811,14 @@ public class BoardTile : MonoBehaviour
             case TileEvent.GainMoney:
                 int gain = Random.Range(50, 151);
                 player.ReceiveCash(gain);
-                Debug.Log($"{player.playerName} ´¥·¢ÊÂ¼ş: ¼ñµ½ {gain} Ôª");
+                Debug.Log($"{player.playerName} è§¦å‘äº‹ä»¶: è·å¾— {gain} å…ƒ");
                 break;
 
             case TileEvent.LoseMoney:
                 int lose = Random.Range(30, 101);
                 if (player.PayCash(lose))
                 {
-                    Debug.Log($"{player.playerName} ´¥·¢ÊÂ¼ş: ¶ªÊ§ {lose} Ôª");
+                    Debug.Log($"{player.playerName} è§¦å‘äº‹ä»¶: æŸå¤± {lose} å…ƒ");
                 }
                 break;
 
@@ -830,7 +828,7 @@ public class BoardTile : MonoBehaviour
                     int randomIndex = Random.Range(0, BoardManager.Instance.allTiles.Count);
                     BoardTile targetTile = BoardManager.Instance.allTiles[randomIndex];
                     player.MoveToTile(targetTile, true);
-                    Debug.Log($"{player.playerName} ´¥·¢ÊÂ¼ş: ´«ËÍµ½ {targetTile.tileName}");
+                    Debug.Log($"{player.playerName} è§¦å‘äº‹ä»¶: ä¼ é€åˆ° {targetTile.tileName}");
                 }
                 break;
 
@@ -839,7 +837,7 @@ public class BoardTile : MonoBehaviour
                 {
                     player.isInJail = false;
                     player.jailTurnsRemaining = 0;
-                    Debug.Log($"{player.playerName} ´¥·¢ÊÂ¼ş: »ñµÃ³öÓü¿¨");
+                    Debug.Log($"{player.playerName} è§¦å‘äº‹ä»¶: å‡ºç‹±äº†ï¼");
                 }
                 break;
 
@@ -847,13 +845,13 @@ public class BoardTile : MonoBehaviour
                 int tax = Random.Range(20, 81);
                 if (player.PayCash(tax))
                 {
-                    Debug.Log($"{player.playerName} ´¥·¢ÊÂ¼ş: Ö§¸¶¶îÍâË°¿î {tax} Ôª");
+                    Debug.Log($"{player.playerName} è§¦å‘äº‹ä»¶: æ”¯ä»˜é¢å¤–ç¨é‡‘ {tax} å…ƒ");
                 }
                 break;
         }
     }
 
-    // ¸üĞÂµØ¿éÊÓ¾õ
+    // æ›´æ–°åœ°å—è§†è§‰æ•ˆæœ
     public void UpdateTileVisual()
     {
         if (tileRenderer == null) return;
@@ -861,7 +859,7 @@ public class BoardTile : MonoBehaviour
        
     }
 
-    // Ìí¼Ó¹ØÁª½¨ÖşµØ¿é
+    // æ·»åŠ å…³è”å»ºç­‘åœ°å—
     public void AddLinkedBuildingTile(BoardTile buildingTile)
     {
         if (linkedBuildingTiles == null)
@@ -872,31 +870,31 @@ public class BoardTile : MonoBehaviour
         if (!linkedBuildingTiles.Contains(buildingTile))
         {
             linkedBuildingTiles.Add(buildingTile);
-            Debug.Log($"µØ¿é {tileName} ¹ØÁªÁË½¨ÖşµØ¿é {buildingTile.tileName}");
+            Debug.Log($"åœ°å— {tileName} æ·»åŠ äº†å…³è”å»ºç­‘åœ°å— {buildingTile.tileName}");
         }
     }
 
-    // ÒÆ³ı¹ØÁª½¨ÖşµØ¿é
+    // ç§»é™¤å…³è”å»ºç­‘åœ°å—
     public void RemoveLinkedBuildingTile(BoardTile buildingTile)
     {
         if (linkedBuildingTiles != null && linkedBuildingTiles.Contains(buildingTile))
         {
             linkedBuildingTiles.Remove(buildingTile);
-            Debug.Log($"µØ¿é {tileName} ÒÆ³ıÁË½¨ÖşµØ¿é¹ØÁª {buildingTile.tileName}");
+            Debug.Log($"åœ°å— {tileName} ç§»é™¤äº†å…³è”å»ºç­‘åœ°å— {buildingTile.tileName}");
         }
     }
 
-    // Çå¿ÕËùÓĞ¹ØÁª
+    // æ¸…é™¤æ‰€æœ‰å…³è”
     public void ClearAllLinkedBuildingTiles()
     {
         if (linkedBuildingTiles != null)
         {
             linkedBuildingTiles.Clear();
-            Debug.Log($"µØ¿é {tileName} Çå¿ÕÁËËùÓĞ½¨Öş¹ØÁª");
+            Debug.Log($"åœ°å— {tileName} æ¸…é™¤äº†æ‰€æœ‰å…³è”å»ºç­‘");
         }
     }
 
-    // »ñÈ¡ËùÓĞ¹ØÁª½¨ÖşµØ¿é
+    // è·å–æ‰€æœ‰å…³è”å»ºç­‘åœ°å—
     public List<BoardTile> GetLinkedBuildingTiles()
     {
         if (linkedBuildingTiles == null)
@@ -906,19 +904,19 @@ public class BoardTile : MonoBehaviour
         return linkedBuildingTiles;
     }
 
-    // ÆôÓÃ/½ûÓÃ¹ØÁªÊÕÈë
+    // è®¾ç½®/è·å–å…³è”æ”¶å…¥å¯ç”¨
     public void SetLinkedIncomeEnabled(bool enabled)
     {
         enableLinkedIncome = enabled;
     }
 
-    // ÉèÖÃÊÕÈë¼ä¸ô
+    // è®¾ç½®æ”¶å…¥é—´éš”
     public void SetIncomeInterval(float interval)
     {
-        incomeInterval = Mathf.Max(1.0f, interval); // ×îĞ¡1Ãë
+        incomeInterval = Mathf.Max(1.0f, interval); // æœ€å°1ç§’
     }
 
-    // ÆôÓÃ/½ûÓÃ×Ô¶¯ÊÕÈë
+    // è®¾ç½®/è·å–è‡ªåŠ¨æ”¶å…¥
     public void SetAutoIncomeEnabled(bool enabled, float interval = 10.0f)
     {
         enableAutoIncome = enabled;
@@ -948,7 +946,7 @@ public class BoardTile : MonoBehaviour
         set { incomeInterval = Mathf.Max(1.0f, value); }
     }
 
-    // Ìá¹©°²È«µÄ×Öµä·ÃÎÊ·½·¨
+    // æä¾›å…¬å…±çš„è·å–å’Œè®¾ç½®æ–¹æ³•
     public float GetLastIncomeTime(BoardTile buildingTile)
     {
         if (buildingTile == null) return 0f;
@@ -956,7 +954,7 @@ public class BoardTile : MonoBehaviour
         if (lastIncomeTime.ContainsKey(buildingTile))
             return lastIncomeTime[buildingTile];
 
-        return 0f; // ´ÓÎ´²úÉú¹ıÊÕÈë
+        return 0f; // è¿˜æœªäº§ç”Ÿè¿‡æ”¶å…¥
     }
 
     public void SetLastIncomeTime(BoardTile buildingTile, float time)
