@@ -226,7 +226,17 @@ public class GameManager : MonoBehaviour
 
             startPos.x += (i % 2 == 0 ? -offset : offset);
             startPos.z += (i / 2) * offset;
-            startPos.y = 0.5f;
+
+            // 获取PlayerMovement组件的高度偏移，避免穿模
+            PlayerMovement playerMovement = player.GetComponent<PlayerMovement>();
+            if (playerMovement != null)
+            {
+                startPos.y = startTile.transform.position.y + playerMovement.heightOffset;
+            }
+            else
+            {
+                startPos.y = 0.875f; // 默认高度：地块中心 + 偏移
+            }
 
             player.transform.position = startPos;
             player.currentTile = startTile;

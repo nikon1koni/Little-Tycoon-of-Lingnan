@@ -2501,9 +2501,6 @@ MonoBehaviour:
   autoIncomeInterval: 10
   tileNameText: {fileID: 0}
   tileRenderer: {fileID: 0}
-  defaultColor: {r: 1, g: 1, b: 1, a: 1}
-  ownedColor: {r: 0, g: 0, b: 1, a: 1}
-  buildableColor: {r: 0, g: 1, b: 0, a: 1}
   buffedPlayers: []
   buffDuration: 0
 --- !u!23 &1427236974
@@ -3486,18 +3483,6 @@ PrefabInstance:
       propertyPath: tileType
       value: 13
       objectReference: {fileID: 0}
-    - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
-      propertyPath: defaultColor.b
-      value: 0.2024742
-      objectReference: {fileID: 0}
-    - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
-      propertyPath: defaultColor.g
-      value: 0.2024742
-      objectReference: {fileID: 0}
-    - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
-      propertyPath: defaultColor.r
-      value: 0.6603774
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4331,6 +4316,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6594177630032740773, guid: 83c211faa7174fc47b48ef154498ed80, type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6594177630032740773, guid: 83c211faa7174fc47b48ef154498ed80, type: 3}
+      propertyPath: heightOffset
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8837718406430567102, guid: 83c211faa7174fc47b48ef154498ed80, type: 3}
+      propertyPath: playerColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8837718406430567102, guid: 83c211faa7174fc47b48ef154498ed80, type: 3}
+      propertyPath: playerColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8837718406430567102, guid: 83c211faa7174fc47b48ef154498ed80, type: 3}
+      propertyPath: playerColor.r
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

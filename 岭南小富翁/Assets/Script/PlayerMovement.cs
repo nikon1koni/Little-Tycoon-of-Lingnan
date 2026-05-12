@@ -4,28 +4,67 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [Header("ÌøÔ¾ÒÆ¶¯ÉèÖÃ")]
-    public float jumpHeight = 1.5f;      // ÌøÔ¾¸ß¶È
-    public float jumpDuration = 0.5f;    // µ¥´ÎÌøÔ¾³ÖĞøÊ±¼ä
-    public float landingDelay = 0.1f;    // ÂäµØºóÍ£ÁôÊ±¼ä
+    [Header("è·³è·ƒç§»åŠ¨å‚æ•°")]
+    public float jumpHeight = 1.5f;      // è·³è·ƒé«˜åº¦
+    public float jumpDuration = 0.5f;    // å•æ¬¡è·³è·ƒæŒç»­æ—¶é—´
+    public float landingDelay = 0.1f;    // è½åœ°ååœé¡¿æ—¶é—´
+    public float heightOffset = 0.375f;   // ç©å®¶åœ¨åœ°å—ä¸Šçš„é«˜åº¦åç§»ï¼ˆåœ°å—é«˜åº¦çš„ä¸€åŠ+ç©å®¶é«˜åº¦çš„ä¸€åŠï¼‰
 
-    [Header("×´Ì¬")]
+    [Header("çŠ¶æ€")]
     [HideInInspector] public bool isMoving = false;
     [HideInInspector] public BoardTile currentTile;
 
-    // ÒıÓÃ
+    // ç§æœ‰å˜é‡
     private Player player;
     private Vector3 originalScale;
-    private float originalY;  // ¼ÇÂ¼Ô­Ê¼Y×ø±êÓÃÓÚ¶¯»­
+    private float baseY;  // åŸºç¡€Yåæ ‡
 
     void Start()
     {
         player = GetComponent<Player>();
         originalScale = transform.localScale;
-        originalY = transform.position.y;
 
-        // ³õÊ¼»¯Î»ÖÃ
+        // è®¡ç®—åŸºç¡€Yåæ ‡ï¼ˆåŸºäºèµ·å§‹åœ°å—ä½ç½®+é«˜åº¦åç§»ï¼‰
+        if (BoardManager.Instance != null && BoardManager.Instance.allTiles.Count > 0)
+        {
+            BoardTile startTile = BoardManager.Instance.GetTileByID(0);
+            if (startTile != null)
+            {
+                baseY = startTile.transform.position.y + heightOffset;
+            }
+            else
+            {
+                baseY = transform.position.y + heightOffset; // å›é€€æ–¹æ¡ˆ
+            }
+        }
+        else
+        {
+            baseY = transform.position.y + heightOffset; // å›é€€æ–¹æ¡ˆ
+        }
+
+        // åˆå§‹åŒ–ä½ç½®
         InitializeStartPosition();
+
+        // å»¶è¿Ÿä¿®æ­£ï¼šç¡®ä¿åœ¨å…¶ä»–è„šæœ¬ï¼ˆå¦‚GameManagerï¼‰è®¾ç½®ä½ç½®åï¼Œæœ€ç»ˆä½ç½®æ­£ç¡®
+        StartCoroutine(FinalPositionCorrection());
+    }
+
+    // æœ€ç»ˆä½ç½®ä¿®æ­£åç¨‹ï¼ˆè§£å†³åˆå§‹åŒ–æ—¶åºé—®é¢˜ï¼‰
+    IEnumerator FinalPositionCorrection()
+    {
+        // ç­‰å¾…2å¸§ï¼Œç¡®ä¿æ‰€æœ‰ Start() æ–¹æ³•éƒ½æ‰§è¡Œå®Œæ¯•
+        yield return null;
+        yield return null;
+
+        // å¼ºåˆ¶ä¿®æ­£Yåæ ‡åˆ°æ­£ç¡®é«˜åº¦ï¼ˆæ— è®ºåœ¨å“ªä¸ªåœ°å—ï¼‰
+        if (player != null && player.currentTile != null)
+        {
+            Vector3 correctedPos = transform.position;
+            correctedPos.y = player.currentTile.transform.position.y + heightOffset;
+            transform.position = correctedPos;
+
+            Debug.Log($"[PlayerMovement] ä½ç½®ä¿®æ­£å®Œæˆ: Y={correctedPos.y:F3}, å½“å‰åœ°å—: {player.currentTile.tileName}");
+        }
     }
 
     void InitializeStartPosition()
@@ -42,7 +81,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // ÒÆ¶¯Ö¸¶¨²½Êı£¨Ö÷Èë¿Ú£©
+    // ï¿½Æ¶ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú£ï¿½
     public void MoveSteps(int steps)
     {
         if (isMoving) return;
@@ -51,37 +90,37 @@ public class PlayerMovement : MonoBehaviour
         StartCoroutine(MoveWithJumpAnimation(steps));
     }
 
-    // ÌøÔ¾ÒÆ¶¯Ğ­³Ì
+    // ï¿½ï¿½Ô¾ï¿½Æ¶ï¿½Ğ­ï¿½ï¿½
     IEnumerator MoveWithJumpAnimation(int steps)
     {
         isMoving = true;
         List<BoardTile> allTiles = BoardManager.Instance.allTiles;
         int stepsMoved = 0;
 
-        // ¹Ø¼üĞŞ¸´1£ºÑéÖ¤µ±Ç°Î»ÖÃ
+        // ï¿½Ø¼ï¿½ï¿½Ş¸ï¿½1ï¿½ï¿½ï¿½ï¿½Ö¤ï¿½ï¿½Ç°Î»ï¿½ï¿½
         if (player.currentTile.tileID < 0)
         {
-            Debug.LogError($"´íÎó£ºÍæ¼Òµ±Ç°Î»ÖÃ {player.currentTile.tileName} ÊÇ½¨Öş¸ñ×Ó (ID: {player.currentTile.tileID})");
-            // ×Ô¶¯¾ÀÕıµ½×î½üµÄ¿ÉÑ°Â·¸ñ×Ó
+            Debug.LogError($"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òµï¿½Ç°Î»ï¿½ï¿½ {player.currentTile.tileName} ï¿½Ç½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (ID: {player.currentTile.tileID})");
+            // ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½Ñ°Â·ï¿½ï¿½ï¿½ï¿½
             BoardTile correctedTile = FindNearestWalkableTile();
             if (correctedTile != null)
             {
-                Debug.Log($"¾ÀÕıÎ»ÖÃµ½: {correctedTile.tileName}");
+                Debug.Log($"ï¿½ï¿½ï¿½ï¿½Î»ï¿½Ãµï¿½: {correctedTile.tileName}");
                 MoveToTileImmediate(correctedTile);
                 player.currentTile = correctedTile;
                 player.currentTileIndex = allTiles.IndexOf(correctedTile);
             }
         }
 
-        Debug.Log($"ÒÆ¶¯¿ªÊ¼: ´Ó {player.currentTile.tileName} (ID: {player.currentTile.tileID}) ¿ªÊ¼£¬Ä¿±ê {steps} ²½");
+        Debug.Log($"ï¿½Æ¶ï¿½ï¿½ï¿½Ê¼: ï¿½ï¿½ {player.currentTile.tileName} (ID: {player.currentTile.tileID}) ï¿½ï¿½Ê¼ï¿½ï¿½Ä¿ï¿½ï¿½ {steps} ï¿½ï¿½");
 
         while (stepsMoved < steps)
         {
-            // ¹Ø¼üĞŞ¸´2£ºÈ·±£´ÓÕıÈ·µÄÆğµã¿ªÊ¼
+            // ï¿½Ø¼ï¿½ï¿½Ş¸ï¿½2ï¿½ï¿½È·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È·ï¿½ï¿½ï¿½ï¿½ã¿ªÊ¼
             int currentTileIndex = allTiles.IndexOf(player.currentTile);
             if (currentTileIndex < 0)
             {
-                Debug.LogError("ÕÒ²»µ½Íæ¼Òµ±Ç°Î»ÖÃµÄË÷Òı");
+                Debug.LogError("ï¿½Ò²ï¿½ï¿½ï¿½ï¿½ï¿½Òµï¿½Ç°Î»ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½");
                 break;
             }
 
@@ -89,21 +128,21 @@ public class PlayerMovement : MonoBehaviour
             int currentSearchIndex = startIndex;
             bool foundValidTile = false;
 
-            // ²éÕÒÏÂÒ»¸ö¿ÉÑ°Â·¸ñ×Ó
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ñ°Â·ï¿½ï¿½ï¿½ï¿½
             int searchCount = 0;
             do
             {
                 BoardTile candidateTile = allTiles[currentSearchIndex];
                 searchCount++;
 
-                if (candidateTile.tileID >= 0) // ºÏ·¨¿ÉÑ°Â·¸ñ×Ó
+                if (candidateTile.tileID >= 0) // ï¿½Ï·ï¿½ï¿½ï¿½Ñ°Â·ï¿½ï¿½ï¿½ï¿½
                 {
-                    Debug.Log($"µÚ{stepsMoved + 1}²½: ´Ó {player.currentTile.tileName} ÒÆ¶¯µ½ {candidateTile.tileName} (ID: {candidateTile.tileID})");
+                    Debug.Log($"ï¿½ï¿½{stepsMoved + 1}ï¿½ï¿½: ï¿½ï¿½ {player.currentTile.tileName} ï¿½Æ¶ï¿½ï¿½ï¿½ {candidateTile.tileName} (ID: {candidateTile.tileID})");
 
-                    // ÒÆ¶¯¶¯»­
+                    // ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½
                     yield return StartCoroutine(JumpToTile(candidateTile));
 
-                    // ¸üĞÂÎ»ÖÃ
+                    // ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
                     player.currentTile = candidateTile;
                     player.currentTileIndex = currentSearchIndex;
                     stepsMoved++;
@@ -114,7 +153,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log($"Ìø¹ıÁË½¨Öş¸ñ×Ó: {candidateTile.tileName} (ID: {candidateTile.tileID})");
+                    Debug.Log($"ï¿½ï¿½ï¿½ï¿½ï¿½Ë½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: {candidateTile.tileName} (ID: {candidateTile.tileID})");
                 }
 
                 currentSearchIndex = (currentSearchIndex + 1) % allTiles.Count;
@@ -123,12 +162,12 @@ public class PlayerMovement : MonoBehaviour
 
             if (!foundValidTile)
             {
-                Debug.LogError("Ã»ÓĞÕÒµ½¿ÉÒÆ¶¯µÄÄ¿±ê¸ñ×Ó£¡ÒÑËÑË÷ËùÓĞ¸ñ×Ó");
+                Debug.LogError("Ã»ï¿½ï¿½ï¿½Òµï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½Ó£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ¸ï¿½ï¿½ï¿½");
                 break;
             }
         }
 
-        Debug.Log($"ÒÆ¶¯Íê³É: ×Ü¹²ÒÆ¶¯ÁË {stepsMoved} ²½");
+        Debug.Log($"ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½: ï¿½Ü¹ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ {stepsMoved} ï¿½ï¿½");
 
         isMoving = false;
 
@@ -138,7 +177,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // ²éÕÒ×î½üµÄ¿ÉÑ°Â·¸ñ×Ó
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½Ñ°Â·ï¿½ï¿½ï¿½ï¿½
     private BoardTile FindNearestWalkableTile()
     {
         List<BoardTile> allTiles = BoardManager.Instance.allTiles;
@@ -146,7 +185,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (currentIndex < 0) return null;
 
-        // ÏòÇ°²éÕÒ
+        // ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½
         for (int i = 1; i < allTiles.Count; i++)
         {
             int forwardIndex = (currentIndex + i) % allTiles.Count;
@@ -159,15 +198,15 @@ public class PlayerMovement : MonoBehaviour
         return null;
     }
 
-    // ·½·¨1£ºÅ×ÎïÏßÌøÔ¾£¨ÓĞ»¡Ïß£©
+    // ï¿½ï¿½ï¿½ï¿½1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¾ï¿½ï¿½ï¿½Ğ»ï¿½ï¿½ß£ï¿½
     IEnumerator JumpToTile(BoardTile targetTile)
     {
         Vector3 startPos = transform.position;
         Vector3 endPos = targetTile.transform.position;
-        endPos.y = originalY;
+        endPos.y = baseY;
 
-        // Ê¹ÓÃpublicµÄjumpDuration±äÁ¿ (Ó¦¸ÃÊÇ0.5f)
-        float duration = jumpDuration;  // ÖØÒª£ºÊ¹ÓÃ±äÁ¿¶ø²»ÊÇÓ²±àÂë
+        // Ê¹ï¿½ï¿½publicï¿½ï¿½jumpDurationï¿½ï¿½ï¿½ï¿½ (Ó¦ï¿½ï¿½ï¿½ï¿½0.5f)
+        float duration = jumpDuration;  // ï¿½ï¿½Òªï¿½ï¿½Ê¹ï¿½Ã±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó²ï¿½ï¿½ï¿½ï¿½
         float elapsed = 0f;
 
         while (elapsed < duration)
@@ -175,38 +214,38 @@ public class PlayerMovement : MonoBehaviour
             elapsed += Time.deltaTime;
             float t = elapsed / duration;
 
-            // ¼ÆËãµ±Ç°¸ß¶È£¨Å×ÎïÏß£©
+            // ï¿½ï¿½ï¿½ãµ±Ç°ï¿½ß¶È£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß£ï¿½
             float height = Mathf.Sin(t * Mathf.PI) * jumpHeight;
 
-            // Ë®Æ½Î»ÖÃ
+            // Ë®Æ½Î»ï¿½ï¿½
             Vector3 horizontalPos = Vector3.Lerp(startPos, endPos, t);
 
-            // ×îÖÕÎ»ÖÃ = Ë®Æ½Î»ÖÃ + ¸ß¶È
+            // ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ = Ë®Æ½Î»ï¿½ï¿½ + ï¿½ß¶ï¿½
             transform.position = new Vector3(
                 horizontalPos.x,
-                originalY + height,
+                baseY + height,
                 horizontalPos.z
             );
 
             yield return null;
         }
 
-        // È·±£Î»ÖÃ¾«È·
+        // È·ï¿½ï¿½Î»ï¿½Ã¾ï¿½È·
         transform.position = endPos;
         transform.localScale = originalScale;
     }
 
-    // ·½·¨2£ºË²ÒÆÌøÔ¾£¨ÎŞ¶¯»­£¬Ö±½ÓÌø£©
+    // ï¿½ï¿½ï¿½ï¿½2ï¿½ï¿½Ë²ï¿½ï¿½ï¿½ï¿½Ô¾ï¿½ï¿½ï¿½Ş¶ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     IEnumerator TeleportJumpToTile(BoardTile targetTile)
     {
-        // ÏÈÏòÉÏÌø
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         Vector3 startPos = transform.position;
         Vector3 midPos = (startPos + targetTile.transform.position) / 2;
         midPos.y += jumpHeight;
 
         float halfDuration = jumpDuration / 2;
 
-        // Ç°°ë¶Î£ºÏòÉÏÌø
+        // Ç°ï¿½ï¿½Î£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         float elapsed = 0f;
         while (elapsed < halfDuration)
         {
@@ -214,13 +253,13 @@ public class PlayerMovement : MonoBehaviour
             float t = elapsed / halfDuration;
             transform.position = Vector3.Lerp(startPos, midPos, t);
 
-            // ÇáÎ¢Ğı×ª
+            // ï¿½ï¿½Î¢ï¿½ï¿½×ª
             transform.Rotate(Vector3.up, 180f * Time.deltaTime);
 
             yield return null;
         }
 
-        // ºó°ë¶Î£ºÏòÏÂÂä
+        // ï¿½ï¿½ï¿½Î£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         elapsed = 0f;
         while (elapsed < halfDuration)
         {
@@ -228,24 +267,24 @@ public class PlayerMovement : MonoBehaviour
             float t = elapsed / halfDuration;
             transform.position = Vector3.Lerp(midPos, targetTile.transform.position, t);
 
-            // ÇáÎ¢Ğı×ª
+            // ï¿½ï¿½Î¢ï¿½ï¿½×ª
             transform.Rotate(Vector3.up, 180f * Time.deltaTime);
 
             yield return null;
         }
 
-        // ÖØÖÃĞı×ª
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ª
         transform.rotation = Quaternion.identity;
     }
 
-    // ·½·¨3£ºµ¯ÌøĞ§¹û£¨ÀàËÆµ¯»É£©
+    // ï¿½ï¿½ï¿½ï¿½3ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æµï¿½ï¿½É£ï¿½
     IEnumerator BounceJumpToTile(BoardTile targetTile)
     {
         Vector3 startPos = transform.position;
         Vector3 endPos = targetTile.transform.position;
-        endPos.y = originalY;
+        endPos.y = baseY;
 
-        int bounceCount = 3;  // µ¯Ìø´ÎÊı
+        int bounceCount = 3;  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         float bounceHeight = jumpHeight;
 
         for (int bounce = 0; bounce < bounceCount; bounce++)
@@ -258,42 +297,42 @@ public class PlayerMovement : MonoBehaviour
                 elapsed += Time.deltaTime;
                 float t = elapsed / bounceDuration;
 
-                // ÕıÏÒ²¨ÊµÏÖµ¯Ìø
+                // ï¿½ï¿½ï¿½Ò²ï¿½Êµï¿½Öµï¿½ï¿½ï¿½
                 float height = Mathf.Sin(t * Mathf.PI) * bounceHeight;
 
-                // Ë®Æ½ÒÆ¶¯ËÙ¶È²»Í¬
+                // Ë®Æ½ï¿½Æ¶ï¿½ï¿½Ù¶È²ï¿½Í¬
                 float horizontalT = (bounce + t) / bounceCount;
                 Vector3 horizontalPos = Vector3.Lerp(startPos, endPos, horizontalT);
 
                 transform.position = new Vector3(
                     horizontalPos.x,
-                    originalY + height,
+                    baseY + height,
                     horizontalPos.z
                 );
 
                 yield return null;
             }
 
-            // Ã¿´Îµ¯Ìø¸ß¶È¼õÉÙ
+            // Ã¿ï¿½Îµï¿½ï¿½ï¿½ï¿½ß¶È¼ï¿½ï¿½ï¿½
             bounceHeight *= 0.6f;
         }
 
         transform.position = endPos;
     }
 
-    // Á¢¼´ÒÆ¶¯µ½¸ñ×Ó£¨ÎŞ¶¯»­£©
+    // ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó£ï¿½ï¿½Ş¶ï¿½ï¿½ï¿½ï¿½ï¿½
     public void MoveToTileImmediate(BoardTile tile)
     {
         if (tile == null) return;
 
         Vector3 targetPos = tile.transform.position;
-        targetPos.y = originalY;
+        targetPos.y = baseY;
         transform.position = targetPos;
 
         currentTile = tile;
     }
 
-    // Ö±½Ó´«ËÍµ½Ö¸¶¨¸ñ×Ó
+    // Ö±ï¿½Ó´ï¿½ï¿½Íµï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public void TeleportToTile(BoardTile targetTile, bool withAnimation = false)
     {
         if (targetTile == null) return;
@@ -314,7 +353,7 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator TeleportWithEffect(BoardTile targetTile)
     {
-        // ´«ËÍĞ§¹û£ºÏÈÏûÊ§
+        // ï¿½ï¿½ï¿½ï¿½Ğ§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§
         float disappearTime = 0.3f;
         float elapsed = 0f;
         Vector3 originalScale = transform.localScale;
@@ -327,11 +366,11 @@ public class PlayerMovement : MonoBehaviour
             yield return null;
         }
 
-        // ÒÆ¶¯µ½Ä¿±êÎ»ÖÃ
+        // ï¿½Æ¶ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½Î»ï¿½ï¿½
         MoveToTileImmediate(targetTile);
         UpdatePlayerTileInfo(targetTile);
 
-        // ÔÙ³öÏÖ
+        // ï¿½Ù³ï¿½ï¿½ï¿½
         elapsed = 0f;
         while (elapsed < disappearTime)
         {
@@ -353,10 +392,10 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // ÌøÔ¾Ê±²¥·ÅÒôĞ§£¨¿ÉÑ¡£©
+    // ï¿½ï¿½Ô¾Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ§ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½
     void PlayJumpSound()
     {
-        // Èç¹ûÓĞAudioSource×é¼ş
+        // ï¿½ï¿½ï¿½ï¿½ï¿½AudioSourceï¿½ï¿½ï¿½
         AudioSource audioSource = GetComponent<AudioSource>();
         if (audioSource != null)
         {
@@ -364,7 +403,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // ÌøÔ¾Ê±Á£×ÓĞ§¹û£¨¿ÉÑ¡£©
+    // ï¿½ï¿½Ô¾Ê±ï¿½ï¿½ï¿½ï¿½Ğ§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½
     void PlayJumpParticle()
     {
         ParticleSystem particles = GetComponent<ParticleSystem>();
