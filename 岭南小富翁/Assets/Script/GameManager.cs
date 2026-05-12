@@ -622,11 +622,18 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        // 检查当前是否在起点（tileID == 0 或 tileType == Start）
+        bool isOnStartTile = (currentPlayer.currentTile.tileID == 0 ||
+                             currentPlayer.currentTile.tileType == BoardTile.TileType.Start);
+
         int previousIndex = (currentIndex - lastDiceValue) % boardManager.allTiles.Count;
         if (previousIndex < 0) previousIndex += boardManager.allTiles.Count;
 
-        if (previousIndex > currentIndex) // 经过了一圈
+        // 如果当前在起点位置，或者经过了一圈（从后向前越过起点）
+        if (isOnStartTile || previousIndex > currentIndex)
         {
+            Debug.Log($"{currentPlayer.playerName} {(isOnStartTile ? "停在起点" : "经过起点")}，触发起点事件");
+
             // 1. 发工资
             int salary = salaryAmount;
             currentPlayer.ReceiveCash(salary);
@@ -634,7 +641,7 @@ public class GameManager : MonoBehaviour
 
             if (uiManager != null)
             {
-                uiManager.ShowToast($"经过起点，获得{salary}元工资", 2f);
+                uiManager.ShowToast($"{(isOnStartTile ? "停在起点" : "经过起点")}，获得{salary}元工资", 2f);
             }
 
             // 2. 触发购买建筑阶段或允许移动

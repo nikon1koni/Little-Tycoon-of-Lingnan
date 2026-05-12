@@ -128,6 +128,24 @@ public class PlayerMovement : MonoBehaviour
                     stepsMoved++;
                     foundValidTile = true;
 
+                    // 检查是否到达或经过起点（tileID == 0 或 tileType == Start）
+                    if (candidateTile.tileID == 0 || candidateTile.tileType == BoardTile.TileType.Start)
+                    {
+                        Debug.Log($"玩家到达起点（tileID: {candidateTile.tileID}），停留在此处");
+
+                        // 确保玩家在起点的正确位置
+                        MoveToTileImmediate(candidateTile);
+
+                        isMoving = false;
+
+                        if (GameManager.Instance != null)
+                        {
+                            GameManager.Instance.OnPlayerMoveComplete();
+                        }
+
+                        yield break;  // 停止继续移动
+                    }
+
                     yield return new WaitForSeconds(0.05f);
                     break;
                 }
