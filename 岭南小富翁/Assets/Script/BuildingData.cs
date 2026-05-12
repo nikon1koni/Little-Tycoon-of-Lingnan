@@ -1,52 +1,52 @@
-ï»¿using UnityEngine;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewBuildingData", menuName = "Building/Building Data")]
 public class BuildingData : ScriptableObject
 {
-    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")]
+    [Header("½¨ÖþÀàÐÍ")]
     public BoardTile.BuildingType buildingType = BoardTile.BuildingType.None;
 
-    [Header("ï¿½È¼ï¿½ÏµÍ³")]
-    public bool isFinalLevel = false; // ï¿½Ç·ï¿½Îªï¿½ï¿½ï¿½ÕµÈ¼ï¿½
+    [Header("µÈ¼¶ÏµÍ³")]
+    public bool isFinalLevel = false;
 
-    [Header("Buffï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½")]
-    public float[] buffValues; // Buffï¿½ï¿½Öµï¿½ï¿½ï¿½é£¬ï¿½ï¿½ï¿½Ú²ï¿½Í¬ï¿½È¼ï¿½ï¿½ï¿½BuffÖµ
+    [Header("BuffÖµÊý×é")]
+    public float[] buffValues;
 
-    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢")]
-    public string buildingName = "ï¿½ï¿½ï¿½ï¿½";
+    [Header("½¨Öþ»ù±¾ÐÅÏ¢")]
+    public string buildingName = "½¨Öþ";
     public int purchasePrice = 100;
     public int upgradePrice = 50;
     public int minTileScale = 1;
     public int maxTileScale = 4;
     public Scale requiredScale = Scale.Small;
 
-    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")]
+    [Header("½¨Öþ¹¦ÄÜ")]
     public BuildingFunctionType functionType = BuildingFunctionType.Income;
 
-    [Header("ï¿½ï¿½ï¿½ë¹¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")]
-    public int baseIncome = 10; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-    public float incomeGrowthRate = 1.2f; // Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    [Header("ÊÕÈë¹¦ÄÜ²ÎÊý")]
+    public int baseIncome = 10;
+    public float incomeGrowthRate = 1.2f;
 
-    [Header("Buffï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")]
+    [Header("Buff¹¦ÄÜ²ÎÊý")]
     public BuffEffect buffEffect = BuffEffect.IncomeMultiplier;
     public float baseBuffValue = 0.1f;
     public float buffGrowthRate = 1.1f;
-    public float buffDuration = 10f; // Buffï¿½ï¿½ï¿½ï¿½Ê±ï¿½ä£¨ï¿½ë£©
+    public float buffDuration = 10f;
 
-    [Header("ï¿½ï¿½Ï¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")]
-    public int mixedBaseIncome = 5; // ï¿½ï¿½Ï¹ï¿½ï¿½Üµï¿½ï¿½ï¿½ï¿½ï¿½
+    [Header("»ìºÏ¹¦ÄÜ²ÎÊý")]
+    public int mixedBaseIncome = 5;
     public float mixedIncomeGrowthRate = 1.1f;
 
-    [Header("ï¿½Ó¾ï¿½")]
+    [Header("ÊÓ¾õ")]
     public Sprite buildingIcon;
     public GameObject buildingPrefab;
     public BuildingData nextLevelBuilding;
 
-    [Header("ï¿½ï¿½ï¿½ï¿½")]
+    [Header("ÃèÊö")]
     [TextArea(3, 5)]
-    public string description = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½";
+    public string description = "½¨ÖþÃèÊö";
 
-    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£Ã¶ï¿½ï¿½
+    // ¹æÄ£Ã¶¾Ù
     public enum Scale
     {
         Small = 1,
@@ -55,26 +55,26 @@ public class BuildingData : ScriptableObject
         ExtraLarge = 4
     }
 
-    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    // ½¨Öþ¹¦ÄÜÀàÐÍ
     public enum BuildingFunctionType
     {
-        Income,     // ï¿½ï¿½ï¿½ï¿½
-        Buff,       // ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½
-        Mixed       // ï¿½ï¿½ï¿½
+        Income,
+        Buff,
+        Mixed
     }
 
-    // BuffÐ§ï¿½ï¿½Ã¶ï¿½ï¿½
+    // BuffÐ§¹ûÃ¶¾Ù
     public enum BuffEffect
     {
-        MoveSpeedBoost,     // ï¿½Æ¶ï¿½ï¿½Ù¶ï¿½
-        DiceBoost,          // ï¿½ï¿½ï¿½Ó¼Ó³ï¿½
-        IncomeMultiplier,   // ï¿½ï¿½ï¿½ë±¶ï¿½ï¿½
-        DefenseBoost,       // ï¿½ï¿½ï¿½ï¿½ï¿½Ó³ï¿½
-        LuckBoost,          // ï¿½ï¿½ï¿½Ë¼Ó³ï¿½
-        AllIncomeBoost      // È«ï¿½ï¿½ï¿½ï¿½Ó³ï¿½
+        MoveSpeedBoost,
+        DiceBoost,
+        IncomeMultiplier,
+        DefenseBoost,
+        LuckBoost,
+        AllIncomeBoost
     }
 
-    // ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    // »ñÈ¡ÊÕÈë½ð¶î
     public int GetIncomeAmount(int level)
     {
         switch (functionType)
@@ -90,7 +90,7 @@ public class BuildingData : ScriptableObject
         }
     }
 
-    // ï¿½ï¿½È¡Buffï¿½ï¿½Öµ
+    // »ñÈ¡BuffÖµ
     public float GetBuffValue(int level)
     {
         if (functionType == BuildingFunctionType.Buff || functionType == BuildingFunctionType.Mixed)
@@ -100,48 +100,52 @@ public class BuildingData : ScriptableObject
         return 0f;
     }
 
-    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    // ¼ÆËãÊÕÈë
     private int CalculateIncome(int baseAmount, float growthRate, int level)
     {
         if (level <= 1) return baseAmount;
         return Mathf.RoundToInt(baseAmount * Mathf.Pow(growthRate, level - 1));
     }
 
-    // ï¿½ï¿½ï¿½Ø¿ï¿½ï¿½Ä£ï¿½Ç·ï¿½Æ¥ï¿½ï¿½
+    // ¼ì²éµØ¿é¹æÄ£ÊÇ·ñÆ¥Åä
     public bool CheckTileScale(int tileScale)
     {
         return tileScale >= minTileScale && tileScale <= maxTileScale;
     }
 
-    // ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    // »ñÈ¡½¨ÖþÃèÊö
     public string GetDescription(int level = 1)
     {
         string desc = $"{buildingName}\n";
-        desc += $"ï¿½Û¸ï¿½: {purchasePrice}ï¿½ï¿½ï¿½\n";
-        desc += $"ï¿½ï¿½Ä£Òªï¿½ï¿½: {minTileScale}-{maxTileScale}\n";
+        desc += $"¼Û¸ñ: {purchasePrice}½ð±Ò\n";
+        desc += $"¹æÄ£ÒªÇó: {minTileScale}-{maxTileScale}\n";
 
         switch (functionType)
         {
             case BuildingFunctionType.Income:
-                desc += $"ï¿½ï¿½ï¿½ï¿½: Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ {GetIncomeAmount(1)} ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\n";
+                desc += $"¹¦ÄÜ: Ã¿»ØºÏÊÕÈë {GetIncomeAmount(1)} ½ð±Ò\n";
                 if (level > 1)
                 {
-                    desc += $"ï¿½ï¿½Ç°ï¿½È¼ï¿½({level})ï¿½ï¿½ï¿½ï¿½: {GetIncomeAmount(level)} ï¿½ï¿½ï¿½";
+                    desc += $"µ±Ç°µÈ¼¶({level})ÊÕÈë: {GetIncomeAmount(level)} ½ð±Ò";
                 }
                 break;
 
             case BuildingFunctionType.Buff:
-                desc += $"ï¿½ï¿½ï¿½ï¿½: ï¿½á¹© {GetBuffEffectName(buffEffect)} ï¿½Ó³ï¿½\n";
-                desc += $"ï¿½ï¿½ï¿½ï¿½Öµ: {baseBuffValue * 100}%\n";
+                desc += $"¹¦ÄÜ: Ìá¹© {GetBuffEffectName(buffEffect)} ¼Ó³É\n";
+                desc += $"BuffÖµ: {baseBuffValue * 100}%\n";
                 if (buffDuration > 0)
                 {
-                    desc += $"ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½: {buffDuration}ï¿½ï¿½";
+                    desc += $"³ÖÐøÊ±¼ä: {buffDuration}Ãë";
+                }
+                else
+                {
+                    desc += "ÓÀ¾ÃÉúÐ§";
                 }
                 break;
 
             case BuildingFunctionType.Mixed:
-                desc += $"ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½+Buff)\n";
-                desc += $"ï¿½ï¿½ï¿½ï¿½: {GetIncomeAmount(1)} ï¿½ï¿½ï¿½\n";
+                desc += $"¹¦ÄÜ: »ìºÏ(ÊÕÈë+Buff)\n";
+                desc += $"ÊÕÈë: {GetIncomeAmount(1)} ½ð±Ò\n";
                 desc += $"Buff: {GetBuffEffectName(buffEffect)} {baseBuffValue * 100}%";
                 break;
         }
@@ -154,18 +158,18 @@ public class BuildingData : ScriptableObject
         return desc;
     }
 
-    // ï¿½ï¿½È¡BuffÐ§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    // »ñÈ¡BuffÐ§¹ûÃû³Æ
     public static string GetBuffEffectName(BuffEffect effect)
     {
         switch (effect)
         {
-            case BuffEffect.MoveSpeedBoost: return "ï¿½Æ¶ï¿½ï¿½Ù¶ï¿½";
-            case BuffEffect.DiceBoost: return "ï¿½ï¿½ï¿½Ó¼Ó³ï¿½";
-            case BuffEffect.IncomeMultiplier: return "ï¿½ï¿½ï¿½ë±¶ï¿½ï¿½";
-            case BuffEffect.DefenseBoost: return "ï¿½ï¿½ï¿½ï¿½ï¿½Ó³ï¿½";
-            case BuffEffect.LuckBoost: return "ï¿½ï¿½ï¿½Ë¼Ó³ï¿½";
-            case BuffEffect.AllIncomeBoost: return "È«ï¿½ï¿½ï¿½ï¿½Ó³ï¿½";
-            default: return "Î´ÖªÐ§ï¿½ï¿½";
+            case BuffEffect.MoveSpeedBoost: return "ÒÆ¶¯ËÙ¶È";
+            case BuffEffect.DiceBoost: return "÷»×Ó¼Ó³É";
+            case BuffEffect.IncomeMultiplier: return "ÊÕÈë±¶ÂÊ";
+            case BuffEffect.DefenseBoost: return "·ÀÓù¼Ó³É";
+            case BuffEffect.LuckBoost: return "ÐÒÔË¼Ó³É";
+            case BuffEffect.AllIncomeBoost: return "È«ÊÕÈë¼Ó³É";
+            default: return "Î´ÖªÐ§¹û";
         }
     }
 }

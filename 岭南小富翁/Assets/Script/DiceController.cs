@@ -1,28 +1,27 @@
-ï»¿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
 public class DiceController : MonoBehaviour
 {
-    [Header("UIï¿½ï¿½ï¿½ï¿½")]
+    [Header("UIÒýÓÃ")]
     public Button rollDiceButton;
     public Text diceResultText;
-    public Text diceAnimationText; // ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½
+    public Text diceAnimationText;
 
-    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")]
+    [Header("÷»×Ó²ÎÊý")]
     public int minDiceValue = 1;
     public int maxDiceValue = 6;
     public float animationDuration = 0.3f;
-    public float animationInterval = 0.05f;
 
-    [Header("ï¿½ï¿½Ð§")]
+    [Header("ÒôÐ§")]
     public AudioClip rollSound;
     public AudioClip stopSound;
 
-    [Header("ï¿½ï¿½Ò¹ï¿½ï¿½ï¿½")]
-    public GameManager gameManager; // ï¿½ï¿½ï¿½ï¿½GameManager
-    private AudioSource audioSource;
+    [Header("ÒýÓÃ")]
+    public GameManager gameManager;
 
+    private AudioSource audioSource;
     private bool isRolling = false;
     private int currentDiceValue = 0;
 
@@ -35,16 +34,10 @@ public class DiceController : MonoBehaviour
         }
 
         if (diceResultText != null)
-            diceResultText.text = "";  // ï¿½ï¿½Îªï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½
+            diceResultText.text = "";
 
         if (diceAnimationText != null)
             diceAnimationText.text = "";
-
-        //// ï¿½ó¶¨°ï¿½Å¥ï¿½Â¼ï¿½
-        //if (rollDiceButton != null)
-        //{
-        //    rollDiceButton.onClick.AddListener(OnRollDiceClicked);
-        //}
     }
 
     public void StartRollDice()
@@ -55,72 +48,53 @@ public class DiceController : MonoBehaviour
         }
         else
         {
-            Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¹ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¸ï¿½ï¿½ï¿½ï¿½");
+            Debug.Log("÷»×ÓÕýÔÚ¹ö¶¯ÖÐ£¬ÇëÉÔºò...");
         }
-
     }
-    // ï¿½ï¿½Å¥ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
-    //public void OnRollDiceClicked()
-    //{
-    //    if (!isRolling && gameManager != null && gameManager.CanRollDice())
-    //    {
-    //        StartCoroutine(RollDice());
-    //    }
-    //}
 
     public IEnumerator RollDice()
     {
         isRolling = true;
 
-        // 1. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"×¼ï¿½ï¿½"ï¿½Ä±ï¿½
         if (diceResultText != null)
             diceResultText.text = "";
 
         if (diceAnimationText != null)
             diceAnimationText.text = "";
 
-        // 2. ï¿½ï¿½ï¿½Ã°ï¿½Å¥
         if (rollDiceButton != null)
             rollDiceButton.interactable = false;
 
-        // 3. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§
         if (rollSound != null)
             audioSource.PlayOneShot(rollSound);
 
-        // 4. ï¿½ï¿½ï¿½Ù¶ï¿½ï¿½ï¿½ï¿½ï¿½0.2ï¿½ë£©
         float elapsed = 0f;
-        int animationSteps = 5; // ï¿½ï¿½Ê¾5ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        int animationSteps = 5;
 
         for (int i = 0; i < animationSteps; i++)
         {
             int randomValue = Random.Range(minDiceValue, maxDiceValue + 1);
 
-            // Í¬Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä±ï¿½
             if (diceAnimationText != null)
                 diceAnimationText.text = randomValue.ToString();
 
             if (diceResultText != null)
                 diceResultText.text = randomValue.ToString();
 
-            yield return new WaitForSeconds(0.04f); // Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾0.04ï¿½ï¿½
+            yield return new WaitForSeconds(0.04f);
         }
 
-        // 5. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ½ï¿½ï¿½
         currentDiceValue = Random.Range(minDiceValue, maxDiceValue + 1);
-        Debug.Log($"ï¿½ï¿½ï¿½Ó½ï¿½ï¿½: {currentDiceValue}");
 
-        // 6. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½Õ½ï¿½ï¿½
         if (diceResultText != null)
             diceResultText.text = currentDiceValue.ToString();
 
         if (diceAnimationText != null)
             diceAnimationText.text = currentDiceValue.ToString();
 
-        // 7. ï¿½ï¿½ï¿½ï¿½Í£Ö¹ï¿½ï¿½Ð§
         if (stopSound != null)
             audioSource.PlayOneShot(stopSound);
 
-        // 8. ï¿½ï¿½ï¿½ï¿½Í¨ÖªGameManagerï¿½ï¿½Ê¼ï¿½Æ¶ï¿½
         if (gameManager != null)
         {
             gameManager.OnDiceRolled(currentDiceValue);
@@ -129,21 +103,18 @@ public class DiceController : MonoBehaviour
         isRolling = false;
     }
 
-    // ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Öµ
     public int GetDiceValue()
     {
         return currentDiceValue;
     }
 
-    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public void ResetDice()
     {
         currentDiceValue = 0;
         if (diceResultText != null)
-            diceResultText.text = "×¼ï¿½ï¿½";
+            diceResultText.text = "×¼±¸";
     }
 
-    // ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public bool CanRoll()
     {
         return !isRolling;

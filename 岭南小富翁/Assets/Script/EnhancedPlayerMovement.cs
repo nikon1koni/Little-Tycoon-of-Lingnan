@@ -1,35 +1,34 @@
-﻿// EnhancedPlayerMovement.cs
+// EnhancedPlayerMovement.cs
 using System.Collections;
 using UnityEngine;
 
 public class EnhancedPlayerMovement : MonoBehaviour
 {
-    [Header("��Ծ����")]
+    [Header("��Ծ����")]
     public float jumpPower = 2f;
     public float jumpSpeed = 5f;
     public AnimationCurve jumpCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
-    [Header("��תЧ��")]
+    [Header("��תЧ��")]
     public float rotationSpeed = 360f;
     public bool rotateDuringJump = true;
 
-    [Header("����Ч��")]
+    [Header("��ѹ����Ч��")]
     public float squashAmount = 0.2f;
     public float stretchAmount = 0.3f;
 
-    [Header("��βЧ��")]
+    [Header("β��Ч��")]
     public bool enableTrail = true;
     public float trailTime = 0.2f;
 
-    [Header("Ӱ��Ч��")]
+    [Header("��ӰЧ��")]
     public GameObject shadowPrefab;
     private GameObject shadow;
 
-    [Header("��Ч")]
+    [Header("��Ч")]
     public AudioClip jumpSound;
     public AudioClip landSound;
 
-    // ״̬
     private bool isJumping = false;
     private Vector3 originalScale;
     private TrailRenderer trail;
@@ -38,7 +37,6 @@ public class EnhancedPlayerMovement : MonoBehaviour
     {
         originalScale = transform.localScale;
 
-        // ��ʼ����βЧ��
         if (enableTrail)
         {
             trail = gameObject.AddComponent<TrailRenderer>();
@@ -49,7 +47,6 @@ public class EnhancedPlayerMovement : MonoBehaviour
             trail.endColor = new Color(1, 1, 1, 0);
         }
 
-        // ����Ӱ��
         if (shadowPrefab != null)
         {
             shadow = Instantiate(shadowPrefab, transform.position, Quaternion.identity);
@@ -58,7 +55,6 @@ public class EnhancedPlayerMovement : MonoBehaviour
         }
     }
 
-    // ���ƶ�����
     public void JumpToNextTile(BoardTile targetTile, int stepCount = 1)
     {
         if (isJumping) return;
@@ -71,25 +67,18 @@ public class EnhancedPlayerMovement : MonoBehaviour
 
         for (int i = 0; i < steps; i++)
         {
-            // ��ȡ��ǰ��Ŀ��λ��
             Vector3 startPos = transform.position;
             BoardTile nextTile = GetNextTile(targetTile, i);
             Vector3 endPos = nextTile.transform.position;
             endPos.y = startPos.y;
 
-            // ������Ծ
             yield return StartCoroutine(SingleJump(startPos, endPos));
-
-            // ���Ч��
             yield return StartCoroutine(LandingEffect());
-
-            // ����ͣ��
             yield return new WaitForSeconds(0.1f);
         }
 
         isJumping = false;
 
-        // ���������¼�
         if (steps > 0)
         {
             targetTile.OnLanded(GetComponent<Player>());
@@ -105,7 +94,6 @@ public class EnhancedPlayerMovement : MonoBehaviour
         Vector3 controlPoint = (startPos + endPos) / 2;
         controlPoint.y += jumpPower;
 
-        // ������Ծ��Ч
         if (jumpSound != null)
             AudioSource.PlayClipAtPoint(jumpSound, transform.position, 0.5f);
 
@@ -115,20 +103,16 @@ public class EnhancedPlayerMovement : MonoBehaviour
             float t = elapsed / duration;
             float curveT = jumpCurve.Evaluate(t);
 
-            // ���������߼���λ��
             Vector3 position = CalculateBezierPoint(startPos, controlPoint, endPos, curveT);
             transform.position = position;
 
-            // ��תЧ��
             if (rotateDuringJump)
             {
                 transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
             }
 
-            // ����Ч�������죩
             ApplyJumpSquashAndStretch(t);
 
-            // ����Ӱ��λ��
             if (shadow != null)
             {
                 shadow.transform.position = new Vector3(position.x, 0, position.z);
@@ -138,7 +122,6 @@ public class EnhancedPlayerMovement : MonoBehaviour
             yield return null;
         }
 
-        // ȷ������λ��׼ȷ
         transform.position = endPos;
     }
 
@@ -159,14 +142,14 @@ public class EnhancedPlayerMovement : MonoBehaviour
     {
         Vector3 newScale = originalScale;
 
-        if (t < 0.5f) // �����׶Σ�����
+        if (t < 0.5f)
         {
             float stretchT = t * 2;
             newScale.y = originalScale.y * (1 + stretchAmount * stretchT);
             newScale.x = originalScale.x * (1 - squashAmount * stretchT * 0.5f);
             newScale.z = originalScale.z * (1 - squashAmount * stretchT * 0.5f);
         }
-        else // �½��׶Σ�ѹ��
+        else
         {
             float squashT = (t - 0.5f) * 2;
             newScale.y = originalScale.y * (1 - squashAmount * squashT);
@@ -179,11 +162,9 @@ public class EnhancedPlayerMovement : MonoBehaviour
 
     IEnumerator LandingEffect()
     {
-        // ���������Ч
         if (landSound != null)
             AudioSource.PlayClipAtPoint(landSound, transform.position, 0.5f);
 
-        // �����Ч��
         Vector3 originalPos = transform.position;
         float shakeAmount = 0.1f;
         float shakeDuration = 0.1f;
@@ -201,7 +182,6 @@ public class EnhancedPlayerMovement : MonoBehaviour
         transform.position = originalPos;
         transform.localScale = originalScale;
 
-        // ����Ӱ��
         if (shadow != null)
         {
             shadow.transform.localScale = Vector3.one;
@@ -210,8 +190,6 @@ public class EnhancedPlayerMovement : MonoBehaviour
 
     BoardTile GetNextTile(BoardTile targetTile, int stepOffset)
     {
-        // ���ݵ�ǰ���λ�ü�����һ������
-        // ������Ҫ������BoardManager�߼�
         if (BoardManager.Instance == null) return targetTile;
 
         Player player = GetComponent<Player>();
@@ -225,7 +203,6 @@ public class EnhancedPlayerMovement : MonoBehaviour
         return targetTile;
     }
 
-    // ����Ϊ����״̬
     void ResetToNormal()
     {
         transform.localScale = originalScale;

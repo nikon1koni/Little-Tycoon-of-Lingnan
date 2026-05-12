@@ -1,30 +1,30 @@
-ï»¿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [Header("è·³è·ƒç§»åŠ¨å‚æ•°")]
-    public float jumpHeight = 1.5f;      // è·³è·ƒé«˜åº¦
-    public float jumpDuration = 0.5f;    // å•æ¬¡è·³è·ƒæŒç»­æ—¶é—´
-    public float landingDelay = 0.1f;    // è½åœ°ååœé¡¿æ—¶é—´
-    public float heightOffset = 0.375f;   // ç©å®¶åœ¨åœ°å—ä¸Šçš„é«˜åº¦åç§»ï¼ˆåœ°å—é«˜åº¦çš„ä¸€åŠ+ç©å®¶é«˜åº¦çš„ä¸€åŠï¼‰
+    [Header("ÌøÔ¾ÒÆ¶¯²ÎÊı")]
+    public float jumpHeight = 1.5f;      // ÌøÔ¾¸ß¶È
+    public float jumpDuration = 0.5f;    // µ¥´ÎÌøÔ¾³ÖĞøÊ±¼ä
+    public float landingDelay = 0.1f;    // ÂäµØºóÍ£¶ÙÊ±¼ä
+    public float heightOffset = 0.375f;   // Íæ¼ÒÔÚµØ¿éÉÏµÄ¸ß¶ÈÆ«ÒÆ£¨µØ¿é¸ß¶ÈµÄÒ»°ë+Íæ¼Ò¸ß¶ÈµÄÒ»°ë£©
 
-    [Header("çŠ¶æ€")]
+    [Header("×´Ì¬")]
     [HideInInspector] public bool isMoving = false;
     [HideInInspector] public BoardTile currentTile;
 
-    // ç§æœ‰å˜é‡
+    // Ë½ÓĞ±äÁ¿
     private Player player;
     private Vector3 originalScale;
-    private float baseY;  // åŸºç¡€Yåæ ‡
+    private float baseY;  // »ù´¡Y×ø±ê
 
     void Start()
     {
         player = GetComponent<Player>();
         originalScale = transform.localScale;
 
-        // è®¡ç®—åŸºç¡€Yåæ ‡ï¼ˆåŸºäºèµ·å§‹åœ°å—ä½ç½®+é«˜åº¦åç§»ï¼‰
+        // ¼ÆËã»ù´¡Y×ø±ê£¨»ùÓÚÆğÊ¼µØ¿éÎ»ÖÃ+¸ß¶ÈÆ«ÒÆ£©
         if (BoardManager.Instance != null && BoardManager.Instance.allTiles.Count > 0)
         {
             BoardTile startTile = BoardManager.Instance.GetTileByID(0);
@@ -34,36 +34,32 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                baseY = transform.position.y + heightOffset; // å›é€€æ–¹æ¡ˆ
+                baseY = transform.position.y + heightOffset; // »ØÍË·½°¸
             }
         }
         else
         {
-            baseY = transform.position.y + heightOffset; // å›é€€æ–¹æ¡ˆ
+            baseY = transform.position.y + heightOffset; // »ØÍË·½°¸
         }
 
-        // åˆå§‹åŒ–ä½ç½®
+        // ³õÊ¼»¯Î»ÖÃ
         InitializeStartPosition();
 
-        // å»¶è¿Ÿä¿®æ­£ï¼šç¡®ä¿åœ¨å…¶ä»–è„šæœ¬ï¼ˆå¦‚GameManagerï¼‰è®¾ç½®ä½ç½®åï¼Œæœ€ç»ˆä½ç½®æ­£ç¡®
+        // ÑÓ³ÙĞŞÕı£ºÈ·±£ÔÚÆäËû½Å±¾£¨ÈçGameManager£©ÉèÖÃÎ»ÖÃºó£¬×îÖÕÎ»ÖÃÕıÈ·
         StartCoroutine(FinalPositionCorrection());
     }
 
-    // æœ€ç»ˆä½ç½®ä¿®æ­£åç¨‹ï¼ˆè§£å†³åˆå§‹åŒ–æ—¶åºé—®é¢˜ï¼‰
+    // ×îÖÕÎ»ÖÃĞŞÕıĞ­³Ì£¨½â¾ö³õÊ¼»¯Ê±ĞòÎÊÌâ£©
     IEnumerator FinalPositionCorrection()
     {
-        // ç­‰å¾…2å¸§ï¼Œç¡®ä¿æ‰€æœ‰ Start() æ–¹æ³•éƒ½æ‰§è¡Œå®Œæ¯•
         yield return null;
         yield return null;
 
-        // å¼ºåˆ¶ä¿®æ­£Yåæ ‡åˆ°æ­£ç¡®é«˜åº¦ï¼ˆæ— è®ºåœ¨å“ªä¸ªåœ°å—ï¼‰
         if (player != null && player.currentTile != null)
         {
             Vector3 correctedPos = transform.position;
             correctedPos.y = player.currentTile.transform.position.y + heightOffset;
             transform.position = correctedPos;
-
-            Debug.Log($"[PlayerMovement] ä½ç½®ä¿®æ­£å®Œæˆ: Y={correctedPos.y:F3}, å½“å‰åœ°å—: {player.currentTile.tileName}");
         }
     }
 
@@ -81,7 +77,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // ç§»åŠ¨æŒ‡å®šçš„æ­¥æ•°ï¼Œå¸¦åŠ¨ç”»
+    // ÒÆ¶¯Ö¸¶¨µÄ²½Êı£¬´ø¶¯»­
     public void MoveSteps(int steps)
     {
         if (isMoving) return;
@@ -90,59 +86,43 @@ public class PlayerMovement : MonoBehaviour
         StartCoroutine(MoveWithJumpAnimation(steps));
     }
 
-    // è·³è·ƒç§»åŠ¨åç¨‹
+    // ÌøÔ¾ÒÆ¶¯Ğ­³Ì
     IEnumerator MoveWithJumpAnimation(int steps)
     {
         isMoving = true;
         List<BoardTile> allTiles = BoardManager.Instance.allTiles;
         int stepsMoved = 0;
 
-        // å…³é”®ä¿®å¤1ï¼šç¡®ä¿å½“å‰ä½ç½®
         if (player.currentTile.tileID < 0)
         {
-            Debug.LogError($"é”™è¯¯ï¼šå½“å‰ä½ç½® {player.currentTile.tileName} æ˜¯æ— æ•ˆåœ°å— (ID: {player.currentTile.tileID})");
-            // è‡ªåŠ¨å¯»æ‰¾é™„è¿‘çš„å¯è¡Œèµ°åœ°å—
             BoardTile correctedTile = FindNearestWalkableTile();
             if (correctedTile != null)
             {
-                Debug.Log($"ä¿®æ­£ä½ç½®åˆ°: {correctedTile.tileName}");
                 MoveToTileImmediate(correctedTile);
                 player.currentTile = correctedTile;
                 player.currentTileIndex = allTiles.IndexOf(correctedTile);
             }
         }
 
-        Debug.Log($"ç§»åŠ¨å¼€å§‹: ä» {player.currentTile.tileName} (ID: {player.currentTile.tileID}) å¼€å§‹ç§»åŠ¨ {steps} æ­¥");
-
         while (stepsMoved < steps)
         {
-            // å…³é”®ä¿®å¤2ï¼šç¡®ä¿ä»æ­£ç¡®çš„åœ°å—å¼€å§‹
             int currentTileIndex = allTiles.IndexOf(player.currentTile);
-            if (currentTileIndex < 0)
-            {
-                Debug.LogError("æ‰¾ä¸åˆ°å½“å‰ä½ç½®çš„åœ°å—ï¼");
-                break;
-            }
+            if (currentTileIndex < 0) break;
 
             int startIndex = (currentTileIndex + 1) % allTiles.Count;
             int currentSearchIndex = startIndex;
             bool foundValidTile = false;
-
-            // å¯»æ‰¾ä¸‹ä¸€ä¸ªå¯è¡Œèµ°åœ°å—
             int searchCount = 0;
+
             do
             {
                 BoardTile candidateTile = allTiles[currentSearchIndex];
                 searchCount++;
 
-                if (candidateTile.tileID >= 0) // åˆæ³•çš„å¯è¡Œèµ°åœ°å—
+                if (candidateTile.tileID >= 0)
                 {
-                    Debug.Log($"ç¬¬{stepsMoved + 1}æ­¥: ä» {player.currentTile.tileName} ç§»åŠ¨åˆ° {candidateTile.tileName} (ID: {candidateTile.tileID})");
-
-                    // ç§»åŠ¨åˆ°ç›®æ ‡
                     yield return StartCoroutine(JumpToTile(candidateTile));
 
-                    // æ›´æ–°ä½ç½®
                     player.currentTile = candidateTile;
                     player.currentTileIndex = currentSearchIndex;
                     stepsMoved++;
@@ -151,23 +131,13 @@ public class PlayerMovement : MonoBehaviour
                     yield return new WaitForSeconds(0.05f);
                     break;
                 }
-                else
-                {
-                    Debug.Log($"è·³è¿‡äº†æ— æ•ˆåœ°å—: {candidateTile.tileName} (ID: {candidateTile.tileID})");
-                }
 
                 currentSearchIndex = (currentSearchIndex + 1) % allTiles.Count;
 
             } while (currentSearchIndex != startIndex && searchCount < allTiles.Count);
 
-            if (!foundValidTile)
-            {
-                Debug.LogError("æ²¡æœ‰æ‰¾åˆ°å¯ç§»åŠ¨çš„ç›®æ ‡åœ°å—ï¼Œè¯·æ£€æŸ¥åœ°å›¾é…ç½®ï¼");
-                break;
-            }
+            if (!foundValidTile) break;
         }
-
-        Debug.Log($"ç§»åŠ¨å®Œæˆ: æ€»å…±ç§»åŠ¨äº† {stepsMoved} æ­¥");
 
         isMoving = false;
 
@@ -177,7 +147,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // å¯»æ‰¾é™„è¿‘çš„å¯è¡Œèµ°åœ°å—
+    // Ñ°ÕÒ¸½½üµÄ¿ÉĞĞ×ßµØ¿é
     private BoardTile FindNearestWalkableTile()
     {
         List<BoardTile> allTiles = BoardManager.Instance.allTiles;
@@ -185,7 +155,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (currentIndex < 0) return null;
 
-        // å‘å‰å¯»æ‰¾
+        // ÏòÇ°Ñ°ÕÒ
         for (int i = 1; i < allTiles.Count; i++)
         {
             int forwardIndex = (currentIndex + i) % allTiles.Count;
@@ -198,15 +168,15 @@ public class PlayerMovement : MonoBehaviour
         return null;
     }
 
-    // æ–¹æ¡ˆ1ï¼šç®€å•çš„æ­£å¼¦æ³¢è·³è·ƒåŠ¨ç”»
+    // ·½°¸1£º¼òµ¥µÄÕıÏÒ²¨ÌøÔ¾¶¯»­
     IEnumerator JumpToTile(BoardTile targetTile)
     {
         Vector3 startPos = transform.position;
         Vector3 endPos = targetTile.transform.position;
         endPos.y = baseY;
 
-        // ä½¿ç”¨publicçš„jumpDurationå‚æ•° (åº”è¯¥æ˜¯0.5f)
-        float duration = jumpDuration;  // æ³¨æ„ï¼šä½¿ç”¨å‚æ•°è€Œä¸æ˜¯ç¡¬ç¼–ç 
+        // Ê¹ÓÃpublicµÄjumpDuration²ÎÊı (Ó¦¸ÃÊÇ0.5f)
+        float duration = jumpDuration;  // ×¢Òâ£ºÊ¹ÓÃ²ÎÊı¶ø²»ÊÇÓ²±àÂë
         float elapsed = 0f;
 
         while (elapsed < duration)
@@ -214,13 +184,13 @@ public class PlayerMovement : MonoBehaviour
             elapsed += Time.deltaTime;
             float t = elapsed / duration;
 
-            // è®¡ç®—å½“å‰é«˜åº¦ï¼ˆæ­£å¼¦æ›²çº¿ï¼‰
+            // ¼ÆËãµ±Ç°¸ß¶È£¨ÕıÏÒÇúÏß£©
             float height = Mathf.Sin(t * Mathf.PI) * jumpHeight;
 
-            // æ°´å¹³ä½ç½®
+            // Ë®Æ½Î»ÖÃ
             Vector3 horizontalPos = Vector3.Lerp(startPos, endPos, t);
 
-            // æœ€ç»ˆä½ç½® = æ°´å¹³ä½ç½® + é«˜åº¦
+            // ×îÖÕÎ»ÖÃ = Ë®Æ½Î»ÖÃ + ¸ß¶È
             transform.position = new Vector3(
                 horizontalPos.x,
                 baseY + height,
@@ -230,22 +200,22 @@ public class PlayerMovement : MonoBehaviour
             yield return null;
         }
 
-        // ç¡®ä¿ä½ç½®æ­£ç¡®
+        // È·±£Î»ÖÃÕıÈ·
         transform.position = endPos;
         transform.localScale = originalScale;
     }
 
-    // æ–¹æ¡ˆ2ï¼šæŠ›ç‰©çº¿è·³è·ƒï¼ˆç¬ç§»æ–¹å¼ï¼Œç›´æ¥è·³è¿‡å»ï¼‰
+    // ·½°¸2£ºÅ×ÎïÏßÌøÔ¾£¨Ë²ÒÆ·½Ê½£¬Ö±½ÓÌø¹ıÈ¥£©
     IEnumerator TeleportJumpToTile(BoardTile targetTile)
     {
-        // èµ·å§‹ä½ç½®
+        // ÆğÊ¼Î»ÖÃ
         Vector3 startPos = transform.position;
         Vector3 midPos = (startPos + targetTile.transform.position) / 2;
         midPos.y += jumpHeight;
 
         float halfDuration = jumpDuration / 2;
 
-        // å‰åŠæ®µï¼šè·³åˆ°ç©ºä¸­
+        // Ç°°ë¶Î£ºÌøµ½¿ÕÖĞ
         float elapsed = 0f;
         while (elapsed < halfDuration)
         {
@@ -253,13 +223,13 @@ public class PlayerMovement : MonoBehaviour
             float t = elapsed / halfDuration;
             transform.position = Vector3.Lerp(startPos, midPos, t);
 
-            // è½»å¾®æ—‹è½¬
+            // ÇáÎ¢Ğı×ª
             transform.Rotate(Vector3.up, 180f * Time.deltaTime);
 
             yield return null;
         }
 
-        // ååŠæ®µï¼šè·³ä¸‹æ¥
+        // ºó°ë¶Î£ºÌøÏÂÀ´
         elapsed = 0f;
         while (elapsed < halfDuration)
         {
@@ -267,24 +237,24 @@ public class PlayerMovement : MonoBehaviour
             float t = elapsed / halfDuration;
             transform.position = Vector3.Lerp(midPos, targetTile.transform.position, t);
 
-            // è½»å¾®æ—‹è½¬
+            // ÇáÎ¢Ğı×ª
             transform.Rotate(Vector3.up, 180f * Time.deltaTime);
 
             yield return null;
         }
 
-        // é‡ç½®æ—‹è½¬
+        // ÖØÖÃĞı×ª
         transform.rotation = Quaternion.identity;
     }
 
-    // æ–¹æ¡ˆ3ï¼šå¼¹è·³æ•ˆæœï¼ˆå¤šæ¬¡å¼¹è·³å®Œæˆï¼‰
+    // ·½°¸3£ºµ¯ÌøĞ§¹û£¨¶à´Îµ¯ÌøÍê³É£©
     IEnumerator BounceJumpToTile(BoardTile targetTile)
     {
         Vector3 startPos = transform.position;
         Vector3 endPos = targetTile.transform.position;
         endPos.y = baseY;
 
-        int bounceCount = 3;  // å¼¹è·³æ¬¡æ•°
+        int bounceCount = 3;  // µ¯Ìø´ÎÊı
         float bounceHeight = jumpHeight;
 
         for (int bounce = 0; bounce < bounceCount; bounce++)
@@ -297,10 +267,10 @@ public class PlayerMovement : MonoBehaviour
                 elapsed += Time.deltaTime;
                 float t = elapsed / bounceDuration;
 
-                // ä½¿ç”¨æ­£å¼¦å®ç°å¼¹è·³
+                // Ê¹ÓÃÕıÏÒÊµÏÖµ¯Ìø
                 float height = Mathf.Sin(t * Mathf.PI) * bounceHeight;
 
-                // æ°´å¹³ç§»åŠ¨é€Ÿåº¦ä¸åŒ
+                // Ë®Æ½ÒÆ¶¯ËÙ¶È²»Í¬
                 float horizontalT = (bounce + t) / bounceCount;
                 Vector3 horizontalPos = Vector3.Lerp(startPos, endPos, horizontalT);
 
@@ -313,14 +283,14 @@ public class PlayerMovement : MonoBehaviour
                 yield return null;
             }
 
-            // æ¯æ¬¡å¼¹è·³é«˜åº¦é€’å‡
+            // Ã¿´Îµ¯Ìø¸ß¶Èµİ¼õ
             bounceHeight *= 0.6f;
         }
 
         transform.position = endPos;
     }
 
-    // ç«‹å³ç§»åŠ¨åˆ°ç›®æ ‡ä½ç½®ï¼Œæ— åŠ¨ç”»
+    // Á¢¼´ÒÆ¶¯µ½Ä¿±êÎ»ÖÃ£¬ÎŞ¶¯»­
     public void MoveToTileImmediate(BoardTile tile)
     {
         if (tile == null) return;
@@ -332,7 +302,7 @@ public class PlayerMovement : MonoBehaviour
         currentTile = tile;
     }
 
-    // ç›´æ¥ä¼ é€åˆ°æŒ‡å®šåœ°å—
+    // Ö±½Ó´«ËÍµ½Ö¸¶¨µØ¿é
     public void TeleportToTile(BoardTile targetTile, bool withAnimation = false)
     {
         if (targetTile == null) return;
@@ -353,7 +323,7 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator TeleportWithEffect(BoardTile targetTile)
     {
-        // æ¶ˆå¤±æ•ˆæœï¼šé€æ¸æ¶ˆå¤±
+        // ÏûÊ§Ğ§¹û£ºÖğ½¥ÏûÊ§
         float disappearTime = 0.3f;
         float elapsed = 0f;
         Vector3 originalScale = transform.localScale;
@@ -366,11 +336,11 @@ public class PlayerMovement : MonoBehaviour
             yield return null;
         }
 
-        // ç§»åŠ¨åˆ°ç›®æ ‡ä½ç½®
+        // ÒÆ¶¯µ½Ä¿±êÎ»ÖÃ
         MoveToTileImmediate(targetTile);
         UpdatePlayerTileInfo(targetTile);
 
-        // å†æ¬¡å‡ºç°
+        // ÔÙ´Î³öÏÖ
         elapsed = 0f;
         while (elapsed < disappearTime)
         {
@@ -392,10 +362,10 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // è·³è·ƒæ—¶æ’­æ”¾éŸ³æ•ˆï¼ˆå¯é€‰ï¼‰
+    // ÌøÔ¾Ê±²¥·ÅÒôĞ§£¨¿ÉÑ¡£©
     void PlayJumpSound()
     {
-        // éœ€è¦æ·»åŠ AudioSourceç»„ä»¶
+        // ĞèÒªÌí¼ÓAudioSource×é¼ş
         AudioSource audioSource = GetComponent<AudioSource>();
         if (audioSource != null)
         {
@@ -403,7 +373,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // è·³è·ƒæ—¶æ’­æ”¾ç²’å­æ•ˆæœï¼ˆå¯é€‰ï¼‰
+    // ÌøÔ¾Ê±²¥·ÅÁ£×ÓĞ§¹û£¨¿ÉÑ¡£©
     void PlayJumpParticle()
     {
         ParticleSystem particles = GetComponent<ParticleSystem>();

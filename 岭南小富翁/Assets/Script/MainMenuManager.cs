@@ -1,53 +1,45 @@
-ï»¿using UnityEngine;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainMenuManager : MonoBehaviour
 {
-    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")]
-    [SerializeField] private string gameSceneName = "New"; // Òªï¿½ï¿½ï¿½Øµï¿½ï¿½ï¿½Ï·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    [Header("³¡¾°ÉèÖÃ")]
+    [SerializeField] private string gameSceneName = "New";
 
-    [Header("ï¿½ï¿½Å¥ï¿½ï¿½ï¿½Ã£ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×§ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½Ò£ï¿½")]
+    [Header("°´Å¥ÅäÖÃ")]
     [SerializeField] private Button startButton;
     [SerializeField] private Button quitButton;
 
     private void Start()
     {
-        // ï¿½ï¿½ï¿½Î´ï¿½Ö¶ï¿½ï¿½ï¿½×§ï¿½ï¿½Å¥ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ²ï¿½ï¿½ï¿½
         if (startButton == null)
             startButton = GameObject.Find("StartButton")?.GetComponent<Button>();
         if (quitButton == null)
             quitButton = GameObject.Find("QuitButton")?.GetComponent<Button>();
 
-        // ï¿½ó¶¨¼ï¿½ï¿½ï¿½ï¿½Â¼ï¿½
         if (startButton != null)
             startButton.onClick.AddListener(OnStartGame);
         else
-            Debug.LogError("Î´ï¿½Òµï¿½ï¿½ï¿½Ê¼ï¿½ï¿½Å¥ï¿½ï¿½ï¿½ï¿½È·ï¿½ï¿½ï¿½ï¿½Å¥ï¿½ï¿½ï¿½ï¿½Îª StartButton ï¿½ï¿½ï¿½Ö¶ï¿½ï¿½ï¿½×§ï¿½ï¿½Öµï¿½ï¿½");
+            Debug.LogError("Î´ÕÒµ½¿ªÊ¼°´Å¥£¬ÇëÈ·±£°´Å¥Ãû³ÆÎªStartButton»òÊÖ¶¯ÍÏ×§");
 
         if (quitButton != null)
             quitButton.onClick.AddListener(OnQuitGame);
         else
-            Debug.LogError("Î´ï¿½Òµï¿½ï¿½Ë³ï¿½ï¿½ï¿½Å¥ï¿½ï¿½ï¿½ï¿½È·ï¿½ï¿½ï¿½ï¿½Å¥ï¿½ï¿½ï¿½ï¿½Îª QuitButton ï¿½ï¿½ï¿½Ö¶ï¿½ï¿½ï¿½×§ï¿½ï¿½Öµï¿½ï¿½");
+            Debug.LogError("Î´ÕÒµ½ÍË³ö°´Å¥£¬ÇëÈ·±£°´Å¥Ãû³ÆÎªQuitButton»òÊÖ¶¯ÍÏ×§");
     }
 
-    /// <summary>
-    /// ï¿½ï¿½Ê¼ï¿½ï¿½Ï·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-    /// </summary>
     public void OnStartGame()
     {
         if (!string.IsNullOrEmpty(gameSceneName))
             SceneManager.LoadScene(gameSceneName);
         else
-            Debug.LogError("ï¿½ï¿½ï¿½ï¿½Ð´ï¿½ï¿½Ï·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ£ï¿½");
+            Debug.LogError("Î´ÉèÖÃÓÎÏ·³¡¾°Ãû³Æ");
     }
 
-    /// <summary>
-    /// ï¿½Ë³ï¿½ï¿½ï¿½Ï·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-    /// </summary>
     public void OnQuitGame()
     {
-        Debug.Log("ï¿½Ë³ï¿½ï¿½ï¿½Ï·");
+        Debug.Log("ÍË³öÓÎÏ·");
 
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
