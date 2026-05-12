@@ -513,33 +513,16 @@ public class UIManager : MonoBehaviour
     {
         ClearTileHighlights();
 
-        if (BoardManager.Instance == null)
-        {
-            UnityEngine.Debug.LogWarning("BoardManager.Instance 为空，无法高亮地块");
-            return;
-        }
-
-        UnityEngine.Debug.Log($"开始高亮可放置地块，需求规模: {requiredScale}");
-        UnityEngine.Debug.Log($"玩家: {player.playerName}");
+        if (BoardManager.Instance == null) return;
 
         int highlightCount = 0;
 
         foreach (BoardTile tile in BoardManager.Instance.allTiles)
         {
-            // 记录地块信息
-            UnityEngine.Debug.Log($"检查地块: {tile.tileName}, 类型: {tile.tileType}, 规模: {tile.tileScale}, 所有者: {tile.ownerPlayer?.playerName ?? "无主"}");
+            if (tile.tileType == BoardTile.TileType.Start) continue;
 
-            // 检查地块是否可放置建筑
             if (IsTilePlaceable(tile, player, requiredScale))
             {
-                // 额外检查：确保不是起始格子
-                if (tile.tileType == BoardTile.TileType.Start)
-                {
-                    UnityEngine.Debug.LogError($"严重错误：{tile.tileName} 是起始格子，不应该被高亮！");
-                    continue;
-                }
-
-                // 保存原始颜色
                 MeshRenderer renderer = tile.GetComponentInChildren<MeshRenderer>();
                 if (renderer != null)
                 {
@@ -547,16 +530,10 @@ public class UIManager : MonoBehaviour
                     renderer.material.color = Color.green;
                     highlightableTiles.Add(tile);
                     highlightCount++;
-
-                    // 添加点击检测组件
                     AddTileClickHandler(tile);
-
-                    UnityEngine.Debug.Log($" 高亮地块: {tile.tileName}, 规模: {tile.tileScale}, 类型: {tile.tileType}");
                 }
             }
         }
-
-        UnityEngine.Debug.Log($" 高亮了 {highlightCount} 个可放置地块");
 
         if (highlightCount == 0)
         {
@@ -572,47 +549,22 @@ public class UIManager : MonoBehaviour
     // 检查地块是否可放置建筑
     private bool IsTilePlaceable(BoardTile tile, Player player, int requiredScale)
     {
-        bool isPlaceable = false;
-
-        UnityEngine.Debug.Log($"=== 详细检查地块可放置性 ===");
-        UnityEngine.Debug.Log($"检查地块: {tile.tileName}");
-        UnityEngine.Debug.Log($"地块类型: {tile.tileType}");
-        UnityEngine.Debug.Log($"是否为可建造地块: {tile.tileType == TileType.Buildable || tile.tileType == TileType.BuildingSite}");
-        UnityEngine.Debug.Log($"地块可建造标记: {tile.isBuildable}");
-        UnityEngine.Debug.Log($"地块规模: {tile.tileScale}, 所需规模: {requiredScale}, 是否足够: {tile.tileScale >= requiredScale}");
-        UnityEngine.Debug.Log($"地块当前是否有建筑: {tile.currentBuilding != null}");
-        UnityEngine.Debug.Log($"地块所有者: {tile.ownerPlayer?.playerName ?? "null"}");
-        UnityEngine.Debug.Log($"当前玩家: {player.playerName}");
-        UnityEngine.Debug.Log($"地块所有者是否为空或为当前玩家: {tile.ownerPlayer == null || tile.ownerPlayer == player}");
-
-        // 原有检查逻辑...
-        isPlaceable = (tile.tileType == BoardTile.TileType.Buildable ||
-                      tile.tileType == BoardTile.TileType.BuildingSite) &&
-                     tile.isBuildable &&
-                     tile.currentBuilding == null &&
-                     tile.tileScale >= requiredScale &&
-                     (tile.ownerPlayer == null || tile.ownerPlayer == player);
-
-        UnityEngine.Debug.Log($"最终可放置结果: {isPlaceable}");
-        return isPlaceable;
+        return (tile.tileType == BoardTile.TileType.Buildable ||
+                tile.tileType == BoardTile.TileType.BuildingSite) &&
+               tile.isBuildable &&
+               tile.currentBuilding == null &&
+               tile.tileScale >= requiredScale &&
+               (tile.ownerPlayer == null || tile.ownerPlayer == player);
     }
 
     // 为地块添加点击处理器
     private void AddTileClickHandler(BoardTile tile)
     {
-        UnityEngine.Debug.Log($"UIManager: 为地块 {tile.tileName} 添加点击处理器");
-
-        // 添加新的事件触发器
         EventTrigger trigger = tile.gameObject.AddComponent<EventTrigger>();
-        UnityEngine.Debug.Log($"地块 {tile.tileName} 已添加 EventTrigger: {trigger != null}");
 
-        // 创建点击事件
         EventTrigger.Entry entry = new EventTrigger.Entry();
         entry.eventID = EventTriggerType.PointerClick;
-        entry.callback.AddListener((data) => {
-            UnityEngine.Debug.Log($"点击事件触发: 地块 {tile.tileName} 被点击");
-            OnTileClickedForPlacement(tile);
-        });
+        entry.callback.AddListener((data) => OnTileClickedForPlacement(tile));
 
         trigger.triggers.Add(entry);
     }
@@ -620,129 +572,45 @@ public class UIManager : MonoBehaviour
     // 地块被点击（用于放置建筑）
     public void OnTileClickedForPlacement(BoardTile tile)
     {
-        UnityEngine.Debug.Log("=== 开始处理地块点击 ===");
-
-        // 1. 基本信息调试
-        UnityEngine.Debug.Log($"选中的地块: {tile.tileName}, ID: {tile.tileID}");
-        UnityEngine.Debug.Log($"当前选中的建筑: {selectedBuildingData?.buildingName ?? "无"}");
-        UnityEngine.Debug.Log($"当前玩家: {currentBuildingPlayer?.playerName ?? "无"}");
-        UnityEngine.Debug.Log($"选中的建筑价格: {selectedBuildingData?.purchasePrice ?? 0} 玩家资金: {currentBuildingPlayer?.cash ?? 0}");
-
         if (selectedBuildingData == null || currentBuildingPlayer == null)
-        {
-            UnityEngine.Debug.LogWarning("未选择建筑或玩家不存在");
-            UnityEngine.Debug.Log($"selectedBuildingData: {selectedBuildingData}, currentBuildingPlayer: {currentBuildingPlayer}");
             return;
-        }
 
-        UnityEngine.Debug.Log($"尝试在 {tile.tileName} 上放置 {selectedBuildingData.buildingName}");
-
-        // 2. 资金检查的详细调试
         if (currentBuildingPlayer.cash < selectedBuildingData.purchasePrice)
         {
-            UnityEngine.Debug.LogError($"资金不足！需要: {selectedBuildingData.purchasePrice}, 拥有: {currentBuildingPlayer.cash}");
             ShowToast("资金不足，无法购买建筑！", 2f);
             return;
         }
-        else
-        {
-            UnityEngine.Debug.Log($"✓ 资金检查通过: 玩家有 {currentBuildingPlayer.cash}，建筑价格 {selectedBuildingData.purchasePrice}");
-        }
-
-        // 3. 地块可放置性详细调试
-        UnityEngine.Debug.Log($"检查地块可放置性: {tile.tileName}");
-        UnityEngine.Debug.Log($"建筑所需规模: {selectedBuildingData.requiredScale} (int: {(int)selectedBuildingData.requiredScale})");
-        UnityEngine.Debug.Log($"地块规模: {tile.tileScale}");
 
         if (!IsTilePlaceable(tile, currentBuildingPlayer, (int)selectedBuildingData.requiredScale))
         {
-            UnityEngine.Debug.LogError($"地块不可放置！详细检查结果:");
-
-            // 在 IsTilePlaceable 方法内部也需要添加调试，临时可以这样：
-            UnityEngine.Debug.Log($"- 地块类型: {tile.tileType}");
-            UnityEngine.Debug.Log($"- 地块是否可建造: {tile.isBuildable}");
-            UnityEngine.Debug.Log($"- 地块当前建筑: {tile.currentBuilding != null}");
-            UnityEngine.Debug.Log($"- 地块所有者: {tile.ownerPlayer?.playerName ?? "无"}");
-            UnityEngine.Debug.Log($"- 规模是否足够: {tile.tileScale >= (int)selectedBuildingData.requiredScale}");
-
             ShowToast("此地块无法放置该建筑！", 2f);
             return;
         }
-        else
-        {
-            UnityEngine.Debug.Log("✓ 地块可放置性检查通过");
-        }
 
-        // 4. 执行购买和放置
-        UnityEngine.Debug.Log("开始执行 PurchaseAndPlaceBuilding 方法...");
         if (PurchaseAndPlaceBuilding(tile, selectedBuildingData, currentBuildingPlayer))
         {
-            UnityEngine.Debug.Log($"建筑 {selectedBuildingData.buildingName} 放置成功！");
-
-            // 清除高亮
             ClearTileHighlights();
-
-            // 隐藏建筑选择面板
             HideBuildingSelectionUI();
-
-            // 验证放置结果
-            UnityEngine.Debug.Log($"放置后验证: 地块 {tile.tileName} 的建筑 = {tile.currentBuilding?.name ?? "null"}");
-            UnityEngine.Debug.Log($"放置后验证: 地块建筑等级 = {tile.buildingLevel}");
-        }
-        else
-        {
-            UnityEngine.Debug.LogError("PurchaseAndPlaceBuilding 方法返回 false，放置失败！");
         }
     }
 
     // 购买并放置建筑
     private bool PurchaseAndPlaceBuilding(BoardTile tile, BuildingData buildingData, Player player)
     {
-        UnityEngine.Debug.Log("=== 执行 PurchaseAndPlaceBuilding ===");
-
-        // 1. 扣款
         int purchasePrice = buildingData.purchasePrice;
-        UnityEngine.Debug.Log($"扣款前玩家资金: {player.cash}, 扣款金额: {purchasePrice}");
 
-        if (player.PayCash(purchasePrice))
-        {
-            UnityEngine.Debug.Log($"扣款成功，扣款后玩家资金: {player.cash}");
-        }
-        else
-        {
-            UnityEngine.Debug.LogError("扣款失败！");
+        if (!player.PayCash(purchasePrice))
             return false;
-        }
 
-        // 2. 设置地块所有者
         tile.ownerPlayer = player;
-        UnityEngine.Debug.Log($"设置地块所有者为: {player.playerName}");
-
-        // 3. 设置建筑数据
-        UnityEngine.Debug.Log($"为地块设置建筑数据: {buildingData.buildingName}");
         tile.SetBuildingData(buildingData, 1);
-
-        // 4. 验证设置结果
-        UnityEngine.Debug.Log($"验证: 地块当前建筑数据 = {tile.currentBuildingData?.buildingName ?? "null"}");
-        UnityEngine.Debug.Log($"验证: 地块建筑类型 = {tile.currentBuildingType}");
-        UnityEngine.Debug.Log($"验证: 地块建筑等级 = {tile.buildingLevel}");
-
-        // 5. 更新地块类型
         tile.tileType = BoardTile.TileType.BuildingSite;
-        UnityEngine.Debug.Log($"更新地块类型为: BuildingSite");
 
-        // 6. 添加建筑模型
         if (buildingData.buildingPrefab != null)
         {
-            UnityEngine.Debug.Log($"实例化建筑预制体: {buildingData.buildingPrefab.name}");
             GameObject buildingObj = Instantiate(buildingData.buildingPrefab, tile.transform.position + Vector3.up * 0.5f, Quaternion.identity);
             buildingObj.transform.SetParent(tile.transform);
             tile.currentBuilding = buildingObj;
-            UnityEngine.Debug.Log($"建筑实例化成功: {buildingObj.name}");
-        }
-        else
-        {
-            UnityEngine.Debug.LogWarning("建筑预制体为空，将不生成3D模型");
         }
 
         return true;
@@ -756,31 +624,25 @@ public class UIManager : MonoBehaviour
             MeshRenderer renderer = tile.GetComponentInChildren<MeshRenderer>();
             if (renderer != null)
             {
-                // 特殊处理起始格子
                 if (tile.tileType == BoardTile.TileType.Start)
                 {
                     // 起始格子恢复为起始颜色
-                    // renderer.material.color = new Color(0f, 0.8f, 0f);
                 }
                 else
                 {
-                    // 其他格子调用 UpdateTileVisual 恢复正确颜色
                     tile.UpdateTileVisual();
                 }
+            }
 
-                // 移除事件触发器
-                EventTrigger trigger = tile.GetComponent<EventTrigger>();
-                if (trigger != null)
-                {
-                    // 可以在这里移除触发器，但为了安全，我们不清除
-                }
+            EventTrigger trigger = tile.GetComponent<EventTrigger>();
+            if (trigger != null)
+            {
+                Destroy(trigger);
             }
         }
 
         originalTileColors.Clear();
         highlightableTiles.Clear();
-
-        UnityEngine.Debug.Log("已清除所有地块高亮，起始格子恢复为起始颜色");
     }
 
     // 辅助方法：从BuildingData获取BuildingType
