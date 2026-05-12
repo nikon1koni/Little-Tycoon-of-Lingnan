@@ -3486,6 +3486,18 @@ PrefabInstance:
       propertyPath: tileType
       value: 13
       objectReference: {fileID: 0}
+    - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
+      propertyPath: defaultColor.b
+      value: 0.2024742
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
+      propertyPath: defaultColor.g
+      value: 0.2024742
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
+      propertyPath: defaultColor.r
+      value: 0.6603774
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

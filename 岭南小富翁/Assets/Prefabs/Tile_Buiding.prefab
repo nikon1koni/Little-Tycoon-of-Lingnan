@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 49445ca393a74254da5646fba1157baa, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -151,31 +151,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afe2b2606aa673b448a64ae0caa59920, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileID: 0
+  buildingType: 0
   tileName: "\u5EFA\u7B51\u683C"
-  tileType: 11
-  propertyPrice: 100
-  propertyColor: {r: 1, g: 1, b: 1, a: 1}
-  ownerPlayer: {fileID: 0}
-  onPlayerLanded:
-    m_PersistentCalls:
-      m_Calls: []
-  isBuildable: 1
-  currentBuilding: {fileID: 0}
-  availableBuildings: []
+  tileID: 0
   tileScale: 3
-  allowedScale: 3
+  propertyPrice: 100
+  rentPrice: 10
+  tileType: 11
+  isBuildable: 1
+  currentBuildingData: {fileID: 0}
   currentBuildingType: 0
   buildingLevel: 0
-  canBeUpgraded: 1
-  maxUpgradeLevel: 3
-  upgradeCheckInterval: 5
-  currentBuildingData: {fileID: 0}
-  nextBuildingData: {fileID: 0}
-  currentBuffOwner: {fileID: 0}
-  buffExpireTime: 0
-  currentBuffValue: 0
-  currentBuffEffect: 0
+  currentBuilding: {fileID: 0}
+  ownerPlayer: {fileID: 0}
+  linkedBuildingTiles: []
+  incomeInterval: 5
+  enableLinkedIncome: 1
+  enableAutoIncome: 0
+  autoIncomeInterval: 10
+  tileNameText: {fileID: 0}
+  tileRenderer: {fileID: 0}
+  defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  ownedColor: {r: 0, g: 0, b: 1, a: 1}
+  buildableColor: {r: 0, g: 1, b: 0, a: 1}
+  buffedPlayers: []
+  buffDuration: 0
 --- !u!65 &235769867052846331
 BoxCollider:
   m_ObjectHideFlags: 0

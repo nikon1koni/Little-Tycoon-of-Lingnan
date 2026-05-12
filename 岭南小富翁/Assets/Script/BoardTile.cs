@@ -37,9 +37,8 @@ public class BoardTile : MonoBehaviour
     [Header("UI显示")]
     public TextMeshProUGUI tileNameText; // 地块名称文本
     public MeshRenderer tileRenderer; // 地块渲染器
-    public Color defaultColor = Color.white; // 默认颜色
-    public Color ownedColor = Color.blue; // 被拥有时的颜色
-    public Color buildableColor = Color.green; // 可建造时的颜色
+  
+
 
     [Header("Buff效果系统")]
     public List<Player> buffedPlayers = new List<Player>(); // 受影响的玩家
@@ -859,21 +858,7 @@ public class BoardTile : MonoBehaviour
     {
         if (tileRenderer == null) return;
 
-        if (ownerPlayer != null)
-        {
-            // 有所有者，使用所有者颜色
-            tileRenderer.material.color = ownerPlayer.playerColor;
-        }
-        else if (isBuildable)
-        {
-            // 可建造，使用可建造颜色
-            tileRenderer.material.color = buildableColor;
-        }
-        else
-        {
-            // 默认颜色
-            tileRenderer.material.color = defaultColor;
-        }
+       
     }
 
     // 添加关联建筑地块
