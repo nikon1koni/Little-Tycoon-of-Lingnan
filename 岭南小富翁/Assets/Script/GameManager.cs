@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
 
     [Header("骰子系统")]
     public DiceController diceController;
+    public Dice3DController dice3DController;
     public int lastDiceValue = 0;
 
     [Header("UI 引用")]
@@ -547,7 +548,11 @@ public class GameManager : MonoBehaviour
         currentState = GameState.RollingDice;
         isPlayerTurn = false;
 
-        if (diceController != null)
+        if (dice3DController != null)
+        {
+            dice3DController.StartRollDice();
+        }
+        else if (diceController != null)
         {
             diceController.StartRollDice();
         }
