@@ -5,12 +5,12 @@ public class RainSystem : MonoBehaviour
 {
     public static RainSystem Instance;
 
-    [Header("Á£×ÓÉèÖÃ")]
+    [Header("????????")]
     public float rainIntensity = 1f;
     public float windSpeed = 0f;
     public float rainHeight = 20f;
     
-    [Header("Åö×²ÉèÖÃ")]
+    [Header("???????")]
     public LayerMask groundLayer;
     public bool enableCollision = true;
     

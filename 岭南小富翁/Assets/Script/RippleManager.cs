@@ -5,12 +5,12 @@ public class RippleManager : MonoBehaviour
 {
     public static RippleManager Instance;
 
-    [Header("涟漪设置")]
+    [Header("????????")]
     public int maxRipples = 32;
     public float rippleDuration = 2f;
     public float maxRippleRadius = 1.5f;
     
-    [Header("材质引用")]
+    [Header("????????")]
     public Material groundRainMaterial;
     
     private List<Ripple> activeRipples = new List<Ripple>();
