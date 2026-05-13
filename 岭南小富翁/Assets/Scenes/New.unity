@@ -412,7 +412,7 @@ GameObject:
   - component: {fileID: 145902238}
   - component: {fileID: 145902237}
   - component: {fileID: 145902236}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Map
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4113,7 +4113,6 @@ GameObject:
   - component: {fileID: 2106342229}
   - component: {fileID: 2106342228}
   - component: {fileID: 2106342227}
-  - component: {fileID: 2106342231}
   - component: {fileID: 2106342230}
   m_Layer: 0
   m_Name: RainSystem
@@ -4131,7 +4130,7 @@ Transform:
   m_GameObject: {fileID: 2106342223}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.19822598, y: -4.5960093, z: 3.8249822}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4154,7 +4153,7 @@ MonoBehaviour:
   rainHeight: 20
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   enableCollision: 1
 --- !u!199 &2106342228
 ParticleSystemRenderer:
@@ -4177,7 +4176,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4313,7 +4312,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 1
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -4366,7 +4365,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: -15
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -4420,7 +4419,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 0.46226406, g: 1, b: 0.995246, a: 0.58431375}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -4484,7 +4483,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0.03
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -4861,13 +4860,13 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 1
-    type: 4
+    type: 0
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 1
     donutRadius: 0.2
-    m_Position: {x: 0, y: 0, z: 0}
+    m_Position: {x: 0, y: 20, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0}
     m_Scale: {x: 1, y: 1, z: 1}
     placementMode: 0
@@ -4948,7 +4947,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 1
+      value: 8.85
       mode: 0
       spread: 0
       speed:
@@ -5067,7 +5066,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 10
+      scalar: 500
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -8968,14 +8967,31 @@ MonoBehaviour:
   rainParticleSystem: {fileID: 2106342229}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
---- !u!114 &2106342231
+    m_Bits: 128
+--- !u!1 &2121201361
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2121201363}
+  - component: {fileID: 2121201362}
+  m_Layer: 0
+  m_Name: 'RippleManager '
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2121201362
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2106342223}
+  m_GameObject: {fileID: 2121201361}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 56259896532dfb34c967a7900e749b3d, type: 3}
@@ -8984,7 +9000,22 @@ MonoBehaviour:
   maxRipples: 32
   rippleDuration: 2
   maxRippleRadius: 1.5
-  groundRainMaterial: {fileID: 0}
+  groundRainMaterial: {fileID: 2100000, guid: fee66c69ba6382443b78640125120ffe, type: 2}
+--- !u!4 &2121201363
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2121201361}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.1385691, y: 1.7358047, z: -1.6314985}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &402243267063416676
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9357,3 +9388,4 @@ SceneRoots:
   - {fileID: 498862901}
   - {fileID: 1459597473}
   - {fileID: 2106342226}
+  - {fileID: 2121201363}
