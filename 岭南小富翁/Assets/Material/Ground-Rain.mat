@@ -71,6 +71,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Puddle_Normals:
+        m_Texture: {fileID: 2800000, guid: 6c93b8fe3ae64b04aab74660e49eb798, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Ripper_Sheet:
         m_Texture: {fileID: 2800000, guid: cbf37610a16dd1a40ad43bd5dbdb2de9, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -104,16 +108,20 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _Mask_Speed: 1
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _Puddle_Speed: 1
+    - _Puddle_Strengch: 0
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _Ripper_Strengch: 1
     - _Ripple_Tile: 4
     - _SampleGI: 0
     - _SmoothnessTextureChannel: 0
-    - _Smothness: 0.3
+    - _Smothness: 0.5
     - _SpecularHighlights: 1
     - _Speed: 0
     - _SrcBlend: 1
@@ -126,7 +134,7 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Tint: {r: 0.6007476, g: 0.8527739, b: 0.9433962, a: 0}
+    - _Tint: {r: 0.6181242, g: 1, b: 0.5503144, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &7177339575206367495
 MonoBehaviour:
