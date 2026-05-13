@@ -108,7 +108,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _Mask_Speed: 1
+    - _Mask_Speed: 2
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -118,7 +118,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Ripper_Strengch: 1
-    - _Ripple_Tile: 4
+    - _Ripple_Tile: 10
     - _SampleGI: 0
     - _SmoothnessTextureChannel: 0
     - _Smothness: 0.5
@@ -129,6 +129,8 @@ Material:
     - _Surface: 0
     - _Tiling: 1
     - _UVSec: 0
+    - _X_Height: 3
+    - _X_Width: 3
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
