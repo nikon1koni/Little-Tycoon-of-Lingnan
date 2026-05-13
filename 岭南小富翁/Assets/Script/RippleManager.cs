@@ -72,6 +72,7 @@ public class RippleManager : MonoBehaviour
                 groundRainMaterial.SetVector(RIPPLE_POSITION_PROPERTY, Vector3.zero);
                 groundRainMaterial.SetFloat(RIPPLE_RADIUS_PROPERTY, 0f);
                 groundRainMaterial.SetFloat(RIPPLE_ALPHA_PROPERTY, 0f);
+                Debug.Log("Ripple: Finished!");
             }
             else
             {
@@ -81,6 +82,11 @@ public class RippleManager : MonoBehaviour
                 groundRainMaterial.SetVector(RIPPLE_POSITION_PROPERTY, currentRipplePosition);
                 groundRainMaterial.SetFloat(RIPPLE_RADIUS_PROPERTY, currentRadius);
                 groundRainMaterial.SetFloat(RIPPLE_ALPHA_PROPERTY, currentAlpha);
+                
+                if (Time.frameCount % 60 == 0) // ?????????
+                {
+                    Debug.Log($"Ripple: Pos={currentRipplePosition}, Radius={currentRadius:F2}, Alpha={currentAlpha:F2}");
+                }
             }
         }
         else
