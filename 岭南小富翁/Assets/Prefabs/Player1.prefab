@@ -65,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -157,6 +157,12 @@ MonoBehaviour:
   isBankrupt: 0
   currentTile: {fileID: 0}
   currentTileIndex: 0
+  hasDiceBoost: 0
+  diceBoostValue: 0
+  incomeMultiplier: 1
+  luckBoost: 0
+  moveSpeedMultiplier: 1
+  activeBuffs: []
 --- !u!114 &6594177630032740773
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,5 +178,6 @@ MonoBehaviour:
   jumpHeight: 1.5
   jumpDuration: 0.5
   landingDelay: 0.1
+  heightOffset: 0.375
   isMoving: 0
   currentTile: {fileID: 0}
