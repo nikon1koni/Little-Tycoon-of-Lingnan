@@ -629,10 +629,10 @@ public class GameManager : MonoBehaviour
         int previousIndex = (currentIndex - lastDiceValue) % boardManager.allTiles.Count;
         if (previousIndex < 0) previousIndex += boardManager.allTiles.Count;
 
-        // 如果当前在起点位置，或者经过了一圈（从后向前越过起点）
-        if (isOnStartTile || previousIndex > currentIndex)
+        // 如果经过了一圈（从后向前越过起点），但不是停在起点上
+        if (!isOnStartTile && previousIndex > currentIndex)
         {
-            Debug.Log($"{currentPlayer.playerName} {(isOnStartTile ? "停在起点" : "经过起点")}，触发起点事件");
+            Debug.Log($"{currentPlayer.playerName} 经过起点，触发起点事件");
 
             // 1. 发工资
             int salary = salaryAmount;
@@ -641,7 +641,7 @@ public class GameManager : MonoBehaviour
 
             if (uiManager != null)
             {
-                uiManager.ShowToast($"{(isOnStartTile ? "停在起点" : "经过起点")}，获得{salary}元工资", 2f);
+                uiManager.ShowToast($"经过起点，获得{salary}元工资", 2f);
             }
 
             // 2. 触发购买建筑阶段或允许移动
@@ -650,6 +650,17 @@ public class GameManager : MonoBehaviour
             SetRollDiceButtonInteractable(false);
 
             // 3. 显示建筑购买界面
+            StartCoroutine(TriggerBuildingPurchaseAfterStart());
+        }
+        else if (isOnStartTile)
+        {
+            Debug.Log($"{currentPlayer.playerName} 停在起点，由BoardTile处理资金发放");
+
+            // 停在起点时只触发状态转换，不发放资金（资金由BoardTile.OnLanded处理）
+            currentState = GameState.BuildingSelection;
+            isPlayerTurn = false;
+            SetRollDiceButtonInteractable(false);
+
             StartCoroutine(TriggerBuildingPurchaseAfterStart());
         }
     }
