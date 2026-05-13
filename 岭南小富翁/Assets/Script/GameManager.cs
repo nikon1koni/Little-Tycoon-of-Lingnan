@@ -506,13 +506,13 @@ public class GameManager : MonoBehaviour
 
         if (currentRound >= nextPressureAt)
         {
-            TriggerPressure();
+            TriggerPressure(currentRound);
         }
     }
 
-    private void TriggerPressure()
+    private void TriggerPressure(int currentRound)
     {
-        Debug.Log($"压力触发！第 {nextPressureAt} 个压力回合");
+        Debug.Log($"压力触发！第 {currentRound} 个压力回合");
 
         int cost = Mathf.RoundToInt(basePressureCost);
 
@@ -538,19 +538,14 @@ public class GameManager : MonoBehaviour
         }
 
         //更新下一轮
-        nextPressureAt += pressureInterval;
-        pressureInterval++;
+        nextPressureAt++;
 
         basePressureCost *= pressureMultiplier;
 
         if (UIManager.Instance != null)
         {
-            //UIManager.Instance.ShowToast(
-            //    $"征税！需要支付 {cost} 金币",
-            //    3f
-            //);
             UIManager.Instance.ShowTurnAnnouncement(
-                $"第 {nextPressureAt} 回合   征税 {cost} 金币"
+                $"第 {currentRound} 回合   征税 {cost} 金币"
             );
         }
     }
@@ -1045,7 +1040,8 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.P))
         {
-            TriggerPressure();
+            int currentRound = diceRollCount / 6;
+            TriggerPressure(currentRound);
         }
     }
 
