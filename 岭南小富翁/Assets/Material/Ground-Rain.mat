@@ -118,8 +118,8 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Ripper_Strengch: 1
-    - _RippleAlpha: 0.98507607
-    - _RippleRadius: 0.018995846
+    - _RippleAlpha: 0.985209
+    - _RippleRadius: 0.023671363
     - _Ripple_Tile: 10
     - _SampleGI: 0
     - _SmoothnessTextureChannel: 0
