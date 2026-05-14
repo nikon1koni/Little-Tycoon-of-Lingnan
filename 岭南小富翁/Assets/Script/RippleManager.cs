@@ -4,11 +4,11 @@ public class RippleManager : MonoBehaviour
 {
     public static RippleManager Instance;
 
-    [Header("涟漪设置")]
+    [Header("????????")]
     public float rippleDuration = 2f;
     public float maxRippleRadius = 1.5f;
     
-    [Header("材质设置")]
+    [Header("????????")]
     public Material groundRainMaterial;
     
     private Vector3 currentRipplePosition;
@@ -79,7 +79,7 @@ public class RippleManager : MonoBehaviour
             }
             else
             {
-                float currentRadius = currentRippleMaxRadius * progress;
+                float currentRadius = currentRippleMaxRadius;
                 float currentAlpha = 1f - progress;
                 
                 groundRainMaterial.SetVector(RIPPLE_POSITION_PROPERTY, currentRipplePosition);
@@ -87,7 +87,7 @@ public class RippleManager : MonoBehaviour
                 groundRainMaterial.SetFloat(RIPPLE_ALPHA_PROPERTY, currentAlpha);
                 groundRainMaterial.SetFloat(RIPPLE_PROGRESS_PROPERTY, progress);
                 
-                if (Time.frameCount % 60 == 0) // 每秒输出一次
+                if (Time.frameCount % 60 == 0) // ?????????
                 {
                     Debug.Log($"Ripple: Pos={currentRipplePosition}, Radius={currentRadius:F2}, Alpha={currentAlpha:F2}, Progress={progress:F2}");
                 }
