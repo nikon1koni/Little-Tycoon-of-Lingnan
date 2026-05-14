@@ -1762,9 +1762,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56259896532dfb34c967a7900e749b3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rippleDuration: 5
-  maxRippleRadius: 5
+  rippleDuration: 0.25
+  maxRippleRadius: 0.2
+  radiusMultiplier: 1
+  minRadiusRatio: 1
+  maxRipples: 200
   groundRainMaterial: {fileID: 2100000, guid: fee66c69ba6382443b78640125120ffe, type: 2}
+  groundTransform: {fileID: 145902239}
 --- !u!4 &969885567
 Transform:
   m_ObjectHideFlags: 0
