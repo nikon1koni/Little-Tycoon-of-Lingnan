@@ -41,7 +41,7 @@ public class RaindropCollision : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             // 检查这个粒子是否已经触发过涟漪
-            int particleId = particles[i].randomSeed; // 用随机种子作为粒子ID
+            int particleId = i; // 直接用索引作为粒子ID
             
             if (!triggeredParticles.Contains(particleId))
             {
