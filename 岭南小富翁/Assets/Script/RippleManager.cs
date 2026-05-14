@@ -4,11 +4,11 @@ public class RippleManager : MonoBehaviour
 {
     public static RippleManager Instance;
 
-    [Header("????????")]
+    [Header("涟漪设置")]
     public float rippleDuration = 2f;
     public float maxRippleRadius = 1.5f;
     
-    [Header("????????")]
+    [Header("材质设置")]
     public Material groundRainMaterial;
     
     private Vector3 currentRipplePosition;
@@ -20,6 +20,7 @@ public class RippleManager : MonoBehaviour
     private const string RIPPLE_POSITION_PROPERTY = "_RipplePosition";
     private const string RIPPLE_RADIUS_PROPERTY = "_RippleRadius";
     private const string RIPPLE_ALPHA_PROPERTY = "_RippleAlpha";
+    private const string RIPPLE_PROGRESS_PROPERTY = "_RippleProgress";
 
     void Awake()
     {
@@ -41,6 +42,7 @@ public class RippleManager : MonoBehaviour
             groundRainMaterial.SetVector(RIPPLE_POSITION_PROPERTY, Vector3.zero);
             groundRainMaterial.SetFloat(RIPPLE_RADIUS_PROPERTY, 0f);
             groundRainMaterial.SetFloat(RIPPLE_ALPHA_PROPERTY, 0f);
+            groundRainMaterial.SetFloat(RIPPLE_PROGRESS_PROPERTY, 0f);
         }
     }
 
@@ -72,6 +74,7 @@ public class RippleManager : MonoBehaviour
                 groundRainMaterial.SetVector(RIPPLE_POSITION_PROPERTY, Vector3.zero);
                 groundRainMaterial.SetFloat(RIPPLE_RADIUS_PROPERTY, 0f);
                 groundRainMaterial.SetFloat(RIPPLE_ALPHA_PROPERTY, 0f);
+                groundRainMaterial.SetFloat(RIPPLE_PROGRESS_PROPERTY, 0f);
                 Debug.Log("Ripple: Finished!");
             }
             else
@@ -82,10 +85,11 @@ public class RippleManager : MonoBehaviour
                 groundRainMaterial.SetVector(RIPPLE_POSITION_PROPERTY, currentRipplePosition);
                 groundRainMaterial.SetFloat(RIPPLE_RADIUS_PROPERTY, currentRadius);
                 groundRainMaterial.SetFloat(RIPPLE_ALPHA_PROPERTY, currentAlpha);
+                groundRainMaterial.SetFloat(RIPPLE_PROGRESS_PROPERTY, progress);
                 
-                if (Time.frameCount % 60 == 0) // ?????????
+                if (Time.frameCount % 60 == 0) // 每秒输出一次
                 {
-                    Debug.Log($"Ripple: Pos={currentRipplePosition}, Radius={currentRadius:F2}, Alpha={currentAlpha:F2}");
+                    Debug.Log($"Ripple: Pos={currentRipplePosition}, Radius={currentRadius:F2}, Alpha={currentAlpha:F2}, Progress={progress:F2}");
                 }
             }
         }
@@ -94,6 +98,7 @@ public class RippleManager : MonoBehaviour
             groundRainMaterial.SetVector(RIPPLE_POSITION_PROPERTY, Vector3.zero);
             groundRainMaterial.SetFloat(RIPPLE_RADIUS_PROPERTY, 0f);
             groundRainMaterial.SetFloat(RIPPLE_ALPHA_PROPERTY, 0f);
+            groundRainMaterial.SetFloat(RIPPLE_PROGRESS_PROPERTY, 0f);
         }
     }
 }
