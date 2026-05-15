@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
@@ -42,7 +42,8 @@ public class UIManager : MonoBehaviour
 
     [Header("建筑系统UI")]
     public GameObject buildingSelectionPanel;
-    public Transform buildingButtonContainer;
+    public Button[] buildingButtons = new Button[4];
+    public TextMeshProUGUI tileInfoText;
     public Button closeBuildingPanelButton;
     public Text selectedBuildingText;
     public Image selectedBuildingImage;
@@ -78,8 +79,9 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI CashText => cashText;
 
     // 新增状态变量
-    private bool isBuildingSelected = false; // 是否已选择建筑
-    private GameObject activePersistentToast; // 当前活动的持久Toast
+    private bool isBuildingSelected = false;
+    private GameObject activePersistentToast;
+    private List<int> activeBuildingButtonIndices = new List<int>();
 
     // 当前选中的用于升级的地块
     private BoardTile upgradeSelectedTile = null;
@@ -216,33 +218,58 @@ public class UIManager : MonoBehaviour
         buildingSelectionPanel.SetActive(true);
         buildingSelectionPanel.transform.SetAsLastSibling();
 
-        // 3. 更新UI信息
-        Text tileNameText = buildingSelectionPanel.transform.Find("TileName")?.GetComponent<Text>();
-        Text priceText = buildingSelectionPanel.transform.Find("Price")?.GetComponent<Text>();
+        SetNonButtonRaycastTargets(false);
 
-        if (tileNameText != null)
-            tileNameText.text = buildableTile.tileName;
-        if (priceText != null)
-            priceText.text = $"地块价格: {buildableTile.propertyPrice} 元";
+        if (tileInfoText != null)
+        {
+            tileInfoText.text = $"{buildableTile.tileName} - 地块价格: {buildableTile.propertyPrice} 元";
+            tileInfoText.raycastTarget = false;
+        }
 
-        // 4. 清除之前的建筑按钮
         ClearBuildingButtons();
 
-        // 5. 根据地块规模过滤可建造的建筑
         List<BuildingData> compatibleBuildings = FilterBuildingsByScale(buildableTile.tileScale);
 
-        // 6. 创建建筑选择按钮
-        CreateBuildingButtons(compatibleBuildings);
+        ConfigureBuildingButtons(compatibleBuildings);
 
-        // 7. 设置关闭按钮事件
-        Button closeButton = buildingSelectionPanel.transform.Find("CloseButton")?.GetComponent<Button>();
-        if (closeButton != null)
+        Button closeBtnToUse = closeBuildingPanelButton;
+        
+        if (closeBtnToUse == null)
         {
-            closeButton.onClick.RemoveAllListeners();
-            closeButton.onClick.AddListener(() => {
+            closeBtnToUse = FindCloseButton();
+        }
+        
+        if (closeBtnToUse != null)
+        {
+            closeBtnToUse.gameObject.SetActive(true);
+            closeBtnToUse.interactable = true;
+            
+            Image btnImg = closeBtnToUse.GetComponent<Image>();
+            if (btnImg != null)
+            {
+                btnImg.raycastTarget = true;
+                btnImg.color = new Color(0.9f, 0.9f, 0.9f, 1.0f);
+            }
+            
+            foreach (Transform child in closeBtnToUse.transform)
+            {
+                Image childImg = child.GetComponent<Image>();
+                if (childImg != null) childImg.raycastTarget = false;
+                TextMeshProUGUI childTmp = child.GetComponent<TextMeshProUGUI>();
+                if (childTmp != null) childTmp.raycastTarget = false;
+            }
+            
+            closeBtnToUse.onClick.RemoveAllListeners();
+            closeBtnToUse.onClick.AddListener(() => {
                 UnityEngine.Debug.Log("UIManager: 关闭按钮被点击");
                 HideBuildingSelectionUI();
             });
+            
+            UnityEngine.Debug.Log("UIManager: 关闭按钮事件绑定成功");
+        }
+        else
+        {
+            UnityEngine.Debug.LogError("UIManager: 找不到CloseButton！");
         }
 
         // 不在这里高亮，而是在玩家选择建筑后高亮
@@ -266,19 +293,9 @@ public class UIManager : MonoBehaviour
             buildingSelectionPanel.SetActive(false);
         }
 
-        // 根据参数决定是否隐藏按钮容器
-        if (buildingButtonContainer != null)
+        if (!keepButtons)
         {
-            if (keepButtons)
-            {
-                // 只隐藏容器，不销毁按钮
-                buildingButtonContainer.gameObject.SetActive(false);
-            }
-            else
-            {
-                // 完全关闭时清除所有按钮
-                ClearBuildingButtons();
-            }
+            ClearBuildingButtons();
         }
 
         // 重置状态
@@ -299,6 +316,56 @@ public class UIManager : MonoBehaviour
     }
 
     // 根据规模过滤建筑
+    private Button FindCloseButton()
+    {
+        if (buildingSelectionPanel == null) return null;
+
+        Transform closeBtnTrans = buildingSelectionPanel.transform.Find("CloseButton");
+        if (closeBtnTrans == null)
+        {
+            foreach (Transform child in buildingSelectionPanel.transform)
+            {
+                if (child.name.Trim() == "CloseButton" || child.name.Contains("Close"))
+                {
+                    closeBtnTrans = child;
+                    break;
+                }
+            }
+        }
+
+        if (closeBtnTrans != null)
+        {
+            UnityEngine.Debug.Log($"UIManager: 找到CloseButton, 名称='{closeBtnTrans.name}'");
+            return closeBtnTrans.GetComponent<Button>();
+        }
+
+        return null;
+    }
+
+    private void SetNonButtonRaycastTargets(bool enable)
+    {
+        if (buildingSelectionPanel == null) return;
+
+        foreach (Transform child in buildingSelectionPanel.transform)
+        {
+            Button btn = child.GetComponent<Button>();
+            if (btn != null) continue;
+
+            TextMeshProUGUI tmp = child.GetComponent<TextMeshProUGUI>();
+            if (tmp != null)
+            {
+                tmp.raycastTarget = enable;
+                continue;
+            }
+
+            Image img = child.GetComponent<Image>();
+            if (img != null && btn == null)
+            {
+                img.raycastTarget = enable;
+            }
+        }
+    }
+
     private List<BuildingData> FilterBuildingsByScale(int tileScale)
     {
         List<BuildingData> result = new List<BuildingData>();
@@ -317,11 +384,34 @@ public class UIManager : MonoBehaviour
     // 清除建筑按钮
     private void ClearBuildingButtons()
     {
-        if (buildingButtonContainer == null) return;
-
-        foreach (Transform child in buildingButtonContainer)
+        for (int i = 0; i < buildingButtons.Length; i++)
         {
-            Destroy(child.gameObject);
+            if (buildingButtons[i] != null)
+            {
+                buildingButtons[i].onClick.RemoveAllListeners();
+                buildingButtons[i].gameObject.SetActive(false);
+
+                Transform iconTransform = buildingButtons[i].transform.Find("Icon");
+                if (iconTransform != null)
+                {
+                    Image iconImg = iconTransform.GetComponent<Image>();
+                    if (iconImg != null)
+                    {
+                        iconImg.sprite = null;
+                        iconImg.color = new Color(0.7f, 0.7f, 0.7f, 1f);
+                    }
+                }
+
+                Transform nameTransform = buildingButtons[i].transform.Find("BuildingName");
+                if (nameTransform != null)
+                {
+                    TextMeshProUGUI nameTmp = nameTransform.GetComponent<TextMeshProUGUI>();
+                    if (nameTmp != null)
+                    {
+                        nameTmp.text = "";
+                    }
+                }
+            }
         }
     }
 
@@ -330,81 +420,81 @@ public class UIManager : MonoBehaviour
     {
         UnityEngine.Debug.Log("按ESC取消建筑选择，返回建筑面板");
 
-        // 1. 清除Toast和高亮
         HidePersistentToast();
         ClearTileHighlights();
 
-        // 2. 重新显示建筑选择面板
         if (buildingSelectionPanel != null)
         {
             buildingSelectionPanel.SetActive(true);
         }
 
-        // 3. 重新显示建筑按钮容器
-        if (buildingButtonContainer != null)
+        for (int i = 0; i < activeBuildingButtonIndices.Count; i++)
         {
-            buildingButtonContainer.gameObject.SetActive(true);
+            int idx = activeBuildingButtonIndices[i];
+            if (buildingButtons[idx] != null)
+            {
+                buildingButtons[idx].gameObject.SetActive(true);
+            }
         }
 
-        // 4. 重置选择状态但保留按钮
         selectedBuildingData = null;
         isBuildingSelected = false;
         UnityEngine.Debug.Log("已返回建筑选择面板，建筑按钮已重新显示");
     }
 
     // 创建建筑按钮
-    private void CreateBuildingButtons(List<BuildingData> buildings)
+    private void ConfigureBuildingButtons(List<BuildingData> buildings)
     {
-        if (buildingButtonContainer == null)
+        activeBuildingButtonIndices.Clear();
+
+        for (int i = 0; i < buildingButtons.Length; i++)
         {
-            UnityEngine.Debug.LogWarning("buildingButtonContainer 为空，无法创建建筑按钮");
-            return;
-        }
+            if (buildingButtons[i] == null) continue;
 
-        foreach (BuildingData building in buildings)
-        {
-            // 创建按钮对象
-            GameObject buttonObj = new GameObject($"Btn_{building.buildingName}");
-            buttonObj.transform.SetParent(buildingButtonContainer);
-
-            // 添加UI组件
-            Image image = buttonObj.AddComponent<Image>();
-            Button button = buttonObj.AddComponent<Button>();
-
-            // 设置按钮图片
-            if (building.buildingIcon != null)
+            if (i < buildings.Count)
             {
-                image.sprite = building.buildingIcon;
+                BuildingData building = buildings[i];
+                buildingButtons[i].gameObject.SetActive(true);
+
+                Transform iconTransform = buildingButtons[i].transform.Find("Icon");
+                if (iconTransform != null)
+                {
+                    Image iconImg = iconTransform.GetComponent<Image>();
+                    if (iconImg != null)
+                    {
+                        if (building.buildingIcon != null)
+                        {
+                            iconImg.sprite = building.buildingIcon;
+                            iconImg.color = Color.white;
+                        }
+                        else
+                        {
+                            iconImg.sprite = null;
+                            iconImg.color = new Color(0.7f, 0.7f, 0.7f, 1f);
+                        }
+                    }
+                }
+
+                Transform nameTransform = buildingButtons[i].transform.Find("BuildingName");
+                if (nameTransform != null)
+                {
+                    TextMeshProUGUI nameTmp = nameTransform.GetComponent<TextMeshProUGUI>();
+                    if (nameTmp != null)
+                    {
+                        nameTmp.text = $"{building.buildingName}\n{building.purchasePrice}金币";
+                    }
+                }
+
+                buildingButtons[i].onClick.RemoveAllListeners();
+                BuildingData currentBuilding = building;
+                buildingButtons[i].onClick.AddListener(() => OnBuildingSelected(currentBuilding));
+
+                activeBuildingButtonIndices.Add(i);
             }
             else
             {
-                // 如果没有图标，使用默认颜色
-                image.color = Color.gray;
+                buildingButtons[i].gameObject.SetActive(false);
             }
-
-            // 设置按钮大小
-            RectTransform rt = buttonObj.GetComponent<RectTransform>();
-            rt.sizeDelta = new Vector2(100, 100);
-
-            // 添加建筑名称文本
-            GameObject textObj = new GameObject("BuildingName");
-            textObj.transform.SetParent(buttonObj.transform);
-            Text text = textObj.AddComponent<Text>();
-            text.text = $"{building.buildingName}\n{building.purchasePrice}金币";
-            text.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-            text.fontSize = 12;
-            text.alignment = TextAnchor.MiddleCenter;
-            text.color = Color.black;
-
-            RectTransform textRt = textObj.GetComponent<RectTransform>();
-            textRt.anchorMin = new Vector2(0, 0);
-            textRt.anchorMax = new Vector2(1, 1);
-            textRt.offsetMin = Vector2.zero;
-            textRt.offsetMax = Vector2.zero;
-
-            // 绑定点击事件
-            BuildingData currentBuilding = building; // 避免闭包问题
-            button.onClick.AddListener(() => OnBuildingSelected(currentBuilding));
         }
     }
 
@@ -416,17 +506,17 @@ public class UIManager : MonoBehaviour
         selectedBuildingData = building;
         isBuildingSelected = true;
 
-        // 【修改点1】隐藏建筑选择面板
         if (buildingSelectionPanel != null)
         {
             buildingSelectionPanel.SetActive(false);
         }
 
-        // 【修改点2】同时隐藏存放所有建筑按钮的容器！
-        if (buildingButtonContainer != null && buildingButtonContainer.gameObject.activeSelf)
+        for (int i = 0; i < buildingButtons.Length; i++)
         {
-            buildingButtonContainer.gameObject.SetActive(false);
-            UnityEngine.Debug.Log("已隐藏建筑按钮容器。");
+            if (buildingButtons[i] != null)
+            {
+                buildingButtons[i].gameObject.SetActive(false);
+            }
         }
 
         // 3. 在左下角显示持久Toast

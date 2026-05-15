@@ -160,7 +160,7 @@ public class GameManager : MonoBehaviour
         startPurchaseTileCache.tileType = BoardTile.TileType.Buildable;
         startPurchaseTileCache.propertyPrice = 100;
         startPurchaseTileCache.isBuildable = true;
-        startPurchaseTileCache.tileScale = Random.Range(1, 4);
+        startPurchaseTileCache.tileScale = 3;
         startPurchaseTileCache.ownerPlayer = currentPlayer;
 
         return startPurchaseTileCache;
