@@ -1762,11 +1762,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56259896532dfb34c967a7900e749b3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rippleDuration: 0.25
-  maxRippleRadius: 0.2
-  radiusMultiplier: 1
-  minRadiusRatio: 1
-  maxRipples: 200
+  rippleDuration: 2
+  maxRippleRadius: -2
+  radiusMultiplier: 0.2
   groundRainMaterial: {fileID: 2100000, guid: fee66c69ba6382443b78640125120ffe, type: 2}
   groundTransform: {fileID: 145902239}
 --- !u!4 &969885567
@@ -2216,7 +2214,7 @@ ParticleSystemRenderer:
   m_MeshDistribution: 0
   m_SortMode: 0
   m_MinParticleSize: 0
-  m_MaxParticleSize: 0.5
+  m_MaxParticleSize: 0.01
   m_CameraVelocityScale: 0
   m_VelocityScale: 0
   m_LengthScale: 2
@@ -2434,7 +2432,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 1, b: 1, a: 1}
+      maxColor: {r: 1, g: 1, b: 1, a: 0.22745098}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
