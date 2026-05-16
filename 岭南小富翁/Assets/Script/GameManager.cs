@@ -52,6 +52,10 @@ public class GameManager : MonoBehaviour
     [Header("调试")]
     public bool enableDebugKeys = true;
 
+    [Header("音乐系统")]
+    public bool enableBackgroundMusic = true;
+    public MusicManager musicManager;
+
     // 游戏状态枚举
     public enum GameState
     {
@@ -107,9 +111,44 @@ public class GameManager : MonoBehaviour
 
         UpdateUI();
         SetupButtonEvents();
+        InitializeMusicSystem();
 
         Debug.Log($"游戏初始化完成，玩家数: {players.Count}");
         Debug.Log($"当前玩家: {currentPlayer?.playerName ?? ""}");
+    }
+
+    void InitializeMusicSystem()
+    {
+        if (!enableBackgroundMusic)
+        {
+            Debug.Log("背景音乐已禁用");
+            return;
+        }
+
+        if (musicManager == null)
+        {
+            GameObject musicObj = GameObject.Find("MusicManager");
+            if (musicObj != null)
+            {
+                musicManager = musicObj.GetComponent<MusicManager>();
+            }
+            else
+            {
+                musicObj = new GameObject("MusicManager");
+                musicManager = musicObj.AddComponent<MusicManager>();
+                Debug.Log("MusicManager 已创建");
+            }
+        }
+
+        if (musicManager != null && musicManager.GetTotalTracks() > 0)
+        {
+            musicManager.Play();
+            Debug.Log("背景音乐开始播放");
+        }
+        else
+        {
+            Debug.LogWarning("MusicManager 未配置音乐文件");
+        }
     }
 
     // === 购买建筑阶段 ===
@@ -1042,6 +1081,45 @@ public class GameManager : MonoBehaviour
         {
             int currentRound = diceRollCount / 6;
             TriggerPressure(currentRound);
+        }
+
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            ToggleMusic();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Comma))
+        {
+            PreviousMusic();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Period))
+        {
+            NextMusic();
+        }
+    }
+
+    void ToggleMusic()
+    {
+        if (musicManager != null)
+        {
+            musicManager.TogglePlayPause();
+        }
+    }
+
+    void PreviousMusic()
+    {
+        if (musicManager != null)
+        {
+            musicManager.PlayPreviousTrack();
+        }
+    }
+
+    void NextMusic()
+    {
+        if (musicManager != null)
+        {
+            musicManager.PlayNextTrack();
         }
     }
 

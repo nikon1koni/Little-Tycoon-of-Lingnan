@@ -1256,6 +1256,7 @@ MonoBehaviour:
   ambientIntensity: 1
   fogDensity: 0.01
   useFog: 0
+  debugMode: 0
 --- !u!4 &448367728
 Transform:
   m_ObjectHideFlags: 0
@@ -1490,7 +1491,7 @@ MonoBehaviour:
   target: {fileID: 1858142679}
   offset: {x: 0, y: 2, z: -5}
   smoothSpeed: 0.125
-  pitch: 30
+  pitch: 45
   yaw: 90
   roll: 0
   distance: 15
@@ -13010,6 +13011,55 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1244811862}
   m_CullTransparentMesh: 1
+--- !u!1 &1262232808
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1262232810}
+  - component: {fileID: 1262232809}
+  m_Layer: 0
+  m_Name: MusicManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1262232809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1262232808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39550e1e894d720418e1a2329a07fd95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicTracks:
+  - {fileID: 8300000, guid: ca4c131bc5b6afb40bfb032c6d94d9c3, type: 3}
+  volume: 0.5
+  playOnAwake: 1
+  shufflePlaylist: 0
+--- !u!4 &1262232810
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1262232808}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4.0699325, y: -1.0558014, z: 7.812529}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1356696454
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13147,6 +13197,8 @@ MonoBehaviour:
   basePressureCost: 50
   pressureMultiplier: 1.2
   enableDebugKeys: 1
+  enableBackgroundMusic: 1
+  musicManager: {fileID: 0}
 --- !u!1001 &1399182630
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16005,3 +16057,4 @@ SceneRoots:
   - {fileID: 969885567}
   - {fileID: 999821968}
   - {fileID: 448367728}
+  - {fileID: 1262232810}

@@ -32,6 +32,9 @@ public class SimpleDayNight : MonoBehaviour
     [Range(0, 1)] public float fogDensity = 0.01f;
     public bool useFog = true;
     
+    [Header("Debug")]
+    public bool debugMode = true;
+    
     private float time;
     private bool initialized = false;
     private FogMode fogModeBackup;
@@ -47,14 +50,14 @@ public class SimpleDayNight : MonoBehaviour
         
         if (skyboxMaterial == null)
         {
-            Debug.LogError("? 没有设置天空盒材质！");
+            Debug.LogError("? ??????????в????");
             enabled = false;
             return;
         }
         
         if (sunLight == null)
         {
-            Debug.LogError("? 没有设置太阳！");
+            Debug.LogError("? ????????????");
             enabled = false;
             return;
         }
@@ -63,7 +66,7 @@ public class SimpleDayNight : MonoBehaviour
         fogColorBackup = RenderSettings.fogColor;
         fogDensityBackup = RenderSettings.fogDensity;
         
-        Debug.Log("? SimpleDayNight 启动!");
+        Debug.Log("? SimpleDayNight ????!");
         initialized = true;
     }
     
@@ -119,15 +122,15 @@ public class SimpleDayNight : MonoBehaviour
         Vector4 sunDir = new Vector4(-forward.x, -forward.y, -forward.z, 0);
         skyboxMaterial.SetVector("_WorldSpaceLightPos0", sunDir);
         
-        if (Time.frameCount % 30 == 0)
+        if (debugMode && Time.frameCount % 30 == 0)
         {
-            string period = "白天";
-            if (t < 0.25f || t >= 0.9f) period = "夜晚";
-            else if (t < 0.45f) period = "日出";
-            else if (t < 0.7f) period = "白天";
-            else period = "日落";
+            string period = "????";
+            if (t < 0.25f || t >= 0.9f) period = "???";
+            else if (t < 0.45f) period = "???";
+            else if (t < 0.7f) period = "????";
+            else period = "????";
             
-            Debug.Log($"? {period} {t:F2} | 太阳角度: {sunPitch:F0}° | 环境光: {(int)(ambientColor.grayscale * 100)}%");
+            Debug.Log($"? {period} {t:F2} | ??????: {sunPitch:F0}?? | ??????: {(int)(ambientColor.grayscale * 100)}%");
         }
     }
     
