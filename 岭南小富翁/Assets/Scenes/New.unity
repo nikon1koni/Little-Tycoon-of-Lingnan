@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionBounces: 1
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
-  m_Sun: {fileID: 1113569607}
+  m_Sun: {fileID: 0}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1238,13 +1238,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dayLength: 60
   sunLight: {fileID: 1113569607}
-  daySky: {r: 0.25, g: 0.45, b: 0.8, a: 1}
-  nightSky: {r: 0.1, g: 0.1, b: 0.2, a: 1}
+  daySkyTop: {r: 0.15, g: 0.3, b: 0.6, a: 1}
+  daySkyHorizon: {r: 0.4, g: 0.6, b: 0.85, a: 1}
+  daySkyGround: {r: 0.2, g: 0.3, b: 0.4, a: 1}
   daySun: {r: 1, g: 0.9, b: 0.6, a: 1}
-  nightSun: {r: 0.4, g: 0.15, b: 0.1, a: 1}
   dayAmbient: {r: 0.85, g: 0.9, b: 1, a: 1}
+  dayShadow: {r: 0.15, g: 0.2, b: 0.3, a: 1}
+  dayFog: {r: 0.6, g: 0.7, b: 0.85, a: 1}
+  nightSkyTop: {r: 0.05, g: 0.05, b: 0.15, a: 1}
+  nightSkyHorizon: {r: 0.1, g: 0.1, b: 0.25, a: 1}
+  nightSkyGround: {r: 0.05, g: 0.05, b: 0.1, a: 1}
+  nightSun: {r: 0.4, g: 0.15, b: 0.1, a: 1}
   nightAmbient: {r: 0.1, g: 0.1, b: 0.15, a: 1}
+  nightShadow: {r: 0.05, g: 0.05, b: 0.1, a: 1}
+  nightFog: {r: 0.1, g: 0.1, b: 0.15, a: 1}
   skyboxMaterial: {fileID: 2100000, guid: 6cf0ba085351e0d47919321f16c4cab6, type: 2}
+  ambientIntensity: 1
+  fogDensity: 0.01
+  useFog: 1
 --- !u!4 &448367728
 Transform:
   m_ObjectHideFlags: 0

@@ -20,7 +20,7 @@ Shader "Skybox/Procedural"
     {
         Tags { "Queue"="Background" "RenderType"="Background" "PreviewType"="Skybox" }
         LOD 100
-        Cull Back  // 回到默认渲染
+        Cull Back  // ?????????
 
         Pass
         {
@@ -116,12 +116,12 @@ Shader "Skybox/Procedural"
                 float atmosphere = pow(1 - max(0, dir.y), _AtmosphereThickness);
                 skyColor = lerp(skyColor, _AtmosphereColor.rgb, atmosphere);
                 
-                // 云层计算，只在天空部分渲染云
+                // ????????????????????
                 if (height > 0.0)
                 {
                     float clouds = FBM(dir.xz * _CloudScale + _Time.x * _CloudSpeed, 4);
                     clouds = smoothstep(0.4 - _CloudDensity * 0.4, 0.5 + _CloudDensity * 0.4, clouds);
-                    clouds *= smoothstep(0.0, 0.7, height);  // 在地平线处云层渐隐
+                    clouds *= smoothstep(0.0, 0.7, height);  // ????????????
                     skyColor = lerp(skyColor, _CloudColor.rgb, clouds * 0.7);
                 }
                 
