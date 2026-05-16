@@ -1255,7 +1255,7 @@ MonoBehaviour:
   skyboxMaterial: {fileID: 2100000, guid: 6cf0ba085351e0d47919321f16c4cab6, type: 2}
   ambientIntensity: 1
   fogDensity: 0.01
-  useFog: 1
+  useFog: 0
 --- !u!4 &448367728
 Transform:
   m_ObjectHideFlags: 0
