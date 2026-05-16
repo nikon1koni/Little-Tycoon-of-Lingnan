@@ -10,15 +10,17 @@ Shader "Skybox/Procedural"
         _SunSize ("Sun Size", Range(0.01, 0.2)) = 0.05
         _AtmosphereColor ("Atmosphere Color", Color) = (0.8, 0.6, 0.4, 1)
         _AtmosphereThickness ("Atmosphere Thickness", Range(0, 3)) = 1
-        _CloudSpeed ("Cloud Speed", Float) = 0.1
-        _CloudScale ("Cloud Scale", Float) = 5
-        _CloudColor ("Cloud Color", Color) = (0.9, 0.9, 0.9, 1)
+        _CloudSpeed ("Cloud Speed", Float) = 0.02
+        _CloudScale ("Cloud Scale", Float) = 8
+        _CloudColor ("Cloud Color", Color) = (1.0, 1.0, 1.0, 1)
+        _CloudDensity ("Cloud Density", Range(0, 1)) = 0.6
     }
 
     SubShader
     {
         Tags { "Queue"="Background" "RenderType"="Background" "PreviewType"="Skybox" }
         LOD 100
+        Cull Back  // 回到默认渲染
 
         Pass
         {
@@ -50,6 +52,7 @@ Shader "Skybox/Procedural"
             float _CloudSpeed;
             float _CloudScale;
             float4 _CloudColor;
+            float _CloudDensity;
 
             float random(float2 st)
             {
@@ -110,9 +113,14 @@ Shader "Skybox/Procedural"
                 float atmosphere = pow(1 - max(0, dir.y), _AtmosphereThickness);
                 skyColor = lerp(skyColor, _AtmosphereColor.rgb, atmosphere);
                 
-                float clouds = FBM(dir.xz * _CloudScale + _Time.x * _CloudSpeed, 3);
-                clouds = smoothstep(0.4, 0.6, clouds);
-                skyColor = lerp(skyColor, _CloudColor.rgb, clouds * 0.5);
+                // 云层计算，只在天空部分渲染云
+                if (height > 0.0)
+                {
+                    float clouds = FBM(dir.xz * _CloudScale + _Time.x * _CloudSpeed, 4);
+                    clouds = smoothstep(0.4 - _CloudDensity * 0.4, 0.5 + _CloudDensity * 0.4, clouds);
+                    clouds *= smoothstep(0.0, 0.7, height);  // 在地平线处云层渐隐
+                    skyColor = lerp(skyColor, _CloudColor.rgb, clouds * 0.7);
+                }
                 
                 float4 finalColor = float4(skyColor + sun * _SunColor.rgb, 1);
                 return finalColor;
