@@ -103,8 +103,11 @@ Shader "Skybox/Procedural"
                 float3 dir = normalize(i.worldPos);
                 float height = dir.y;
                 
-                float3 skyColor = lerp(_GroundColor.rgb, _HorizonColor.rgb, saturate(height * 2));
-                skyColor = lerp(skyColor, _SkyColor.rgb, saturate((height - 0.5) * 2));
+                float horizonBlend = saturate(height * 3);
+                float skyBlend = saturate((height - 0.3) * 2.5);
+                
+                float3 skyColor = lerp(_GroundColor.rgb, _HorizonColor.rgb, horizonBlend);
+                skyColor = lerp(skyColor, _SkyColor.rgb, skyBlend);
                 
                 float sunAngle = dot(dir, _WorldSpaceLightPos0.xyz);
                 float sun = smoothstep(1 - _SunSize, 1, sunAngle);
