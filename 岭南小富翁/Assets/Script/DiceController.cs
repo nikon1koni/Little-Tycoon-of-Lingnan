@@ -65,8 +65,8 @@ public class DiceController : MonoBehaviour
         if (rollDiceButton != null)
             rollDiceButton.interactable = false;
 
-        if (rollSound != null)
-            audioSource.PlayOneShot(rollSound);
+        if (SFXManager.Instance != null)
+            SFXManager.Instance.PlaySFX(SFXClip.DiceRoll);
 
         float elapsed = 0f;
         int animationSteps = 5;
@@ -92,8 +92,8 @@ public class DiceController : MonoBehaviour
         if (diceAnimationText != null)
             diceAnimationText.text = currentDiceValue.ToString();
 
-        if (stopSound != null)
-            audioSource.PlayOneShot(stopSound);
+        if (SFXManager.Instance != null)
+            SFXManager.Instance.PlaySFX(SFXClip.DiceStop);
 
         if (gameManager != null)
         {

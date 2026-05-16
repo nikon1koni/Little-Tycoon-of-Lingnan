@@ -13199,6 +13199,8 @@ MonoBehaviour:
   enableDebugKeys: 1
   enableBackgroundMusic: 1
   musicManager: {fileID: 0}
+  sfxConfig: {fileID: 11400000, guid: d32ad7b7a21f2ae4eb3e1cb120263198, type: 2}
+  enableSFX: 1
 --- !u!1001 &1399182630
 PrefabInstance:
   m_ObjectHideFlags: 0

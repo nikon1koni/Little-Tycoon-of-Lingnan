@@ -121,6 +121,10 @@ public class Player : MonoBehaviour
             property.ownerPlayer = this;
             ownedProperties.Add(property);
             Debug.Log($"{playerName} ≥…π¶π∫¬Ú¡À {property.tileName}");
+
+            if (SFXManager.Instance != null)
+                SFXManager.Instance.PlaySFX(SFXClip.EventPropertyBought);
+
             return true;
         }
 

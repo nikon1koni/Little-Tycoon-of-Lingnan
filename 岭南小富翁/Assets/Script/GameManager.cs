@@ -56,6 +56,10 @@ public class GameManager : MonoBehaviour
     public bool enableBackgroundMusic = true;
     public MusicManager musicManager;
 
+    [Header("音效系统")]
+    public SFXConfig sfxConfig;
+    public bool enableSFX = true;
+
     // 游戏状态枚举
     public enum GameState
     {
@@ -112,6 +116,7 @@ public class GameManager : MonoBehaviour
         UpdateUI();
         SetupButtonEvents();
         InitializeMusicSystem();
+        InitializeSFXSystem();
 
         Debug.Log($"游戏初始化完成，玩家数: {players.Count}");
         Debug.Log($"当前玩家: {currentPlayer?.playerName ?? ""}");
@@ -148,6 +153,47 @@ public class GameManager : MonoBehaviour
         else
         {
             Debug.LogWarning("MusicManager 未配置音乐文件");
+        }
+    }
+
+    void InitializeSFXSystem()
+    {
+        if (!enableSFX)
+        {
+            Debug.Log("音效系统已禁用");
+            return;
+        }
+
+        if (SFXManager.Instance == null)
+        {
+            GameObject sfxObj = new GameObject("SFXManager");
+            SFXManager sfxManager = sfxObj.AddComponent<SFXManager>();
+
+            if (sfxConfig != null)
+            {
+                sfxManager.config = sfxConfig;
+                sfxManager.ReloadClips();
+            }
+            else
+            {
+                sfxConfig = Resources.Load<SFXConfig>("SFXConfig");
+                if (sfxConfig != null)
+                {
+                    sfxManager.config = sfxConfig;
+                    sfxManager.ReloadClips();
+                }
+                else
+                {
+                    Debug.LogWarning("SFXConfig 未配置，请在Inspector中拖入或放入Resources文件夹");
+                }
+            }
+
+            Debug.Log("SFXManager 已创建并初始化");
+        }
+        else if (sfxConfig != null && SFXManager.Instance.config == null)
+        {
+            SFXManager.Instance.config = sfxConfig;
+            SFXManager.Instance.ReloadClips();
         }
     }
 

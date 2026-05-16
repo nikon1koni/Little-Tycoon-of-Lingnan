@@ -11,8 +11,13 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private Button startButton;
     [SerializeField] private Button quitButton;
 
+    [Header("“Ù–ß≈‰÷√")]
+    [SerializeField] private SFXConfig sfxConfig;
+
     private void Start()
     {
+        EnsureSFXManagerExists();
+
         if (startButton == null)
             startButton = GameObject.Find("StartButton")?.GetComponent<Button>();
         if (quitButton == null)
@@ -31,6 +36,9 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnStartGame()
     {
+        if (SFXManager.Instance != null)
+            SFXManager.Instance.PlaySFX(SFXClip.UIClick);
+
         if (!string.IsNullOrEmpty(gameSceneName))
             SceneManager.LoadScene(gameSceneName);
         else
@@ -39,6 +47,9 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnQuitGame()
     {
+        if (SFXManager.Instance != null)
+            SFXManager.Instance.PlaySFX(SFXClip.UIClick);
+
         Debug.Log("ÕÀ≥ˆ”Œœ∑");
 
 #if UNITY_EDITOR
@@ -46,5 +57,28 @@ public class MainMenuManager : MonoBehaviour
 #else
         Application.Quit();
 #endif
+    }
+
+    void EnsureSFXManagerExists()
+    {
+        if (SFXManager.Instance != null) return;
+
+        GameObject sfxObj = new GameObject("SFXManager");
+        SFXManager sfxManager = sfxObj.AddComponent<SFXManager>();
+
+        if (sfxConfig != null)
+        {
+            sfxManager.config = sfxConfig;
+            sfxManager.ReloadClips();
+        }
+        else
+        {
+            sfxConfig = Resources.Load<SFXConfig>("SFXConfig");
+            if (sfxConfig != null)
+            {
+                sfxManager.config = sfxConfig;
+                sfxManager.ReloadClips();
+            }
+        }
     }
 }

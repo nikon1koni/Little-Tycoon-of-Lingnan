@@ -158,6 +158,9 @@ public class BoardTile : MonoBehaviour
                     int salary = GameManager.Instance.salaryAmount;
                     player.ReceiveCash(salary);
 
+                    if (SFXManager.Instance != null)
+                        SFXManager.Instance.PlaySFX(SFXClip.EventGainMoney);
+
                     if (UIManager.Instance != null)
                     {
                         UIManager.Instance.ShowToast($"到达起点，获得{salary}元工资", 2f);
@@ -257,6 +260,9 @@ public class BoardTile : MonoBehaviour
         if (player.PayCash(rent))
         {
             ownerPlayer.ReceiveCash(rent);
+
+            if (SFXManager.Instance != null)
+                SFXManager.Instance.PlaySFX(SFXClip.EventLoseMoney);
 
             if (UIManager.Instance != null)
             {
@@ -585,6 +591,9 @@ public class BoardTile : MonoBehaviour
                 int gain = Random.Range(20, 101);
                 player.ReceiveCash(gain);
                 Debug.Log($"{player.playerName} 抽到机会卡: 获得 {gain} 元");
+
+                if (SFXManager.Instance != null)
+                    SFXManager.Instance.PlaySFX(SFXClip.EventGainMoney);
                 break;
 
             case 2:
@@ -592,6 +601,9 @@ public class BoardTile : MonoBehaviour
                 if (player.PayCash(lose))
                 {
                     Debug.Log($"{player.playerName} 抽到机会卡: 损失 {lose} 元");
+
+                    if (SFXManager.Instance != null)
+                        SFXManager.Instance.PlaySFX(SFXClip.EventLoseMoney);
                 }
                 break;
 
@@ -620,6 +632,9 @@ public class BoardTile : MonoBehaviour
                 int gain = Random.Range(50, 201);
                 player.ReceiveCash(gain);
                 Debug.Log($"{player.playerName} 抽到公共福利: 获得 {gain} 元");
+
+                if (SFXManager.Instance != null)
+                    SFXManager.Instance.PlaySFX(SFXClip.EventGainMoney);
                 break;
 
             case 2:
@@ -627,12 +642,18 @@ public class BoardTile : MonoBehaviour
                 if (player.PayCash(tax))
                 {
                     Debug.Log($"{player.playerName} 抽到公共福利: 纳税 {tax} 元");
+
+                    if (SFXManager.Instance != null)
+                        SFXManager.Instance.PlaySFX(SFXClip.EventTaxPaid);
                 }
                 break;
 
             case 3:
                 player.AddBuff(this);
                 Debug.Log($"{player.playerName} 抽到公共福利: 获得临时Buff");
+
+                if (SFXManager.Instance != null)
+                    SFXManager.Instance.PlaySFX(SFXClip.EventBuffActivated);
                 break;
         }
     }
@@ -645,6 +666,9 @@ public class BoardTile : MonoBehaviour
         if (player.PayCash(taxAmount))
         {
             Debug.Log($"{player.playerName} 支付税金: {taxAmount} 元");
+
+            if (SFXManager.Instance != null)
+                SFXManager.Instance.PlaySFX(SFXClip.EventTaxPaid);
         }
     }
 
@@ -655,6 +679,9 @@ public class BoardTile : MonoBehaviour
         player.jailTurnsRemaining = 3;
 
         Debug.Log($"{player.playerName} 被送进监狱，剩余 {player.jailTurnsRemaining} 回合");
+
+        if (SFXManager.Instance != null)
+            SFXManager.Instance.PlaySFX(SFXClip.EventGoToJail);
 
         if (UIManager.Instance != null)
         {
@@ -673,6 +700,9 @@ public class BoardTile : MonoBehaviour
                 int gain = Random.Range(50, 151);
                 player.ReceiveCash(gain);
                 Debug.Log($"{player.playerName} 触发事件: 获得 {gain} 元");
+
+                if (SFXManager.Instance != null)
+                    SFXManager.Instance.PlaySFX(SFXClip.EventGainMoney);
                 break;
 
             case TileEvent.LoseMoney:
@@ -680,6 +710,9 @@ public class BoardTile : MonoBehaviour
                 if (player.PayCash(lose))
                 {
                     Debug.Log($"{player.playerName} 触发事件: 损失 {lose} 元");
+
+                    if (SFXManager.Instance != null)
+                        SFXManager.Instance.PlaySFX(SFXClip.EventLoseMoney);
                 }
                 break;
 
@@ -707,6 +740,9 @@ public class BoardTile : MonoBehaviour
                 if (player.PayCash(tax))
                 {
                     Debug.Log($"{player.playerName} 触发事件: 支付额外税金 {tax} 元");
+
+                    if (SFXManager.Instance != null)
+                        SFXManager.Instance.PlaySFX(SFXClip.EventTaxPaid);
                 }
                 break;
         }

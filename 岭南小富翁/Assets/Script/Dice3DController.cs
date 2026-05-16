@@ -103,8 +103,8 @@ public class Dice3DController : MonoBehaviour
         if (diceResultText != null)
             diceResultText.text = "?";
 
-        if (rollSound != null)
-            audioSource.PlayOneShot(rollSound);
+        if (SFXManager.Instance != null)
+            SFXManager.Instance.PlaySFX(SFXClip.DiceRoll);
 
         currentDiceValue = Random.Range(1, 7);
         Debug.Log($"骰子将显示: {currentDiceValue}点");
@@ -160,8 +160,8 @@ public class Dice3DController : MonoBehaviour
         // 最终精确定位
         dice3D.transform.localRotation = targetRotation;
 
-        if (stopSound != null)
-            audioSource.PlayOneShot(stopSound);
+        if (SFXManager.Instance != null)
+            SFXManager.Instance.PlaySFX(SFXClip.DiceStop);
 
         if (diceResultText != null)
             diceResultText.text = currentDiceValue.ToString();

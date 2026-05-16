@@ -1,4 +1,4 @@
-﻿﻿using UnityEngine;
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
@@ -218,6 +218,9 @@ public class UIManager : MonoBehaviour
         buildingSelectionPanel.SetActive(true);
         buildingSelectionPanel.transform.SetAsLastSibling();
 
+        if (SFXManager.Instance != null)
+            SFXManager.Instance.PlaySFX(SFXClip.UIOpen);
+
         SetNonButtonRaycastTargets(false);
 
         if (tileInfoText != null)
@@ -291,6 +294,9 @@ public class UIManager : MonoBehaviour
         if (buildingSelectionPanel != null)
         {
             buildingSelectionPanel.SetActive(false);
+
+            if (SFXManager.Instance != null)
+                SFXManager.Instance.PlaySFX(SFXClip.UIClose);
         }
 
         if (!keepButtons)
@@ -503,6 +509,9 @@ public class UIManager : MonoBehaviour
     {
         UnityEngine.Debug.Log($"选中建筑: {building.buildingName}, 价格: {building.purchasePrice}");
 
+        if (SFXManager.Instance != null)
+            SFXManager.Instance.PlaySFX(SFXClip.UIClick);
+
         selectedBuildingData = building;
         isBuildingSelected = true;
 
@@ -679,6 +688,9 @@ public class UIManager : MonoBehaviour
 
         if (PurchaseAndPlaceBuilding(tile, selectedBuildingData, currentBuildingPlayer))
         {
+            if (SFXManager.Instance != null)
+                SFXManager.Instance.PlaySFX(SFXClip.EventBuildingPlaced);
+
             ClearTileHighlights();
             HideBuildingSelectionUI();
         }
@@ -806,6 +818,9 @@ public class UIManager : MonoBehaviour
     {
         UnityEngine.Debug.Log("UIManager: 点击掷骰子按钮");
 
+        if (SFXManager.Instance != null)
+            SFXManager.Instance.PlaySFX(SFXClip.UIClick);
+
         if (GameManager.Instance != null)
         {
             GameManager.Instance.OnRollDiceButtonClicked();
@@ -897,6 +912,9 @@ public class UIManager : MonoBehaviour
         if (!propertyPurchasePanel.activeSelf)
         {
             propertyPurchasePanel.SetActive(true);
+
+            if (SFXManager.Instance != null)
+                SFXManager.Instance.PlaySFX(SFXClip.UIOpen);
         }
 
         Text propertyNameText = propertyPurchasePanel.transform.Find("PropertyName")?.GetComponent<Text>();
@@ -933,6 +951,9 @@ public class UIManager : MonoBehaviour
     {
         if (propertyPurchasePanel != null)
         {
+            if (propertyPurchasePanel.activeSelf && SFXManager.Instance != null)
+                SFXManager.Instance.PlaySFX(SFXClip.UIClose);
+
             propertyPurchasePanel.SetActive(false);
         }
     }
@@ -1083,6 +1104,9 @@ public class UIManager : MonoBehaviour
         // 显示面板
         buildingUpgradePanel.SetActive(true);
         buildingUpgradePanel.transform.SetAsLastSibling();
+
+        if (SFXManager.Instance != null)
+            SFXManager.Instance.PlaySFX(SFXClip.UIOpen);
 
         // 更新UI信息
         UpdateUpgradePanelInfo();
@@ -1235,6 +1259,9 @@ public class UIManager : MonoBehaviour
         {
             ShowToast("升级成功！", 2f);
 
+            if (SFXManager.Instance != null)
+                SFXManager.Instance.PlaySFX(SFXClip.EventBuildingUpgraded);
+
             // 更新UI
             UpdateUpgradePanelInfo();
             UpdateCurrentPlayerInfo(upgradeSelectedPlayer);
@@ -1262,6 +1289,9 @@ public class UIManager : MonoBehaviour
     {
         if (buildingUpgradePanel != null)
         {
+            if (buildingUpgradePanel.activeSelf && SFXManager.Instance != null)
+                SFXManager.Instance.PlaySFX(SFXClip.UIClose);
+
             buildingUpgradePanel.SetActive(false);
         }
 

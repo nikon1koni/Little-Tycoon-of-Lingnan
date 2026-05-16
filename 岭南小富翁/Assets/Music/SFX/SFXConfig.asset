@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1189c22e753af3e42a41c68dafec7b7a, type: 3}
+  m_Name: SFXConfig
+  m_EditorClassIdentifier: 
+  uiClick: {fileID: 8300000, guid: 8fb41e4d667bbb84fb952b20fd33c31a, type: 3}
+  uiHover: {fileID: 8300000, guid: d11549bf550aa5345ab747593262a8c0, type: 3}
+  uiOpen: {fileID: 8300000, guid: ad6a54f8819ad884588e7c68e35fb781, type: 3}
+  uiClose: {fileID: 8300000, guid: 91757fd8171d8944f92439bd4ef47527, type: 3}
+  playerJump: {fileID: 8300000, guid: 9e5adbc4ab49e6444bfa4b6bf638ca6e, type: 3}
+  playerLand: {fileID: 8300000, guid: 0f190fa3a19012e40aa9ba4ca68df21a, type: 3}
+  playerMove: {fileID: 8300000, guid: 4e80a22b8d0dfeb4aa2e38cf22a8ad80, type: 3}
+  eventGainMoney: {fileID: 8300000, guid: f674a041c334b1e40af4fcd60e27bea8, type: 3}
+  eventLoseMoney: {fileID: 8300000, guid: 694eb61853c76df42a13f20bebfc979b, type: 3}
+  eventPropertyBought: {fileID: 8300000, guid: 3fcd8459f0534384ba6ee60a344b69f6, type: 3}
+  eventBuildingPlaced: {fileID: 8300000, guid: e96a096ff92fe8b468faf05d8ad634ee, type: 3}
+  eventBuildingUpgraded: {fileID: 8300000, guid: a150c538eac2f274c9bf73504b08a9b6, type: 3}
+  eventGoToJail: {fileID: 8300000, guid: c9a44ba2b6da38a49a204632fdca1c2d, type: 3}
+  eventTaxPaid: {fileID: 8300000, guid: ecf70490a5bcbc042865f50b6fedcb21, type: 3}
+  eventBuffActivated: {fileID: 8300000, guid: 20f5cc979b0d26146a6ad4d0fa6e8808, type: 3}
+  diceRoll: {fileID: 8300000, guid: 0e8a42e2d3aae774fa3962e4eecaee9e, type: 3}
+  diceStop: {fileID: 0}

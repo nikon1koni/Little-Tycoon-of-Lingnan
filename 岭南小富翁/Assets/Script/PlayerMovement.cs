@@ -189,6 +189,9 @@ public class PlayerMovement : MonoBehaviour
     // 方案1：简单的正弦波跳跃动画
     IEnumerator JumpToTile(BoardTile targetTile)
     {
+        if (SFXManager.Instance != null)
+            SFXManager.Instance.PlaySFX(SFXClip.PlayerJump);
+
         Vector3 startPos = transform.position;
         Vector3 endPos = targetTile.transform.position;
         endPos.y = baseY;
@@ -221,6 +224,9 @@ public class PlayerMovement : MonoBehaviour
         // 确保位置正确
         transform.position = endPos;
         transform.localScale = originalScale;
+
+        if (SFXManager.Instance != null)
+            SFXManager.Instance.PlaySFX(SFXClip.PlayerLand);
     }
 
     // 方案2：抛物线跳跃（瞬移方式，直接跳过去）
@@ -383,12 +389,8 @@ public class PlayerMovement : MonoBehaviour
     // 跳跃时播放音效（可选）
     void PlayJumpSound()
     {
-        // 需要添加AudioSource组件
-        AudioSource audioSource = GetComponent<AudioSource>();
-        if (audioSource != null)
-        {
-            audioSource.Play();
-        }
+        if (SFXManager.Instance != null)
+            SFXManager.Instance.PlaySFX(SFXClip.PlayerJump);
     }
 
     // 跳跃时播放粒子效果（可选）
