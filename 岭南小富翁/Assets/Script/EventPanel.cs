@@ -65,15 +65,34 @@ public class EventPanel : MonoBehaviour
 
     void CreateOptions(EventData.EventOption[] options)
     {
-        if (optionsContainer == null || optionButtonPrefab == null) return;
+        Debug.Log("=== 创建选项按钮 ===");
+        Debug.Log("optionsContainer 是否为空: " + (optionsContainer == null));
+        Debug.Log("optionButtonPrefab 是否为空: " + (optionButtonPrefab == null));
+        Debug.Log("选项数量: " + (options?.Length ?? 0));
 
+        if (optionsContainer == null || optionButtonPrefab == null) 
+        {
+            Debug.LogError("选项容器或按钮预制体为空！");
+            return;
+        }
+
+        Debug.Log("开始创建按钮...");
         foreach (EventData.EventOption option in options)
         {
+            Debug.Log("创建按钮: " + option.optionText);
             Button button = Instantiate(optionButtonPrefab, optionsContainer);
+            button.gameObject.SetActive(true);
+            
             TextMeshProUGUI buttonText = button.GetComponentInChildren<TextMeshProUGUI>();
-
             if (buttonText != null)
+            {
                 buttonText.text = option.optionText;
+                Debug.Log("按钮文本已设置: " + option.optionText);
+            }
+            else
+            {
+                Debug.LogWarning("按钮没有找到 TextMeshPro 组件！");
+            }
 
             button.onClick.AddListener(() =>
             {
@@ -84,6 +103,7 @@ public class EventPanel : MonoBehaviour
                 HidePanel();
             });
         }
+        Debug.Log("=== 选项按钮创建完成 ===");
     }
 
     public void HidePanel()

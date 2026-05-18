@@ -819,6 +819,10 @@ public class GameManager : MonoBehaviour
         {
             HandlePropertyTile();
         }
+        else if (currentTile.tileType == BoardTile.TileType.Event)
+        {
+            currentTile.OnLanded(currentPlayer);
+        }
         else
         {
             StartCoroutine(EndMoveAfterDelay(0.2f));
