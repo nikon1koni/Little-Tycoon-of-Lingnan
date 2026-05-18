@@ -1,8 +1,7 @@
-﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿using UnityEngine;
+﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
-using System.Diagnostics;
 using static BoardTile;
 using TMPro;
 
@@ -75,6 +74,9 @@ public class UIManager : MonoBehaviour
 
     public TextMeshProUGUI turnAnnounceText;           // 文本
     public float announceDuration = 2.5f;  // 显示时长
+
+    [Header("事件系统UI")]
+    public EventPanel eventPanel;
 
     public TextMeshProUGUI CashText => cashText;
 
@@ -1300,6 +1302,19 @@ public class UIManager : MonoBehaviour
 
         // 恢复骰子按钮
         SetRollDiceButtonInteractable(true);
+    }
+
+    public void ShowEventPanel(EventData eventData)
+    {
+        if (eventPanel != null)
+        {
+            SetRollDiceButtonInteractable(false);
+            eventPanel.ShowEvent(eventData);
+        }
+        else
+        {
+            Debug.LogWarning("EventPanel is not assigned in UIManager!");
+        }
     }
 
     void OnDestroy()

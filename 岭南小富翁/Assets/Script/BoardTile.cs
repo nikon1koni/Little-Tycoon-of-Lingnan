@@ -34,6 +34,9 @@ public class BoardTile : MonoBehaviour
     [SerializeField] private float autoIncomeInterval = 10.0f; // 自动收入间隔
     private float lastAutoIncomeTime = 0f;
 
+    [Header("事件系统")]
+    public EventData[] eventDataArray; // 事件数据数组
+
     [Header("UI显示")]
     public TextMeshProUGUI tileNameText; // 地块名称文本
     public MeshRenderer tileRenderer; // 地块渲染器
@@ -692,6 +695,20 @@ public class BoardTile : MonoBehaviour
     // 触发随机事件
     private void TriggerRandomEvent(Player player)
     {
+        if (eventDataArray != null && eventDataArray.Length > 0)
+        {
+            // 从事件数据数组中随机选择一个事件
+            EventData selectedEvent = eventDataArray[Random.Range(0, eventDataArray.Length)];
+            
+            if (selectedEvent != null && UIManager.Instance != null)
+            {
+                UIManager.Instance.ShowEventPanel(selectedEvent);
+                Debug.Log($"{player.playerName} 触发事件: {selectedEvent.eventTitle}");
+                return;
+            }
+        }
+
+        // 如果没有设置事件数据，使用默认逻辑
         TileEvent randomEvent = (TileEvent)Random.Range(1, 6);
 
         switch (randomEvent)
