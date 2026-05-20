@@ -12,29 +12,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d2d4598ad43c9b4c9588967c26b1eb0, type: 3}
   m_Name: LargeHouse
   m_EditorClassIdentifier: 
-  buildingName: "\u5927\u623F\u5C4B"
-  buildingDescription: "\u8212\u9002\uFF0C\u7A7A\u95F4\u5BBD\u655E\u7684\u623F\u5B50\u3002"
-  buildingIcon: {fileID: 0}
-  buildingPrefab: {fileID: 0}
-  upgradePrefabs: []
-  requiredScale: 2
-  minTileScale: 3
-  maxTileScale: 3
-  purchasePrice: 550
-  upgradeCosts: 960000002c010000
-  maxLevel: 3
-  functionType: 0
-  buffDuration: 0
-  providesIncome: 1
-  incomeAmounts: 0a000000140000002d000000
-  incomeInterval: 1
-  buffEffect: 0
+  buildingType: 0
+  isFinalLevel: 1
   buffValues:
   - 0.1
   - 0.2
   - 0.3
   - 0.4
-  highlightColor: {r: 0, g: 1, b: 0, a: 1}
-  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  buildingName: "\u5927\u623F\u5C4B"
+  purchasePrice: 550
+  upgradePrice: 50
+  minTileScale: 3
+  maxTileScale: 3
+  requiredScale: 2
+  functionType: 0
+  baseIncome: 100
+  incomeGrowthRate: 1.2
+  buffEffect: 0
+  baseBuffValue: 0.1
+  buffGrowthRate: 1.1
+  buffDuration: 0
+  mixedBaseIncome: 5
+  mixedIncomeGrowthRate: 1.1
+  buildingIcon: {fileID: 0}
+  buildingPrefab: {fileID: 0}
   nextLevelBuilding: {fileID: 0}
-  isFinalLevel: 1
+  description: "\u5EFA\u7B51\u63CF\u8FF0"

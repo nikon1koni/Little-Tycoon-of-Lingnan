@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eventTitle: "\u6D4B\u8BD5"
   eventImage: {fileID: 21300000, guid: e8658d8076ca2d742af6a81876917b81, type: 3}
-  eventDescription: "\u6D4B\u8BD5\u6D4B\u8BD5\u3002\uFF0C\uFF0C\uFF0C"
+  eventDescription: "\u6D4B\u8BD5\u6D4B\u8BD5"
   options:
   - optionText: "\u6D4B\u8BD51"
     onOptionSelected:
