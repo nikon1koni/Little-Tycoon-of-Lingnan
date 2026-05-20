@@ -633,9 +633,10 @@ public class GameManager : MonoBehaviour
                        currentState == GameState.PlayerTurn && // ?????????????
                        !isMoving &&
                        currentPlayer != null &&
-                       !currentPlayer.isInJail;
+                       !currentPlayer.isInJail &&
+                       !currentPlayer.isBankrupt;
 
-        Debug.Log($"CanRollDice: {canRoll} | State: {currentState} | isMoving: {isMoving} | Player: {currentPlayer?.playerName}");
+        Debug.Log($"CanRollDice: {canRoll} | State: {currentState} | isMoving: {isMoving} | Player: {currentPlayer?.playerName} | Bankrupt: {currentPlayer?.isBankrupt}");
 
         return canRoll;
     }
@@ -840,7 +841,15 @@ public class GameManager : MonoBehaviour
 
         isMoving = false;
 
-        if (currentPlayer.cash < 0)
+        bool shouldEndTurn = true;
+
+        CheckPressureTrigger();
+
+        if (currentPlayer.isBankrupt)
+        {
+            shouldEndTurn = false;
+        }
+        else if (currentPlayer.cash < 0)
         {
             Debug.Log($"{currentPlayer.playerName} ?????");
             HandlePlayerBankrupt(currentPlayer);
@@ -852,9 +861,10 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        CheckPressureTrigger();
-
-        EndTurn();
+        if (shouldEndTurn)
+        {
+            EndTurn();
+        }
     }
 
     public void EndTurn()
@@ -967,17 +977,30 @@ public class GameManager : MonoBehaviour
 
         if (players.Count == 1)
         {
-            Player winner = players[0];
-            Debug.Log($"=== ???????! ???: {winner.playerName} ===");
+            Player player = players[0];
+            bool isWinner = !player.isBankrupt;
+            Debug.Log($"=== ?????????! {player.playerName}: {(isWinner ? "???": "????")} ===");
 
             if (uiManager != null)
             {
-                uiManager.ShowGameOverPanel(winner.playerName, true);
+                uiManager.ShowGameOverPanel(player.playerName, isWinner);
             }
         }
         else
         {
-            Debug.Log("=== ?????????????? ===");
+            Player winner = players.Find(p => !p.isBankrupt);
+            if (winner != null)
+            {
+                Debug.Log($"=== ???????! ???: {winner.playerName} ===");
+                if (uiManager != null)
+                {
+                    uiManager.ShowGameOverPanel(winner.playerName, true);
+                }
+            }
+            else
+            {
+                Debug.Log("=== ?????????????? ===");
+            }
         }
     }
 
@@ -1183,7 +1206,14 @@ public class GameManager : MonoBehaviour
         
         currentState = GameState.PlayerTurn;
         isGameStarted = true;
+        isPlayerTurn = true;
+        isMoving = false;
         currentPlayerIndex = 0;
+        diceRollCount = 0;
+        nextPressureAt = 1;
+        basePressureCost = 50f;
+        
+        BoardTile startTile = GetStartTile();
         
         foreach (Player p in players)
         {
@@ -1192,6 +1222,12 @@ public class GameManager : MonoBehaviour
             p.ownedProperties.Clear();
             p.isInJail = false;
             p.jailTurnsRemaining = 0;
+            
+            if (startTile != null)
+            {
+                p.MoveToTile(startTile, true);
+                Debug.Log($"重置 {p.playerName} 位置到起点");
+            }
         }
         
         if (players.Count > 0)
@@ -1210,6 +1246,7 @@ public class GameManager : MonoBehaviour
             uiManager.SwitchToGameUI();
             uiManager.UpdateAllPlayerInfo();
             uiManager.UpdateCashDisplay(currentPlayer?.cash ?? startingCash);
+            uiManager.UpdatePressureSystemUI();
         }
         
         UpdateUI();

@@ -60,19 +60,12 @@ public class Player : MonoBehaviour
     // 付钱
     public bool PayCash(int amount)
     {
-        if (cash >= amount)
-        {
-            cash -= amount;
-            Debug.Log($"{playerName} 支付 {amount} 元，剩余资金: {cash}");
+        bool canAfford = cash >= amount;
+        cash -= amount;
+        Debug.Log($"{playerName} 支付 {amount} 元，剩余资金: {cash}");
 
-            NotifyCashChanged();
-            return true;
-        }
-        else
-        {
-            Debug.LogWarning($"{playerName} 钱不够！需要 {amount} 元，只有 {cash} 元");
-            return false;
-        }
+        NotifyCashChanged();
+        return canAfford;
     }
 
     // 收钱

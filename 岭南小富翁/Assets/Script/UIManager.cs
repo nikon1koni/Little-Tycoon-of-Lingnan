@@ -1059,7 +1059,7 @@ public class UIManager : MonoBehaviour
             return;
         }
 
-        SwitchToGameOverUI();
+        gameOverPanel.SetActive(true);
 
         int diceCount = 0;
         int roundCount = 0;
@@ -1072,51 +1072,115 @@ public class UIManager : MonoBehaviour
         
         int score = roundCount * 100 + diceCount + 10;
 
-        Text resultText = gameOverPanel.transform.Find("ResultText")?.GetComponent<Text>();
-        if (resultText != null)
-        {
-            resultText.text = isWinner ? $"{playerName} 获胜！" : $"{playerName} 失败";
-        }
+        UnityEngine.Debug.Log($"结算面板显示: 玩家={playerName}, 获胜={isWinner}, 回合={roundCount}, 骰子={diceCount}, 得分={score}");
 
-        Text roundText = gameOverPanel.transform.Find("RoundText")?.GetComponent<Text>();
-        if (roundText != null)
-        {
-            roundText.text = $"存活回合数: {roundCount}";
-        }
+        SetText("ResultText", isWinner ? $"{playerName} 获胜！" : $"{playerName} 失败");
+        SetText("RoundText", $"存活回合数: {roundCount}");
+        SetText("DiceText", $"骰子投掷次数: {diceCount}");
+        SetText("ScoreText", $"得分: {score}");
 
-        Text diceText = gameOverPanel.transform.Find("DiceText")?.GetComponent<Text>();
-        if (diceText != null)
-        {
-            diceText.text = $"骰子投掷次数: {diceCount}";
-        }
-
-        Text scoreText = gameOverPanel.transform.Find("ScoreText")?.GetComponent<Text>();
-        if (scoreText != null)
-        {
-            scoreText.text = $"得分: {score}";
-        }
-
-        Button restartButton = gameOverPanel.transform.Find("RestartButton")?.GetComponent<Button>();
+        Button restartButton = FindRestartButton();
         if (restartButton != null)
         {
+            UnityEngine.Debug.Log("找到重新开始按钮，绑定事件");
             restartButton.onClick.RemoveAllListeners();
             restartButton.onClick.AddListener(OnRestartButtonClicked);
         }
+        else
+        {
+            UnityEngine.Debug.LogError("找不到重新开始按钮！");
+        }
+    }
+
+    private void SetText(string objectName, string text)
+    {
+        Transform trans = gameOverPanel.transform.Find(objectName);
+        if (trans == null)
+        {
+            UnityEngine.Debug.LogError($"找不到对象: {objectName}");
+            return;
+        }
+
+        Text textComp = trans.GetComponent<Text>();
+        if (textComp != null)
+        {
+            textComp.text = text;
+            UnityEngine.Debug.Log($"设置 {objectName} = {text} (Text)");
+            return;
+        }
+
+        TextMeshProUGUI tmpComp = trans.GetComponent<TextMeshProUGUI>();
+        if (tmpComp != null)
+        {
+            tmpComp.text = text;
+            UnityEngine.Debug.Log($"设置 {objectName} = {text} (TextMeshProUGUI)");
+            return;
+        }
+
+        UnityEngine.Debug.LogError($"{objectName} 没有找到 Text 或 TextMeshProUGUI 组件");
+    }
+
+    private Button FindRestartButton()
+    {
+        if (gameOverPanel == null)
+        {
+            UnityEngine.Debug.LogError("gameOverPanel 为空，无法查找重新开始按钮");
+            return null;
+        }
+
+        Button button = gameOverPanel.transform.Find("RestartButton")?.GetComponent<Button>();
+        if (button != null)
+        {
+            UnityEngine.Debug.Log($"找到按钮: RestartButton");
+            return button;
+        }
+
+        button = gameOverPanel.transform.Find("Button")?.GetComponent<Button>();
+        if (button != null)
+        {
+            UnityEngine.Debug.Log($"找到按钮: Button");
+            return button;
+        }
+
+        button = gameOverPanel.GetComponentInChildren<Button>();
+        if (button != null)
+        {
+            UnityEngine.Debug.Log($"找到按钮（通过 GetComponentInChildren）: {button.name}");
+            return button;
+        }
+
+        UnityEngine.Debug.LogError("在 gameOverPanel 中找不到任何 Button 组件");
+        return null;
     }
 
     private void OnRestartButtonClicked()
     {
+        UnityEngine.Debug.Log("=== 点击重新开始按钮 ===");
+        
         if (gameOverPanel != null)
         {
             gameOverPanel.SetActive(false);
+            UnityEngine.Debug.Log("隐藏结算面板");
+        }
+        else
+        {
+            UnityEngine.Debug.LogError("gameOverPanel 为空");
         }
         
         SwitchToGameUI();
+        UnityEngine.Debug.Log("切换到游戏UI");
         
         if (GameManager.Instance != null)
         {
+            UnityEngine.Debug.Log("调用 RestartFromGameOver");
             GameManager.Instance.RestartFromGameOver();
         }
+        else
+        {
+            UnityEngine.Debug.LogError("GameManager.Instance 为空！");
+        }
+        
+        UnityEngine.Debug.Log("=== 重新开始处理完成 ===");
     }
 
     public void SetRollDiceButtonInteractable(bool interactable)
