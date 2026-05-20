@@ -566,6 +566,7 @@ public class GameManager : MonoBehaviour
         
         Debug.Log($"CheckPressureTrigger: diceRollCount={diceRollCount}, currentRound={currentRound}, nextPressureAt={nextPressureAt}");
 
+        // 回到最基本的逻辑：每回合扣钱
         if (currentRound >= nextPressureAt)
         {
             TriggerPressure(currentRound);
@@ -578,6 +579,10 @@ public class GameManager : MonoBehaviour
         Debug.Log($"?? {currentRound} ????????????");
 
         int cost = Mathf.RoundToInt(basePressureCost);
+
+        // 先增加nextPressureAt，确保逻辑不会混乱
+        nextPressureAt++;
+        basePressureCost *= pressureMultiplier;
 
         foreach (Player p in players)
         {
@@ -614,11 +619,6 @@ public class GameManager : MonoBehaviour
                 return;
             }
         }
-
-        // ??????????????
-        nextPressureAt++;
-
-        basePressureCost *= pressureMultiplier;
 
         if (UIManager.Instance != null)
         {

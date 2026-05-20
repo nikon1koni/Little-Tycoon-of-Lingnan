@@ -1213,7 +1213,7 @@ MonoBehaviour:
   titleText: {fileID: 1726653175}
   eventImage: {fileID: 2099154411}
   descriptionText: {fileID: 2010832795}
-  optionsContainer: {fileID: 113429232960906095, guid: faef1be32a6ee5241b02f51d7c068f0b, type: 3}
+  optionsContainer: {fileID: 435661613}
   optionButtonPrefab: {fileID: 6262359556477492476, guid: faef1be32a6ee5241b02f51d7c068f0b, type: 3}
   closeButton: {fileID: 0}
 --- !u!114 &212661034
