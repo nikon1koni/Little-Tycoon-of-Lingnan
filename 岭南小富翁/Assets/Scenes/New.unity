@@ -1672,15 +1672,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1858142679}
   smoothSpeed: 0.125
-  pitch: 33
+  pitch: 55
   yaw: 90
-  roll: 0
-  distance: 10
+  roll: 61
+  distance: 15
   minDistance: 1
   maxDistance: 30
   moveSpeed: 350
-  minX: -16
-  maxX: -5
+  minX: -20
+  maxX: 3
   minZ: -8
   maxZ: 10
   playerMoveThreshold: 0.01
@@ -13857,7 +13857,7 @@ Transform:
   m_GameObject: {fileID: 1459597470}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 218, y: 181.7, z: 0}
+  m_LocalPosition: {x: -80, y: 192.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
