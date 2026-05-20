@@ -1,44 +1,42 @@
-ï»¿// GameTester.cs - ï¿½ï¿½ï¿½Ú²ï¿½ï¿½ï¿½
+// GameTester.cs - ÓÎÏ·²âÊÔÆ÷£¨¿ª·¢µ÷ÊÔÓÃ£©
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameTester : MonoBehaviour
 {
     void Update()
     {
-        // ï¿½ï¿½ï¿½Ù²ï¿½ï¿½Ô¿ï¿½Ý¼ï¿½
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (GameManager.Instance != null)
-            {
-                GameManager.Instance.TestMovePlayer(Random.Range(1, 7));
-            }
-        }
-
+        // ¿ìËÙ²âÊÔ¿ì½Ý¼ü
         if (Input.GetKeyDown(KeyCode.R))
         {
-            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï·
-            UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+            RestartGame();
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.G))
         {
-            // Ö±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1
-            JumpToTile(1);
+            GoToTile(0);
         }
     }
 
-    void JumpToTile(int tileID)
+    void RestartGame()
     {
-        if (GameManager.Instance == null ||
-            GameManager.Instance.players.Count == 0) return;
+        // ÖØÆôÓÎÏ·
+        SceneManager.LoadScene("New");
+        Debug.Log("ÓÎÏ·ÒÑÖØÆô");
+    }
 
-        Player player = GameManager.Instance.players[0];
-        BoardTile tile = BoardManager.Instance?.GetTileByID(tileID);
-
-        if (tile != null && player != null)
+    void GoToTile(int tileIndex)
+    {
+        // Ö±½ÓÌø×ªµ½µØ¿é1
+        var tiles = FindObjectsOfType<BoardTile>();
+        if (tiles.Length > tileIndex)
         {
-            player.MoveToTile(tile, true);
-            Debug.Log($"ï¿½ï¿½×ªï¿½ï¿½: {tile.tileName}");
+            var tile = tiles[tileIndex];
+            Debug.Log($"Ìø×ªÖÁ: {tile.tileName}");
+        }
+        else
+        {
+            Debug.LogWarning($"Î´ÕÒµ½Ë÷ÒýÎª{tileIndex}µÄµØ¿é");
         }
     }
 }

@@ -1,11 +1,19 @@
-ï»¿using UnityEngine;
+// BoardGenerator.cs - ÆåÅÌÉú³ÉÆ÷£¨Èı½ÇĞÎ²¼¾Ö£©
+using UnityEngine;
+using System.Collections.Generic;
 
 public class BoardGenerator : MonoBehaviour
 {
-    public GameObject gridTilePrefab; // ï¿½ï¿½ï¿½ï¿½ GridTile Ô¤ï¿½ï¿½ï¿½ï¿½
-    public int rows = 3; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Äµï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-    public float tileSize = 1f; // ï¿½ï¿½ï¿½Ó´ï¿½Ğ¡ï¿½ï¿½ï¿½ï¿½Æ½ï¿½ï¿½ï¿½ï¿½ï¿½Å¶ï¿½Ó¦ï¿½ï¿½
-    public Vector2 offset = new Vector2(0, 0); // ï¿½ï¿½ï¿½Ó¼ï¿½ï¿½Æ«ï¿½ï¿½
+    [Header("ÆåÅÌÉèÖÃ")]
+    public GameObject gridTilePrefab; // ÆåÅÌ¸ñ GridTile Ô¤ÖÆÌå
+
+    public int rows = 3; // ĞĞÊı£¬Ã¿ĞĞÉú³ÉµİÔöÊıÁ¿µÄÆåÅÌ¸ñ×Ó
+
+    public float tileSize = 1f; // ¸ñ×Ó´óĞ¡£¬ÓÃÓÚÆ½ÒÆ¶¨Î»ÏàÁÚ¸ñ×Ó
+
+    public Vector2 offset = new Vector2(0, 0); // ÕûÌåÆ«ÒÆÁ¿
+
+    private List<GameObject> generatedTiles = new List<GameObject>();
 
     void Start()
     {
@@ -16,19 +24,33 @@ public class BoardGenerator : MonoBehaviour
     {
         for (int row = 0; row < rows; row++)
         {
-            // ï¿½ï¿½ï¿½ãµ±Ç°ï¿½ĞµÄ¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î£ï¿½ï¿½ï¿½nï¿½ï¿½ï¿½ï¿½ 2n+1 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Äµï¿½Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-            int tileCount = row + 1; // Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½1ï¿½ï¿½ï¿½ï¿½ï¿½Ú¶ï¿½ï¿½ï¿½2ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½ï¿½Äµï¿½Í¼ï¿½ï¿½
+            // ¼ÆËãµ±Ç°ĞĞµÄ¸ñ×ÓÊıÁ¿£¬µÚnĞĞÓĞ n+1 ¸öÆåÅÌ¸ñ×ÓµÄÈı½ÇĞÎ²¼¾Ö
+            int tileCount = row + 1; // ±íÊ¾µÚÒ»ĞĞ1¸ö¡¢µÚ¶şĞĞ2¸ö...µÄÈı½ÇĞÎÆåÅÌ
+
             for (int col = 0; col < tileCount; col++)
             {
-                // Êµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-                GameObject tile = Instantiate(gridTilePrefab, transform);
-                // ï¿½ï¿½ï¿½ï¿½Î»ï¿½Ã£ï¿½ï¿½ï¿½ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¼ï¿½ï¿½ï¿½xï¿½ï¿½zÆ«ï¿½Æ£ï¿½ï¿½Ã¸ï¿½ï¿½Ó³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ£ï¿½
-                float x = (col - tileCount / 2f) * tileSize + offset.x;
-                float z = (row - rows / 2f) * tileSize + offset.y;
-                tile.transform.position = new Vector3(x, 0, z);
-                // ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½Ã¸ï¿½ï¿½Óµï¿½ï¿½ï¿½×ªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¸ï¿½ï¿½ï¿½È»ï¿½ï¿½ï¿½ï¿½ 45ï¿½È£ï¿½ï¿½ï¿½ï¿½ï¿½Ô£ï¿½
-                tile.transform.rotation = Quaternion.Euler(0, 45, 0);
+                // ÊµÀı»¯¸ñ×Ó
+                var tileObj = Instantiate(gridTilePrefab, transform);
+                var boardTile = tileObj.GetComponent<BoardTile>();
+                if (boardTile != null)
+                {
+                    boardTile.tileID = generatedTiles.Count;
+                    boardTile.tileName = $"Tile_{row}_{col}";
+                }
+
+                // ¼ÆËãÎ»ÖÃ£º»ùÓÚĞĞÊıºÍÁĞË÷Òı¼ÆËãx,zÆ«ÒÆ£¬Ê¹¸ñ×Ó¾ÓÖĞÅÅÁĞ
+                float x = (col - tileCount * 0.5f) * tileSize + offset.x;
+                float z = -row * tileSize * 0.866f + offset.y;
+
+                tileObj.transform.localPosition = new Vector3(x, 0, z);
+
+                // ÉèÖÃĞı×ª£ºÊ¹Ã¿¸ö¸ñ×ÓĞı×ª45¶ÈĞÎ³ÉÁâĞÎÅÅÁĞ
+                tileObj.transform.localRotation = Quaternion.Euler(0, 45, 0);
+
+                generatedTiles.Add(tileObj);
             }
         }
+
+        Debug.Log($"ÆåÅÌÉú³ÉÍê³É: {generatedTiles.Count}¸öµØ¿é");
     }
 }

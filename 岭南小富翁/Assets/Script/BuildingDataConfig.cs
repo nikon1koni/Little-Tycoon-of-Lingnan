@@ -1,28 +1,28 @@
-ï»¿// BuildingDataConfig.cs - ï¿½ï¿½ï¿½Ú³ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+// BuildingDataConfig.cs - ½¨ÖþÊý¾Ý³õÊ¼»¯ÅäÖÃ
 using UnityEngine;
 using System.Collections.Generic;
 
 public class BuildingDataConfig : MonoBehaviour
 {
-    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô´")]
+    [Header("ËùÓÐ½¨ÖþÊý¾ÝÔ´")]
     public List<BuildingData> allBuildingData = new List<BuildingData>();
 
-    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")]
-    public BuildingData smallHouse;      // Ð¡ï¿½ï¿½ï¿½ï¿½
-    public BuildingData mediumHouse;     // ï¿½Ð·ï¿½ï¿½ï¿½
-    public BuildingData largeHouse;      // ï¿½ï¿½ï¿½ï¿½
+    [Header("½¨ÖþÉý¼¶Á´")]
+    public BuildingData smallHouse;      // Ð¡·¿×Ó
+    public BuildingData mediumHouse;     // ÖÐ·¿
+    public BuildingData largeHouse;      // ´ó·¿
 
-    public BuildingData smallShop;       // Ð¡ï¿½Ìµï¿½
-    public BuildingData mediumShop;      // ï¿½ï¿½ï¿½Ìµï¿½
-    public BuildingData largeShop;       // ï¿½ï¿½ï¿½Ìµï¿½
+    public BuildingData smallShop;       // Ð¡ÉÌµê
+    public BuildingData mediumShop;      // ÖÐÉÌµê
+    public BuildingData largeShop;       // ´óÉÌµê
 
-    public BuildingData smallPostHouse;  // Ð¡ï¿½ï¿½Õ¾ï¿½ï¿½ï¿½Ù¶È£ï¿½
-    public BuildingData mediumPostHouse; // ï¿½ï¿½ï¿½ï¿½Õ¾
-    public BuildingData largePostHouse;  // ï¿½ï¿½ï¿½ï¿½Õ¾
+    public BuildingData smallPostHouse;  // Ð¡æäÕ¾(ÒÆ¶¯ËÙ¶È)
+    public BuildingData mediumPostHouse; // ÖÐæäÕ¾
+    public BuildingData largePostHouse;  // ´óæäÕ¾
 
-    public BuildingData smallTemple;     // Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë£ï¿½
-    public BuildingData mediumTemple;    // ï¿½ï¿½ï¿½ï¿½
-    public BuildingData largeTemple;     // ï¿½ï¿½ï¿½ï¿½
+    public BuildingData smallTemple;     // Ð¡ËÂÃí(ÐÒÔË)
+    public BuildingData mediumTemple;    // ÖÐËÂÃí
+    public BuildingData largeTemple;     // ´óËÂÃí
 
     void Start()
     {
@@ -31,7 +31,7 @@ public class BuildingDataConfig : MonoBehaviour
 
     void SetupBuildingChains()
     {
-        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        // ·¿ÎÝÁ´
         smallHouse.nextLevelBuilding = mediumHouse;
         smallHouse.isFinalLevel = false;
 
@@ -41,7 +41,7 @@ public class BuildingDataConfig : MonoBehaviour
         largeHouse.nextLevelBuilding = null;
         largeHouse.isFinalLevel = true;
 
-        // ï¿½Ìµï¿½ï¿½ï¿½
+        // ÉÌµêÁ´
         smallShop.nextLevelBuilding = mediumShop;
         smallShop.isFinalLevel = false;
 
@@ -51,7 +51,7 @@ public class BuildingDataConfig : MonoBehaviour
         largeShop.nextLevelBuilding = null;
         largeShop.isFinalLevel = true;
 
-        // ï¿½ï¿½Õ¾ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½buffï¿½ï¿½
+        // æäÕ¾Á´(ÒÆ¶¯ËÙ¶Èbuff)
         smallPostHouse.nextLevelBuilding = mediumPostHouse;
         smallPostHouse.isFinalLevel = false;
         smallPostHouse.functionType = BuildingData.BuildingFunctionType.Buff;
@@ -70,7 +70,7 @@ public class BuildingDataConfig : MonoBehaviour
         largePostHouse.buffEffect = BuildingData.BuffEffect.MoveSpeedBoost;
         largePostHouse.buffValues = new float[] { 0.2f, 0.25f, 0.3f };
 
-        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½buffï¿½ï¿½
+        // ËÂÃíÁ´(ÐÒÔËbuff)
         smallTemple.nextLevelBuilding = mediumTemple;
         smallTemple.isFinalLevel = false;
         smallTemple.functionType = BuildingData.BuildingFunctionType.Buff;
@@ -89,6 +89,6 @@ public class BuildingDataConfig : MonoBehaviour
         largeTemple.buffEffect = BuildingData.BuffEffect.LuckBoost;
         largeTemple.buffValues = new float[] { 0.2f, 0.25f, 0.3f };
 
-        Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+        Debug.Log("½¨ÖþÉý¼¶Á´ÅäÖÃÍê³É");
     }
 }
