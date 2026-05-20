@@ -5,78 +5,78 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
-    // 单例实例
+    // ???????
     public static GameManager Instance;
 
-    [Header("游戏状态")]
+    [Header("?????")]
     public GameState currentState = GameState.Waiting;
     public int currentPlayerIndex = 0;
     public bool isGameStarted = false;
     public bool isPlayerTurn = true;
     public bool isMoving = false;
 
-    [Header("玩家列表")]
+    [Header("????б?")]
     public List<Player> players = new List<Player>();
     public Player currentPlayer;
 
-    [Header("骰子系统")]
+    [Header("??????")]
     public DiceController diceController;
     public Dice3DController dice3DController;
     public int lastDiceValue = 0;
 
-    [Header("UI 引用")]
+    [Header("UI ????")]
     public Text currentPlayerText;
     public Text playerCashText;
     public Text diceResultText;
     public Text currentTileText;
     public Button rollDiceButton;
 
-    [Header("管理器引用")]
+    [Header("??????????")]
     public BoardManager boardManager;
     public UIManager uiManager;
 
-    [Header("游戏参数")]
+    [Header("???????")]
     public int startingCash = 1500;
     public int salaryAmount = 200;
     public int jailTurns = 3;
 
-    [Header("压力系统")]
+    [Header("?????")]
     public bool enablePressureSystem = true;
 
-    private int diceRollCount = 0;          // 投骰总次数
-    private int pressureInterval = 1;        // 压力触发间隔（回合数）
-    private int nextPressureAt = 1;          // 下次触发压力的回合数
-    public float basePressureCost = 50f;   // 压力征税基础金额
-    public float pressureMultiplier = 1.2f; // 压力递增倍率
+    private int diceRollCount = 0;          // ????????
+    private int pressureInterval = 1;        // ???????????????????
+    private int nextPressureAt = 1;          // ??δ????????????
+    public float basePressureCost = 50f;   // ?????????????
+    public float pressureMultiplier = 1.2f; // ???????????
 
-    [Header("调试")]
+    [Header("????")]
     public bool enableDebugKeys = true;
 
-    [Header("音乐系统")]
+    [Header("??????")]
     public bool enableBackgroundMusic = true;
     public MusicManager musicManager;
 
-    [Header("音效配置")]
+    [Header("??Ч????")]
     public SFXConfig sfxConfig;
     public bool enableSFX = true;
 
-    // 游戏状态枚举
+    // ????????
     public enum GameState
     {
-        Waiting,           // 等待中
-        PlayerTurn,        // 玩家回合
-        RollingDice,       // 投骰子中
-        Moving,            // 移动中
-        ProcessingTile,    // 处理地块事件
-        BuyingProperty,    // 购买地产
-        BuildingSelection, // 建筑选择阶段
-        BuildingPlacement, // 建筑放置阶段
-        GameOver           // 游戏结束
+        Waiting,           // ?????
+        PlayerTurn,        // ?????
+        RollingDice,       // ???????
+        Moving,            // ?????
+        ProcessingTile,    // ??????????
+        BuyingProperty,    // ??????
+        BuildingSelection, // ?????????
+        BuildingPlacement, // ??????????
+        GameOver           // ???????
     }
 
     void Awake()
     {
-        // 单例模式初始化
+        // ???????????
         if (Instance == null)
         {
             Instance = this;
@@ -90,13 +90,13 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("=== 岭南小富翁 游戏启动 ===");
+        Debug.Log("=== ????С???? ??????? ===");
         InitializeGame();
-        // === 阶段1: 初始建筑购买阶段 ===
+        // === ???1: ????????????? ===
         StartCoroutine(StartInitialBuildingPhase());
     }
 
-    // 初始化游戏
+    // ????????
     void InitializeGame()
     {
         FindRequiredComponents();
@@ -109,7 +109,7 @@ public class GameManager : MonoBehaviour
             currentPlayer = players[currentPlayerIndex];
         }
 
-        // 设置初始状态为等待状态
+        // ???ó??????????
         currentState = GameState.Waiting;
         isGameStarted = true;
 
@@ -118,15 +118,15 @@ public class GameManager : MonoBehaviour
         InitializeMusicSystem();
         InitializeSFXSystem();
 
-        Debug.Log($"玩家数量: {players.Count}");
-        Debug.Log($"当前玩家: {currentPlayer?.playerName ?? ""}");
+        Debug.Log($"???????: {players.Count}");
+        Debug.Log($"??????: {currentPlayer?.playerName ?? ""}");
     }
 
     void InitializeMusicSystem()
     {
         if (!enableBackgroundMusic)
         {
-            Debug.Log("背景音乐已禁用");
+            Debug.Log("?????????????");
             return;
         }
 
@@ -141,18 +141,18 @@ public class GameManager : MonoBehaviour
             {
                 musicObj = new GameObject("MusicManager");
                 musicManager = musicObj.AddComponent<MusicManager>();
-                Debug.Log("MusicManager 已创建");
+                Debug.Log("MusicManager ?????");
             }
         }
 
         if (musicManager != null && musicManager.GetTotalTracks() > 0)
         {
             musicManager.Play();
-            Debug.Log("背景音乐开始播放");
+            Debug.Log("??????????????");
         }
         else
         {
-            Debug.LogWarning("MusicManager 没有可用的音乐轨道");
+            Debug.LogWarning("MusicManager ??п??????????");
         }
     }
 
@@ -160,7 +160,7 @@ public class GameManager : MonoBehaviour
     {
         if (!enableSFX)
         {
-            Debug.Log("音效系统已禁用");
+            Debug.Log("??Ч???????");
             return;
         }
 
@@ -184,11 +184,11 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogWarning("SFXConfig 未找到，请在Inspector中设置或放入Resources文件夹");
+                    Debug.LogWarning("SFXConfig δ?????????Inspector??????????Resources?????");
                 }
             }
 
-            Debug.Log("SFXManager 初始化完成");
+            Debug.Log("SFXManager ????????");
         }
         else if (sfxConfig != null && SFXManager.Instance.config == null)
         {
@@ -197,40 +197,40 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // === 初始建筑购买阶段 ===
+    // === ????????????? ===
     IEnumerator StartInitialBuildingPhase()
     {
-        // 短暂延迟确保UI准备就绪
+        // ??????????UI???????
         yield return new WaitForSeconds(0.5f);
 
         if (currentPlayer != null)
         {
-            Debug.Log($"=== 阶段: {currentPlayer.playerName} 可购买初始建筑 ===");
+            Debug.Log($"=== ???: {currentPlayer.playerName} ??????????? ===");
 
-            // 1. 切换到建筑选择状态并锁定操作
+            // 1. ?л??????????????????????
             currentState = GameState.BuildingSelection;
             isPlayerTurn = false;
 
-            // 2. 禁用投骰按钮
+            // 2. ??????????
             SetRollDiceButtonInteractable(false);
 
-            // 3. 显示建筑选择UI
+            // 3. ??????????UI
             if (uiManager != null)
             {
-                // 创建一个虚拟的"起点商店"Tile用于UI显示
+                // ????????????"??????"Tile????UI???
                 BoardTile startShopTile = CreateStartPurchaseTile();
                 uiManager.ShowBuildingSelectionUI(startShopTile, currentPlayer);
             }
             else
             {
-                Debug.LogWarning("UIManager 未找到，跳过初始建筑选择");
-                // 直接完成建筑购买流程
+                Debug.LogWarning("UIManager δ???????????????????");
+                // ?????????????????
                 OnBuildingPurchaseCompleted();
             }
         }
     }
 
-    // === 创建虚拟起点购买Tile ===
+    // === ?????????????Tile ===
     private BoardTile startPurchaseTileCache = null;
 
     BoardTile CreateStartPurchaseTile()
@@ -241,7 +241,7 @@ public class GameManager : MonoBehaviour
             startPurchaseTileCache = tempObj.AddComponent<BoardTile>();
         }
 
-        startPurchaseTileCache.tileName = "起点商店";
+        startPurchaseTileCache.tileName = "??????";
         startPurchaseTileCache.tileType = BoardTile.TileType.Buildable;
         startPurchaseTileCache.propertyPrice = 100;
         startPurchaseTileCache.isBuildable = true;
@@ -262,7 +262,7 @@ public class GameManager : MonoBehaviour
         if (uiManager == null)
             uiManager = FindObjectOfType<UIManager>();
 
-        Debug.Log($"组件查找: DiceController={diceController != null}, BoardManager={boardManager != null}, UIManager={uiManager != null}");
+        Debug.Log($"???????: DiceController={diceController != null}, BoardManager={boardManager != null}, UIManager={uiManager != null}");
     }
 
     void FindAllPlayers()
@@ -274,7 +274,7 @@ public class GameManager : MonoBehaviour
 
         if (players.Count == 0)
         {
-            Debug.LogWarning("未找到任何Player对象，请检查场景中的Player预制体");
+            Debug.LogWarning("δ????κ?Player???????鳡???е?Player?????");
         }
     }
 
@@ -282,17 +282,17 @@ public class GameManager : MonoBehaviour
     {
         if (boardManager == null)
         {
-            Debug.LogError("BoardManager 未找到");
+            Debug.LogError("BoardManager δ???");
             return;
         }
 
         if (boardManager.allTiles == null || boardManager.allTiles.Count == 0)
         {
-            Debug.LogWarning("棋盘上没有地块");
+            Debug.LogWarning("????????е??");
         }
         else
         {
-            Debug.Log($"棋盘共有 {boardManager.allTiles.Count} 个地块");
+            Debug.Log($"??????? {boardManager.allTiles.Count} ?????");
         }
     }
 
@@ -303,7 +303,7 @@ public class GameManager : MonoBehaviour
         BoardTile startTile = GetStartTile();
         if (startTile == null)
         {
-            Debug.LogError("未找到起点地块");
+            Debug.LogError("δ????????");
             return;
         }
 
@@ -316,7 +316,7 @@ public class GameManager : MonoBehaviour
             startPos.x += (i % 2 == 0 ? -offset : offset);
             startPos.z += (i / 2) * offset;
 
-            // 获取PlayerMovement组件获取高度偏移
+            // ???PlayerMovement????????????
             PlayerMovement playerMovement = player.GetComponent<PlayerMovement>();
             if (playerMovement != null)
             {
@@ -324,7 +324,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                startPos.y = 0.875f; // 默认高度偏移 + 地面高度
+                startPos.y = 0.875f; // ???????? + ??????
             }
 
             player.transform.position = startPos;
@@ -332,22 +332,22 @@ public class GameManager : MonoBehaviour
             player.currentTileIndex = 0;
             player.cash = startingCash;
 
-            Debug.Log($"{player.playerName} 初始资金: {player.cash}");
+            Debug.Log($"{player.playerName} ??????: {player.cash}");
 
-            // === 更新第一个玩家的资金显示UI ===
+            // === ??????????????????UI ===
             if (UIManager.Instance != null)
             {
-                // 只为第一个玩家更新资金显示
-                if (i == 0) // 第一个玩家
+                // ???????????????????
+                if (i == 0) // ????????
                 {
                     UIManager.Instance.UpdateCashDisplay(player.cash);
                 }
             }
-            // === 初始化结束 ===
+            // === ????????? ===
         }
     }
 
-    // 处理地产地块事件
+    // ?????????????
     void HandlePropertyTile()
     {
         BoardTile tile = currentPlayer.currentTile;
@@ -359,7 +359,7 @@ public class GameManager : MonoBehaviour
             if (tile.tileType == BoardTile.TileType.Buildable)
             {
                 currentState = GameState.BuildingSelection;
-                Debug.Log($"{tile.tileName} 建筑出售价格: {tile.propertyPrice} 金币");
+                Debug.Log($"{tile.tileName} ??????????: {tile.propertyPrice} ???");
 
                 if (uiManager != null)
                 {
@@ -369,7 +369,7 @@ public class GameManager : MonoBehaviour
             else
             {
                 currentState = GameState.BuyingProperty;
-                Debug.Log($"{tile.tileName} 购买价格: {tile.propertyPrice} 金币");
+                Debug.Log($"{tile.tileName} ??????: {tile.propertyPrice} ???");
 
                 if (uiManager != null)
                 {
@@ -387,7 +387,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // 检查关联建筑收入
+    // ??????????????
     private void CheckLinkedBuildingIncome(BoardTile tile, Player player)
     {
         if (tile == null || player == null) return;
@@ -428,7 +428,7 @@ public class GameManager : MonoBehaviour
 
             if (totalIncome > 0 && uiManager != null)
             {
-                uiManager.ShowToast($"关联收入: {totalIncome} 金币", 2f);
+                uiManager.ShowToast($"????????: {totalIncome} ???", 2f);
             }
         }
     }
@@ -455,11 +455,11 @@ public class GameManager : MonoBehaviour
         {
             rollDiceButton.onClick.RemoveAllListeners();
             rollDiceButton.onClick.AddListener(OnRollDiceButtonClicked);
-            Debug.Log("投骰按钮事件已绑定");
+            Debug.Log("????????????");
         }
         else
         {
-            Debug.LogWarning("RollDiceButton 未在Inspector中设置，尝试自动查找");
+            Debug.LogWarning("RollDiceButton δ??Inspector??????????????????");
 
             GameObject buttonObj = GameObject.Find("RollDiceButton");
             if (buttonObj != null)
@@ -468,29 +468,29 @@ public class GameManager : MonoBehaviour
                 if (rollDiceButton != null)
                 {
                     rollDiceButton.onClick.AddListener(OnRollDiceButtonClicked);
-                    Debug.Log("投骰按钮已绑定");
+                    Debug.Log("?????????");
                 }
             }
         }
     }
 
-    // ================= 玩家操作 =================
+    // ================= ?????? =================
 
     public void OnRollDiceButtonClicked()
     {
-        Debug.Log("投骰按钮被点击");
+        Debug.Log("???????????");
 
-        // === 步骤2: 状态检查 ===
+        // === ????2: ????? ===
         if (!CanRollDice())
         {
-            Debug.Log($"当前不允许投骰，状态: {currentState}");
+            Debug.Log($"????????????????: {currentState}");
 
-            // 提示原因
+            // ??????
             if (currentState == GameState.BuildingSelection)
             {
                 if (uiManager != null)
                 {
-                    uiManager.ShowToast("请先完成建筑选择或按ESC取消", 2f);
+                    uiManager.ShowToast("??????????????ESC???", 2f);
                 }
             }
             return;
@@ -498,11 +498,11 @@ public class GameManager : MonoBehaviour
 
         if (currentPlayer == null)
         {
-            Debug.LogError("当前玩家为空");
+            Debug.LogError("?????????");
             return;
         }
 
-        Debug.Log($"{currentPlayer.playerName} 开始投骰");
+        Debug.Log($"{currentPlayer.playerName} ??????");
 
         currentState = GameState.RollingDice;
         isPlayerTurn = false;
@@ -524,7 +524,7 @@ public class GameManager : MonoBehaviour
     void RollDiceSimple()
     {
         lastDiceValue = Random.Range(1, 7);
-        Debug.Log($"{currentPlayer.playerName} 掷出 {lastDiceValue} 点");
+        Debug.Log($"{currentPlayer.playerName} ???? {lastDiceValue} ??");
 
         if (diceResultText != null)
             diceResultText.text = lastDiceValue.ToString();
@@ -538,17 +538,17 @@ public class GameManager : MonoBehaviour
     public void OnDiceRolled(int value)
     {
         lastDiceValue = value;
-        Debug.Log($"骰子结果: {value}");
+        Debug.Log($"??????: {value}");
 
-        diceRollCount++;//投骰次数+1
-        Debug.Log($"累计投骰次数: {diceRollCount}");
+        diceRollCount++;//???????+1
+        Debug.Log($"??????????: {diceRollCount}");
         CheckPressureTrigger();
 
         UpdateUI();
         StartMovePlayer();
     }
 
-    // 检查是否触发压力系统
+    // ????????????
     private void CheckPressureTrigger()
     {
         if (!enablePressureSystem)
@@ -562,10 +562,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // 触发压力征税
+    // ??????????
     private void TriggerPressure(int currentRound)
     {
-        Debug.Log($"第 {currentRound} 回合触发压力征税");
+        Debug.Log($"?? {currentRound} ????????????");
 
         int cost = Mathf.RoundToInt(basePressureCost);
 
@@ -590,7 +590,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        // 准备下一次压力征税
+        // ??????????????
         nextPressureAt++;
 
         basePressureCost *= pressureMultiplier;
@@ -598,16 +598,16 @@ public class GameManager : MonoBehaviour
         if (UIManager.Instance != null)
         {
             UIManager.Instance.ShowTurnAnnouncement(
-                $"第 {currentRound} 回合   征税 {cost} 金币"
+                $"?? {currentRound} ???   ??? {cost} ???"
             );
         }
     }
 
-    // === 步骤3: 是否可以投骰 ===
+    // === ????3: ????????? ===
     public bool CanRollDice()
     {
         bool canRoll = isGameStarted &&
-                       currentState == GameState.PlayerTurn && // 必须是玩家回合状态
+                       currentState == GameState.PlayerTurn && // ?????????????
                        !isMoving &&
                        currentPlayer != null &&
                        !currentPlayer.isInJail;
@@ -621,7 +621,7 @@ public class GameManager : MonoBehaviour
     {
         if (currentPlayer == null) return;
 
-        Debug.Log($"{currentPlayer.playerName} 开始移动 {lastDiceValue} 步");
+        Debug.Log($"{currentPlayer.playerName} ?????? {lastDiceValue} ??");
 
         currentState = GameState.Moving;
         isMoving = true;
@@ -629,7 +629,7 @@ public class GameManager : MonoBehaviour
         PlayerMovement movement = currentPlayer.GetComponent<PlayerMovement>();
         if (movement == null)
         {
-            Debug.LogError($"{currentPlayer.playerName} 没有 PlayerMovement 组件");
+            Debug.LogError($"{currentPlayer.playerName} ??? PlayerMovement ???");
             EndMove();
             return;
         }
@@ -645,15 +645,15 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
-        Debug.Log($"{currentPlayer.playerName} 移动完成");
+        Debug.Log($"{currentPlayer.playerName} ??????");
 
-        // === 步骤4: 检查是否经过起点 ===
+        // === ????4: ?????????? ===
         CheckPassingStart();
 
         ProcessCurrentTile();
     }
 
-    // === 步骤5: 经过起点检查 ===
+    // === ????5: ????????? ===
     void CheckPassingStart()
     {
         if (boardManager == null || currentPlayer == null) return;
@@ -670,41 +670,41 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        // 检查当前是否正好在起点（tileID == 0 或 tileType == Start）
+        // ??鵱?????????????tileID == 0 ?? tileType == Start??
         bool isOnStartTile = (currentPlayer.currentTile.tileID == 0 ||
                              currentPlayer.currentTile.tileType == BoardTile.TileType.Start);
 
         int previousIndex = (currentIndex - lastDiceValue) % boardManager.allTiles.Count;
         if (previousIndex < 0) previousIndex += boardManager.allTiles.Count;
 
-        // 如果之前的位置索引大于当前位置索引，说明经过了起点
+        // ???????λ????????????λ????????????????????
         if (!isOnStartTile && previousIndex > currentIndex)
         {
-            Debug.Log($"{currentPlayer.playerName} 经过起点，获得工资");
+            Debug.Log($"{currentPlayer.playerName} ?????????ù???");
 
-            // 1. 发放工资
+            // 1. ???????
             int salary = salaryAmount;
             currentPlayer.ReceiveCash(salary);
-            Debug.Log($"{currentPlayer.playerName} 获得 {salary} 金币工资");
+            Debug.Log($"{currentPlayer.playerName} ??? {salary} ??????");
 
             if (uiManager != null)
             {
-                uiManager.ShowToast($"经过起点获得{salary}金币!", 2f);
+                uiManager.ShowToast($"?????????{salary}???!", 2f);
             }
 
-            // 2. 进入建筑购买机会状态
+            // 2. ???????????????
             currentState = GameState.BuildingSelection;
             isPlayerTurn = false;
             SetRollDiceButtonInteractable(false);
 
-            // 3. 显示建筑选择面板
+            // 3. ?????????????
             StartCoroutine(TriggerBuildingPurchaseAfterStart());
         }
         else if (isOnStartTile)
         {
-            Debug.Log($"{currentPlayer.playerName} 正好在起点BoardTile上");
+            Debug.Log($"{currentPlayer.playerName} ?????????BoardTile??");
 
-            // 即使停在起点也提供购买机会，但通过BoardTile.OnLanded处理
+            // ????????????????????????BoardTile.OnLanded????
             currentState = GameState.BuildingSelection;
             isPlayerTurn = false;
             SetRollDiceButtonInteractable(false);
@@ -713,10 +713,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // === 触发起点后的建筑购买 ===
+    // === ???????????????? ===
     IEnumerator TriggerBuildingPurchaseAfterStart()
     {
-        // 稍微延迟让玩家看到位置变化
+        // ??????????????λ??仯
         yield return new WaitForSeconds(1f);
 
         if (uiManager != null)
@@ -726,13 +726,13 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.Log($"{currentPlayer.playerName} 跳过建筑选择");
-            // 如果没有UI管理器，直接继续游戏
+            Debug.Log($"{currentPlayer.playerName} ???????????");
+            // ??????UI?????????????????
             OnBuildingPurchaseCompleted();
         }
     }
 
-    // 处理当前所在地块
+    // ?????????????
     void ProcessCurrentTile()
     {
         if (currentPlayer == null || currentPlayer.currentTile == null)
@@ -743,7 +743,7 @@ public class GameManager : MonoBehaviour
 
         currentState = GameState.ProcessingTile;
 
-        Debug.Log($"{currentPlayer.playerName} 到达 {currentPlayer.currentTile.tileName}");
+        Debug.Log($"{currentPlayer.playerName} ???? {currentPlayer.currentTile.tileName}");
 
         BoardTile currentTile = currentPlayer.currentTile;
 
@@ -788,12 +788,12 @@ public class GameManager : MonoBehaviour
         {
             if (currentPlayer.BuyProperty(tile))
             {
-                Debug.Log($"{currentPlayer.playerName} 自动购买了 {tile.tileName}");
+                Debug.Log($"{currentPlayer.playerName} ????????? {tile.tileName}");
             }
         }
         else
         {
-            Debug.Log($"{currentPlayer.playerName} 无法负担 {tile.tileName}");
+            Debug.Log($"{currentPlayer.playerName} ??????? {tile.tileName}");
         }
 
         StartCoroutine(EndMoveAfterDelay(1f));
@@ -801,7 +801,7 @@ public class GameManager : MonoBehaviour
 
     public void OnPropertyPurchaseComplete(bool purchased)
     {
-        Debug.Log($"地产购买: {(purchased ? "成功" : "取消")}");
+        Debug.Log($"???????: {(purchased ? "???" : "???")}");
         StartCoroutine(EndMoveAfterDelay(0.5f));
     }
 
@@ -813,13 +813,13 @@ public class GameManager : MonoBehaviour
 
     void EndMove()
     {
-        Debug.Log($"{currentPlayer.playerName} 移动回合结束");
+        Debug.Log($"{currentPlayer.playerName} ?????????");
 
         isMoving = false;
 
         if (currentPlayer.cash < 0)
         {
-            Debug.Log($"{currentPlayer.playerName} 资金不足");
+            Debug.Log($"{currentPlayer.playerName} ?????");
             HandlePlayerBankrupt(currentPlayer);
 
             if (players.Count <= 1)
@@ -834,7 +834,7 @@ public class GameManager : MonoBehaviour
 
     public void EndTurn()
     {
-        Debug.Log($"{currentPlayer.playerName} 结束回合");
+        Debug.Log($"{currentPlayer.playerName} ???????");
 
         SwitchToNextPlayer();
         StartCoroutine(StartNextTurnAfterDelay(1f));
@@ -869,15 +869,15 @@ public class GameManager : MonoBehaviour
         currentState = GameState.PlayerTurn;
         isPlayerTurn = true;
 
-        Debug.Log($"=== {currentPlayer.playerName} 的回合 ===");
+        Debug.Log($"=== {currentPlayer.playerName} ???? ===");
         UpdateUI();
 
-        // === 更新资金显示UI ===
+        // === ??????????UI ===
         if (UIManager.Instance != null)
         {
             UIManager.Instance.UpdateCashDisplay(currentPlayer.cash);
         }
-        // === UI更新完成 ===
+        // === UI??????? ===
 
         if (rollDiceButton != null)
         {
@@ -898,16 +898,16 @@ public class GameManager : MonoBehaviour
         if (currentPlayer.jailTurnsRemaining <= 0)
         {
             currentPlayer.isInJail = false;
-            Debug.Log($"{currentPlayer.playerName} 出狱");
+            Debug.Log($"{currentPlayer.playerName} ????");
             StartPlayerTurn();
         }
         else
         {
-            Debug.Log($"{currentPlayer.playerName} 还需坐牢 {currentPlayer.jailTurnsRemaining} 回合");
+            Debug.Log($"{currentPlayer.playerName} ???????? {currentPlayer.jailTurnsRemaining} ???");
 
             if (uiManager != null)
             {
-                uiManager.ShowToast($"{currentPlayer.playerName} 坐牢中还需{currentPlayer.jailTurnsRemaining}回合", 2f);
+                uiManager.ShowToast($"{currentPlayer.playerName} ?????л???{currentPlayer.jailTurnsRemaining}???", 2f);
             }
 
             EndTurn();
@@ -916,22 +916,22 @@ public class GameManager : MonoBehaviour
 
     void HandlePlayerBankrupt(Player player)
     {
-        Debug.Log($"=== 破产检测: {player.playerName} ===");
+        Debug.Log($"=== ??????: {player.playerName} ===");
 
         player.isBankrupt = true;
 
         foreach (BoardTile property in player.ownedProperties)
         {
             property.ownerPlayer = null;
-            Debug.Log($"释放地产: {property.tileName}");
+            Debug.Log($"?????: {property.tileName}");
         }
         player.ownedProperties.Clear();
 
-        Debug.Log($"{player.playerName} 已破产");
+        Debug.Log($"{player.playerName} ?????");
 
         if (uiManager != null)
         {
-            uiManager.ShowToast($"{player.playerName} 已破产!", 3f);
+            uiManager.ShowToast($"{player.playerName} ?????!", 3f);
         }
     }
 
@@ -943,7 +943,7 @@ public class GameManager : MonoBehaviour
         if (players.Count == 1)
         {
             Player winner = players[0];
-            Debug.Log($"=== 游戏结束! 胜者: {winner.playerName} ===");
+            Debug.Log($"=== ???????! ???: {winner.playerName} ===");
 
             if (uiManager != null)
             {
@@ -952,27 +952,27 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("=== 游戏结束，无胜者 ===");
+            Debug.Log("=== ?????????????? ===");
         }
     }
 
-    // ================= UI 更新 =================
+    // ================= UI ???? =================
 
     public void UpdateUI()
     {
         if (currentPlayer == null) return;
 
         if (currentPlayerText != null)
-            currentPlayerText.text = $"当前玩家: {currentPlayer.playerName}";
+            currentPlayerText.text = $"??????: {currentPlayer.playerName}";
 
         if (playerCashText != null)
-            playerCashText.text = $"金币: {currentPlayer.cash}";
+            playerCashText.text = $"???: {currentPlayer.cash}";
 
         if (diceResultText != null)
-            diceResultText.text = $"骰子: {lastDiceValue}";
+            diceResultText.text = $"????: {lastDiceValue}";
 
         if (currentTileText != null && currentPlayer.currentTile != null)
-            currentTileText.text = $"位置: {currentPlayer.currentTile.tileName}";
+            currentTileText.text = $"λ??: {currentPlayer.currentTile.tileName}";
 
         if (uiManager != null)
         {
@@ -997,18 +997,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // === 步骤6: 建筑购买完成后恢复 ===
+    // === ????6: ?????????????? ===
     public void OnBuildingPurchaseCompleted()
     {
-        Debug.Log("建筑购买完成，恢复游戏流程");
+        Debug.Log("??????????????????????");
 
-        isMoving = false;//重置移动状态
+        isMoving = false;//?????????
 
-        // 切换回玩家回合状态
+        // ?л??????????
         currentState = GameState.PlayerTurn;
         isPlayerTurn = true;
 
-        // 恢复UI和按钮交互
+        // ???UI????????
         UpdateUI();
         if (rollDiceButton != null)
         {
@@ -1022,7 +1022,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // ================= 调试功能 =================
+    // ================= ??????? =================
 
     void Update()
     {
@@ -1055,7 +1055,7 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.N))
         {
-            Debug.Log("手动结束回合");
+            Debug.Log("??????????");
             EndTurn();
         }
 
@@ -1117,7 +1117,7 @@ public class GameManager : MonoBehaviour
 
     void TestRollDice()
     {
-        Debug.Log("测试投骰");
+        Debug.Log("???????");
         OnRollDiceButtonClicked();
     }
 
@@ -1125,7 +1125,7 @@ public class GameManager : MonoBehaviour
     {
         if (currentPlayer == null || isMoving) return;
 
-        Debug.Log($"测试移动: {currentPlayer.playerName} 移动 {steps} 步");
+        Debug.Log($"???????: {currentPlayer.playerName} ??? {steps} ??");
 
         lastDiceValue = steps;
         StartMovePlayer();
@@ -1133,28 +1133,28 @@ public class GameManager : MonoBehaviour
 
     void DebugGameState()
     {
-        Debug.Log("=== 游戏状态 ===");
-        Debug.Log($"状态: {currentState}");
-        Debug.Log($"玩家: {currentPlayer?.playerName}");
-        Debug.Log($"人数: {players.Count}");
-        Debug.Log($"玩家索引: {currentPlayerIndex}");
-        Debug.Log($"是否开始: {isGameStarted}");
-        Debug.Log($"玩家回合: {isPlayerTurn}");
-        Debug.Log($"是否移动: {isMoving}");
-        Debug.Log($"骰子值: {lastDiceValue}");
+        Debug.Log("=== ????? ===");
+        Debug.Log($"??: {currentState}");
+        Debug.Log($"???: {currentPlayer?.playerName}");
+        Debug.Log($"????: {players.Count}");
+        Debug.Log($"???????: {currentPlayerIndex}");
+        Debug.Log($"????: {isGameStarted}");
+        Debug.Log($"?????: {isPlayerTurn}");
+        Debug.Log($"??????: {isMoving}");
+        Debug.Log($"?????: {lastDiceValue}");
 
         if (currentPlayer != null)
         {
-            Debug.Log($"资金: {currentPlayer.cash}");
-            Debug.Log($"当前位置: {currentPlayer.currentTile?.tileName}");
-            Debug.Log($"是否坐牢: {currentPlayer.isInJail}");
-            Debug.Log($"牢狱剩余: {currentPlayer.jailTurnsRemaining}");
+            Debug.Log($"???: {currentPlayer.cash}");
+            Debug.Log($"???λ??: {currentPlayer.currentTile?.tileName}");
+            Debug.Log($"???????: {currentPlayer.isInJail}");
+            Debug.Log($"???????: {currentPlayer.jailTurnsRemaining}");
         }
     }
 
     public void ResetGame()
     {
-        Debug.Log("重置游戏");
+        Debug.Log("???????");
 
         UnityEngine.SceneManagement.SceneManager.LoadScene(
             UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex
@@ -1166,7 +1166,7 @@ public class GameManager : MonoBehaviour
         if (!players.Contains(player))
         {
             players.Add(player);
-            Debug.Log($"添加玩家: {player.playerName}");
+            Debug.Log($"???????: {player.playerName}");
         }
     }
 
@@ -1175,7 +1175,7 @@ public class GameManager : MonoBehaviour
         if (players.Contains(player))
         {
             players.Remove(player);
-            Debug.Log($"移除玩家: {player.playerName}");
+            Debug.Log($"??????: {player.playerName}");
 
             if (players.Count > 0 && currentPlayer == player)
             {
@@ -1225,8 +1225,8 @@ public class GameManager : MonoBehaviour
 
     public void OnEventPanelClosed()
     {
-        // 事件面板关闭后，继续游戏流程
-        Debug.Log("事件面板已关闭，继续游戏");
+        // ???????????????????
+        Debug.Log("??????????????????");
         SetRollDiceButtonInteractable(true);
         UpdateUI();
     }
@@ -1235,23 +1235,23 @@ public class GameManager : MonoBehaviour
     {
         if (boardManager != null)
         {
-            Debug.Log("=== 检查起点地块 ===");
+            Debug.Log("=== ???????? ===");
             foreach (BoardTile tile in boardManager.allTiles)
             {
                 if (tile.tileType == BoardTile.TileType.Start)
                 {
-                    Debug.Log($"起点地块: {tile.tileName}, ID: {tile.tileID}");
+                    Debug.Log($"?????: {tile.tileName}, ID: {tile.tileID}");
 
-                    // 检查起点是否标记为可建造
+                    // ?????????????????
                     if (tile.isBuildable)
                     {
-                        Debug.LogError($"错误: {tile.tileName} 不应标记为可建造");
+                        Debug.LogError($"????: {tile.tileName} ????????????");
                     }
 
-                    // 检查起点是否有建筑
+                    // ??????????н???
                     if (tile.currentBuilding != null)
                     {
-                        Debug.LogError($"警告: {tile.tileName} 上有建筑");
+                        Debug.LogError($"????: {tile.tileName} ???н???");
                     }
                 }
             }
