@@ -3,36 +3,36 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [Header("玩家信息")]
-    public string playerName = "玩家1";
+    [Header("??????")]
+    public string playerName = "???1";
     public int playerID = 1;
     public Color playerColor = Color.red;
 
-    [Header("金钱信息")]
-    public int cash = 1500;  // 初始资金
-    public List<BoardTile> ownedProperties = new List<BoardTile>();  // 拥有的地产
+    [Header("??????")]
+    public int cash = 1500;  // ??????
+    public List<BoardTile> ownedProperties = new List<BoardTile>();  // ??е???
 
-    [Header("状态信息")]
+    [Header("?????")]
     public bool isInJail = false;
     public int jailTurnsRemaining = 0;
     public bool isBankrupt = false;
 
-    [Header("位置信息")]
-    [HideInInspector] public BoardTile currentTile;  // 当前所在格子
-    [HideInInspector] public int currentTileIndex = 0;  // 当前索引
+    [Header("λ?????")]
+    [HideInInspector] public BoardTile currentTile;  // ??????????
+    [HideInInspector] public int currentTileIndex = 0;  // ???????
 
-    // 玩家属性
-    [Header("Buff状态")]
+    // ???????
+    [Header("Buff??")]
     public bool hasDiceBoost = false;
     public int diceBoostValue = 0;
     public float incomeMultiplier = 1.0f;
     public float luckBoost = 0f;
     public float moveSpeedMultiplier = 1.0f;
 
-    [Header("当前生效Buff")]
+    [Header("?????ЧBuff")]
     public List<BoardTile> activeBuffs = new List<BoardTile>();
 
-    // 引用
+    // ????
     private PlayerMovement playerMovement;
 
     void Start()
@@ -40,16 +40,16 @@ public class Player : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();
         if (playerMovement == null)
         {
-            Debug.LogWarning($"玩家 {playerName} 缺少 PlayerMovement 组件");
+            Debug.LogWarning($"??? {playerName} ??? PlayerMovement ???");
         }
 
-        // 设置玩家颜色
+        // ??????????
         SetPlayerColor();
     }
 
     void SetPlayerColor()
     {
-        // 查找并设置颜色
+        // ????????????
         MeshRenderer renderer = GetComponentInChildren<MeshRenderer>();
         if (renderer != null)
         {
@@ -57,22 +57,22 @@ public class Player : MonoBehaviour
         }
     }
 
-    // 付钱
+    // ???
     public bool PayCash(int amount)
     {
         bool canAfford = cash >= amount;
         cash -= amount;
-        Debug.Log($"{playerName} 支付 {amount} 元，剩余资金: {cash}");
+        Debug.Log($"{playerName} ??? {amount} ?????????: {cash}");
 
         NotifyCashChanged();
         return canAfford;
     }
 
-    // 收钱
+    // ???
     public void ReceiveCash(int amount)
     {
         cash += amount;
-        Debug.Log($"{playerName} 收到 {amount} 元，总计: {cash} 元");
+        Debug.Log($"{playerName} ??? {amount} ??????: {cash} ?");
 
         NotifyCashChanged();
     }
@@ -90,7 +90,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    // 购买地产
+    // ??????
     public bool BuyProperty(BoardTile property)
     {
         if (property == null) return false;
@@ -99,13 +99,13 @@ public class Player : MonoBehaviour
             property.tileType != BoardTile.TileType.Railroad &&
             property.tileType != BoardTile.TileType.Utility)
         {
-            Debug.LogWarning($"无法购买 {property.tileName}，因为这不是可购买的地产类型");
+            Debug.LogWarning($"??????? {property.tileName}????????????????????");
             return false;
         }
 
         if (property.ownerPlayer != null)
         {
-            Debug.LogWarning($"{property.tileName} 已经有主人了");
+            Debug.LogWarning($"{property.tileName} ???????????");
             return false;
         }
 
@@ -113,7 +113,7 @@ public class Player : MonoBehaviour
         {
             property.ownerPlayer = this;
             ownedProperties.Add(property);
-            Debug.Log($"{playerName} 成功购买了 {property.tileName}");
+            Debug.Log($"{playerName} ????????? {property.tileName}");
 
             if (SFXManager.Instance != null)
                 SFXManager.Instance.PlaySFX(SFXClip.EventPropertyBought);
@@ -124,12 +124,12 @@ public class Player : MonoBehaviour
         return false;
     }
 
-    // 支付租金
+    // ??????
     public bool PayRent(int rentAmount, GameObject owner)
     {
         if (PayCash(rentAmount))
         {
-            // 付钱给所有者
+            // ???????????
             Player ownerPlayer = owner.GetComponent<Player>();
             if (ownerPlayer != null)
             {
@@ -140,14 +140,14 @@ public class Player : MonoBehaviour
         return false;
     }
 
-    // 移动到指定格子
+    // ????????????
     public void MoveToTile(BoardTile tile, bool teleport = false)
     {
         if (tile == null) return;
 
         if (playerMovement != null && !teleport)
         {
-            // 带动画移动
+            // ?????????
             int steps = GetStepsToTile(tile);
             if (steps > 0)
             {
@@ -156,17 +156,17 @@ public class Player : MonoBehaviour
         }
         else
         {
-            // 瞬移，无动画效果
+            // ?????????Ч??
             transform.position = tile.transform.position + Vector3.up * 0.5f;
             currentTile = tile;
             currentTileIndex = BoardManager.Instance?.allTiles.IndexOf(tile) ?? 0;
 
-            // 触发布格事件
+            // ???????????
             tile.OnLanded(this);
         }
     }
 
-    // 计算到目标格子的步数
+    // ??????????????
     private int GetStepsToTile(BoardTile targetTile)
     {
         if (BoardManager.Instance == null || currentTile == null || targetTile == null)
@@ -181,7 +181,7 @@ public class Player : MonoBehaviour
 
         if (targetIndex <= currentIndex)
         {
-            // 需要绕一圈
+            // ???????
             return (allTiles.Count - currentIndex) + targetIndex;
         }
         else
@@ -190,57 +190,57 @@ public class Player : MonoBehaviour
         }
     }
 
-    // 获取带有加成的骰子值
+    // ??????м????????
     public int GetDiceValueWithBoost(int baseValue)
     {
         if (hasDiceBoost)
         {
             int boostedValue = baseValue + diceBoostValue;
-            Debug.Log($"{playerName} 获得骰子加成: {baseValue} + {diceBoostValue} = {boostedValue}");
-            return Mathf.Clamp(boostedValue, 1, 12); // 最大12点
+            Debug.Log($"{playerName} ?????????: {baseValue} + {diceBoostValue} = {boostedValue}");
+            return Mathf.Clamp(boostedValue, 1, 12); // ???12??
         }
         return baseValue;
     }
 
-    // 获取收入倍率的实际值
+    // ??????????????
     public int GetIncomeWithMultiplier(int baseIncome)
     {
         float multiplier = incomeMultiplier;
         int finalIncome = Mathf.RoundToInt(baseIncome * multiplier);
         if (multiplier > 1.0f)
         {
-            Debug.Log($"{playerName} 获得收入倍率: {baseIncome} * {multiplier} = {finalIncome}");
+            Debug.Log($"{playerName} ?????????: {baseIncome} * {multiplier} = {finalIncome}");
         }
         return finalIncome;
     }
 
-    // 添加buff
+    // ????buff
     public void AddBuff(BoardTile buffSource)
     {
         if (!activeBuffs.Contains(buffSource))
         {
             activeBuffs.Add(buffSource);
-            Debug.Log($"{playerName} 获得buff: {buffSource.tileName}");
+            Debug.Log($"{playerName} ???buff: {buffSource.tileName}");
         }
     }
 
-    // 移除buff
+    // ???buff
     public void RemoveBuff(BoardTile buffSource)
     {
         if (activeBuffs.Contains(buffSource))
         {
             activeBuffs.Remove(buffSource);
-            Debug.Log($"{playerName} 失去buff: {buffSource.tileName}");
+            Debug.Log($"{playerName} ??buff: {buffSource.tileName}");
         }
     }
 
-    // 检查是否破产
+    // ?????????
     public bool CheckBankruptcy()
     {
         if (cash < 0)
         {
             isBankrupt = true;
-            Debug.Log($"{playerName} 破产了！");
+            Debug.Log($"{playerName} ??????");
             return true;
         }
         return false;

@@ -566,7 +566,7 @@ public class GameManager : MonoBehaviour
         
         Debug.Log($"CheckPressureTrigger: diceRollCount={diceRollCount}, currentRound={currentRound}, nextPressureAt={nextPressureAt}");
 
-        // 回到最基本的逻辑：每回合扣钱
+        // ?????????????????????
         if (currentRound >= nextPressureAt)
         {
             TriggerPressure(currentRound);
@@ -580,7 +580,7 @@ public class GameManager : MonoBehaviour
 
         int cost = Mathf.RoundToInt(basePressureCost);
 
-        // 先增加nextPressureAt，确保逻辑不会混乱
+        // ??????nextPressureAt???????????????
         nextPressureAt++;
         basePressureCost *= pressureMultiplier;
 
@@ -1071,8 +1071,26 @@ public class GameManager : MonoBehaviour
             uiManager.UpdateRollDiceButtonText("");
         }
         
-        // ????????????????????
-        EndMove();
+        // ????????????????????????????????
+        // ?????????????????
+        if (currentPlayer != null && currentPlayer.isBankrupt)
+        {
+            Debug.Log($"{currentPlayer.playerName} ???????????");
+            return;
+        }
+        
+        // ????????????????????????????????
+        CheckPressureTrigger();
+        
+        // ???????????????????????????
+        if (currentPlayer != null && currentPlayer.isBankrupt)
+        {
+            Debug.Log($"{currentPlayer.playerName} ???????????????");
+            return;
+        }
+        
+        // ???????????????????
+        EndTurn();
     }
 
     // ================= ??????? =================
@@ -1207,7 +1225,7 @@ public class GameManager : MonoBehaviour
 
     public void RestartFromGameOver()
     {
-        Debug.Log("从游戏结束状态重启");
+        Debug.Log("???????????????");
         
         currentState = GameState.PlayerTurn;
         isGameStarted = true;
@@ -1217,6 +1235,9 @@ public class GameManager : MonoBehaviour
         diceRollCount = 0;
         nextPressureAt = 1;
         basePressureCost = 50f;
+        
+        // ??????н???
+        ClearAllBuildings();
         
         BoardTile startTile = GetStartTile();
         
@@ -1231,7 +1252,7 @@ public class GameManager : MonoBehaviour
             if (startTile != null)
             {
                 p.MoveToTile(startTile, false);
-                Debug.Log($"重置 {p.playerName} 位置到起点");
+                Debug.Log($"???? {p.playerName} λ??????");
             }
         }
         
@@ -1256,7 +1277,42 @@ public class GameManager : MonoBehaviour
         
         UpdateUI();
         
-        Debug.Log("游戏已重启，可以继续投骰子");
+        // ??????????????????????????????
+        StartCoroutine(StartInitialBuildingPhase());
+        
+        Debug.Log("???????????????????????");
+    }
+
+    // ??????н???
+    private void ClearAllBuildings()
+    {
+        Debug.Log("??????н???...");
+        
+        if (boardManager == null || boardManager.allTiles == null)
+        {
+            Debug.LogWarning("BoardManager ?? allTiles δ?????");
+            return;
+        }
+        
+        foreach (BoardTile tile in boardManager.allTiles)
+        {
+            if (tile == null) continue;
+            
+            // ??????????????
+            tile.currentBuildingData = null;
+            tile.currentBuildingType = BoardTile.BuildingType.None;
+            tile.buildingLevel = 0;
+            tile.ownerPlayer = null;
+            
+            // ?????????????
+            if (tile.currentBuilding != null)
+            {
+                Destroy(tile.currentBuilding);
+                tile.currentBuilding = null;
+            }
+        }
+        
+        Debug.Log("???н????????");
     }
 
     public void ResetGame()
@@ -1332,9 +1388,33 @@ public class GameManager : MonoBehaviour
 
     public void OnEventPanelClosed()
     {
-        // ???????????????????
-        Debug.Log("??????????????????");
+        // 事件面板关闭后继续回合流程
+        Debug.Log("事件面板已关闭，继续回合流程");
+        
+        // 检查玩家是否破产
+        if (currentPlayer != null && currentPlayer.isBankrupt)
+        {
+            Debug.Log($"{currentPlayer.playerName} 事件后破产，结束游戏");
+            HandlePlayerBankrupt(currentPlayer);
+            if (players.Count <= 1)
+            {
+                GameOver();
+            }
+            return;
+        }
+        
+        // 继续正常回合流程
         SetRollDiceButtonInteractable(true);
+        
+        // 继续建筑购买流程（如果有）
+        if (currentState == GameState.BuildingSelection)
+        {
+            Debug.Log("继续建筑购买流程");
+            return;
+        }
+        
+        // 否则立即结束移动（延迟很小，用户几乎感觉不到）
+        StartCoroutine(EndMoveAfterDelay(0.1f));
         UpdateUI();
     }
 
