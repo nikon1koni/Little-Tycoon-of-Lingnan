@@ -1106,17 +1106,17 @@ public class UIManager : MonoBehaviour
 
     private void OnRestartButtonClicked()
     {
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.ResetGame();
-        }
-        
         if (gameOverPanel != null)
         {
             gameOverPanel.SetActive(false);
         }
         
         SwitchToGameUI();
+        
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.RestartFromGameOver();
+        }
     }
 
     public void SetRollDiceButtonInteractable(bool interactable)

@@ -545,7 +545,6 @@ public class GameManager : MonoBehaviour
 
         diceRollCount++;
         Debug.Log($"?????????????: {diceRollCount}");
-        CheckPressureTrigger();
 
         UpdateUI();
 
@@ -852,6 +851,8 @@ public class GameManager : MonoBehaviour
                 return;
             }
         }
+
+        CheckPressureTrigger();
 
         EndTurn();
     }
@@ -1174,6 +1175,46 @@ public class GameManager : MonoBehaviour
             Debug.Log($"???????: {currentPlayer.isInJail}");
             Debug.Log($"???????: {currentPlayer.jailTurnsRemaining}");
         }
+    }
+
+    public void RestartFromGameOver()
+    {
+        Debug.Log("从游戏结束状态重启");
+        
+        currentState = GameState.PlayerTurn;
+        isGameStarted = true;
+        currentPlayerIndex = 0;
+        
+        foreach (Player p in players)
+        {
+            p.isBankrupt = false;
+            p.cash = startingCash;
+            p.ownedProperties.Clear();
+            p.isInJail = false;
+            p.jailTurnsRemaining = 0;
+        }
+        
+        if (players.Count > 0)
+        {
+            currentPlayer = players[0];
+        }
+        
+        if (rollDiceButton != null)
+        {
+            rollDiceButton.interactable = true;
+        }
+        
+        if (uiManager != null)
+        {
+            uiManager.SetRollDiceButtonInteractable(true);
+            uiManager.SwitchToGameUI();
+            uiManager.UpdateAllPlayerInfo();
+            uiManager.UpdateCashDisplay(currentPlayer?.cash ?? startingCash);
+        }
+        
+        UpdateUI();
+        
+        Debug.Log("游戏已重启，可以继续投骰子");
     }
 
     public void ResetGame()
