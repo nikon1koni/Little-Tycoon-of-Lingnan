@@ -563,6 +563,8 @@ public class GameManager : MonoBehaviour
             return;
 
         int currentRound = diceRollCount / 6;
+        
+        Debug.Log($"CheckPressureTrigger: diceRollCount={diceRollCount}, currentRound={currentRound}, nextPressureAt={nextPressureAt}");
 
         if (currentRound >= nextPressureAt)
         {
