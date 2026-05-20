@@ -1175,7 +1175,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &212661032
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16176,10 +16176,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 37.05
   m_fontSizeBase: 36
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -16212,7 +16212,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -1.022522, w: 0}
+  m_margin: {x: 0, y: 0, z: -56.940613, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -17218,7 +17218,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -315.4053, y: -20.307434, z: -213.48157, w: -44.52664}
+  m_margin: {x: -315.4053, y: -30.505737, z: -213.48157, w: -44.52664}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -17960,7 +17960,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2401776504174852211, guid: 83c211faa7174fc47b48ef154498ed80, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 2401776504174852211, guid: 83c211faa7174fc47b48ef154498ed80, type: 3}
       propertyPath: m_LocalPosition.z
