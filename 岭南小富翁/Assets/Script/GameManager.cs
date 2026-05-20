@@ -52,7 +52,7 @@ public class GameManager : MonoBehaviour
     public int DiceRollCount => diceRollCount;
     public int CurrentRound => diceRollCount / 6;
 
-    [Header("调试")]
+    [Header("????")]
     public bool enableDebugKeys = true;
 
     [Header("??????")]
@@ -541,10 +541,10 @@ public class GameManager : MonoBehaviour
     public void OnDiceRolled(int value)
     {
         lastDiceValue = value;
-        Debug.Log($"骰子结果: {value}");
+        Debug.Log($"??????: {value}");
 
         diceRollCount++;
-        Debug.Log($"骰子总投掷次数: {diceRollCount}");
+        Debug.Log($"?????????????: {diceRollCount}");
         CheckPressureTrigger();
 
         UpdateUI();
@@ -591,7 +591,22 @@ public class GameManager : MonoBehaviour
 
                 if (UIManager.Instance != null)
                 {
-                    UIManager.Instance.ShowGameOverPanel(p.playerName);
+                    if (players.Count == 1)
+                    {
+                        UIManager.Instance.ShowGameOverPanel(p.playerName, false);
+                    }
+                    else
+                    {
+                        Player winner = players.Find(p2 => !p2.isBankrupt);
+                        if (winner != null)
+                        {
+                            UIManager.Instance.ShowGameOverPanel(winner.playerName, true);
+                        }
+                        else
+                        {
+                            UIManager.Instance.ShowGameOverPanel(p.playerName, false);
+                        }
+                    }
                 }
 
                 GameOver();
@@ -956,7 +971,7 @@ public class GameManager : MonoBehaviour
 
             if (uiManager != null)
             {
-                uiManager.ShowGameOverPanel(winner.playerName);
+                uiManager.ShowGameOverPanel(winner.playerName, true);
             }
         }
         else
