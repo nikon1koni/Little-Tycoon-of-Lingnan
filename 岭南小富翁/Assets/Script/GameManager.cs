@@ -1070,6 +1070,9 @@ public class GameManager : MonoBehaviour
             uiManager.SetRollDiceButtonInteractable(true);
             uiManager.UpdateRollDiceButtonText("");
         }
+        
+        // ????????????????????
+        EndMove();
     }
 
     // ================= ??????? =================
