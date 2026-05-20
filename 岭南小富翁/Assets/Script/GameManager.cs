@@ -1225,7 +1225,7 @@ public class GameManager : MonoBehaviour
             
             if (startTile != null)
             {
-                p.MoveToTile(startTile, true);
+                p.MoveToTile(startTile, false);
                 Debug.Log($"重置 {p.playerName} 位置到起点");
             }
         }
