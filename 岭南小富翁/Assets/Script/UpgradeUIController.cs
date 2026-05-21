@@ -4,7 +4,7 @@ using TMPro;
 
 public class UpgradeUIController : MonoBehaviour
 {
-    [Header("??????????")]
+    [Header("升级面板组件")]
     public GameObject upgradePanel;
     public TextMeshProUGUI titleText;
     public TextMeshProUGUI currentInfoText;
@@ -18,6 +18,9 @@ public class UpgradeUIController : MonoBehaviour
     private BoardTile selectedTile;
     private Player currentPlayer;
     private bool isUpgradeMode = false;
+    
+    [Header("引用 - 建筑选择面板控制器")]
+    public BuildingSelectionPanelController buildingSelectionPanelController;
 
     void Start()
     {
@@ -59,11 +62,11 @@ public class UpgradeUIController : MonoBehaviour
             
             if (statusText != null)
             {
-                statusText.text = $"??????????????????\n????? {GetPlayerBuildingCount()} ??????";
+                statusText.text = $"点击你的建筑查看升级信息\n共有 {GetPlayerBuildingCount()} 个建筑";
             }
         }
         
-        Debug.Log($"??????????????????: {player.playerName}");
+        Debug.Log($"进入升级模式: {player.playerName}");
     }
 
     public void ExitUpgradeMode()
@@ -77,7 +80,7 @@ public class UpgradeUIController : MonoBehaviour
             upgradePanel.SetActive(false);
         }
         
-        Debug.Log("?????????");
+        Debug.Log("退出升级模式");
     }
 
     public void OnTileClicked(BoardTile tile)
@@ -86,21 +89,21 @@ public class UpgradeUIController : MonoBehaviour
         
         if (tile == null)
         {
-            Debug.Log("??????");
+            Debug.Log("无效地块");
             return;
         }
         
         if (tile.currentBuildingData == null)
         {
-            ShowStatus("???????????");
-            Debug.Log("???????????");
+            ShowStatus("这个地块没有建筑");
+            Debug.Log("这个地块没有建筑");
             return;
         }
         
         if (tile.ownerPlayer != currentPlayer)
         {
-            ShowStatus("??????????");
-            Debug.Log("??????????");
+            ShowStatus("这不是你的建筑");
+            Debug.Log("这不是你的建筑");
             return;
         }
         
@@ -116,15 +119,15 @@ public class UpgradeUIController : MonoBehaviour
         BuildingData nextData = tile.GetNextUpgradeBuilding();
         
         string currentInfo = "";
-        currentInfo += $"???????????\n";
-        currentInfo += $"????: {currentData.buildingName}\n";
-        currentInfo += $"???: {tile.buildingLevel}\n";
+        currentInfo += $"当前建筑\n";
+        currentInfo += $"名称: {currentData.buildingName}\n";
+        currentInfo += $"等级: {tile.buildingLevel}\n";
         
         if (currentData.functionType == BuildingData.BuildingFunctionType.Income ||
             currentData.functionType == BuildingData.BuildingFunctionType.Mixed)
         {
             int income = currentData.GetIncomeAmount(tile.buildingLevel);
-            currentInfo += $"????: {income} ?/???\n";
+            currentInfo += $"收入: {income} 金币/回合\n";
         }
         
         if (currentData.functionType == BuildingData.BuildingFunctionType.Buff ||
@@ -143,15 +146,15 @@ public class UpgradeUIController : MonoBehaviour
         if (nextData != null)
         {
             string nextInfo = "";
-            nextInfo += $"????????\n";
-            nextInfo += $"????: {nextData.buildingName}\n";
-            nextInfo += $"???: {tile.buildingLevel + 1}\n";
+            nextInfo += $"升级后\n";
+            nextInfo += $"名称: {nextData.buildingName}\n";
+            nextInfo += $"等级: {tile.buildingLevel + 1}\n";
             
             if (nextData.functionType == BuildingData.BuildingFunctionType.Income ||
                 nextData.functionType == BuildingData.BuildingFunctionType.Mixed)
             {
                 int income = nextData.GetIncomeAmount(tile.buildingLevel + 1);
-                nextInfo += $"????: {income} ?/???\n";
+                nextInfo += $"收入: {income} 金币/回合\n";
             }
             
             if (nextData.functionType == BuildingData.BuildingFunctionType.Buff ||
@@ -170,7 +173,7 @@ public class UpgradeUIController : MonoBehaviour
             int cost = tile.GetUpgradeCost();
             if (costText != null)
             {
-                costText.text = $"????????: {cost} ?";
+                costText.text = $"升级费用: {cost} 金币";
                 
                 if (currentPlayer != null && currentPlayer.cash < cost)
                 {
@@ -193,12 +196,12 @@ public class UpgradeUIController : MonoBehaviour
         {
             if (nextInfoText != null)
             {
-                nextInfoText.text = "????????\n???????????";
+                nextInfoText.text = "已达最高等级\n无法继续升级";
             }
             
             if (costText != null)
             {
-                costText.text = "????????";
+                costText.text = "无法升级";
                 costText.color = Color.gray;
             }
             
@@ -244,14 +247,14 @@ public class UpgradeUIController : MonoBehaviour
     {
         if (selectedTile == null || currentPlayer == null)
         {
-            ShowStatus("??????????????");
+            ShowStatus("请先选择一个建筑");
             return;
         }
         
         if (selectedTile.UpgradeBuilding(currentPlayer))
         {
-            ShowStatus("?????????");
-            Debug.Log($"?????????");
+            ShowStatus("升级成功！");
+            Debug.Log($"升级成功");
             
             if (SFXManager.Instance != null)
                 SFXManager.Instance.PlaySFX(SFXClip.EventBuildingUpgraded);
@@ -265,14 +268,19 @@ public class UpgradeUIController : MonoBehaviour
         }
         else
         {
-            ShowStatus("??????????????????????");
-            Debug.Log("???????");
+            ShowStatus("升级失败，请检查金币是否足够");
+            Debug.Log("升级失败");
         }
     }
 
     private void OnCancel()
     {
         ExitUpgradeMode();
+        
+        if (buildingSelectionPanelController != null)
+        {
+            buildingSelectionPanelController.OnExitUpgradeMode();
+        }
     }
 
     public bool IsUpgradeModeActive()
