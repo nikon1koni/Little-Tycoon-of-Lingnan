@@ -423,7 +423,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c13a57a19aef02d40b89e35e1b86965a, type: 2}
   - {fileID: 11400000, guid: 927c2d5dc59b9814ba01a9a51edd1066, type: 2}
   - {fileID: 11400000, guid: 7e70ab51739fef143b971fb9e8c0e3dc, type: 2}
-  upgradeUIController: {fileID: 44749203}
+  upgradeUIController: {fileID: 1784433109}
 --- !u!4 &41562755
 Transform:
   m_ObjectHideFlags: 0
@@ -2255,7 +2255,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 184, y: 51}
+  m_AnchoredPosition: {x: 184, y: -26}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &251599610
@@ -16537,7 +16537,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 184, y: -26}
+  m_AnchoredPosition: {x: 184, y: 51}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1220875626
@@ -18090,7 +18090,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1459597470}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &1459597472
 Camera:
   m_ObjectHideFlags: 0
@@ -19575,10 +19575,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 37.05
   m_fontSizeBase: 36
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0

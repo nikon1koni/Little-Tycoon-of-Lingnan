@@ -49,19 +49,41 @@ public class UpgradeUIController : MonoBehaviour
 
     void Start()
     {
+        Debug.Log("=== UpgradeUIController Start ===");
+        Debug.Log("脚本挂载在: " + gameObject.name);
+        Debug.Log("脚本所在对象激活状态: " + gameObject.activeSelf);
+        Debug.Log("upgradePanel: " + (upgradePanel != null ? "已配置 - " + upgradePanel.name : "为空"));
+        Debug.Log("clickHintPanel: " + (clickHintPanel != null ? "已配置 - " + clickHintPanel.name : "为空"));
+        Debug.Log("comparisonArea: " + (comparisonArea != null ? "已配置 - " + comparisonArea.name : "为空"));
+        
         if (upgradePanel != null)
         {
             upgradePanel.SetActive(false);
+            Debug.Log("upgradePanel 已隐藏");
+        }
+        else
+        {
+            Debug.LogWarning("upgradePanel 引用为空");
         }
         
         if (clickHintPanel != null)
         {
             clickHintPanel.SetActive(false);
+            Debug.Log("clickHintPanel 已隐藏");
+        }
+        else
+        {
+            Debug.LogWarning("clickHintPanel 引用为空");
         }
         
         if (comparisonArea != null)
         {
             comparisonArea.SetActive(false);
+            Debug.Log("comparisonArea 已隐藏");
+        }
+        else
+        {
+            Debug.LogWarning("comparisonArea 引用为空");
         }
         
         SetupButtons();
@@ -137,14 +159,26 @@ public class UpgradeUIController : MonoBehaviour
 
     private void HideClickHint()
     {
+        Debug.Log("HideClickHint: 隐藏提示面板，显示对比区域");
+        
         if (clickHintPanel != null)
         {
             clickHintPanel.SetActive(false);
+            Debug.Log("clickHintPanel 已隐藏");
+        }
+        else
+        {
+            Debug.LogWarning("clickHintPanel 引用为空");
         }
         
         if (comparisonArea != null)
         {
             comparisonArea.SetActive(true);
+            Debug.Log("comparisonArea 已显示");
+        }
+        else
+        {
+            Debug.LogWarning("comparisonArea 引用为空！请在Inspector中配置");
         }
     }
 
