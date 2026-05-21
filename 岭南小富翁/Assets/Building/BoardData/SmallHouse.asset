@@ -40,4 +40,4 @@ MonoBehaviour:
   effectIconPrefab: {fileID: 3634359620495233454, guid: bce7f01deef686c47beedd39273d1d82, type: 3}
   effectSound: {fileID: 8300000, guid: f674a041c334b1e40af4fcd60e27bea8, type: 3}
   effectDuration: 1.5
-  description: "\u5EFA\u7B51\u63CF\u8FF0"
+  description: "\u8FD9\u662F\u5C0F\u623F\u5B50"
