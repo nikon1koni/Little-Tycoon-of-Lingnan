@@ -42,6 +42,11 @@ public class BuildingData : ScriptableObject
     public GameObject buildingPrefab;
     public BuildingData nextLevelBuilding;
 
+    [Header("效果动画与音效")]
+    public GameObject effectIconPrefab;
+    public AudioClip effectSound;
+    public float effectDuration = 1.5f;
+
     [Header("描述")]
     [TextArea(3, 5)]
     public string description = "建筑描述";

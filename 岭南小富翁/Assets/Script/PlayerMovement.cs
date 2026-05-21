@@ -128,7 +128,12 @@ public class PlayerMovement : MonoBehaviour
                         stepsMoved++;
                         foundValidTile = true;
 
-                        candidateTile.OnPassed(player);
+                        float effectDuration = candidateTile.OnPassed(player);
+                        
+                        if (effectDuration > 0f)
+                        {
+                            yield return new WaitForSeconds(effectDuration);
+                        }
 
                     // 检查是否到达或经过起点（tileID == 0 或 tileType == Start）
                     if (candidateTile.tileID == 0 || candidateTile.tileType == BoardTile.TileType.Start)

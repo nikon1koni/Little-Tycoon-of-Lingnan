@@ -150,13 +150,16 @@ public class BoardTile : MonoBehaviour
         }
     }
 
-    // 玩家经过地块（经过触发）
-    public virtual void OnPassed(Player player)
+    public virtual float OnPassed(Player player)
     {
+        float maxEffectDuration = 0f;
+        
         if (enableLinkedIncome && linkedBuildingTiles != null && linkedBuildingTiles.Count > 0)
         {
-            TriggerLinkedBuildingIncome(player);
+            maxEffectDuration = TriggerLinkedBuildingIncome(player);
         }
+        
+        return maxEffectDuration;
     }
 
     // 玩家站到地块上（停留触发）
@@ -296,17 +299,17 @@ public class BoardTile : MonoBehaviour
         return baseRent;
     }
 
-    // === 关联收入触发函数 ===
-    private void TriggerLinkedBuildingIncome(Player player)
+    private float TriggerLinkedBuildingIncome(Player player)
     {
         if (!enableLinkedIncome)
-            return;
+            return 0f;
 
         if (linkedBuildingTiles == null || linkedBuildingTiles.Count == 0)
-            return;
+            return 0f;
 
         float currentTime = Time.time;
         int totalIncome = 0;
+        float maxEffectDuration = 0f;
 
         for (int i = 0; i < linkedBuildingTiles.Count; i++)
         {
@@ -333,12 +336,46 @@ public class BoardTile : MonoBehaviour
                     lastIncomeTime.Add(buildingTile, currentTime);
                 else
                     lastIncomeTime[buildingTile] = currentTime;
+
+                PlayBuildingEffect(buildingTile);
+                
+                if (buildingTile.currentBuildingData.effectDuration > maxEffectDuration)
+                {
+                    maxEffectDuration = buildingTile.currentBuildingData.effectDuration;
+                }
             }
         }
 
         if (totalIncome > 0 && UIManager.Instance != null)
         {
             UIManager.Instance.ShowToast($"关联建筑收入: {totalIncome} 元", 2f);
+        }
+
+        return maxEffectDuration;
+    }
+
+    private void PlayBuildingEffect(BoardTile buildingTile)
+    {
+        if (buildingTile == null || buildingTile.currentBuildingData == null)
+            return;
+
+        BuildingData data = buildingTile.currentBuildingData;
+        
+        if (data.effectIconPrefab != null || data.effectSound != null)
+        {
+            if (BuildingEffectSystem.Instance != null)
+            {
+                Transform effectTransform = buildingTile.transform;
+                if (buildingTile.currentBuilding != null)
+                {
+                    effectTransform = buildingTile.currentBuilding.transform;
+                }
+                BuildingEffectSystem.Instance.PlayBuildingEffectImmediate(effectTransform, data);
+            }
+            else
+            {
+                Debug.LogWarning("BuildingEffectSystem 未初始化，请确保场景中有 BuildingEffectSystem 对象");
+            }
         }
     }
 

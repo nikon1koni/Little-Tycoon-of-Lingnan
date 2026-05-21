@@ -37,4 +37,7 @@ MonoBehaviour:
   buildingIcon: {fileID: 0}
   buildingPrefab: {fileID: 3634359620495233454, guid: bce7f01deef686c47beedd39273d1d82, type: 3}
   nextLevelBuilding: {fileID: 11400000, guid: 927c2d5dc59b9814ba01a9a51edd1066, type: 2}
+  effectIconPrefab: {fileID: 3634359620495233454, guid: bce7f01deef686c47beedd39273d1d82, type: 3}
+  effectSound: {fileID: 8300000, guid: f674a041c334b1e40af4fcd60e27bea8, type: 3}
+  effectDuration: 1.5
   description: "\u5EFA\u7B51\u63CF\u8FF0"
