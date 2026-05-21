@@ -355,8 +355,6 @@ public class GameManager : MonoBehaviour
     {
         BoardTile tile = currentPlayer.currentTile;
 
-        CheckLinkedBuildingIncome(tile, currentPlayer);
-
         if (tile.ownerPlayer == null)
         {
             if (tile.tileType == BoardTile.TileType.Buildable)
@@ -772,8 +770,6 @@ public class GameManager : MonoBehaviour
         Debug.Log($"{currentPlayer.playerName} ???? {currentPlayer.currentTile.tileName}");
 
         BoardTile currentTile = currentPlayer.currentTile;
-
-        CheckLinkedBuildingIncome(currentTile, currentPlayer);
 
         if (currentTile.tileType == BoardTile.TileType.Start)
         {
@@ -1236,7 +1232,7 @@ public class GameManager : MonoBehaviour
         nextPressureAt = 1;
         basePressureCost = 50f;
         
-        // ??????н???
+        // ???????????
         ClearAllBuildings();
         
         BoardTile startTile = GetStartTile();
@@ -1252,7 +1248,7 @@ public class GameManager : MonoBehaviour
             if (startTile != null)
             {
                 p.MoveToTile(startTile, false);
-                Debug.Log($"???? {p.playerName} λ??????");
+                Debug.Log($"???? {p.playerName} ????????");
             }
         }
         
@@ -1283,14 +1279,14 @@ public class GameManager : MonoBehaviour
         Debug.Log("???????????????????????");
     }
 
-    // ??????н???
+    // ???????????
     private void ClearAllBuildings()
     {
-        Debug.Log("??????н???...");
+        Debug.Log("???????????...");
         
         if (boardManager == null || boardManager.allTiles == null)
         {
-            Debug.LogWarning("BoardManager ?? allTiles δ?????");
+            Debug.LogWarning("BoardManager ?? allTiles ???????");
             return;
         }
         
@@ -1312,7 +1308,7 @@ public class GameManager : MonoBehaviour
             }
         }
         
-        Debug.Log("???н????????");
+        Debug.Log("?????????????");
     }
 
     public void ResetGame()
@@ -1388,13 +1384,13 @@ public class GameManager : MonoBehaviour
 
     public void OnEventPanelClosed()
     {
-        // 事件面板关闭后继续回合流程
-        Debug.Log("事件面板已关闭，继续回合流程");
+        // ???????????????????
+        Debug.Log("??????????????????????");
         
-        // 检查玩家是否破产
+        // ????????????
         if (currentPlayer != null && currentPlayer.isBankrupt)
         {
-            Debug.Log($"{currentPlayer.playerName} 事件后破产，结束游戏");
+            Debug.Log($"{currentPlayer.playerName} ?????????????????");
             HandlePlayerBankrupt(currentPlayer);
             if (players.Count <= 1)
             {
@@ -1403,17 +1399,17 @@ public class GameManager : MonoBehaviour
             return;
         }
         
-        // 继续正常回合流程
+        // ???????????????
         SetRollDiceButtonInteractable(true);
         
-        // 继续建筑购买流程（如果有）
+        // ?????????????????????У?
         if (currentState == GameState.BuildingSelection)
         {
-            Debug.Log("继续建筑购买流程");
+            Debug.Log("????????????????");
             return;
         }
         
-        // 否则立即结束移动（延迟很小，用户几乎感觉不到）
+        // ?????????????????????С??????????о???????
         StartCoroutine(EndMoveAfterDelay(0.1f));
         UpdateUI();
     }

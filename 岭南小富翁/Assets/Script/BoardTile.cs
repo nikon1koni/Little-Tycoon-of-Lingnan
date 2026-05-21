@@ -150,7 +150,16 @@ public class BoardTile : MonoBehaviour
         }
     }
 
-    // 玩家站到地块上
+    // 玩家经过地块（经过触发）
+    public virtual void OnPassed(Player player)
+    {
+        if (enableLinkedIncome && linkedBuildingTiles != null && linkedBuildingTiles.Count > 0)
+        {
+            TriggerLinkedBuildingIncome(player);
+        }
+    }
+
+    // 玩家站到地块上（停留触发）
     public virtual void OnLanded(Player player)
     {
         switch (tileType)
@@ -221,11 +230,6 @@ public class BoardTile : MonoBehaviour
             case TileType.Event:
                 TriggerRandomEvent(player);
                 break;
-        }
-
-        if (enableLinkedIncome && linkedBuildingTiles != null && linkedBuildingTiles.Count > 0)
-        {
-            TriggerLinkedBuildingIncome(player);
         }
     }
 

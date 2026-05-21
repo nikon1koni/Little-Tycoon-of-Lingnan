@@ -120,13 +120,15 @@ public class PlayerMovement : MonoBehaviour
                 searchCount++;
 
                 if (candidateTile.tileID >= 0)
-                {
-                    yield return StartCoroutine(JumpToTile(candidateTile));
+                    {
+                        yield return StartCoroutine(JumpToTile(candidateTile));
 
-                    player.currentTile = candidateTile;
-                    player.currentTileIndex = currentSearchIndex;
-                    stepsMoved++;
-                    foundValidTile = true;
+                        player.currentTile = candidateTile;
+                        player.currentTileIndex = currentSearchIndex;
+                        stepsMoved++;
+                        foundValidTile = true;
+
+                        candidateTile.OnPassed(player);
 
                     // 检查是否到达或经过起点（tileID == 0 或 tileType == Start）
                     if (candidateTile.tileID == 0 || candidateTile.tileType == BoardTile.TileType.Start)
