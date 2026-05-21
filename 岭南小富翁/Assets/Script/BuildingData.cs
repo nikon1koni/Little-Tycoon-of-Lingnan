@@ -8,6 +8,7 @@ public class BuildingData : ScriptableObject
 
     [Header("等级系统")]
     public bool isFinalLevel = false;
+    public int buildingLevel = 1;
 
     [Header("Buff值数组")]
     public float[] buffValues;

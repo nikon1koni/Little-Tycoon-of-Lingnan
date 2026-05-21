@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingType: 0
   isFinalLevel: 1
+  buildingLevel: 3
   buffValues:
   - 0.1
   - 0.2
@@ -37,4 +38,7 @@ MonoBehaviour:
   buildingIcon: {fileID: 0}
   buildingPrefab: {fileID: 0}
   nextLevelBuilding: {fileID: 0}
+  effectIconPrefab: {fileID: 0}
+  effectSound: {fileID: 0}
+  effectDuration: 1.5
   description: "\u5EFA\u7B51\u63CF\u8FF0"

@@ -837,7 +837,7 @@ public class UIManager : MonoBehaviour
             return false;
 
         tile.ownerPlayer = player;
-        tile.SetBuildingData(buildingData, 1);
+        tile.SetBuildingData(buildingData, buildingData.buildingLevel);
         tile.tileType = BoardTile.TileType.BuildingSite;
 
         if (buildingData.buildingPrefab != null)

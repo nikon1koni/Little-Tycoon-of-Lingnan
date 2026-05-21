@@ -17288,7 +17288,7 @@ MonoBehaviour:
   rollDiceButton: {fileID: 1949729216}
   boardManager: {fileID: 1704728942}
   uiManager: {fileID: 993115949}
-  startingCash: 200
+  startingCash: 10000
   salaryAmount: 200
   jailTurns: 3
   enablePressureSystem: 1

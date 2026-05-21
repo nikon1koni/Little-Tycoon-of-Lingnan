@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingType: 0
   isFinalLevel: 0
+  buildingLevel: 2
   buffValues:
   - 0.1
   - 0.2
