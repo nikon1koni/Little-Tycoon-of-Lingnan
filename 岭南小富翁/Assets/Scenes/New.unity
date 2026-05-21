@@ -19910,7 +19910,7 @@ MonoBehaviour:
   costColorInsufficient: {r: 1, g: 0.44968545, b: 0.44968545, a: 1}
   costOutlineColorSufficient: {r: 1, g: 0.89622635, b: 0.89622635, a: 1}
   costOutlineColorInsufficient: {r: 1, g: 0.8710692, b: 0.19811308, a: 1}
-  costOutlineThickness: 1
+  costOutlineThickness: 0.3
   buildingSelectionPanelController: {fileID: 1992595236}
 --- !u!4 &1819693106 stripped
 Transform:
