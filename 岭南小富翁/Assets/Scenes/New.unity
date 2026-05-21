@@ -549,6 +549,11 @@ MonoBehaviour:
   confirmButton: {fileID: 314914210}
   cancelButton: {fileID: 1607153189}
   exitButton: {fileID: 1607278372}
+  costColorSufficient: {r: 1, g: 0.84, b: 0, a: 1}
+  costColorInsufficient: {r: 1, g: 0, b: 0, a: 1}
+  costOutlineColorSufficient: {r: 1, g: 1, b: 1, a: 1}
+  costOutlineColorInsufficient: {r: 1, g: 0.84, b: 0, a: 1}
+  costOutlineThickness: 2
   buildingSelectionPanelController: {fileID: 1992595236}
 --- !u!1 &47486979
 GameObject:
@@ -19901,6 +19906,11 @@ MonoBehaviour:
   confirmButton: {fileID: 314914210}
   cancelButton: {fileID: 1607153189}
   exitButton: {fileID: 1607278372}
+  costColorSufficient: {r: 0.64704126, g: 1, b: 0.41823888, a: 1}
+  costColorInsufficient: {r: 1, g: 0.44968545, b: 0.44968545, a: 1}
+  costOutlineColorSufficient: {r: 1, g: 0.89622635, b: 0.89622635, a: 1}
+  costOutlineColorInsufficient: {r: 1, g: 0.8710692, b: 0.19811308, a: 1}
+  costOutlineThickness: 1
   buildingSelectionPanelController: {fileID: 1992595236}
 --- !u!4 &1819693106 stripped
 Transform:
