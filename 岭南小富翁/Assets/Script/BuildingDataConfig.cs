@@ -1,94 +1,132 @@
-// BuildingDataConfig.cs - 建筑数据配置
+// BuildingDataConfig.cs - ??????????????????
 using UnityEngine;
 using System.Collections.Generic;
 
 public class BuildingDataConfig : MonoBehaviour
 {
-    [Header("所有建筑数据列表")]
+    [Header("????????????????")]
     public List<BuildingData> allBuildingData = new List<BuildingData>();
 
-    [Header("建筑升级链")]
-    public BuildingData smallHouse;      // 小房子
-    public BuildingData mediumHouse;     // 中房子
-    public BuildingData largeHouse;      // 大房子
+    [Header("????UI????")]
+    public UpgradeUIController upgradeUIController;
 
-    public BuildingData smallShop;       // 小商店
-    public BuildingData mediumShop;      // 中商店
-    public BuildingData largeShop;       // 大商店
+    private bool isUpgradeMode = false;
+    private Player upgradeModePlayer = null;
 
-    public BuildingData smallPostHouse;  // 小驿站(移动速度)
-    public BuildingData mediumPostHouse; // 中驿站
-    public BuildingData largePostHouse;  // 大驿站
+    public static BuildingDataConfig Instance { get; private set; }
 
-    public BuildingData smallTemple;     // 小寺庙(幸运)
-    public BuildingData mediumTemple;    // 中寺庙
-    public BuildingData largeTemple;     // 大寺庙
-
-    void Start()
+    public bool IsUpgradeModeActive()
     {
-        SetupBuildingChains();
+        return isUpgradeMode;
     }
 
-    void SetupBuildingChains()
+    public Player GetUpgradeModePlayer()
     {
-        // 房子链
-        smallHouse.nextLevelBuilding = mediumHouse;
-        smallHouse.isFinalLevel = false;
+        return upgradeModePlayer;
+    }
 
-        mediumHouse.nextLevelBuilding = largeHouse;
-        mediumHouse.isFinalLevel = false;
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
-        largeHouse.nextLevelBuilding = null;
-        largeHouse.isFinalLevel = true;
+    public BuildingData GetBuildingByType(BoardTile.BuildingType type)
+    {
+        foreach (var building in allBuildingData)
+        {
+            if (building.buildingType == type)
+            {
+                return building;
+            }
+        }
+        return null;
+    }
 
-        // 商店链
-        smallShop.nextLevelBuilding = mediumShop;
-        smallShop.isFinalLevel = false;
+    public BuildingData GetNextLevel(BuildingData current)
+    {
+        return current?.nextLevelBuilding;
+    }
 
-        mediumShop.nextLevelBuilding = largeShop;
-        mediumShop.isFinalLevel = false;
+    public bool CanUpgrade(BuildingData current)
+    {
+        return current != null && !current.isFinalLevel && current.nextLevelBuilding != null;
+    }
 
-        largeShop.nextLevelBuilding = null;
-        largeShop.isFinalLevel = true;
+    public List<BuildingData> GetBuildingsByScale(int tileScale)
+    {
+        List<BuildingData> result = new List<BuildingData>();
+        
+        foreach (var building in allBuildingData)
+        {
+            if (building.minTileScale <= tileScale && building.maxTileScale >= tileScale)
+            {
+                result.Add(building);
+            }
+        }
+        
+        return result;
+    }
 
-        // 驿站链(移动速度buff)
-        smallPostHouse.nextLevelBuilding = mediumPostHouse;
-        smallPostHouse.isFinalLevel = false;
-        smallPostHouse.functionType = BuildingData.BuildingFunctionType.Buff;
-        smallPostHouse.buffEffect = BuildingData.BuffEffect.MoveSpeedBoost;
-        smallPostHouse.buffValues = new float[] { 0.1f, 0.15f, 0.2f };
+    public void EnterUpgradeMode(Player player)
+    {
+        if (player == null) return;
+        
+        isUpgradeMode = true;
+        upgradeModePlayer = player;
+        
+        if (upgradeUIController != null)
+        {
+            upgradeUIController.EnterUpgradeMode(player);
+        }
+        
+        Debug.Log($"??????????: {player.playerName}");
+    }
 
-        mediumPostHouse.nextLevelBuilding = largePostHouse;
-        mediumPostHouse.isFinalLevel = false;
-        mediumPostHouse.functionType = BuildingData.BuildingFunctionType.Buff;
-        mediumPostHouse.buffEffect = BuildingData.BuffEffect.MoveSpeedBoost;
-        mediumPostHouse.buffValues = new float[] { 0.15f, 0.2f, 0.25f };
+    public void ExitUpgradeMode()
+    {
+        isUpgradeMode = false;
+        upgradeModePlayer = null;
+        
+        if (upgradeUIController != null)
+        {
+            upgradeUIController.ExitUpgradeMode();
+        }
+        
+        Debug.Log("?????????");
+    }
 
-        largePostHouse.nextLevelBuilding = null;
-        largePostHouse.isFinalLevel = true;
-        largePostHouse.functionType = BuildingData.BuildingFunctionType.Buff;
-        largePostHouse.buffEffect = BuildingData.BuffEffect.MoveSpeedBoost;
-        largePostHouse.buffValues = new float[] { 0.2f, 0.25f, 0.3f };
+    public void OnTileClickedInUpgradeMode(BoardTile tile)
+    {
+        if (!isUpgradeMode || upgradeUIController == null) return;
+        
+        upgradeUIController.OnTileClicked(tile);
+    }
 
-        // 寺庙链(幸运buff)
-        smallTemple.nextLevelBuilding = mediumTemple;
-        smallTemple.isFinalLevel = false;
-        smallTemple.functionType = BuildingData.BuildingFunctionType.Buff;
-        smallTemple.buffEffect = BuildingData.BuffEffect.LuckBoost;
-        smallTemple.buffValues = new float[] { 0.1f, 0.15f, 0.2f };
-
-        mediumTemple.nextLevelBuilding = largeTemple;
-        mediumTemple.isFinalLevel = false;
-        mediumTemple.functionType = BuildingData.BuildingFunctionType.Buff;
-        mediumTemple.buffEffect = BuildingData.BuffEffect.LuckBoost;
-        mediumTemple.buffValues = new float[] { 0.15f, 0.2f, 0.25f };
-
-        largeTemple.nextLevelBuilding = null;
-        largeTemple.isFinalLevel = true;
-        largeTemple.functionType = BuildingData.BuildingFunctionType.Buff;
-        largeTemple.buffEffect = BuildingData.BuffEffect.LuckBoost;
-        largeTemple.buffValues = new float[] { 0.2f, 0.25f, 0.3f };
-
-        Debug.Log("建筑链配置完成");
+    public List<BoardTile> GetPlayerUpgradeableBuildings(Player player)
+    {
+        List<BoardTile> upgradeableBuildings = new List<BoardTile>();
+        
+        if (player == null || BoardManager.Instance == null) 
+            return upgradeableBuildings;
+        
+        foreach (BoardTile tile in BoardManager.Instance.allTiles)
+        {
+            if (tile != null && 
+                tile.ownerPlayer == player && 
+                tile.currentBuildingData != null && 
+                CanUpgrade(tile.currentBuildingData))
+            {
+                upgradeableBuildings.Add(tile);
+            }
+        }
+        
+        return upgradeableBuildings;
     }
 }
