@@ -4,20 +4,20 @@ using TMPro;
 
 public class BuildingSelectionPanelController : MonoBehaviour
 {
-    [Header("面板引用")]
+    [Header("???????")]
     public GameObject buildingSelectionPanel;
     public GameObject upgradePanel;
     
-    [Header("升级按钮 - 用于打开升级界面")]
+    [Header("??????? - ?????????????")]
     public Button upgradeButton;
     public TextMeshProUGUI upgradeButtonText;
     
-    [Header("设置")]
+    [Header("????")]
     public bool showUpgradeButton = true;
     
     private bool isUpgradeMode = false;
     
-    [Header("引用 - 升级UI控制器")]
+    [Header("???? - ????UI??????")]
     public UpgradeUIController upgradeUIController;
 
     void Start()
@@ -34,7 +34,7 @@ public class BuildingSelectionPanelController : MonoBehaviour
             
             if (upgradeButtonText != null)
             {
-                upgradeButtonText.text = "升级建筑";
+                upgradeButtonText.text = "????????";
             }
             
             UpdateUpgradeButtonVisibility();
@@ -51,7 +51,7 @@ public class BuildingSelectionPanelController : MonoBehaviour
 
     public void OnUpgradeButtonClicked()
     {
-        Debug.Log("点击升级按钮");
+        Debug.Log("??????????");
         
         if (GameManager.Instance != null && GameManager.Instance.currentPlayer != null)
         {
@@ -63,15 +63,15 @@ public class BuildingSelectionPanelController : MonoBehaviour
                 
                 if (upgradeableBuildings.Count == 0)
                 {
-                    Debug.Log("没有可升级的建筑");
+                    Debug.Log("??п??????????");
                     if (UIManager.Instance != null)
                     {
-                        UIManager.Instance.ShowToast("没有可升级的建筑", 2f);
+                        UIManager.Instance.ShowToast("??п??????????", 2f);
                     }
                     return;
                 }
                 
-                Debug.Log($"发现 {upgradeableBuildings.Count} 个可升级建筑");
+                Debug.Log($"???? {upgradeableBuildings.Count} ????????????");
                 
                 isUpgradeMode = true;
                 BuildingDataConfig.Instance.EnterUpgradeMode(currentPlayer);
@@ -92,13 +92,13 @@ public class BuildingSelectionPanelController : MonoBehaviour
                 
                 if (UIManager.Instance != null)
                 {
-                    UIManager.Instance.ShowToast($"进入升级模式\n可升级建筑: {upgradeableBuildings.Count} 个", 3f);
+                    UIManager.Instance.ShowToast($"??????????\n??????????: {upgradeableBuildings.Count} ??", 3f);
                 }
             }
         }
         else
         {
-            Debug.LogWarning("GameManager.Instance 或 currentPlayer 为空");
+            Debug.LogWarning("GameManager.Instance ?? currentPlayer ???");
         }
     }
 
