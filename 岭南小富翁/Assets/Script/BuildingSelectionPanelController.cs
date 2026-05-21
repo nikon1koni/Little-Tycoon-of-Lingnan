@@ -8,7 +8,7 @@ public class BuildingSelectionPanelController : MonoBehaviour
     public GameObject buildingSelectionPanel;
     public GameObject upgradePanel;
     
-    [Header("升级按钮")]
+    [Header("按钮引用")]
     public Button upgradeButton;
     public TextMeshProUGUI upgradeButtonText;
     
@@ -17,7 +17,7 @@ public class BuildingSelectionPanelController : MonoBehaviour
     
     private bool isUpgradeMode = false;
     
-    [Header("引用")]
+    [Header("控制器引用")]
     public UpgradeUIController upgradeUIController;
 
     void Start()
@@ -51,7 +51,7 @@ public class BuildingSelectionPanelController : MonoBehaviour
 
     public void OnUpgradeButtonClicked()
     {
-        Debug.Log("点击升级按钮");
+        Debug.Log("升级按钮被点击");
         
         if (GameManager.Instance != null && GameManager.Instance.currentPlayer != null)
         {
@@ -71,7 +71,7 @@ public class BuildingSelectionPanelController : MonoBehaviour
                     return;
                 }
                 
-                Debug.Log("发现可升级建筑");
+                Debug.Log($"找到 {upgradeableBuildings.Count} 个可升级的建筑");
                 
                 isUpgradeMode = true;
                 
@@ -84,7 +84,7 @@ public class BuildingSelectionPanelController : MonoBehaviour
                 
                 if (UIManager.Instance != null)
                 {
-                    UIManager.Instance.ShowToast("进入升级模式", 3f);
+                    UIManager.Instance.ShowToast("进入升级模式，点击要升级的建筑", 3f);
                 }
             }
         }

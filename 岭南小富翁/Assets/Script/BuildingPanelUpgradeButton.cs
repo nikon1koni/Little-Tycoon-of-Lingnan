@@ -4,11 +4,11 @@ using TMPro;
 
 public class BuildingPanelUpgradeButton : MonoBehaviour
 {
-    [Header("???????")]
+    [Header("按钮引用")]
     public Button upgradeButton;
     public TextMeshProUGUI buttonText;
     
-    [Header("???????")]
+    [Header("面板引用")]
     public GameObject buildingSelectionPanel;
     
     private void Start()
@@ -21,13 +21,13 @@ public class BuildingPanelUpgradeButton : MonoBehaviour
         
         if (buttonText != null)
         {
-            buttonText.text = "????????";
+            buttonText.text = "升级建筑";
         }
     }
     
     private void OnUpgradeButtonClicked()
     {
-        Debug.Log("????????????");
+        Debug.Log("升级按钮被点击");
         
         if (GameManager.Instance != null && GameManager.Instance.currentPlayer != null)
         {
@@ -37,15 +37,15 @@ public class BuildingPanelUpgradeButton : MonoBehaviour
             
             if (upgradeableBuildings.Count == 0)
             {
-                Debug.Log("??????????????");
+                Debug.Log("没有可升级的建筑");
                 if (UIManager.Instance != null)
                 {
-                    UIManager.Instance.ShowToast("??????????????", 2f);
+                    UIManager.Instance.ShowToast("没有可升级的建筑", 2f);
                 }
                 return;
             }
             
-            Debug.Log($"???? {upgradeableBuildings.Count} ????????????");
+            Debug.Log($"找到 {upgradeableBuildings.Count} 个可升级的建筑");
             
             BuildingDataConfig.Instance.EnterUpgradeMode(currentPlayer);
             
@@ -56,12 +56,12 @@ public class BuildingPanelUpgradeButton : MonoBehaviour
             
             if (UIManager.Instance != null)
             {
-                UIManager.Instance.ShowToast($"??????????????????", 3f);
+                UIManager.Instance.ShowToast("进入升级模式", 3f);
             }
         }
         else
         {
-            Debug.LogWarning("??????????????????????????");
+            Debug.LogWarning("GameManager.Instance 或 currentPlayer 为空");
         }
     }
     

@@ -1,14 +1,14 @@
-// BuildingDataConfig.cs - 建筑数据配置
+// BuildingDataConfig.cs - ????????????
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
 public class BuildingDataConfig : MonoBehaviour
 {
-    [Header("所有建筑数据")]
+    [Header("????????????")]
     public List<BuildingData> allBuildingData = new List<BuildingData>();
 
-    [Header("升级UI控制器")]
+    [Header("????UI??????")]
     public UpgradeUIController upgradeUIController;
 
     private bool isUpgradeMode = false;
@@ -84,7 +84,7 @@ public class BuildingDataConfig : MonoBehaviour
         upgradeModePlayer = player;
         upgradeModeTiles.Clear();
         
-        // 为玩家的所有建筑添加点击事件
+        // ??????????????????????
         if (BoardManager.Instance != null)
         {
             foreach (BoardTile tile in BoardManager.Instance.allTiles)
@@ -102,12 +102,12 @@ public class BuildingDataConfig : MonoBehaviour
             upgradeUIController.EnterUpgradeMode(player);
         }
         
-        Debug.Log($"进入升级模式: {player.playerName}");
+        Debug.Log($"??????????: {player.playerName}");
     }
 
     private void AddUpgradeTileClickHandler(BoardTile tile)
     {
-        // 移除旧的EventTrigger
+        // ??????EventTrigger
         EventTrigger oldTrigger = tile.GetComponent<EventTrigger>();
         if (oldTrigger != null)
         {
@@ -144,7 +144,7 @@ public class BuildingDataConfig : MonoBehaviour
         isUpgradeMode = false;
         upgradeModePlayer = null;
         
-        // 移除点击事件
+        // ?????????
         RemoveUpgradeTileClickHandlers();
         
         if (upgradeUIController != null)
@@ -152,14 +152,14 @@ public class BuildingDataConfig : MonoBehaviour
             upgradeUIController.ExitUpgradeMode();
         }
         
-        Debug.Log("退出升级模式");
+        Debug.Log("?????????");
     }
 
     public void OnTileClickedInUpgradeMode(BoardTile tile)
     {
         if (!isUpgradeMode || upgradeUIController == null) return;
         
-        Debug.Log($"升级模式下点击了地块: {tile.tileName}");
+        Debug.Log($"??????????????: {tile.tileName}");
         upgradeUIController.OnTileClicked(tile);
     }
 
