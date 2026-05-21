@@ -1,17 +1,19 @@
-// BuildingDataConfig.cs - ??????????????????
+// BuildingDataConfig.cs - ????????????
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 
 public class BuildingDataConfig : MonoBehaviour
 {
-    [Header("????????????????")]
+    [Header("???§ß????????§Ò?")]
     public List<BuildingData> allBuildingData = new List<BuildingData>();
 
-    [Header("????UI????")]
+    [Header("????UI??????")]
     public UpgradeUIController upgradeUIController;
 
     private bool isUpgradeMode = false;
     private Player upgradeModePlayer = null;
+    private List<BoardTile> upgradeModeTiles = new List<BoardTile>();
 
     public static BuildingDataConfig Instance { get; private set; }
 
@@ -80,6 +82,20 @@ public class BuildingDataConfig : MonoBehaviour
         
         isUpgradeMode = true;
         upgradeModePlayer = player;
+        upgradeModeTiles.Clear();
+        
+        // ?????????§ß????????????
+        if (BoardManager.Instance != null)
+        {
+            foreach (BoardTile tile in BoardManager.Instance.allTiles)
+            {
+                if (tile != null && tile.ownerPlayer == player && tile.currentBuildingData != null)
+                {
+                    AddUpgradeTileClickHandler(tile);
+                    upgradeModeTiles.Add(tile);
+                }
+            }
+        }
         
         if (upgradeUIController != null)
         {
@@ -89,10 +105,47 @@ public class BuildingDataConfig : MonoBehaviour
         Debug.Log($"??????????: {player.playerName}");
     }
 
+    private void AddUpgradeTileClickHandler(BoardTile tile)
+    {
+        // ????????EventTrigger
+        EventTrigger oldTrigger = tile.GetComponent<EventTrigger>();
+        if (oldTrigger != null)
+        {
+            Destroy(oldTrigger);
+        }
+        
+        EventTrigger trigger = tile.gameObject.AddComponent<EventTrigger>();
+
+        EventTrigger.Entry entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.PointerClick;
+        entry.callback.AddListener((data) => OnTileClickedInUpgradeMode(tile));
+
+        trigger.triggers.Add(entry);
+    }
+
+    private void RemoveUpgradeTileClickHandlers()
+    {
+        foreach (BoardTile tile in upgradeModeTiles)
+        {
+            if (tile != null)
+            {
+                EventTrigger trigger = tile.GetComponent<EventTrigger>();
+                if (trigger != null)
+                {
+                    Destroy(trigger);
+                }
+            }
+        }
+        upgradeModeTiles.Clear();
+    }
+
     public void ExitUpgradeMode()
     {
         isUpgradeMode = false;
         upgradeModePlayer = null;
+        
+        // ?????????
+        RemoveUpgradeTileClickHandlers();
         
         if (upgradeUIController != null)
         {
@@ -106,6 +159,7 @@ public class BuildingDataConfig : MonoBehaviour
     {
         if (!isUpgradeMode || upgradeUIController == null) return;
         
+        Debug.Log($"??????????????: {tile.tileName}");
         upgradeUIController.OnTileClicked(tile);
     }
 
