@@ -4,46 +4,46 @@ using TMPro;
 
 public class UpgradeUIController : MonoBehaviour
 {
-    [Header("升级面板引用")]
+    [Header("UI面板引用")]
     public GameObject upgradePanel;
     public TextMeshProUGUI titleText;
     
-    [Header("对比区域引用")]
+    [Header("对比区域")]
     public GameObject comparisonArea;
     
-    [Header("点击提示引用")]
+    [Header("提示面板")]
     public GameObject clickHintPanel;
     public TextMeshProUGUI clickHintText;
     
-    [Header("当前建筑信息引用")]
+    [Header("当前建筑信息")]
     public TextMeshProUGUI currentNameText;
     public TextMeshProUGUI currentDescriptionText;
     public TextMeshProUGUI currentLevelText;
     public TextMeshProUGUI currentIncomeText;
     public TextMeshProUGUI currentBuffText;
     
-    [Header("箭头/成本信息引用")]
+    [Header("箭头/费用区域")]
     public GameObject arrowPanel;
     public TextMeshProUGUI arrowCostText;
     public TextMeshProUGUI arrowText;
     
-    [Header("下一级建筑信息引用")]
+    [Header("下一级建筑信息")]
     public TextMeshProUGUI nextNameText;
     public TextMeshProUGUI nextDescriptionText;
     public TextMeshProUGUI nextLevelText;
     public TextMeshProUGUI nextIncomeText;
     public TextMeshProUGUI nextBuffText;
     
-    [Header("按钮引用")]
+    [Header("操作按钮")]
     public Button confirmButton;
     public Button cancelButton;
     public Button exitButton;
     
-    [Header("颜色设置")]
+    [Header("费用颜色")]
     public Color costColorSufficient = Color.green;
     public Color costColorInsufficient = Color.red;
     
-    [Header("轮廓颜色设置")]
+    [Header("费用描边颜色")]
     public Color costOutlineColorSufficient = Color.white;
     public Color costOutlineColorInsufficient = new Color(1f, 0.84f, 0f);
     public float costOutlineThickness = 2f;
@@ -61,9 +61,9 @@ public class UpgradeUIController : MonoBehaviour
         Debug.Log("=== UpgradeUIController Start ===");
         Debug.Log($"游戏对象名称: {gameObject.name}");
         Debug.Log($"游戏对象激活状态: {gameObject.activeSelf}");
-        Debug.Log($"upgradePanel: {(upgradePanel != null ? $"已赋值 - {upgradePanel.name}" : "未赋值")}");
-        Debug.Log($"clickHintPanel: {(clickHintPanel != null ? $"已赋值 - {clickHintPanel.name}" : "未赋值")}");
-        Debug.Log($"comparisonArea: {(comparisonArea != null ? $"已赋值 - {comparisonArea.name}" : "未赋值")}");
+        Debug.Log($"upgradePanel: {(upgradePanel != null ? $"存在 - {upgradePanel.name}" : "不存在")}");
+        Debug.Log($"clickHintPanel: {(clickHintPanel != null ? $"存在 - {clickHintPanel.name}" : "不存在")}");
+        Debug.Log($"comparisonArea: {(comparisonArea != null ? $"存在 - {comparisonArea.name}" : "不存在")}");
         
         if (upgradePanel != null)
         {
@@ -72,7 +72,7 @@ public class UpgradeUIController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("upgradePanel 未赋值");
+            Debug.LogWarning("upgradePanel 未设置");
         }
         
         if (clickHintPanel != null)
@@ -82,7 +82,7 @@ public class UpgradeUIController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("clickHintPanel 未赋值");
+            Debug.LogWarning("clickHintPanel 未设置");
         }
         
         if (comparisonArea != null)
@@ -92,13 +92,13 @@ public class UpgradeUIController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("comparisonArea 未赋值，请在Inspector中赋值");
+            Debug.LogWarning("comparisonArea 未设置，请在Inspector中设置引用");
         }
         
         SetupButtons();
     }
 
-    // Update方法已移除 - ESC键统一由UIManager处理，避免重复调用
+    // Update方法已暂时注释 - ESC键功能由UIManager处理，以避免重复处理
     // void Update()
     // {
     //     if (isUpgradeMode && Input.GetKeyDown(KeyCode.Escape))
@@ -168,13 +168,13 @@ public class UpgradeUIController : MonoBehaviour
         
         if (clickHintText != null)
         {
-            clickHintText.text = $"点击要升级的建筑\n当前共有 {GetPlayerBuildingCount()} 个建筑\n按ESC退出";
+            clickHintText.text = $"请点击要升级的建筑\n你拥有 {GetPlayerBuildingCount()} 个建筑\n按ESC取消";
         }
     }
 
     private void HideClickHint()
     {
-        Debug.Log("HideClickHint: 隐藏提示，显示对比区域");
+        Debug.Log("HideClickHint: 隐藏提示并显示对比区域");
         
         if (clickHintPanel != null)
         {
@@ -183,7 +183,7 @@ public class UpgradeUIController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("clickHintPanel 未赋值");
+            Debug.LogWarning("clickHintPanel 未设置");
         }
         
         if (comparisonArea != null)
@@ -193,7 +193,7 @@ public class UpgradeUIController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("comparisonArea 未赋值，请在Inspector中赋值");
+            Debug.LogWarning("comparisonArea 未设置，请在Inspector中设置引用");
         }
     }
 
@@ -209,7 +209,7 @@ public class UpgradeUIController : MonoBehaviour
             upgradePanel.SetActive(false);
         }
         
-        // 确保提示面板和对比区域都关闭
+        // 确保所有子面板也被隐藏
         if (clickHintPanel != null)
         {
             clickHintPanel.SetActive(false);
@@ -229,19 +229,19 @@ public class UpgradeUIController : MonoBehaviour
         
         if (tile == null)
         {
-            Debug.Log("无效的地块");
+            Debug.Log("点击的格子为空");
             return;
         }
         
         if (tile.currentBuildingData == null)
         {
-            ShowStatus("该地块上没有建筑");
+            ShowStatus("该格子上没有建筑");
             return;
         }
         
         if (tile.ownerPlayer != currentPlayer)
         {
-            ShowStatus("该建筑不属于你");
+            ShowStatus("这不是你的建筑");
             return;
         }
         
@@ -249,7 +249,7 @@ public class UpgradeUIController : MonoBehaviour
         selectedTile = tile;
         HideClickHint();
         
-        // 隐藏UIManager中的infoToastPanel
+        // 隐藏UIManager的infoToastPanel
         if (UIManager.Instance != null)
         {
             UIManager.Instance.HideInfoToast();
@@ -279,7 +279,7 @@ public class UpgradeUIController : MonoBehaviour
         if (currentData.functionType == BuildingData.BuildingFunctionType.Income ||
             currentData.functionType == BuildingData.BuildingFunctionType.Mixed)
         {
-            int income = currentData.GetIncomeAmount(tile.buildingLevel);
+            int income = currentData.GetIncomeAmountByTurns(tile.GetBuildingTurnsOwned());
             if (currentIncomeText != null)
                 currentIncomeText.text = $"收入: {income} 金币/回合";
         }
@@ -327,7 +327,7 @@ public class UpgradeUIController : MonoBehaviour
             }
             
             if (arrowText != null)
-                arrowText.text = "升级至 >";
+                arrowText.text = "升级到 >";
             
             if (nextNameText != null)
                 nextNameText.text = nextData.buildingName;
@@ -341,7 +341,7 @@ public class UpgradeUIController : MonoBehaviour
             if (nextData.functionType == BuildingData.BuildingFunctionType.Income ||
                 nextData.functionType == BuildingData.BuildingFunctionType.Mixed)
             {
-                int income = nextData.GetIncomeAmount(tile.buildingLevel + 1);
+                int income = nextData.GetIncomeAmountByTurns(tile.GetBuildingTurnsOwned());
                 if (nextIncomeText != null)
                     nextIncomeText.text = $"收入: {income} 金币/回合";
             }
@@ -388,7 +388,7 @@ public class UpgradeUIController : MonoBehaviour
                 nextNameText.text = "已满级";
             
             if (nextDescriptionText != null)
-                nextDescriptionText.text = "该建筑已达到最高等级";
+                nextDescriptionText.text = "该建筑已达最高等级";
             
             if (nextLevelText != null)
                 nextLevelText.text = "";
@@ -456,21 +456,21 @@ public class UpgradeUIController : MonoBehaviour
         }
         else
         {
-            ShowStatus("升级失败，金币不足或已达最高等级");
+            ShowStatus("升级失败，请检查金币或建筑等级");
             Debug.Log("升级失败");
         }
     }
 
     private void OnCancel()
     {
-        // 直接通过BuildingDataConfig退出，走统一的流程
+        // 优先使用BuildingDataConfig来处理升级模式退出
         if (BuildingDataConfig.Instance != null)
         {
             BuildingDataConfig.Instance.ExitUpgradeMode();
         }
         else
         {
-            // 兜底方案
+            // 备用方案
             ExitUpgradeMode();
             if (buildingSelectionPanelController != null)
             {

@@ -29,6 +29,7 @@ MonoBehaviour:
   functionType: 0
   baseIncome: 100
   incomeGrowthRate: 1.2
+  enableIncomeGrowth: 0
   buffEffect: 0
   baseBuffValue: 0.1
   buffGrowthRate: 1.1
@@ -41,4 +42,4 @@ MonoBehaviour:
   effectIconPrefab: {fileID: 0}
   effectSound: {fileID: 0}
   effectDuration: 1.5
-  description: "\u5EFA\u7B51\u63CF\u8FF0"
+  description: "\u8FD9\u662F\u5927\u623F\u5B50"

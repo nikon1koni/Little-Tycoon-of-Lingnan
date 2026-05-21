@@ -29,6 +29,7 @@ MonoBehaviour:
   functionType: 0
   baseIncome: 30
   incomeGrowthRate: 1.2
+  enableIncomeGrowth: 0
   buffEffect: 0
   baseBuffValue: 0.1
   buffGrowthRate: 1.1
