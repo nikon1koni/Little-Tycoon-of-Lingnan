@@ -1,28 +1,28 @@
-// BuildingDataConfig.cs - ????????????????
+// BuildingDataConfig.cs - 建筑数据配置
 using UnityEngine;
 using System.Collections.Generic;
 
 public class BuildingDataConfig : MonoBehaviour
 {
-    [Header("?????????????")]
+    [Header("所有建筑数据列表")]
     public List<BuildingData> allBuildingData = new List<BuildingData>();
 
-    [Header("??????????")]
-    public BuildingData smallHouse;      // ??????
-    public BuildingData mediumHouse;     // ????
-    public BuildingData largeHouse;      // ??
+    [Header("建筑升级链")]
+    public BuildingData smallHouse;      // 小房子
+    public BuildingData mediumHouse;     // 中房子
+    public BuildingData largeHouse;      // 大房子
 
-    public BuildingData smallShop;       // ?????
-    public BuildingData mediumShop;      // ?????
-    public BuildingData largeShop;       // ?????
+    public BuildingData smallShop;       // 小商店
+    public BuildingData mediumShop;      // 中商店
+    public BuildingData largeShop;       // 大商店
 
-    public BuildingData smallPostHouse;  // ?????(??????)
-    public BuildingData mediumPostHouse; // ?????
-    public BuildingData largePostHouse;  // ?????
+    public BuildingData smallPostHouse;  // 小驿站(移动速度)
+    public BuildingData mediumPostHouse; // 中驿站
+    public BuildingData largePostHouse;  // 大驿站
 
-    public BuildingData smallTemple;     // ??????(????)
-    public BuildingData mediumTemple;    // ??????
-    public BuildingData largeTemple;     // ??????
+    public BuildingData smallTemple;     // 小寺庙(幸运)
+    public BuildingData mediumTemple;    // 中寺庙
+    public BuildingData largeTemple;     // 大寺庙
 
     void Start()
     {
@@ -31,7 +31,7 @@ public class BuildingDataConfig : MonoBehaviour
 
     void SetupBuildingChains()
     {
-        // ??????
+        // 房子链
         smallHouse.nextLevelBuilding = mediumHouse;
         smallHouse.isFinalLevel = false;
 
@@ -41,7 +41,7 @@ public class BuildingDataConfig : MonoBehaviour
         largeHouse.nextLevelBuilding = null;
         largeHouse.isFinalLevel = true;
 
-        // ?????
+        // 商店链
         smallShop.nextLevelBuilding = mediumShop;
         smallShop.isFinalLevel = false;
 
@@ -51,7 +51,7 @@ public class BuildingDataConfig : MonoBehaviour
         largeShop.nextLevelBuilding = null;
         largeShop.isFinalLevel = true;
 
-        // ?????(??????buff)
+        // 驿站链(移动速度buff)
         smallPostHouse.nextLevelBuilding = mediumPostHouse;
         smallPostHouse.isFinalLevel = false;
         smallPostHouse.functionType = BuildingData.BuildingFunctionType.Buff;
@@ -70,7 +70,7 @@ public class BuildingDataConfig : MonoBehaviour
         largePostHouse.buffEffect = BuildingData.BuffEffect.MoveSpeedBoost;
         largePostHouse.buffValues = new float[] { 0.2f, 0.25f, 0.3f };
 
-        // ??????(????buff)
+        // 寺庙链(幸运buff)
         smallTemple.nextLevelBuilding = mediumTemple;
         smallTemple.isFinalLevel = false;
         smallTemple.functionType = BuildingData.BuildingFunctionType.Buff;
@@ -89,6 +89,6 @@ public class BuildingDataConfig : MonoBehaviour
         largeTemple.buffEffect = BuildingData.BuffEffect.LuckBoost;
         largeTemple.buffValues = new float[] { 0.2f, 0.25f, 0.3f };
 
-        Debug.Log("?????????????????");
+        Debug.Log("建筑链配置完成");
     }
 }

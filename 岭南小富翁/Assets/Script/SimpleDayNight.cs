@@ -50,14 +50,14 @@ public class SimpleDayNight : MonoBehaviour
         
         if (skyboxMaterial == null)
         {
-            Debug.LogError("? ??????????в????");
+            Debug.LogError("Skybox 材质未设置！");
             enabled = false;
             return;
         }
         
         if (sunLight == null)
         {
-            Debug.LogError("? ????????????");
+            Debug.LogError("太阳光未设置！");
             enabled = false;
             return;
         }
@@ -66,7 +66,7 @@ public class SimpleDayNight : MonoBehaviour
         fogColorBackup = RenderSettings.fogColor;
         fogDensityBackup = RenderSettings.fogDensity;
         
-        Debug.Log("? SimpleDayNight ????!");
+        Debug.Log("SimpleDayNight 初始化完成！");
         initialized = true;
     }
     
@@ -124,13 +124,13 @@ public class SimpleDayNight : MonoBehaviour
         
         if (debugMode && Time.frameCount % 30 == 0)
         {
-            string period = "????";
-            if (t < 0.25f || t >= 0.9f) period = "???";
-            else if (t < 0.45f) period = "???";
-            else if (t < 0.7f) period = "????";
-            else period = "????";
+            string period = "夜晚";
+            if (t < 0.25f || t >= 0.9f) period = "夜晚";
+            else if (t < 0.45f) period = "黎明";
+            else if (t < 0.7f) period = "白天";
+            else period = "黄昏";
             
-            Debug.Log($"? {period} {t:F2} | ??????: {sunPitch:F0}?? | ??????: {(int)(ambientColor.grayscale * 100)}%");
+            Debug.Log($"时间: {period} {t:F2} | 太阳角度: {sunPitch:F0}度 | 环境亮度: {(int)(ambientColor.grayscale * 100)}%");
         }
     }
     
