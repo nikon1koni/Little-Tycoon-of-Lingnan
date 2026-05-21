@@ -135,7 +135,14 @@ public class UIManager : MonoBehaviour
         // 监听ESC键
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (isBuildingSelected)
+            // 优先检查是否在升级模式
+            if (BuildingDataConfig.Instance != null && BuildingDataConfig.Instance.IsUpgradeModeActive())
+            {
+                // 在升级模式下，退出升级模式
+                BuildingDataConfig.Instance.ExitUpgradeMode();
+                return; // 直接返回，不要再执行后面的逻辑
+            }
+            else if (isBuildingSelected)
             {
                 // 取消建筑选择，返回选择界面
                 OnCancelBuildingSelection();
@@ -1339,6 +1346,21 @@ public class UIManager : MonoBehaviour
         infoToastPanel.transform.SetAsLastSibling();
 
         hideInfoToastCoroutine = StartCoroutine(HideInfoToastAfterDelay(duration));
+    }
+
+    // 立即隐藏infoToastPanel
+    public void HideInfoToast()
+    {
+        if (hideInfoToastCoroutine != null)
+        {
+            StopCoroutine(hideInfoToastCoroutine);
+            hideInfoToastCoroutine = null;
+        }
+        
+        if (infoToastPanel != null)
+        {
+            infoToastPanel.SetActive(false);
+        }
     }
 
     private System.Collections.IEnumerator HideInfoToastAfterDelay(float delay)

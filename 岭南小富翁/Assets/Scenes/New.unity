@@ -424,6 +424,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 927c2d5dc59b9814ba01a9a51edd1066, type: 2}
   - {fileID: 11400000, guid: 7e70ab51739fef143b971fb9e8c0e3dc, type: 2}
   upgradeUIController: {fileID: 1784433109}
+  buildingSelectionPanelController: {fileID: 1992595236}
 --- !u!4 &41562755
 Transform:
   m_ObjectHideFlags: 0
@@ -21399,6 +21400,22 @@ PrefabInstance:
     - target: {fileID: 3358783375424448212, guid: 023fff05565ec6542b1f8fb20ad2e68a, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3630443654831302327, guid: 023fff05565ec6542b1f8fb20ad2e68a, type: 3}
+      propertyPath: m_text
+      value: "\u5173\u95ED"
+      objectReference: {fileID: 0}
+    - target: {fileID: 3630443654831302327, guid: 023fff05565ec6542b1f8fb20ad2e68a, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: debef2d43f505b648bea7da222e4dffc, type: 2}
+    - target: {fileID: 3630443654831302327, guid: 023fff05565ec6542b1f8fb20ad2e68a, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 3344326692439974671, guid: debef2d43f505b648bea7da222e4dffc, type: 2}
+    - target: {fileID: 3630443654831302327, guid: 023fff05565ec6542b1f8fb20ad2e68a, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4541344045740257370, guid: 023fff05565ec6542b1f8fb20ad2e68a, type: 3}
       propertyPath: m_Name

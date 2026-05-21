@@ -1,0 +1,1 @@
+UIManager与BuildingDataConfig都需要载入BoardData

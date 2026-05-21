@@ -98,13 +98,14 @@ public class UpgradeUIController : MonoBehaviour
         SetupButtons();
     }
 
-    void Update()
-    {
-        if (isUpgradeMode && Input.GetKeyDown(KeyCode.Escape))
-        {
-            OnCancel();
-        }
-    }
+    // Update方法已移除 - ESC键统一由UIManager处理，避免重复调用
+    // void Update()
+    // {
+    //     if (isUpgradeMode && Input.GetKeyDown(KeyCode.Escape))
+    //     {
+    //         OnCancel();
+    //     }
+    // }
 
     private void SetupButtons()
     {
@@ -208,6 +209,17 @@ public class UpgradeUIController : MonoBehaviour
             upgradePanel.SetActive(false);
         }
         
+        // 确保提示面板和对比区域都关闭
+        if (clickHintPanel != null)
+        {
+            clickHintPanel.SetActive(false);
+        }
+        
+        if (comparisonArea != null)
+        {
+            comparisonArea.SetActive(false);
+        }
+        
         Debug.Log("退出升级模式");
     }
 
@@ -236,6 +248,13 @@ public class UpgradeUIController : MonoBehaviour
         hasSelectedBuilding = true;
         selectedTile = tile;
         HideClickHint();
+        
+        // 隐藏UIManager中的infoToastPanel
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.HideInfoToast();
+        }
+        
         DisplayUpgradeInfo(tile);
         
         Debug.Log($"选中建筑: {tile.currentBuildingData.buildingName}");
@@ -444,11 +463,19 @@ public class UpgradeUIController : MonoBehaviour
 
     private void OnCancel()
     {
-        ExitUpgradeMode();
-        
-        if (buildingSelectionPanelController != null)
+        // 直接通过BuildingDataConfig退出，走统一的流程
+        if (BuildingDataConfig.Instance != null)
         {
-            buildingSelectionPanelController.OnExitUpgradeMode();
+            BuildingDataConfig.Instance.ExitUpgradeMode();
+        }
+        else
+        {
+            // 兜底方案
+            ExitUpgradeMode();
+            if (buildingSelectionPanelController != null)
+            {
+                buildingSelectionPanelController.OnExitUpgradeMode();
+            }
         }
     }
 
