@@ -838,6 +838,13 @@ public class UIManager : MonoBehaviour
         tile.ownerPlayer = player;
         tile.SetBuildingData(buildingData, buildingData.buildingLevel);
         tile.tileType = BoardTile.TileType.BuildingSite;
+        
+        // ? 关键修复：将地块添加到玩家的地产列表
+        if (!player.ownedProperties.Contains(tile))
+        {
+            player.ownedProperties.Add(tile);
+            Debug.Log($"? 已将 {tile.tileName} 添加到 {player.playerName} 的地产列表");
+        }
 
         if (buildingData.buildingPrefab != null)
         {
@@ -1570,8 +1577,11 @@ public class UIManager : MonoBehaviour
                 }
                 return $"每回合: {mixedIncome} 金币{mixedMultiplierInfo} + {buffName}: +{buffValue * 100}%";
 
+            case BuildingData.BuildingFunctionType.DiceEven:
+                return $"双数奖励: 掷出偶数(2,4,6)获得 {buildingData.diceEvenReward} 金币";
+
             default:
-                return "δ?";
+                return "未知";
         }
     }
 

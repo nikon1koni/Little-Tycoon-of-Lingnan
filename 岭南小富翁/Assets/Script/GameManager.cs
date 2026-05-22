@@ -540,10 +540,10 @@ public class GameManager : MonoBehaviour
     public void OnDiceRolled(int value)
     {
         lastDiceValue = value;
-        Debug.Log($"??????: {value}");
+        Debug.Log($"骰子结果: {value}");
 
         diceRollCount++;
-        Debug.Log($"???????????: {diceRollCount}");
+        Debug.Log($"累计掷骰次数: {diceRollCount}");
 
         UpdateUI();
 
@@ -552,7 +552,51 @@ public class GameManager : MonoBehaviour
             uiManager.UpdatePressureSystemUI();
         }
 
+        // ? 新增：检测双数建筑并发放奖金
+        CheckDiceEvenBuildings(value);
+
         StartMovePlayer();
+    }
+
+    /// <summary>
+    /// 检测双数建筑并发放奖金
+    /// </summary>
+    private void CheckDiceEvenBuildings(int diceValue)
+    {
+        // 只检测偶数（2, 4, 6）
+        if (diceValue % 2 != 0) return;
+
+        if (currentPlayer == null) return;
+
+        Debug.Log($"? 掷出偶数 {diceValue}！检查双数建筑...");
+
+        int totalReward = 0;
+        int buildingCount = 0;
+
+        // 遍历玩家所有拥有的地产（带建筑的）
+        foreach (BoardTile property in currentPlayer.ownedProperties)
+        {
+            if (property == null || property.currentBuildingData == null) continue;
+
+            // 检查是否是双数类型建筑
+            if (property.currentBuildingData.functionType == BuildingData.BuildingFunctionType.DiceEven)
+            {
+                int reward = property.currentBuildingData.diceEvenReward;
+                currentPlayer.ReceiveCash(reward);
+                totalReward += reward;
+                buildingCount++;
+
+                Debug.Log($"? {property.tileName} ({property.currentBuildingData.buildingName}) 发放奖金: {reward} 金币");
+            }
+        }
+
+        // 显示结果提示
+        if (totalReward > 0 && uiManager != null)
+        {
+            string message = $"? 掷出偶数！{buildingCount}个双数建筑共获得 {totalReward} 金币";
+            uiManager.ShowToast(message, 3f);
+            Debug.Log(message);
+        }
     }
 
     // ??????????
