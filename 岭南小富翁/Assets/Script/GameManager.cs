@@ -902,7 +902,7 @@ public class GameManager : MonoBehaviour
         currentState = GameState.PlayerTurn;
         isPlayerTurn = true;
 
-        // （回合数现在通过 buildingStartRound 和 CurrentRound 动态计算）
+        // ?????????????? buildingStartRound ?? CurrentRound ???????
 
         Debug.Log($"=== {currentPlayer.playerName} ???? ===");
         UpdateUI();
@@ -1236,6 +1236,7 @@ public class GameManager : MonoBehaviour
         
         // ???????????
         ClearAllBuildings();
+        startPurchaseTileCache = null;
         
         BoardTile startTile = GetStartTile();
         
@@ -1275,10 +1276,38 @@ public class GameManager : MonoBehaviour
         
         UpdateUI();
         
-        // ??????????????????
-        StartCoroutine(StartInitialBuildingPhase());
+        // 重新开始后，等玩家回到起始地块再弹出建筑面板
+        StartCoroutine(DelayedShowBuildingPanelAfterRestart());
         
-        Debug.Log("????????????");
+        Debug.Log("游戏重新初始化完成");
+    }
+    
+    // 重新开始后延迟显示建筑面板（等玩家移动到起点后）
+    IEnumerator DelayedShowBuildingPanelAfterRestart()
+    {
+        yield return new WaitForSeconds(2f);
+        
+        if (currentPlayer == null) yield break;
+        
+        BoardTile startTile = GetStartTile();
+        bool isOnStart = (currentPlayer.currentTile == startTile ||
+                         currentPlayer.currentTile.tileType == BoardTile.TileType.Start ||
+                         currentPlayer.currentTileIndex == 0);
+        
+        if (isOnStart)
+        {
+            Debug.Log($"{currentPlayer.playerName} 已回到起始点，弹出建筑选择面板");
+            
+            currentState = GameState.BuildingSelection;
+            isPlayerTurn = false;
+            SetRollDiceButtonInteractable(false);
+            
+            if (uiManager != null)
+            {
+                BoardTile startShopTile = CreateStartPurchaseTile();
+                uiManager.ShowBuildingSelectionUI(startShopTile, currentPlayer);
+            }
+        }
     }
 
     // ???????????

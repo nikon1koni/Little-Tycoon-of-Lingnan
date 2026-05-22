@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a476e0b345cc52d4194ddfcec2ae8c03, type: 3}
-  m_Name: Event1
+  m_Name: "\u8001\u5B57\u53F7"
   m_EditorClassIdentifier: 
   eventTitle: "\u3010\u8001\u5B57\u53F7\u5546\u4F1A\u9080\u7EA6\u3011 "
   eventImage: {fileID: 0}

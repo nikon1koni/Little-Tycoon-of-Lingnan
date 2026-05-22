@@ -125,20 +125,20 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
-    - _SunIntensity: 0.35895285
+    - _SunIntensity: 0.60030633
     - _SunSize: 0.01
     - _Surface: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _AtmosphereColor: {r: 0.2647382, g: 0.24315882, b: 0.3107897, a: 1}
+    - _AtmosphereColor: {r: 0.32507658, g: 0.28338438, b: 0.3208461, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _CloudColor: {r: 0.9, g: 0.9, b: 0.9, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _GroundColor: {r: 0.06618455, g: 0.07697426, b: 0.1323691, a: 1}
-    - _HorizonColor: {r: 0.1323691, g: 0.15394852, b: 0.3147382, a: 1}
-    - _SkyColor: {r: 0.060789704, g: 0.07697426, b: 0.19855367, a: 1}
+    - _GroundColor: {r: 0.081269145, g: 0.10211524, b: 0.16253829, a: 1}
+    - _HorizonColor: {r: 0.16253829, g: 0.20423049, b: 0.3750766, a: 1}
+    - _SkyColor: {r: 0.070846096, g: 0.10211524, b: 0.24380745, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _SunColor: {r: 0.46473822, g: 0.23092277, b: 0.15394852, a: 1}
+    - _SunColor: {r: 0.52507657, g: 0.30634573, b: 0.20423049, a: 1}
   m_BuildTextureStacks: []
