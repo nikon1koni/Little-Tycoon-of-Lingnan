@@ -418,7 +418,8 @@ public class GameManager : MonoBehaviour
                 if (lastTime > 0 && (currentTime - lastTime) < buildingTile.IncomeInterval)
                     continue;
 
-                int income = buildingTile.currentBuildingData.GetIncomeAmountByTurns(buildingTile.GetBuildingTurnsOwned());
+                int baseIncome = buildingTile.currentBuildingData.GetIncomeAmountByTurns(buildingTile.GetBuildingTurnsOwned());
+                int income = player.GetIncomeWithMultiplier(baseIncome);
                 if (income > 0)
                 {
                     player.ReceiveCash(income);

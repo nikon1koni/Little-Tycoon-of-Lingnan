@@ -20,7 +20,19 @@ MonoBehaviour:
     onOptionSelected:
       m_PersistentCalls:
         m_Calls: []
+    optionCostAmount: 30
+    optionRewardAmount: 0
+    optionIncomeBoost: 0.4
+    optionBuffDurationRounds: 3
   - optionText: " \u5A49\u8A00\u8C22\u7EDD -> 15\u94DC\u677F"
     onOptionSelected:
       m_PersistentCalls:
         m_Calls: []
+    optionCostAmount: 0
+    optionRewardAmount: 15
+    optionIncomeBoost: 0
+    optionBuffDurationRounds: 0
+  costAmount: 0
+  rewardAmount: 0
+  incomeBoost: 0
+  buffDurationRounds: 0

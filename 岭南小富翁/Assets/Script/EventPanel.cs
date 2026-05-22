@@ -13,6 +13,7 @@ public class EventPanel : MonoBehaviour
     public Button closeButton;
 
     private EventData currentEvent;
+    private Player currentPlayer;
 
     void Start()
     {
@@ -22,7 +23,7 @@ public class EventPanel : MonoBehaviour
         }
     }
 
-    public void ShowEvent(EventData eventData)
+    public void ShowEvent(EventData eventData, Player player = null)
     {
         if (eventData == null)
         {
@@ -31,6 +32,7 @@ public class EventPanel : MonoBehaviour
         }
 
         currentEvent = eventData;
+        currentPlayer = player ?? (GameManager.Instance != null ? GameManager.Instance.currentPlayer : null);
 
         if (titleText != null)
             titleText.text = eventData.eventTitle;
@@ -77,9 +79,14 @@ public class EventPanel : MonoBehaviour
         }
 
         Debug.Log("开始创建按钮...");
-        foreach (EventData.EventOption option in options)
+        
+        for (int i = 0; i < options.Length; i++)
         {
-            Debug.Log("创建按钮: " + option.optionText);
+            EventData.EventOption option = options[i];
+            int optionIndex = i;  // 闭包捕获索引
+            
+            Debug.Log($"创建按钮 [{optionIndex}]: {option.optionText}");
+            
             Button button = Instantiate(optionButtonPrefab, optionsContainer);
             button.gameObject.SetActive(true);
             
@@ -87,22 +94,84 @@ public class EventPanel : MonoBehaviour
             if (buttonText != null)
             {
                 buttonText.text = option.optionText;
-                Debug.Log("按钮文本已设置: " + option.optionText);
+                Debug.Log($"按钮文本已设置: {option.optionText}");
             }
             else
             {
                 Debug.LogWarning("按钮没有找到 TextMeshPro 组件！");
             }
 
+            // 检查是否可以支付（使用选项单独配置或全局配置）
+            int costToPay = option.optionCostAmount > 0 ? option.optionCostAmount : currentEvent.costAmount;
+            bool canAfford = true;
+            
+            if (costToPay > 0 && currentPlayer != null)
+            {
+                canAfford = currentPlayer.cash >= costToPay;
+                
+                if (!canAfford)
+                {
+                    Debug.Log($"选项 [{optionIndex}] 需要支付 {costToPay} 金币，但玩家只有 {currentPlayer.cash} 金币，禁用按钮");
+                    
+                    // 设置按钮为半透明/禁用状态
+                    Image buttonImage = button.GetComponent<Image>();
+                    if (buttonImage != null)
+                    {
+                        Color disabledColor = buttonImage.color;
+                        disabledColor.a = 0.5f;
+                        buttonImage.color = disabledColor;
+                    }
+                    
+                    if (buttonText != null)
+                    {
+                        Color textColor = buttonText.color;
+                        textColor.a = 0.5f;
+                        buttonText.color = textColor;
+                    }
+                }
+            }
+
+            bool finalCanAfford = canAfford;
+            int finalIndex = optionIndex;
+            
             button.onClick.AddListener(() =>
             {
+                Debug.Log($"=== 选项按钮被点击 [{finalIndex}] ===");
+                Debug.Log($"EventEffectHandler.Instance: {EventEffectHandler.Instance != null}");
+                Debug.Log($"currentPlayer: {currentPlayer?.playerName ?? "NULL"}");
+                Debug.Log($"currentEvent: {currentEvent?.eventTitle ?? "NULL"}");
+                
+                if (!finalCanAfford)
+                {
+                    Debug.LogWarning("金币不足！");
+                    if (UIManager.Instance != null)
+                    {
+                        UIManager.ShowToastStatic("金币不足，无法选择此选项！", 2f);
+                    }
+                    return;
+                }
+
                 if (SFXManager.Instance != null)
                     SFXManager.Instance.PlaySFX(SFXClip.UIClick);
 
+                // 调用原有的UnityEvent回调
                 option.onOptionSelected?.Invoke();
+                
+                // ? 新增：调用事件效果处理器
+                if (EventEffectHandler.Instance != null && currentPlayer != null)
+                {
+                    Debug.Log($"? 调用 ProcessOption: player={currentPlayer.playerName}, event={currentEvent.eventTitle}, option={finalIndex}");
+                    EventEffectHandler.Instance.ProcessOption(currentPlayer, currentEvent, finalIndex);
+                }
+                else
+                {
+                    Debug.LogError($"? 无法调用 ProcessOption! Instance={EventEffectHandler.Instance != null}, Player={currentPlayer != null}");
+                }
+
                 HidePanel();
             });
         }
+        
         Debug.Log("=== 选项按钮创建完成 ===");
     }
 

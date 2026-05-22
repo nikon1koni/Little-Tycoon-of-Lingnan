@@ -326,7 +326,8 @@ public class BoardTile : MonoBehaviour
                 buildingTile.currentBuildingData.functionType != BuildingData.BuildingFunctionType.Mixed)
                 continue;
 
-            int incomeAmount = buildingTile.currentBuildingData.GetIncomeAmountByTurns(buildingTile.GetBuildingTurnsOwned());
+            int baseIncome = buildingTile.currentBuildingData.GetIncomeAmountByTurns(buildingTile.GetBuildingTurnsOwned());
+            int incomeAmount = player.GetIncomeWithMultiplier(baseIncome);
             if (incomeAmount > 0)
             {
                 player.ReceiveCash(incomeAmount);
@@ -394,7 +395,8 @@ public class BoardTile : MonoBehaviour
     {
         if (currentBuildingData == null || ownerPlayer == null) return;
 
-        int incomeAmount = currentBuildingData.GetIncomeAmountByTurns(GetBuildingTurnsOwned());
+        int baseIncome = currentBuildingData.GetIncomeAmountByTurns(GetBuildingTurnsOwned());
+        int incomeAmount = ownerPlayer.GetIncomeWithMultiplier(baseIncome);
         if (incomeAmount > 0)
         {
             ownerPlayer.ReceiveCash(incomeAmount);
@@ -762,13 +764,12 @@ public class BoardTile : MonoBehaviour
     {
         if (eventDataArray != null && eventDataArray.Length > 0)
         {
-            // ????????????????????????????????????
             EventData selectedEvent = eventDataArray[Random.Range(0, eventDataArray.Length)];
             
             if (selectedEvent != null && UIManager.Instance != null)
             {
-                UIManager.Instance.ShowEventPanel(selectedEvent);
-                Debug.Log($"{player.playerName} ?????????{selectedEvent.eventTitle}");
+                UIManager.Instance.ShowEventPanel(selectedEvent, player);
+                Debug.Log($"{player.playerName} ´¥·¢ÊÂ¼þ: {selectedEvent.eventTitle}");
                 return;
             }
         }
