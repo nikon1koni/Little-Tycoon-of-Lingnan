@@ -45,38 +45,51 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         if (currentBuff == null || tooltipPrefab == null) return;
         
+        Transform parentTransform = null;
         if (UIManager.Instance != null && UIManager.Instance.mainCanvas != null)
         {
-            activeTooltip = Instantiate(tooltipPrefab, UIManager.Instance.mainCanvas.transform);
-            
-            // ??????????????
-            RectTransform tooltipRect = activeTooltip.GetComponent<RectTransform>();
-            RectTransform iconRect = GetComponent<RectTransform>();
-            
-            Vector3 worldPos = iconRect.position;
-            Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, worldPos);
-            Vector2 localPoint;
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                UIManager.Instance.mainCanvas.transform as RectTransform,
-                screenPos,
-                UIManager.Instance.mainCanvas.worldCamera,
-                out localPoint
-            );
-            
-            tooltipRect.localPosition = localPoint + new Vector2(0, 60);
-            
-            // ??????????
-            TextMeshProUGUI tooltipText = activeTooltip.GetComponentInChildren<TextMeshProUGUI>();
-            if (tooltipText != null)
+            parentTransform = UIManager.Instance.mainCanvas.transform;
+        }
+        else
+        {
+            Canvas canvas = FindObjectOfType<Canvas>();
+            if (canvas != null)
             {
-                tooltipText.text = GetBuffDescription();
+                parentTransform = canvas.transform;
             }
-            
-            Image tooltipBg = activeTooltip.GetComponentInChildren<Image>();
-            if (tooltipBg != null)
-            {
-                tooltipBg.color = new Color(0.1f, 0.1f, 0.1f, 0.95f);
-            }
+        }
+        
+        if (parentTransform == null) return;
+        
+        activeTooltip = Instantiate(tooltipPrefab, parentTransform);
+        
+        RectTransform tooltipRect = activeTooltip.GetComponent<RectTransform>();
+        RectTransform iconRect = GetComponent<RectTransform>();
+        
+        Vector3 worldPos = iconRect.position;
+        Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, worldPos);
+        Vector2 localPoint;
+        
+        Canvas canvasComponent = parentTransform.GetComponent<Canvas>();
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            parentTransform as RectTransform,
+            screenPos,
+            canvasComponent != null ? canvasComponent.worldCamera : Camera.main,
+            out localPoint
+        );
+        
+        tooltipRect.localPosition = localPoint + new Vector2(0, 60);
+        
+        TextMeshProUGUI tooltipText = activeTooltip.GetComponentInChildren<TextMeshProUGUI>();
+        if (tooltipText != null)
+        {
+            tooltipText.text = GetBuffDescription();
+        }
+        
+        Image tooltipBg = activeTooltip.GetComponentInChildren<Image>();
+        if (tooltipBg != null)
+        {
+            tooltipBg.color = new Color(0.1f, 0.1f, 0.1f, 0.95f);
         }
     }
     
