@@ -11,12 +11,14 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     
     [Header("Buff ??????????")]
     public GameObject tooltipPrefab;
+    public Vector2 tooltipOffset = new Vector2(50, 50);
     private GameObject activeTooltip;
     
     private BuffSystem.Buff currentBuff;
     
     public void Initialize(BuffSystem.Buff buff, Sprite icon)
     {
+        Debug.Log($"BuffIcon: Initialize called, buff={buff != null}, icon={icon != null}");
         currentBuff = buff;
         
         if (iconImage != null)
@@ -33,17 +35,25 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     
     public void OnPointerEnter(PointerEventData eventData)
     {
+        Debug.Log("BuffIcon: OnPointerEnter called");
         ShowTooltip();
     }
     
     public void OnPointerExit(PointerEventData eventData)
     {
+        Debug.Log("BuffIcon: OnPointerExit called");
         HideTooltip();
     }
     
     private void ShowTooltip()
     {
-        if (currentBuff == null || tooltipPrefab == null) return;
+        Debug.Log($"BuffIcon: ShowTooltip called, currentBuff={currentBuff != null}, tooltipPrefab={tooltipPrefab != null}");
+        
+        if (currentBuff == null || tooltipPrefab == null) 
+        {
+            Debug.Log($"BuffIcon: ShowTooltip failed - currentBuff={currentBuff != null}, tooltipPrefab={tooltipPrefab != null}");
+            return;
+        }
         
         Transform parentTransform = null;
         if (UIManager.Instance != null && UIManager.Instance.mainCanvas != null)
@@ -62,23 +72,14 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         if (parentTransform == null) return;
         
         activeTooltip = Instantiate(tooltipPrefab, parentTransform);
+        Debug.Log($"BuffIcon: Tooltip instantiated successfully");
         
         RectTransform tooltipRect = activeTooltip.GetComponent<RectTransform>();
         RectTransform iconRect = GetComponent<RectTransform>();
         
-        Vector3 worldPos = iconRect.position;
-        Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(Camera.main, worldPos);
-        Vector2 localPoint;
-        
-        Canvas canvasComponent = parentTransform.GetComponent<Canvas>();
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            parentTransform as RectTransform,
-            screenPos,
-            canvasComponent != null ? canvasComponent.worldCamera : Camera.main,
-            out localPoint
-        );
-        
-        tooltipRect.localPosition = localPoint + new Vector2(0, 60);
+        Vector2 anchoredPosition = iconRect.anchoredPosition;
+        tooltipRect.anchoredPosition = anchoredPosition + tooltipOffset;
+        Debug.Log($"BuffIcon: Using tooltipOffset={tooltipOffset}, finalPosition={tooltipRect.anchoredPosition}");
         
         TextMeshProUGUI tooltipText = activeTooltip.GetComponentInChildren<TextMeshProUGUI>();
         if (tooltipText != null)
@@ -104,6 +105,11 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     
     private string GetBuffDescription()
     {
+        if (!string.IsNullOrEmpty(currentBuff.customDescription))
+        {
+            return currentBuff.customDescription;
+        }
+        
         string description = "";
         description += $"<b>{BuildingData.GetBuffEffectName(currentBuff.effectType)}</b>\n";
         description += $"+{currentBuff.value * 100:F1}%\n";

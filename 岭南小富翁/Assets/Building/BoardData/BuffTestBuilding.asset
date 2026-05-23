@@ -37,6 +37,7 @@ MonoBehaviour:
     duration: 0
     durationRounds: 2
     isPermanent: 1
+    customDescription: "\u8D44\u91D1\u52A0\u6210\u3002"
   buffEffect: 0
   baseBuffValue: 0.1
   buffGrowthRate: 1.1

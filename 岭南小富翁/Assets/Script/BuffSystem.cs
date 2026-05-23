@@ -18,8 +18,9 @@ public class BuffSystem : MonoBehaviour
         public int remainingRounds;
         public bool useRoundTimer;
         public object source;
+        public string customDescription;
 
-        public Buff(string id, string sourceName, BuildingData.BuffEffect type, float val, float dur = 0f, int rounds = 0, object srcObj = null)
+        public Buff(string id, string sourceName, BuildingData.BuffEffect type, float val, float dur = 0f, int rounds = 0, object srcObj = null, string desc = "")
         {
             buffId = id;
             this.sourceName = sourceName;
@@ -31,6 +32,7 @@ public class BuffSystem : MonoBehaviour
             remainingRounds = rounds;
             useRoundTimer = rounds > 0;
             source = srcObj;
+            customDescription = desc;
         }
     }
 

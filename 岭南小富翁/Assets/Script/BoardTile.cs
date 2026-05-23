@@ -646,7 +646,8 @@ public class BoardTile : MonoBehaviour
                     buffValue,
                     config.isPermanent ? 0f : config.duration,
                     config.isPermanent ? 0 : config.durationRounds,
-                    this
+                    this,
+                    config.customDescription
                 );
                 
                 BuffSystem.Instance.AddBuff(player, buff);

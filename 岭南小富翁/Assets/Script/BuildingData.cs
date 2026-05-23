@@ -13,6 +13,7 @@ public class BuildingData : ScriptableObject
         public float duration = 0f;
         public int durationRounds = 0;
         public bool isPermanent = true;
+        [TextArea(2, 4)] public string customDescription = "";
     }
 
     [Header("????????")]

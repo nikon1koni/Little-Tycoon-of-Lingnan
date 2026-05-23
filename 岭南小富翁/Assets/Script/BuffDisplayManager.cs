@@ -10,6 +10,7 @@ public class BuffDisplayManager : MonoBehaviour
     public GameObject buffIconPrefab;
     public Transform buffContainer;
     public GameObject buffTooltipPrefab;
+    public Vector2 tooltipOffset = new Vector2(50, 50);
     
     [Header("Buff ??????")]
     public Sprite moveSpeedIcon;
@@ -71,7 +72,13 @@ public class BuffDisplayManager : MonoBehaviour
     
     private void CreateBuffIcon(BuffSystem.Buff buff)
     {
-        if (buffIconPrefab == null || buffContainer == null) return;
+        Debug.Log($"BuffDisplayManager: CreateBuffIcon called, buff={buff != null}, buffTooltipPrefab={buffTooltipPrefab != null}");
+        
+        if (buffIconPrefab == null || buffContainer == null) 
+        {
+            Debug.Log($"BuffDisplayManager: CreateBuffIcon failed - prefab={buffIconPrefab != null}, container={buffContainer != null}");
+            return;
+        }
         
         GameObject iconObj = Instantiate(buffIconPrefab, buffContainer);
         BuffIcon buffIcon = iconObj.GetComponent<BuffIcon>();
@@ -79,6 +86,8 @@ public class BuffDisplayManager : MonoBehaviour
         if (buffIcon != null)
         {
             buffIcon.tooltipPrefab = buffTooltipPrefab;
+            buffIcon.tooltipOffset = tooltipOffset;
+            Debug.Log($"BuffDisplayManager: tooltipOffset set to {tooltipOffset}");
             Sprite icon = GetBuffIcon(buff.effectType);
             buffIcon.Initialize(buff, icon);
             
