@@ -2,3 +2,6 @@ BuildingDataConfig-建筑面板-升级-卖出
 UIManager-建筑面板-建筑
 如果要增加建筑，除了上述需要填充BoardData
 UIManager里面还需要添加Building Buttons
+
+绑定路面
+注意路和建筑格子都要绑定数据

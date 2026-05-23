@@ -1,14 +1,30 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BuildingEffectSystem : MonoBehaviour
 {
     public static BuildingEffectSystem Instance;
 
-    [Header("效果参数")]
+    [Header("????????")]
     public float iconOffsetY = 2.0f;
     public float rotateSpeed = 360f;
     public float fadeDuration = 0.3f;
+    public float delayBetweenEffects = 0.2f;
+
+    private Queue<EffectRequest> effectQueue = new Queue<EffectRequest>();
+    private bool isPlayingEffect = false;
+
+    public bool IsPlayingEffects
+    {
+        get { return isPlayingEffect || effectQueue.Count > 0; }
+    }
+
+    private struct EffectRequest
+    {
+        public Transform buildingTransform;
+        public BuildingData buildingData;
+    }
 
     private void Awake()
     {
@@ -21,6 +37,76 @@ public class BuildingEffectSystem : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    public void QueueBuildingEffect(Transform buildingTransform, BuildingData buildingData)
+    {
+        if (buildingData == null)
+        {
+            Debug.LogWarning("QueueBuildingEffect: buildingData ???");
+            return;
+        }
+
+        if (buildingTransform == null)
+        {
+            Debug.LogWarning($"QueueBuildingEffect: buildingTransform ??? for {buildingData.buildingName}");
+            return;
+        }
+
+        // ??? BuildingEffectSystem ??????
+        if (Instance == null)
+        {
+            Debug.LogWarning("BuildingEffectSystem.Instance ?????????????...");
+            BuildingEffectSystem existing = FindObjectOfType<BuildingEffectSystem>();
+            if (existing != null)
+            {
+                Instance = existing;
+                Debug.Log("????????? BuildingEffectSystem");
+            }
+            else
+            {
+                Debug.LogError("?????? BuildingEffectSystem??????????????? BuildingEffectSystem ????");
+                return;
+            }
+        }
+
+        bool hasEffect = buildingData.effectIconPrefab != null || buildingData.effectSound != null;
+        if (!hasEffect)
+        {
+            Debug.Log($"QueueBuildingEffect: {buildingData.buildingName} ??????? effectIconPrefab ?? effectSound");
+            return;
+        }
+
+        Debug.Log($"QueueBuildingEffect: ???? {buildingData.buildingName} ??????????");
+
+        effectQueue.Enqueue(new EffectRequest
+        {
+            buildingTransform = buildingTransform,
+            buildingData = buildingData
+        });
+
+        if (!isPlayingEffect)
+        {
+            StartCoroutine(ProcessEffectQueue());
+        }
+    }
+
+    private IEnumerator ProcessEffectQueue()
+    {
+        isPlayingEffect = true;
+
+        while (effectQueue.Count > 0)
+        {
+            EffectRequest request = effectQueue.Dequeue();
+            yield return StartCoroutine(PlayBuildingEffect(request.buildingTransform, request.buildingData));
+
+            if (effectQueue.Count > 0)
+            {
+                yield return new WaitForSeconds(delayBetweenEffects);
+            }
+        }
+
+        isPlayingEffect = false;
     }
 
     public IEnumerator PlayBuildingEffect(Transform buildingTransform, BuildingData buildingData)

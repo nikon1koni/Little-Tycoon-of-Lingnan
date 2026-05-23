@@ -594,6 +594,17 @@ public class GameManager : MonoBehaviour
                 buildingCount++;
 
                 Debug.Log($"? {property.tileName} ({property.currentBuildingData.buildingName}) ???????: {reward} ???");
+
+                // ???????????
+                Transform effectTransform = property.transform;
+                if (property.currentBuilding != null)
+                {
+                    effectTransform = property.currentBuilding.transform;
+                }
+                if (BuildingEffectSystem.Instance != null)
+                {
+                    BuildingEffectSystem.Instance.QueueBuildingEffect(effectTransform, property.currentBuildingData);
+                }
             }
         }
 

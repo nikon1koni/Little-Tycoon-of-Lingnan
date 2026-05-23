@@ -300,39 +300,115 @@ public class BoardTile : MonoBehaviour
         int totalIncome = 0;
         float maxEffectDuration = 0f;
 
+        Debug.Log($"TriggerLinkedBuildingIncome: ?????��????????????={linkedBuildingTiles.Count}????????={incomeInterval}??");
+        
+        // ??????抄???????????
         for (int i = 0; i < linkedBuildingTiles.Count; i++)
         {
-            BoardTile buildingTile = linkedBuildingTiles[i];
-            if (buildingTile == null) continue;
+            BoardTile tile = linkedBuildingTiles[i];
+            string dataName = tile?.currentBuildingData?.buildingName ?? "??????";
+            string ownerName = tile?.ownerPlayer?.playerName ?? "????????";
+            Debug.Log($"  ????????[{i}]: {tile?.name ?? "null"} - ????: {dataName}, ??????: {ownerName}");
+        }
 
+        // ???????????????????? Income ???????????
+        bool hasIncomeBuilding = false;
+        List<BoardTile> incomeTiles = new List<BoardTile>();
+        
+        foreach (BoardTile buildingTile in linkedBuildingTiles)
+        {
+            if (buildingTile == null || buildingTile.currentBuildingData == null) continue;
+            if (buildingTile.ownerPlayer == null || buildingTile.ownerPlayer != player) continue;
             if (!CanGenerateIncome(buildingTile, currentTime)) continue;
 
-            if (buildingTile.ownerPlayer == null || buildingTile.ownerPlayer != player) continue;
+            if (buildingTile.currentBuildingData.functionType == BuildingData.BuildingFunctionType.Income ||
+                buildingTile.currentBuildingData.functionType == BuildingData.BuildingFunctionType.Mixed)
+            {
+                int baseIncome = buildingTile.currentBuildingData.GetIncomeAmountByTurns(buildingTile.GetBuildingTurnsOwned());
+                int incomeAmount = player.GetIncomeWithMultiplier(baseIncome);
+                if (incomeAmount > 0)
+                {
+                    hasIncomeBuilding = true;
+                    incomeTiles.Add(buildingTile);
+                }
+            }
+        }
 
-            if (buildingTile.currentBuildingData == null) continue;
+        // ???????????????抄????? Buff ?????????完???ㄗ????????? Income ???????????ㄘ
+        if (hasIncomeBuilding)
+        {
+            Debug.Log($"TriggerLinkedBuildingIncome: === ?????曳????????? Buff ???? ===");
+            for (int i = 0; i < linkedBuildingTiles.Count; i++)
+            {
+                BoardTile buildingTile = linkedBuildingTiles[i];
+                Debug.Log($"??�n?? {i}: {buildingTile?.name ?? "null"}");
+                if (buildingTile == null) continue;
 
-            if (buildingTile.currentBuildingData.functionType != BuildingData.BuildingFunctionType.Income &&
-                buildingTile.currentBuildingData.functionType != BuildingData.BuildingFunctionType.Mixed)
-                continue;
+                bool canGenerate = CanGenerateIncome(buildingTile, currentTime);
+                Debug.Log($"  - CanGenerateIncome: {canGenerate}");
 
+                if (!canGenerate) continue;
+
+                if (buildingTile.ownerPlayer == null || buildingTile.ownerPlayer != player)
+                {
+                    Debug.Log($"  - ????????????????");
+                    continue;
+                }
+
+                if (buildingTile.currentBuildingData == null)
+                {
+                    Debug.Log($"  - ????????扶???????");
+                    continue;
+                }
+
+                // ???? Buff ??????????????????完??ㄗDiceEven ????????????? CheckDiceEvenBuildings ????ㄘ
+                if (buildingTile.currentBuildingData.functionType == BuildingData.BuildingFunctionType.Buff)
+                {
+                    Debug.Log($"  - ???????{buildingTile.currentBuildingData.functionType}??????完??");
+                    PlayBuildingEffect(buildingTile);
+                    
+                    if (buildingTile.currentBuildingData.effectDuration > maxEffectDuration)
+                    {
+                        maxEffectDuration = buildingTile.currentBuildingData.effectDuration;
+                    }
+                }
+                else
+                {
+                    Debug.Log($"  - ????????{buildingTile.currentBuildingData.functionType}");
+                }
+            }
+        }
+
+        // ??????????? Income ?? Mixed ?????????完????????????
+        Debug.Log($"TriggerLinkedBuildingIncome: === ?????曳????? Income/Mixed ???? ===");
+        foreach (BoardTile buildingTile in incomeTiles)
+        {
+            Debug.Log($"??�n??: {buildingTile?.name ?? "null"}");
+            
             int baseIncome = buildingTile.currentBuildingData.GetIncomeAmountByTurns(buildingTile.GetBuildingTurnsOwned());
             int incomeAmount = player.GetIncomeWithMultiplier(baseIncome);
-            if (incomeAmount > 0)
+            Debug.Log($"  - ??????????: {baseIncome}, ????: {incomeAmount}");
+            
+            player.ReceiveCash(incomeAmount);
+            totalIncome += incomeAmount;
+
+            if (!lastIncomeTime.ContainsKey(buildingTile))
             {
-                player.ReceiveCash(incomeAmount);
-                totalIncome += incomeAmount;
+                lastIncomeTime.Add(buildingTile, currentTime);
+                Debug.Log($"  - ???? lastIncomeTimeㄗ???ㄘ");
+            }
+            else
+            {
+                lastIncomeTime[buildingTile] = currentTime;
+                Debug.Log($"  - ???? lastIncomeTimeㄗ????ㄘ");
+            }
 
-                if (!lastIncomeTime.ContainsKey(buildingTile))
-                    lastIncomeTime.Add(buildingTile, currentTime);
-                else
-                    lastIncomeTime[buildingTile] = currentTime;
-
-                PlayBuildingEffect(buildingTile);
-                
-                if (buildingTile.currentBuildingData.effectDuration > maxEffectDuration)
-                {
-                    maxEffectDuration = buildingTile.currentBuildingData.effectDuration;
-                }
+            Debug.Log($"  - ???????{buildingTile.currentBuildingData.functionType}??????完??");
+            PlayBuildingEffect(buildingTile);
+            
+            if (buildingTile.currentBuildingData.effectDuration > maxEffectDuration)
+            {
+                maxEffectDuration = buildingTile.currentBuildingData.effectDuration;
             }
         }
 
@@ -341,31 +417,54 @@ public class BoardTile : MonoBehaviour
             UIManager.Instance.ShowToast($"????????????{totalIncome} ???", 2f);
         }
 
+        Debug.Log($"TriggerLinkedBuildingIncome: ??????????={totalIncome}");
+
         return maxEffectDuration;
     }
 
     private void PlayBuildingEffect(BoardTile buildingTile)
     {
         if (buildingTile == null || buildingTile.currentBuildingData == null)
+        {
+            Debug.LogWarning($"PlayBuildingEffect: buildingTile ?? currentBuildingData ???");
             return;
+        }
 
         BuildingData data = buildingTile.currentBuildingData;
         
+        Debug.Log($"PlayBuildingEffect: ??? {data.buildingName} ??????????");
+        Debug.Log($"  - effectIconPrefab: {(data.effectIconPrefab != null ? "??????" : "??????")}");
+        Debug.Log($"  - effectSound: {(data.effectSound != null ? "??????" : "??????")}");
+        
         if (data.effectIconPrefab != null || data.effectSound != null)
         {
-            if (BuildingEffectSystem.Instance != null)
+            // ??? BuildingEffectSystem ????
+            if (BuildingEffectSystem.Instance == null)
             {
-                Transform effectTransform = buildingTile.transform;
-                if (buildingTile.currentBuilding != null)
+                Debug.LogWarning("BuildingEffectSystem.Instance ???????????????...");
+                GameObject effectSystemObj = new GameObject("BuildingEffectSystem_AutoCreated");
+                effectSystemObj.AddComponent<BuildingEffectSystem>();
+                
+                if (BuildingEffectSystem.Instance == null)
                 {
-                    effectTransform = buildingTile.currentBuilding.transform;
+                    Debug.LogError("??????? BuildingEffectSystem ???");
+                    return;
                 }
-                BuildingEffectSystem.Instance.PlayBuildingEffectImmediate(effectTransform, data);
+                Debug.Log("?????????? BuildingEffectSystem");
+            }
+            
+            Transform effectTransform = buildingTile.transform;
+            if (buildingTile.currentBuilding != null)
+            {
+                effectTransform = buildingTile.currentBuilding.transform;
+                Debug.Log($"??????????? transform: {buildingTile.currentBuilding.name}");
             }
             else
             {
-                Debug.LogWarning("BuildingEffectSystem ?????????????????????? BuildingEffectSystem ????");
+                Debug.Log($"?????? transform: {buildingTile.name}");
             }
+            
+            BuildingEffectSystem.Instance.QueueBuildingEffect(effectTransform, data);
         }
     }
 
@@ -557,6 +656,15 @@ public class BoardTile : MonoBehaviour
                 currentBuilding = newBuilding;
             }
 
+            // ?????????Buff?????????Buff??????
+            ClearBuffs();
+            if (player != null)
+            {
+                ApplyBuffToPlayer(player);
+            }
+
+            // ????????完???????完???????TriggerLinkedBuildingIncome?忱???
+
             return true;
         }
 
@@ -657,6 +765,8 @@ public class BoardTile : MonoBehaviour
                     buffedPlayers.Add(player);
                 }
             }
+
+            // ????????完???????完???????TriggerLinkedBuildingIncome?忱???
         }
     }
 

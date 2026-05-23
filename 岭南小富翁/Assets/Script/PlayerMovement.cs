@@ -4,27 +4,27 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [Header("跳跃移动参数")]
-    public float jumpHeight = 1.5f;      // 跳跃高度
-    public float jumpDuration = 0.5f;    // 单次跳跃持续时间
-    public float landingDelay = 0.1f;    // 落地后停顿时间
-    public float heightOffset = 0.375f;   // 玩家在地块上的高度偏移（地块高度的一半+玩家高度的一半）
+    [Header("??????????")]
+    public float jumpHeight = 1.5f;      // ??????
+    public float jumpDuration = 0.5f;    // ??????????????
+    public float landingDelay = 0.1f;    // ??????????
+    public float heightOffset = 0.375f;   // ?????????????????????????+?????????
 
-    [Header("状态")]
+    [Header("??")]
     [HideInInspector] public bool isMoving = false;
     [HideInInspector] public BoardTile currentTile;
 
-    // 私有变量
+    // ??б???
     private Player player;
     private Vector3 originalScale;
-    private float baseY;  // 基础Y坐标
+    private float baseY;  // ????Y????
 
     void Start()
     {
         player = GetComponent<Player>();
         originalScale = transform.localScale;
 
-        // 计算基础Y坐标（基于起始地块位置+高度偏移）
+        // ???????Y??????????????λ??+???????
         if (BoardManager.Instance != null && BoardManager.Instance.allTiles.Count > 0)
         {
             BoardTile startTile = BoardManager.Instance.GetTileByID(0);
@@ -34,22 +34,22 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                baseY = transform.position.y + heightOffset; // 回退方案
+                baseY = transform.position.y + heightOffset; // ???????
             }
         }
         else
         {
-            baseY = transform.position.y + heightOffset; // 回退方案
+            baseY = transform.position.y + heightOffset; // ???????
         }
 
-        // 初始化位置
+        // ?????λ??
         InitializeStartPosition();
 
-        // 延迟修正：确保在其他脚本（如GameManager）设置位置后，最终位置正确
+        // ?????????????????????????GameManager??????λ?ú?????λ?????
         StartCoroutine(FinalPositionCorrection());
     }
 
-    // 最终位置修正协程（解决初始化时序问题）
+    // ????λ??????Э??????????????????
     IEnumerator FinalPositionCorrection()
     {
         yield return null;
@@ -77,7 +77,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // 移动指定的步数，带动画
+    // ???????????????????
     public void MoveSteps(int steps)
     {
         if (isMoving) return;
@@ -86,7 +86,7 @@ public class PlayerMovement : MonoBehaviour
         StartCoroutine(MoveWithJumpAnimation(steps));
     }
 
-    // 跳跃移动协程
+    // ??????Э??
     IEnumerator MoveWithJumpAnimation(int steps)
     {
         isMoving = true;
@@ -135,12 +135,18 @@ public class PlayerMovement : MonoBehaviour
                             yield return new WaitForSeconds(effectDuration);
                         }
 
-                    // 检查是否到达或经过起点（tileID == 0 或 tileType == Start）
+                        // ???Ч??????????????????
+                        while (BuildingEffectSystem.Instance != null && BuildingEffectSystem.Instance.IsPlayingEffects)
+                        {
+                            yield return new WaitForEndOfFrame();
+                        }
+
+                    // ????????????tileID == 0 ?? tileType == Start??
                     if (candidateTile.tileID == 0 || candidateTile.tileType == BoardTile.TileType.Start)
                     {
-                        Debug.Log($"玩家到达起点（tileID: {candidateTile.tileID}），停留在此处");
+                        Debug.Log($"?????????tileID: {candidateTile.tileID}???????????");
 
-                        // 确保玩家在起点的正确位置
+                        // ???????????????λ??
                         MoveToTileImmediate(candidateTile);
 
                         isMoving = false;
@@ -150,7 +156,7 @@ public class PlayerMovement : MonoBehaviour
                             GameManager.Instance.OnPlayerMoveComplete();
                         }
 
-                        yield break;  // 停止继续移动
+                        yield break;  // ?????????
                     }
 
                     yield return new WaitForSeconds(0.05f);
@@ -172,7 +178,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // 寻找附近的可行走地块
+    // ???????????????
     private BoardTile FindNearestWalkableTile()
     {
         List<BoardTile> allTiles = BoardManager.Instance.allTiles;
@@ -180,7 +186,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (currentIndex < 0) return null;
 
-        // 向前寻找
+        // ??????
         for (int i = 1; i < allTiles.Count; i++)
         {
             int forwardIndex = (currentIndex + i) % allTiles.Count;
@@ -193,7 +199,7 @@ public class PlayerMovement : MonoBehaviour
         return null;
     }
 
-    // 方案1：简单的正弦波跳跃动画
+    // ????1?????????????????
     IEnumerator JumpToTile(BoardTile targetTile)
     {
         if (SFXManager.Instance != null)
@@ -203,8 +209,8 @@ public class PlayerMovement : MonoBehaviour
         Vector3 endPos = targetTile.transform.position;
         endPos.y = baseY;
 
-        // 使用public的jumpDuration参数 (应该是0.5f)
-        float duration = jumpDuration;  // 注意：使用参数而不是硬编码
+        // ???public??jumpDuration???? (?????0.5f)
+        float duration = jumpDuration;  // ?????ò??????????????
         float elapsed = 0f;
 
         while (elapsed < duration)
@@ -212,13 +218,13 @@ public class PlayerMovement : MonoBehaviour
             elapsed += Time.deltaTime;
             float t = elapsed / duration;
 
-            // 计算当前高度（正弦曲线）
+            // ??????????????????
             float height = Mathf.Sin(t * Mathf.PI) * jumpHeight;
 
-            // 水平位置
+            // ??λ??
             Vector3 horizontalPos = Vector3.Lerp(startPos, endPos, t);
 
-            // 最终位置 = 水平位置 + 高度
+            // ????λ?? = ??λ?? + ???
             transform.position = new Vector3(
                 horizontalPos.x,
                 baseY + height,
@@ -228,7 +234,7 @@ public class PlayerMovement : MonoBehaviour
             yield return null;
         }
 
-        // 确保位置正确
+        // ???λ?????
         transform.position = endPos;
         transform.localScale = originalScale;
 
@@ -236,17 +242,17 @@ public class PlayerMovement : MonoBehaviour
             SFXManager.Instance.PlaySFX(SFXClip.PlayerLand);
     }
 
-    // 方案2：抛物线跳跃（瞬移方式，直接跳过去）
+    // ????2??????????????????????????????
     IEnumerator TeleportJumpToTile(BoardTile targetTile)
     {
-        // 起始位置
+        // ???λ??
         Vector3 startPos = transform.position;
         Vector3 midPos = (startPos + targetTile.transform.position) / 2;
         midPos.y += jumpHeight;
 
         float halfDuration = jumpDuration / 2;
 
-        // 前半段：跳到空中
+        // ???Σ?????????
         float elapsed = 0f;
         while (elapsed < halfDuration)
         {
@@ -254,13 +260,13 @@ public class PlayerMovement : MonoBehaviour
             float t = elapsed / halfDuration;
             transform.position = Vector3.Lerp(startPos, midPos, t);
 
-            // 轻微旋转
+            // ??????
             transform.Rotate(Vector3.up, 180f * Time.deltaTime);
 
             yield return null;
         }
 
-        // 后半段：跳下来
+        // ???Σ???????
         elapsed = 0f;
         while (elapsed < halfDuration)
         {
@@ -268,24 +274,24 @@ public class PlayerMovement : MonoBehaviour
             float t = elapsed / halfDuration;
             transform.position = Vector3.Lerp(midPos, targetTile.transform.position, t);
 
-            // 轻微旋转
+            // ??????
             transform.Rotate(Vector3.up, 180f * Time.deltaTime);
 
             yield return null;
         }
 
-        // 重置旋转
+        // ???????
         transform.rotation = Quaternion.identity;
     }
 
-    // 方案3：弹跳效果（多次弹跳完成）
+    // ????3??????Ч??????ε???????
     IEnumerator BounceJumpToTile(BoardTile targetTile)
     {
         Vector3 startPos = transform.position;
         Vector3 endPos = targetTile.transform.position;
         endPos.y = baseY;
 
-        int bounceCount = 3;  // 弹跳次数
+        int bounceCount = 3;  // ????????
         float bounceHeight = jumpHeight;
 
         for (int bounce = 0; bounce < bounceCount; bounce++)
@@ -298,10 +304,10 @@ public class PlayerMovement : MonoBehaviour
                 elapsed += Time.deltaTime;
                 float t = elapsed / bounceDuration;
 
-                // 使用正弦实现弹跳
+                // ?????????????
                 float height = Mathf.Sin(t * Mathf.PI) * bounceHeight;
 
-                // 水平移动速度不同
+                // ??????????
                 float horizontalT = (bounce + t) / bounceCount;
                 Vector3 horizontalPos = Vector3.Lerp(startPos, endPos, horizontalT);
 
@@ -314,14 +320,14 @@ public class PlayerMovement : MonoBehaviour
                 yield return null;
             }
 
-            // 每次弹跳高度递减
+            // ??ε????????
             bounceHeight *= 0.6f;
         }
 
         transform.position = endPos;
     }
 
-    // 立即移动到目标位置，无动画
+    // ????????????λ????????
     public void MoveToTileImmediate(BoardTile tile)
     {
         if (tile == null) return;
@@ -333,7 +339,7 @@ public class PlayerMovement : MonoBehaviour
         currentTile = tile;
     }
 
-    // 直接传送到指定地块
+    // ?????????????
     public void TeleportToTile(BoardTile targetTile, bool withAnimation = false)
     {
         if (targetTile == null) return;
@@ -354,7 +360,7 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator TeleportWithEffect(BoardTile targetTile)
     {
-        // 消失效果：逐渐消失
+        // ???Ч?????????
         float disappearTime = 0.3f;
         float elapsed = 0f;
         Vector3 originalScale = transform.localScale;
@@ -367,11 +373,11 @@ public class PlayerMovement : MonoBehaviour
             yield return null;
         }
 
-        // 移动到目标位置
+        // ????????λ??
         MoveToTileImmediate(targetTile);
         UpdatePlayerTileInfo(targetTile);
 
-        // 再次出现
+        // ??γ???
         elapsed = 0f;
         while (elapsed < disappearTime)
         {
@@ -393,14 +399,14 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // 跳跃时播放音效（可选）
+    // ??????????Ч???????
     void PlayJumpSound()
     {
         if (SFXManager.Instance != null)
             SFXManager.Instance.PlaySFX(SFXClip.PlayerJump);
     }
 
-    // 跳跃时播放粒子效果（可选）
+    // ????????????Ч?????????
     void PlayJumpParticle()
     {
         ParticleSystem particles = GetComponent<ParticleSystem>();
