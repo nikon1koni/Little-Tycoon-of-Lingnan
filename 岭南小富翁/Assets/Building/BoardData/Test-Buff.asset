@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d2d4598ad43c9b4c9588967c26b1eb0, type: 3}
+  m_Name: Test-Buff
+  m_EditorClassIdentifier: 
+  buildingType: 0
+  isFinalLevel: 0
+  buildingLevel: 1
+  buffValues:
+  - 0.1
+  - 0.2
+  - 0.3
+  - 0.4
+  buildingName: "\u52A0\u6210\u6D4B\u8BD5"
+  purchasePrice: 100
+  upgradePrice: 50
+  minTileScale: 1
+  maxTileScale: 3
+  requiredScale: 1
+  functionType: 1
+  baseIncome: 10
+  incomeGrowthRate: 1.2
+  enableIncomeGrowth: 0
+  buffConfigs: []
+  buffEffect: 0
+  baseBuffValue: 0.1
+  buffGrowthRate: 1.1
+  buffDuration: 0
+  mixedBaseIncome: 5
+  mixedIncomeGrowthRate: 1.1
+  diceEvenReward: 20
+  buildingIcon: {fileID: 0}
+  buildingPrefab: {fileID: 3634359620495233454, guid: bce7f01deef686c47beedd39273d1d82, type: 3}
+  nextLevelBuilding: {fileID: 11400000, guid: 927c2d5dc59b9814ba01a9a51edd1066, type: 2}
+  effectIconPrefab: {fileID: 3634359620495233454, guid: bce7f01deef686c47beedd39273d1d82, type: 3}
+  effectSound: {fileID: 8300000, guid: f674a041c334b1e40af4fcd60e27bea8, type: 3}
+  effectDuration: 1.5
+  description: "\u8FD9\u662F\u5C0F\u623F\u5B50"
