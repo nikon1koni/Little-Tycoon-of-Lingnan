@@ -593,8 +593,11 @@ public class BoardTile : MonoBehaviour
             tempLevel--;
         }
         
-        // 卖出价格 = 总投入的 50%
-        return Mathf.RoundToInt(totalInvested * 0.5f);
+        // 获取配置的卖出比例
+        float ratio = BuildingDataConfig.Instance != null ? BuildingDataConfig.Instance.GetSellPriceRatio() : 0.5f;
+        
+        // 卖出价格 = 总投入 × 配置比例
+        return Mathf.RoundToInt(totalInvested * ratio);
     }
 
     // 是否可以卖出建筑

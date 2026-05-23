@@ -426,6 +426,7 @@ MonoBehaviour:
   upgradeUIController: {fileID: 1784433109}
   sellBuildingUIController: {fileID: 1606670959}
   buildingSelectionPanelController: {fileID: 1992595236}
+  sellPriceRatio: 0.7
 --- !u!4 &41562755
 Transform:
   m_ObjectHideFlags: 0
@@ -3104,7 +3105,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &313832852
 RectTransform:
   m_ObjectHideFlags: 0

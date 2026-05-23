@@ -16,6 +16,11 @@ public class BuildingDataConfig : MonoBehaviour
     
     [Header("建筑选择面板控制器")]
     public BuildingSelectionPanelController buildingSelectionPanelController;
+    
+    [Header("卖出建筑配置")]
+    [Tooltip("卖出建筑返还金额的比例 (0.0-1.0，默认0.5即50%)")]
+    [Range(0.0f, 1.0f)]
+    public float sellPriceRatio = 0.5f;
 
     private bool isUpgradeMode = false;
     private bool isSellMode = false;
@@ -320,5 +325,23 @@ public class BuildingDataConfig : MonoBehaviour
         }
         
         return sellableBuildings;
+    }
+    
+    /// <summary>
+    /// 设置卖出建筑返还金额的比例
+    /// </summary>
+    /// <param name="ratio">比例值 (0.0-1.0)</param>
+    public void SetSellPriceRatio(float ratio)
+    {
+        sellPriceRatio = Mathf.Clamp01(ratio);
+        Debug.Log($"卖出建筑比例已设置为: {sellPriceRatio * 100f}%");
+    }
+    
+    /// <summary>
+    /// 获取当前卖出建筑返还金额的比例
+    /// </summary>
+    public float GetSellPriceRatio()
+    {
+        return sellPriceRatio;
     }
 }
