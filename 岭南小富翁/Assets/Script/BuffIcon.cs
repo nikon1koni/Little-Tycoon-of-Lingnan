@@ -49,7 +49,7 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         {
             activeTooltip = Instantiate(tooltipPrefab, UIManager.Instance.mainCanvas.transform);
             
-            // ??????????¦Ë??
+            // ??????????????
             RectTransform tooltipRect = activeTooltip.GetComponent<RectTransform>();
             RectTransform iconRect = GetComponent<RectTransform>();
             
