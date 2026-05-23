@@ -574,6 +574,64 @@ public class BoardTile : MonoBehaviour
         return false;
     }
 
+    // 获取卖出价格
+    public int GetSellPrice()
+    {
+        if (currentBuildingData == null) return 0;
+        
+        // 计算已投入的总成本
+        int totalInvested = currentBuildingData.purchasePrice;
+        
+        BuildingData nextData = currentBuildingData.nextLevelBuilding;
+        int tempLevel = buildingLevel;
+        
+        // 累加所有升级成本
+        while (nextData != null && tempLevel > 1)
+        {
+            totalInvested += nextData.purchasePrice;
+            nextData = nextData.nextLevelBuilding;
+            tempLevel--;
+        }
+        
+        // 卖出价格 = 总投入的 50%
+        return Mathf.RoundToInt(totalInvested * 0.5f);
+    }
+
+    // 是否可以卖出建筑
+    public bool CanSellBuilding(Player player)
+    {
+        if (currentBuildingData == null) return false;
+        if (ownerPlayer != player) return false;
+        return true;
+    }
+
+    // 卖出建筑
+    public bool SellBuilding(Player player)
+    {
+        if (!CanSellBuilding(player)) return false;
+
+        int sellPrice = GetSellPrice();
+        player.ReceiveCash(sellPrice);
+
+        Debug.Log($"{player.playerName} 卖出了 {tileName}，获得 {sellPrice} 金币");
+
+        // 销毁建筑模型
+        if (currentBuilding != null)
+        {
+            Destroy(currentBuilding);
+            currentBuilding = null;
+        }
+
+        // 重置建筑数据
+        currentBuildingData = null;
+        currentBuildingType = BuildingType.None;
+        buildingLevel = 0;
+        ownerPlayer = null;
+        buildingStartRound = 0;
+
+        return true;
+    }
+
     // ???Buff????
     public void ApplyBuffToPlayer(Player player)
     {

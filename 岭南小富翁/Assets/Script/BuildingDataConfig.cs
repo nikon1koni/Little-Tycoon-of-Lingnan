@@ -11,12 +11,18 @@ public class BuildingDataConfig : MonoBehaviour
     [Header("升级UI控制器")]
     public UpgradeUIController upgradeUIController;
     
+    [Header("卖出UI控制器")]
+    public SellBuildingUIController sellBuildingUIController;
+    
     [Header("建筑选择面板控制器")]
     public BuildingSelectionPanelController buildingSelectionPanelController;
 
     private bool isUpgradeMode = false;
+    private bool isSellMode = false;
     private Player upgradeModePlayer = null;
+    private Player sellModePlayer = null;
     private List<BoardTile> upgradeModeTiles = new List<BoardTile>();
+    private List<BoardTile> sellModeTiles = new List<BoardTile>();
 
     public static BuildingDataConfig Instance { get; private set; }
 
@@ -25,9 +31,19 @@ public class BuildingDataConfig : MonoBehaviour
         return isUpgradeMode;
     }
 
+    public bool IsSellModeActive()
+    {
+        return isSellMode;
+    }
+
     public Player GetUpgradeModePlayer()
     {
         return upgradeModePlayer;
+    }
+    
+    public Player GetSellModePlayer()
+    {
+        return sellModePlayer;
     }
 
     void Awake()
@@ -193,5 +209,116 @@ public class BuildingDataConfig : MonoBehaviour
         }
         
         return upgradeableBuildings;
+    }
+    
+    public void EnterSellMode(Player player)
+    {
+        if (player == null) return;
+        
+        isSellMode = true;
+        sellModePlayer = player;
+        sellModeTiles.Clear();
+        
+        if (BoardManager.Instance != null)
+        {
+            foreach (BoardTile tile in BoardManager.Instance.allTiles)
+            {
+                if (tile != null && tile.ownerPlayer == player && tile.currentBuildingData != null)
+                {
+                    AddSellTileClickHandler(tile);
+                    sellModeTiles.Add(tile);
+                }
+            }
+        }
+        
+        if (sellBuildingUIController != null)
+        {
+            sellBuildingUIController.EnterSellMode(player);
+        }
+        
+        Debug.Log($"进入卖出模式: {player.playerName}");
+    }
+    
+    private void AddSellTileClickHandler(BoardTile tile)
+    {
+        EventTrigger oldTrigger = tile.GetComponent<EventTrigger>();
+        if (oldTrigger != null)
+        {
+            Destroy(oldTrigger);
+        }
+        
+        EventTrigger trigger = tile.gameObject.AddComponent<EventTrigger>();
+        
+        EventTrigger.Entry entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.PointerClick;
+        entry.callback.AddListener((data) => OnTileClickedInSellMode(tile));
+        
+        trigger.triggers.Add(entry);
+    }
+    
+    private void RemoveSellTileClickHandlers()
+    {
+        foreach (BoardTile tile in sellModeTiles)
+        {
+            if (tile != null)
+            {
+                EventTrigger trigger = tile.GetComponent<EventTrigger>();
+                if (trigger != null)
+                {
+                    Destroy(trigger);
+                }
+            }
+        }
+        sellModeTiles.Clear();
+    }
+    
+    public void ExitSellMode()
+    {
+        if (!isSellMode) return;
+        
+        isSellMode = false;
+        sellModePlayer = null;
+        
+        RemoveSellTileClickHandlers();
+        
+        if (sellBuildingUIController != null)
+        {
+            sellBuildingUIController.ExitSellMode();
+        }
+        
+        if (buildingSelectionPanelController != null)
+        {
+            buildingSelectionPanelController.OnExitSellMode();
+        }
+        
+        Debug.Log("退出卖出模式");
+    }
+    
+    public void OnTileClickedInSellMode(BoardTile tile)
+    {
+        if (!isSellMode || sellBuildingUIController == null) return;
+        
+        Debug.Log($"卖出模式下点击了地块: {tile.tileName}");
+        sellBuildingUIController.OnTileClicked(tile);
+    }
+    
+    public List<BoardTile> GetPlayerSellableBuildings(Player player)
+    {
+        List<BoardTile> sellableBuildings = new List<BoardTile>();
+        
+        if (player == null || BoardManager.Instance == null)
+            return sellableBuildings;
+        
+        foreach (BoardTile tile in BoardManager.Instance.allTiles)
+        {
+            if (tile != null && 
+                tile.ownerPlayer == player && 
+                tile.currentBuildingData != null)
+            {
+                sellableBuildings.Add(tile);
+            }
+        }
+        
+        return sellableBuildings;
     }
 }
