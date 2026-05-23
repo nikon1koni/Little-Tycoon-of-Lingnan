@@ -1,8 +1,20 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "NewBuildingData", menuName = "Building/Building Data")]
 public class BuildingData : ScriptableObject
 {
+    [System.Serializable]
+    public class BuildingBuffConfig
+    {
+        public BuffEffect effectType = BuffEffect.IncomeMultiplier;
+        public float baseValue = 0.1f;
+        public float growthRate = 1.1f;
+        public float duration = 0f;
+        public int durationRounds = 0;
+        public bool isPermanent = true;
+    }
+
     [Header("建筑类型")]
     public BoardTile.BuildingType buildingType = BoardTile.BuildingType.None;
 
@@ -30,6 +42,10 @@ public class BuildingData : ScriptableObject
     public bool enableIncomeGrowth = false;
 
     [Header("Buff功能参数")]
+    [Tooltip("建筑提供的 Buff 效果列表")]
+    public List<BuildingBuffConfig> buffConfigs = new List<BuildingBuffConfig>();
+    
+    [Header("(旧版兼容) Buff功能参数")]
     public BuffEffect buffEffect = BuffEffect.IncomeMultiplier;
     public float baseBuffValue = 0.1f;
     public float buffGrowthRate = 1.1f;
@@ -135,7 +151,34 @@ public class BuildingData : ScriptableObject
         }
     }
 
-    // 获取Buff值
+    public List<BuildingBuffConfig> GetBuffConfigs()
+    {
+        if (buffConfigs.Count > 0)
+        {
+            return buffConfigs;
+        }
+        
+        List<BuildingBuffConfig> configs = new List<BuildingBuffConfig>();
+        if (functionType == BuildingFunctionType.Buff || functionType == BuildingFunctionType.Mixed)
+        {
+            configs.Add(new BuildingBuffConfig
+            {
+                effectType = buffEffect,
+                baseValue = baseBuffValue,
+                growthRate = buffGrowthRate,
+                duration = buffDuration,
+                isPermanent = buffDuration <= 0f
+            });
+        }
+        return configs;
+    }
+
+    public float GetBuffValue(int level, BuildingBuffConfig config)
+    {
+        return config.baseValue * Mathf.Pow(config.growthRate, level - 1);
+    }
+
+    // 获取Buff值（旧版兼容）
     public float GetBuffValue(int level)
     {
         if (functionType == BuildingFunctionType.Buff || functionType == BuildingFunctionType.Mixed)
@@ -176,22 +219,41 @@ public class BuildingData : ScriptableObject
                 break;
 
             case BuildingFunctionType.Buff:
-                desc += $"功能: 提供 {GetBuffEffectName(buffEffect)} 加成\n";
-                desc += $"Buff值: {baseBuffValue * 100}%\n";
-                if (buffDuration > 0)
+                desc += $"功能: 提供 Buff 加成\n";
+                List<BuildingBuffConfig> configs = GetBuffConfigs();
+                foreach (var config in configs)
                 {
-                    desc += $"持续时间: {buffDuration}秒";
-                }
-                else
-                {
-                    desc += "永久生效";
+                    float value = GetBuffValue(level, config);
+                    desc += $"- {GetBuffEffectName(config.effectType)}: +{value * 100:F1}%\n";
+                    if (config.isPermanent)
+                    {
+                        desc += "  (永久)\n";
+                    }
+                    else if (config.durationRounds > 0)
+                    {
+                        desc += $"  持续 {config.durationRounds} 回合\n";
+                    }
+                    else if (config.duration > 0)
+                    {
+                        desc += $"  持续 {config.duration:F1} 秒\n";
+                    }
                 }
                 break;
 
             case BuildingFunctionType.Mixed:
                 desc += $"功能: 混合(收入+Buff)\n";
                 desc += $"收入: {GetIncomeAmount(1)} 金币\n";
-                desc += $"Buff: {GetBuffEffectName(buffEffect)} {baseBuffValue * 100}%";
+                List<BuildingBuffConfig> mixedConfigs = GetBuffConfigs();
+                foreach (var config in mixedConfigs)
+                {
+                    float value = GetBuffValue(level, config);
+                    desc += $"- {GetBuffEffectName(config.effectType)}: +{value * 100:F1}%";
+                }
+                break;
+
+            case BuildingFunctionType.DiceEven:
+                desc += $"功能: 双数奖励\n";
+                desc += $"偶数骰子奖励: {diceEvenReward} 金币";
                 break;
         }
 

@@ -43,9 +43,8 @@ public class BoardTile : MonoBehaviour
     public MeshRenderer tileRenderer; // ????????
 
 
-    [Header("Buff??????")]
+    [Header("Buff?????")]
     public List<Player> buffedPlayers = new List<Player>(); // ???Buff?????
-    public float buffDuration = 0f; // Buff???????
 
     // ??????????
     public enum TileType
@@ -121,16 +120,6 @@ public class BoardTile : MonoBehaviour
             {
                 GenerateAutoIncome();
                 lastAutoIncomeTime = Time.time;
-            }
-        }
-
-        // ???Buff??????
-        if (buffDuration > 0)
-        {
-            buffDuration -= Time.deltaTime;
-            if (buffDuration <= 0)
-            {
-                ClearBuffs();
             }
         }
     }
@@ -638,76 +627,49 @@ public class BoardTile : MonoBehaviour
     // ???Buff????
     public void ApplyBuffToPlayer(Player player)
     {
-        if (currentBuildingData == null) return;
+        if (currentBuildingData == null || BuffSystem.Instance == null) return;
 
         if (currentBuildingData.functionType == BuildingData.BuildingFunctionType.Buff ||
             currentBuildingData.functionType == BuildingData.BuildingFunctionType.Mixed)
         {
-            float buffValue = currentBuildingData.GetBuffValue(buildingLevel);
-            BuildingData.BuffEffect effect = currentBuildingData.buffEffect;
-
-            switch (effect)
+            List<BuildingData.BuildingBuffConfig> configs = currentBuildingData.GetBuffConfigs();
+            
+            foreach (var config in configs)
             {
-                case BuildingData.BuffEffect.MoveSpeedBoost:
-                    player.moveSpeedMultiplier += buffValue;
-                    Debug.Log($"{player.playerName} ????????????{buffValue * 100}%");
-                    break;
-
-                case BuildingData.BuffEffect.DiceBoost:
-                    player.hasDiceBoost = true;
-                    player.diceBoostValue = Mathf.RoundToInt(buffValue);
-                    Debug.Log($"{player.playerName} ??????????+{player.diceBoostValue}");
-                    break;
-
-                case BuildingData.BuffEffect.IncomeMultiplier:
-                    player.incomeMultiplier += buffValue;
-                    Debug.Log($"{player.playerName} ??????????{buffValue * 100}%");
-                    break;
-
-                case BuildingData.BuffEffect.LuckBoost:
-                    player.luckBoost += buffValue;
-                    Debug.Log($"{player.playerName} ??????????{buffValue * 100}%");
-                    break;
+                float buffValue = currentBuildingData.GetBuffValue(buildingLevel, config);
+                string buffId = $"building_{GetInstanceID()}_{config.effectType}";
+                
+                BuffSystem.Buff buff = new BuffSystem.Buff(
+                    buffId,
+                    currentBuildingData.buildingName,
+                    config.effectType,
+                    buffValue,
+                    config.isPermanent ? 0f : config.duration,
+                    config.isPermanent ? 0 : config.durationRounds,
+                    this
+                );
+                
+                BuffSystem.Instance.AddBuff(player, buff);
+                
+                if (!buffedPlayers.Contains(player))
+                {
+                    buffedPlayers.Add(player);
+                }
             }
-
-            buffedPlayers.Add(player);
-            buffDuration = currentBuildingData.buffDuration;
         }
     }
 
     // ???Buff????
     private void ClearBuffs()
     {
-        foreach (Player player in buffedPlayers)
+        if (BuffSystem.Instance != null)
         {
-            if (currentBuildingData != null)
+            foreach (Player player in buffedPlayers)
             {
-                BuildingData.BuffEffect effect = currentBuildingData.buffEffect;
-
-                switch (effect)
-                {
-                    case BuildingData.BuffEffect.MoveSpeedBoost:
-                        player.moveSpeedMultiplier = 1.0f;
-                        break;
-
-                    case BuildingData.BuffEffect.DiceBoost:
-                        player.hasDiceBoost = false;
-                        player.diceBoostValue = 0;
-                        break;
-
-                    case BuildingData.BuffEffect.IncomeMultiplier:
-                        player.incomeMultiplier = 1.0f;
-                        break;
-
-                    case BuildingData.BuffEffect.LuckBoost:
-                        player.luckBoost = 0f;
-                        break;
-                }
+                BuffSystem.Instance.RemoveAllBuffsFromSource(player, this);
             }
         }
-
         buffedPlayers.Clear();
-        buffDuration = 0f;
     }
 
     // ???????
@@ -780,11 +742,12 @@ public class BoardTile : MonoBehaviour
                 break;
 
             case 3:
-                player.AddBuff(this);
                 Debug.Log($"{player.playerName} ??z???????????????Buff");
 
                 if (SFXManager.Instance != null)
+                {
                     SFXManager.Instance.PlaySFX(SFXClip.EventBuffActivated);
+                }
                 break;
         }
     }

@@ -1542,9 +1542,13 @@ public class UIManager : MonoBehaviour
                 }
                 
                 string multiplierInfo = "";
-                if (GameManager.Instance?.currentPlayer != null && GameManager.Instance.currentPlayer.incomeMultiplier > 1.0f)
+                if (GameManager.Instance?.currentPlayer != null && BuffSystem.Instance != null)
                 {
-                    multiplierInfo = $" (×{GameManager.Instance.currentPlayer.incomeMultiplier:F1})";
+                    float multiplier = BuffSystem.Instance.GetIncomeMultiplier(GameManager.Instance.currentPlayer);
+                    if (multiplier > 1.0f)
+                    {
+                        multiplierInfo = $" (×{multiplier:F1})";
+                    }
                 }
                 return $"每回合收入: {income} 金币{multiplierInfo}";
 
@@ -1578,9 +1582,13 @@ public class UIManager : MonoBehaviour
                 buffName = GetBuffEffectName(buildingData.buffEffect);
                 
                 string mixedMultiplierInfo = "";
-                if (GameManager.Instance?.currentPlayer != null && GameManager.Instance.currentPlayer.incomeMultiplier > 1.0f)
+                if (GameManager.Instance?.currentPlayer != null && BuffSystem.Instance != null)
                 {
-                    mixedMultiplierInfo = $" (×{GameManager.Instance.currentPlayer.incomeMultiplier:F1})";
+                    float mixedMultiplier = BuffSystem.Instance.GetIncomeMultiplier(GameManager.Instance.currentPlayer);
+                    if (mixedMultiplier > 1.0f)
+                    {
+                        mixedMultiplierInfo = $" (×{mixedMultiplier:F1})";
+                    }
                 }
                 return $"每回合: {mixedIncome} 金币{mixedMultiplierInfo} + {buffName}: +{buffValue * 100}%";
 

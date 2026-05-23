@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 public class EventEffectHandler : MonoBehaviour
 {
@@ -120,62 +119,13 @@ public class EventEffectHandler : MonoBehaviour
         }
 
         // 添加收入Buff
-        if (incomeBoostToApply > 0)
+        if (incomeBoostToApply > 0 && BuffSystem.Instance != null)
         {
-            AddIncomeBuff(player, incomeBoostToApply, buffDurationToSet);
+            BuffSystem.Buff buff = BuffSystem.Instance.CreateEventBuff(eventData, optionIndex, this);
+            BuffSystem.Instance.AddBuff(player, buff);
         }
         
         Debug.Log($"? ApplyEventEffects 执行完成！");
-    }
-
-    /// <summary>
-    /// 添加收入倍率Buff
-    /// </summary>
-    public void AddIncomeBuff(Player player, float boostMultiplier, int durationRounds)
-    {
-        if (player == null) return;
-
-        float newMultiplier = player.incomeMultiplier * (1 + boostMultiplier);
-        player.incomeMultiplier = newMultiplier;
-
-        Debug.Log($"{player.playerName} 获得收入加成Buff: ×{newMultiplier:F2} ({boostMultiplier*100:+0;-0}%)，持续{durationRounds}圈");
-
-        // 启动定时器移除Buff
-        StartCoroutine(RemoveIncomeBuffAfterRounds(player, boostMultiplier, durationRounds));
-
-        if (UIManager.Instance != null)
-        {
-            UIManager.ShowToastStatic($"获得【商誉】Buff！{durationRounds}圈内收益+{boostMultiplier*100:0}%", 3f);
-        }
-    }
-
-    /// <summary>
-    /// 在指定圈数后移除收入Buff
-    /// </summary>
-    private IEnumerator RemoveIncomeBuffAfterRounds(Player player, float addedMultiplier, int durationRounds)
-    {
-        // 等待指定圈数（每圈6次掷骰子）
-        int targetDiceRolls = durationRounds * 6;
-        int startRollCount = GameManager.Instance != null ? GameManager.Instance.DiceRollCount : 0;
-
-        while (GameManager.Instance != null && 
-               GameManager.Instance.DiceRollCount - startRollCount < targetDiceRolls)
-        {
-            yield return new WaitForSeconds(1f);
-        }
-
-        if (player != null)
-        {
-            float originalMultiplier = player.incomeMultiplier / (1 + addedMultiplier);
-            player.incomeMultiplier = originalMultiplier;
-            
-            Debug.Log($"{player.playerName} 的【商誉】Buff已过期，收入倍率恢复为 ×{originalMultiplier:F2}");
-
-            if (UIManager.Instance != null)
-            {
-                UIManager.ShowToastStatic("【商誉】Buff已失效", 2f);
-            }
-        }
     }
 
     /// <summary>

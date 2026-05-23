@@ -21,17 +21,6 @@ public class Player : MonoBehaviour
     [HideInInspector] public BoardTile currentTile;  // 当前所在格子
     [HideInInspector] public int currentTileIndex = 0;  // 当前格子索引
 
-    // Buff属性
-    [Header("Buff属性")]
-    public bool hasDiceBoost = false;
-    public int diceBoostValue = 0;
-    public float incomeMultiplier = 1.0f;
-    public float luckBoost = 0f;
-    public float moveSpeedMultiplier = 1.0f;
-
-    [Header("激活中的Buff")]
-    public List<BoardTile> activeBuffs = new List<BoardTile>();
-
     // 组件
     private PlayerMovement playerMovement;
 
@@ -193,10 +182,11 @@ public class Player : MonoBehaviour
     // 获取带有加成的骰子值
     public int GetDiceValueWithBoost(int baseValue)
     {
-        if (hasDiceBoost)
+        if (BuffSystem.Instance != null && BuffSystem.Instance.HasDiceBoost(this))
         {
-            int boostedValue = baseValue + diceBoostValue;
-            Debug.Log($"{playerName} 骰子值加成: {baseValue} + {diceBoostValue} = {boostedValue}");
+            int boost = BuffSystem.Instance.GetDiceBoostValue(this);
+            int boostedValue = baseValue + boost;
+            Debug.Log($"{playerName} 骰子值加成: {baseValue} + {boost} = {boostedValue}");
             return Mathf.Clamp(boostedValue, 1, 12); // 上限12点
         }
         return baseValue;
@@ -205,7 +195,11 @@ public class Player : MonoBehaviour
     // 获取带有倍率的收入
     public int GetIncomeWithMultiplier(int baseIncome)
     {
-        float multiplier = incomeMultiplier;
+        float multiplier = 1f;
+        if (BuffSystem.Instance != null)
+        {
+            multiplier = BuffSystem.Instance.GetIncomeMultiplier(this);
+        }
         int finalIncome = Mathf.RoundToInt(baseIncome * multiplier);
         if (multiplier > 1.0f)
         {
@@ -214,24 +208,34 @@ public class Player : MonoBehaviour
         return finalIncome;
     }
 
-    // 添加buff
-    public void AddBuff(BoardTile buffSource)
+    // 获得移动速度倍率
+    public float GetMoveSpeedMultiplier()
     {
-        if (!activeBuffs.Contains(buffSource))
+        if (BuffSystem.Instance != null)
         {
-            activeBuffs.Add(buffSource);
-            Debug.Log($"{playerName} 添加buff: {buffSource.tileName}");
+            return BuffSystem.Instance.GetMoveSpeedMultiplier(this);
         }
+        return 1f;
     }
 
-    // 移除buff
-    public void RemoveBuff(BoardTile buffSource)
+    // 获得幸运加成
+    public float GetLuckBoost()
     {
-        if (activeBuffs.Contains(buffSource))
+        if (BuffSystem.Instance != null)
         {
-            activeBuffs.Remove(buffSource);
-            Debug.Log($"{playerName} 移除buff: {buffSource.tileName}");
+            return BuffSystem.Instance.GetLuckBoost(this);
         }
+        return 0f;
+    }
+
+    // 获得防御加成
+    public float GetDefenseBoost()
+    {
+        if (BuffSystem.Instance != null)
+        {
+            return BuffSystem.Instance.GetDefenseBoost(this);
+        }
+        return 0f;
     }
 
     // 检查破产

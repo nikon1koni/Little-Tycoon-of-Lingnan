@@ -542,8 +542,15 @@ public class GameManager : MonoBehaviour
         lastDiceValue = value;
         Debug.Log($"骰子结果: {value}");
 
+        int previousRound = CurrentRound;
         diceRollCount++;
         Debug.Log($"累计掷骰次数: {diceRollCount}");
+
+        // 检测回合变化并通知 BuffSystem
+        if (CurrentRound != previousRound && BuffSystem.Instance != null)
+        {
+            BuffSystem.Instance.OnRoundChanged();
+        }
 
         UpdateUI();
 
