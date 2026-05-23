@@ -19,8 +19,8 @@ public class BoardTile : MonoBehaviour
     [Header("??????????")]
     public BuildingData currentBuildingData; // ???????????
     public BuildingType currentBuildingType = BuildingType.None;
-    public int buildingLevel = 0; // 建筑等级
-    public int buildingStartRound = 0; // 建筑建造时的回合数（6次投掷为1回合）
+    public int buildingLevel = 0; // ???????
+    public int buildingStartRound = 0; // ?????????????????6??????1????
     public GameObject currentBuilding; // ???????????
     public Player ownerPlayer; // ????????
 
@@ -398,7 +398,7 @@ public class BoardTile : MonoBehaviour
         }
     }
 
-    // 获取建筑拥有的回合数（当前回合 - 建造回合 + 1）
+    // ?????????е????????????? - ?????? + 1??
     public int GetBuildingTurnsOwned()
     {
         if (GameManager.Instance == null || currentBuildingData == null)
@@ -406,16 +406,16 @@ public class BoardTile : MonoBehaviour
             return 1;
         }
         int currentRound = GameManager.Instance.CurrentRound;
-        // 回合数 = 当前回合 - 建造回合 + 1（确保至少为1）
+        // ????? = ?????? - ?????? + 1??????????1??
         return Mathf.Max(1, currentRound - buildingStartRound + 1);
     }
 
-    // 设置建筑数据
+    // ???????????
     public void SetBuildingData(BuildingData data, int level = 1)
     {
         currentBuildingData = data;
         buildingLevel = level;
-        // 记录建筑建造时的回合数（6次投掷为1回合）
+        // ????????????????????6??????1????
         buildingStartRound = GameManager.Instance != null ? GameManager.Instance.CurrentRound : 0;
 
         if (data != null)
@@ -563,18 +563,18 @@ public class BoardTile : MonoBehaviour
         return false;
     }
 
-    // 获取卖出价格
+    // ??????????
     public int GetSellPrice()
     {
         if (currentBuildingData == null) return 0;
         
-        // 计算已投入的总成本
+        // ??????????????
         int totalInvested = currentBuildingData.purchasePrice;
         
         BuildingData nextData = currentBuildingData.nextLevelBuilding;
         int tempLevel = buildingLevel;
         
-        // 累加所有升级成本
+        // ??????????????
         while (nextData != null && tempLevel > 1)
         {
             totalInvested += nextData.purchasePrice;
@@ -582,14 +582,14 @@ public class BoardTile : MonoBehaviour
             tempLevel--;
         }
         
-        // 获取配置的卖出比例
+        // ????????????????
         float ratio = BuildingDataConfig.Instance != null ? BuildingDataConfig.Instance.GetSellPriceRatio() : 0.5f;
         
-        // 卖出价格 = 总投入 × 配置比例
+        // ??????? = ????? ?? ???????
         return Mathf.RoundToInt(totalInvested * ratio);
     }
 
-    // 是否可以卖出建筑
+    // ??????????????
     public bool CanSellBuilding(Player player)
     {
         if (currentBuildingData == null) return false;
@@ -597,7 +597,7 @@ public class BoardTile : MonoBehaviour
         return true;
     }
 
-    // 卖出建筑
+    // ????????
     public bool SellBuilding(Player player)
     {
         if (!CanSellBuilding(player)) return false;
@@ -605,16 +605,16 @@ public class BoardTile : MonoBehaviour
         int sellPrice = GetSellPrice();
         player.ReceiveCash(sellPrice);
 
-        Debug.Log($"{player.playerName} 卖出了 {tileName}，获得 {sellPrice} 金币");
+        Debug.Log($"{player.playerName} ?????? {tileName}????? {sellPrice} ???");
 
-        // 销毁建筑模型
+        // ??????????
         if (currentBuilding != null)
         {
             Destroy(currentBuilding);
             currentBuilding = null;
         }
 
-        // 重置建筑数据
+        // ???????????
         currentBuildingData = null;
         currentBuildingType = BuildingType.None;
         buildingLevel = 0;
@@ -793,7 +793,7 @@ public class BoardTile : MonoBehaviour
             if (selectedEvent != null && UIManager.Instance != null)
             {
                 UIManager.Instance.ShowEventPanel(selectedEvent, player);
-                Debug.Log($"{player.playerName} 触发事件: {selectedEvent.eventTitle}");
+                Debug.Log($"{player.playerName} ???????: {selectedEvent.eventTitle}");
                 return;
             }
         }

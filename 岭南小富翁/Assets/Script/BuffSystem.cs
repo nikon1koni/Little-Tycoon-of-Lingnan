@@ -111,14 +111,14 @@ public class BuffSystem : MonoBehaviour
         }
 
         playerBuffs[player].Add(buff);
-        Debug.Log($"{player.playerName} 获得 Buff: {BuildingData.GetBuffEffectName(buff.effectType)} +{buff.value * 100}% (来源: {buff.sourceName})");
+        Debug.Log($"{player.playerName} ??? Buff: {BuildingData.GetBuffEffectName(buff.effectType)} +{buff.value * 100}% (???: {buff.sourceName})");
 
         if (UIManager.Instance != null)
         {
-            UIManager.Instance.ShowToast($"获得 {BuildingData.GetBuffEffectName(buff.effectType)} 加成!", 2f);
+            UIManager.Instance.ShowToast($"??? {BuildingData.GetBuffEffectName(buff.effectType)} ???!", 2f);
         }
         
-        // 通知 Buff 显示更新
+        // ?? Buff ???????
         UpdateBuffDisplay();
     }
 
@@ -126,9 +126,9 @@ public class BuffSystem : MonoBehaviour
     {
         if (playerBuffs.ContainsKey(player) && playerBuffs[player].Remove(buff))
         {
-            Debug.Log($"{player.playerName} 的 Buff 过期: {BuildingData.GetBuffEffectName(buff.effectType)} (来源: {buff.sourceName})");
+            Debug.Log($"{player.playerName} ?? Buff ????: {BuildingData.GetBuffEffectName(buff.effectType)} (???: {buff.sourceName})");
             
-            // 通知 Buff 显示更新
+            // ?? Buff ???????
             UpdateBuffDisplay();
         }
     }
@@ -249,7 +249,7 @@ public class BuffSystem : MonoBehaviour
         return buffs;
     }
 
-    // 旧版兼容方法
+    // ?????????
     public Buff CreateBuildingBuff(BuildingData data, int level, BoardTile sourceTile)
     {
         string buffId = $"building_{sourceTile.GetInstanceID()}_{data.buildingName}";

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6d2d4598ad43c9b4c9588967c26b1eb0, type: 3}
-  m_Name: Test-Buff
+  m_Name: BuffTestBuilding
   m_EditorClassIdentifier: 
   buildingType: 0
   isFinalLevel: 0
@@ -20,7 +20,7 @@ MonoBehaviour:
   - 0.2
   - 0.3
   - 0.4
-  buildingName: "\u52A0\u6210\u6D4B\u8BD5"
+  buildingName: "\u6D4B\u8BD5\u52A0\u6210"
   purchasePrice: 100
   upgradePrice: 50
   minTileScale: 1
@@ -30,7 +30,13 @@ MonoBehaviour:
   baseIncome: 10
   incomeGrowthRate: 1.2
   enableIncomeGrowth: 0
-  buffConfigs: []
+  buffConfigs:
+  - effectType: 2
+    baseValue: 0.2
+    growthRate: 0
+    duration: 0
+    durationRounds: 2
+    isPermanent: 1
   buffEffect: 0
   baseBuffValue: 0.1
   buffGrowthRate: 1.1

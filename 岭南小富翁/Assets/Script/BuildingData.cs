@@ -15,65 +15,65 @@ public class BuildingData : ScriptableObject
         public bool isPermanent = true;
     }
 
-    [Header("建筑类型")]
+    [Header("????????")]
     public BoardTile.BuildingType buildingType = BoardTile.BuildingType.None;
 
-    [Header("等级系统")]
+    [Header("?????")]
     public bool isFinalLevel = false;
     public int buildingLevel = 1;
 
-    [Header("Buff数值数组")]
+    [Header("Buff???????")]
     public float[] buffValues;
 
-    [Header("建筑基本信息")]
-    public string buildingName = "建筑";
+    [Header("???????????")]
+    public string buildingName = "????";
     public int purchasePrice = 100;
     public int upgradePrice = 50;
     public int minTileScale = 1;
     public int maxTileScale = 4;
     public Scale requiredScale = Scale.Small;
 
-    [Header("建筑功能")]
+    [Header("????????")]
     public BuildingFunctionType functionType = BuildingFunctionType.Income;
 
-    [Header("收入功能参数")]
+    [Header("?????????")]
     public int baseIncome = 10;
     public float incomeGrowthRate = 1.2f;
     public bool enableIncomeGrowth = false;
 
-    [Header("Buff功能参数")]
-    [Tooltip("建筑提供的 Buff 效果列表")]
+    [Header("Buff???????")]
+    [Tooltip("???????? Buff Ч???б?")]
     public List<BuildingBuffConfig> buffConfigs = new List<BuildingBuffConfig>();
     
-    [Header("(旧版兼容) Buff功能参数")]
+    [Header("(??????) Buff???????")]
     public BuffEffect buffEffect = BuffEffect.IncomeMultiplier;
     public float baseBuffValue = 0.1f;
     public float buffGrowthRate = 1.1f;
     public float buffDuration = 10f;
 
-    [Header("混合功能参数")]
+    [Header("?????????")]
     public int mixedBaseIncome = 5;
     public float mixedIncomeGrowthRate = 1.1f;
 
-    [Header("双数奖励参数")]
-    [Tooltip("掷骰子为偶数(2,4,6)时获得的奖金")]
+    [Header("???????????")]
+    [Tooltip("??????????(2,4,6)????????")]
     public int diceEvenReward = 20;
 
-    [Header("视觉")]
+    [Header("???")]
     public Sprite buildingIcon;
     public GameObject buildingPrefab;
     public BuildingData nextLevelBuilding;
 
-    [Header("效果动画与音效")]
+    [Header("Ч??????????Ч")]
     public GameObject effectIconPrefab;
     public AudioClip effectSound;
     public float effectDuration = 1.5f;
 
-    [Header("描述")]
+    [Header("????")]
     [TextArea(3, 5)]
-    public string description = "建筑描述";
+    public string description = "????????";
 
-    // 规模枚举
+    // ??????
     public enum Scale
     {
         Small = 1,
@@ -82,16 +82,16 @@ public class BuildingData : ScriptableObject
         ExtraLarge = 4
     }
 
-    // 建筑功能类型
+    // ????????????
     public enum BuildingFunctionType
     {
         Income,
         Buff,
         Mixed,
-        DiceEven  // 双数奖励：掷骰子为偶数时获得奖金
+        DiceEven  // ??????????????????????????
     }
 
-    // Buff效果枚举
+    // BuffЧ?????
     public enum BuffEffect
     {
         MoveSpeedBoost,
@@ -102,7 +102,7 @@ public class BuildingData : ScriptableObject
         AllIncomeBoost
     }
 
-    // 获取收入金额（按建筑等级）
+    // ????????????????????
     public int GetIncomeAmount(int level)
     {
         switch (functionType)
@@ -118,12 +118,12 @@ public class BuildingData : ScriptableObject
         }
     }
 
-        // 获取收入金额（按拥有回合数）
+        // ?????????????л??????
     public int GetIncomeAmountByTurns(int turns)
     {
         if (!enableIncomeGrowth)
         {
-            // 不启用成长，直接返回基础收入
+            // ?????ó?????????????????
             switch (functionType)
             {
                 case BuildingFunctionType.Income:
@@ -135,7 +135,7 @@ public class BuildingData : ScriptableObject
             }
         }
 
-        // 启用成长，按回合数计算：base income * Income Growth Rate * (回合数 - 1)
+        // ???ó???????????????base income * Income Growth Rate * (????? - 1)
         switch (functionType)
         {
             case BuildingFunctionType.Income:
@@ -178,7 +178,7 @@ public class BuildingData : ScriptableObject
         return config.baseValue * Mathf.Pow(config.growthRate, level - 1);
     }
 
-    // 获取Buff值（旧版兼容）
+    // ???Buff??????????
     public float GetBuffValue(int level)
     {
         if (functionType == BuildingFunctionType.Buff || functionType == BuildingFunctionType.Mixed)
@@ -188,38 +188,38 @@ public class BuildingData : ScriptableObject
         return 0f;
     }
 
-    // 计算收入
+    // ????????
     private int CalculateIncome(int baseAmount, float growthRate, int level)
     {
         if (level <= 1) return baseAmount;
         return Mathf.RoundToInt(baseAmount * Mathf.Pow(growthRate, level - 1));
     }
 
-    // 检查地块规模是否匹配
+    // ?????????????
     public bool CheckTileScale(int tileScale)
     {
         return tileScale >= minTileScale && tileScale <= maxTileScale;
     }
 
-    // 获取建筑描述
+    // ???????????
     public string GetDescription(int level = 1)
     {
         string desc = $"{buildingName}\n";
-        desc += $"价格: {purchasePrice}金币\n";
-        desc += $"规模要求: {minTileScale}-{maxTileScale}\n";
+        desc += $"???: {purchasePrice}???\n";
+        desc += $"??????: {minTileScale}-{maxTileScale}\n";
 
         switch (functionType)
         {
             case BuildingFunctionType.Income:
-                desc += $"功能: 每回合收入 {GetIncomeAmount(1)} 金币\n";
+                desc += $"????: ???????? {GetIncomeAmount(1)} ???\n";
                 if (level > 1)
                 {
-                    desc += $"当前等级({level})收入: {GetIncomeAmount(level)} 金币";
+                    desc += $"??????({level})????: {GetIncomeAmount(level)} ???";
                 }
                 break;
 
             case BuildingFunctionType.Buff:
-                desc += $"功能: 提供 Buff 加成\n";
+                desc += $"????: ?? Buff ???\n";
                 List<BuildingBuffConfig> configs = GetBuffConfigs();
                 foreach (var config in configs)
                 {
@@ -227,22 +227,22 @@ public class BuildingData : ScriptableObject
                     desc += $"- {GetBuffEffectName(config.effectType)}: +{value * 100:F1}%\n";
                     if (config.isPermanent)
                     {
-                        desc += "  (永久)\n";
+                        desc += "  (????)\n";
                     }
                     else if (config.durationRounds > 0)
                     {
-                        desc += $"  持续 {config.durationRounds} 回合\n";
+                        desc += $"  ???? {config.durationRounds} ???\n";
                     }
                     else if (config.duration > 0)
                     {
-                        desc += $"  持续 {config.duration:F1} 秒\n";
+                        desc += $"  ???? {config.duration:F1} ??\n";
                     }
                 }
                 break;
 
             case BuildingFunctionType.Mixed:
-                desc += $"功能: 混合(收入+Buff)\n";
-                desc += $"收入: {GetIncomeAmount(1)} 金币\n";
+                desc += $"????: ???(????+Buff)\n";
+                desc += $"????: {GetIncomeAmount(1)} ???\n";
                 List<BuildingBuffConfig> mixedConfigs = GetBuffConfigs();
                 foreach (var config in mixedConfigs)
                 {
@@ -252,8 +252,8 @@ public class BuildingData : ScriptableObject
                 break;
 
             case BuildingFunctionType.DiceEven:
-                desc += $"功能: 双数奖励\n";
-                desc += $"偶数骰子奖励: {diceEvenReward} 金币";
+                desc += $"????: ???????\n";
+                desc += $"??????????: {diceEvenReward} ???";
                 break;
         }
 
@@ -265,18 +265,18 @@ public class BuildingData : ScriptableObject
         return desc;
     }
 
-    // 获取Buff效果名称
+    // ???BuffЧ??????
     public static string GetBuffEffectName(BuffEffect effect)
     {
         switch (effect)
         {
-            case BuffEffect.MoveSpeedBoost: return "移动速度";
-            case BuffEffect.DiceBoost: return "骰子加成";
-            case BuffEffect.IncomeMultiplier: return "收入倍率";
-            case BuffEffect.DefenseBoost: return "防御加成";
-            case BuffEffect.LuckBoost: return "幸运加成";
-            case BuffEffect.AllIncomeBoost: return "全收入加成";
-            default: return "未知效果";
+            case BuffEffect.MoveSpeedBoost: return "??????";
+            case BuffEffect.DiceBoost: return "??????";
+            case BuffEffect.IncomeMultiplier: return "??????";
+            case BuffEffect.DefenseBoost: return "???????";
+            case BuffEffect.LuckBoost: return "??????";
+            case BuffEffect.AllIncomeBoost: return "???????";
+            default: return "δ?Ч??";
         }
     }
 }

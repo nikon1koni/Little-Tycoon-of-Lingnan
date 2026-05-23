@@ -6,12 +6,12 @@ public class BuffDisplayManager : MonoBehaviour
 {
     public static BuffDisplayManager Instance { get; private set; }
     
-    [Header("Buff 显示设置")]
+    [Header("Buff ???????")]
     public GameObject buffIconPrefab;
     public Transform buffContainer;
     public GameObject buffTooltipPrefab;
     
-    [Header("Buff 图标资源")]
+    [Header("Buff ??????")]
     public Sprite moveSpeedIcon;
     public Sprite diceBoostIcon;
     public Sprite incomeMultiplierIcon;
@@ -42,7 +42,7 @@ public class BuffDisplayManager : MonoBehaviour
     
     private void Update()
     {
-        // 每帧检查是否需要更新显示
+        // ??????????????????
         CheckForUpdate();
     }
     

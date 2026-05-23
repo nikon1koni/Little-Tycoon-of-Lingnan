@@ -26,6 +26,7 @@ MonoBehaviour:
   baseIncome: 10
   incomeGrowthRate: 1.2
   enableIncomeGrowth: 0
+  buffConfigs: []
   buffEffect: 0
   baseBuffValue: 0.1
   buffGrowthRate: 1.1
@@ -34,9 +35,9 @@ MonoBehaviour:
   mixedIncomeGrowthRate: 1.1
   diceEvenReward: 20
   buildingIcon: {fileID: 0}
-  buildingPrefab: {fileID: 0}
+  buildingPrefab: {fileID: 3634359620495233454, guid: bce7f01deef686c47beedd39273d1d82, type: 3}
   nextLevelBuilding: {fileID: 0}
-  effectIconPrefab: {fileID: 0}
+  effectIconPrefab: {fileID: 3634359620495233454, guid: bce7f01deef686c47beedd39273d1d82, type: 3}
   effectSound: {fileID: 0}
   effectDuration: 1.5
   description: "\u5EFA\u7B51\u63CF\u8FF0"

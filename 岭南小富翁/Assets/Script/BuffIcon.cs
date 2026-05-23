@@ -5,11 +5,11 @@ using TMPro;
 
 public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    [Header("UI 组件")]
+    [Header("UI ???")]
     public Image iconImage;
     public TextMeshProUGUI stackText;
     
-    [Header("Buff 详情提示面板")]
+    [Header("Buff ??????????")]
     public GameObject tooltipPrefab;
     private GameObject activeTooltip;
     
@@ -49,7 +49,7 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         {
             activeTooltip = Instantiate(tooltipPrefab, UIManager.Instance.mainCanvas.transform);
             
-            // 设置提示面板位置
+            // ??????????λ??
             RectTransform tooltipRect = activeTooltip.GetComponent<RectTransform>();
             RectTransform iconRect = GetComponent<RectTransform>();
             
@@ -65,7 +65,7 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             
             tooltipRect.localPosition = localPoint + new Vector2(0, 60);
             
-            // 设置提示文本
+            // ??????????
             TextMeshProUGUI tooltipText = activeTooltip.GetComponentInChildren<TextMeshProUGUI>();
             if (tooltipText != null)
             {
@@ -94,19 +94,19 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         string description = "";
         description += $"<b>{BuildingData.GetBuffEffectName(currentBuff.effectType)}</b>\n";
         description += $"+{currentBuff.value * 100:F1}%\n";
-        description += $"来源: {currentBuff.sourceName}\n";
+        description += $"???: {currentBuff.sourceName}\n";
         
         if (currentBuff.isPermanent)
         {
-            description += "<color=green>永久</color>";
+            description += "<color=green>????</color>";
         }
         else if (currentBuff.useRoundTimer)
         {
-            description += $"剩余 {currentBuff.remainingRounds} 回合";
+            description += $"??? {currentBuff.remainingRounds} ???";
         }
         else
         {
-            description += $"剩余 {currentBuff.remainingTime:F1} 秒";
+            description += $"??? {currentBuff.remainingTime:F1} ??";
         }
         
         return description;

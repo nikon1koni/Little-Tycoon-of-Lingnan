@@ -540,13 +540,13 @@ public class GameManager : MonoBehaviour
     public void OnDiceRolled(int value)
     {
         lastDiceValue = value;
-        Debug.Log($"骰子结果: {value}");
+        Debug.Log($"??????: {value}");
 
         int previousRound = CurrentRound;
         diceRollCount++;
-        Debug.Log($"累计掷骰次数: {diceRollCount}");
+        Debug.Log($"???????????: {diceRollCount}");
 
-        // 检测回合变化并通知 BuffSystem
+        // ?????仯???? BuffSystem
         if (CurrentRound != previousRound && BuffSystem.Instance != null)
         {
             BuffSystem.Instance.OnRoundChanged();
@@ -559,33 +559,33 @@ public class GameManager : MonoBehaviour
             uiManager.UpdatePressureSystemUI();
         }
 
-        // ? 新增：检测双数建筑并发放奖金
+        // ? ?????????????????????????
         CheckDiceEvenBuildings(value);
 
         StartMovePlayer();
     }
 
     /// <summary>
-    /// 检测双数建筑并发放奖金
+    /// ???????????????????
     /// </summary>
     private void CheckDiceEvenBuildings(int diceValue)
     {
-        // 只检测偶数（2, 4, 6）
+        // ?????????2, 4, 6??
         if (diceValue % 2 != 0) return;
 
         if (currentPlayer == null) return;
 
-        Debug.Log($"? 掷出偶数 {diceValue}！检查双数建筑...");
+        Debug.Log($"? ??????? {diceValue}????????????...");
 
         int totalReward = 0;
         int buildingCount = 0;
 
-        // 遍历玩家所有拥有的地产（带建筑的）
+        // ?????????????е??????????????
         foreach (BoardTile property in currentPlayer.ownedProperties)
         {
             if (property == null || property.currentBuildingData == null) continue;
 
-            // 检查是否是双数类型建筑
+            // ??????????????????
             if (property.currentBuildingData.functionType == BuildingData.BuildingFunctionType.DiceEven)
             {
                 int reward = property.currentBuildingData.diceEvenReward;
@@ -593,14 +593,14 @@ public class GameManager : MonoBehaviour
                 totalReward += reward;
                 buildingCount++;
 
-                Debug.Log($"? {property.tileName} ({property.currentBuildingData.buildingName}) 发放奖金: {reward} 金币");
+                Debug.Log($"? {property.tileName} ({property.currentBuildingData.buildingName}) ???????: {reward} ???");
             }
         }
 
-        // 显示结果提示
+        // ?????????
         if (totalReward > 0 && uiManager != null)
         {
-            string message = $"? 掷出偶数！{buildingCount}个双数建筑共获得 {totalReward} 金币";
+            string message = $"? ?????????{buildingCount}?????????????? {totalReward} ???";
             uiManager.ShowToast(message, 3f);
             Debug.Log(message);
         }
@@ -1328,13 +1328,13 @@ public class GameManager : MonoBehaviour
         
         UpdateUI();
         
-        // 重新开始后，等玩家回到起始地块再弹出建筑面板
+        // ????????????????????????????????
         StartCoroutine(DelayedShowBuildingPanelAfterRestart());
         
-        Debug.Log("游戏重新初始化完成");
+        Debug.Log("??????????????");
     }
     
-    // 重新开始后延迟显示建筑面板（等玩家移动到起点后）
+    // ????????????????????壨??????????????
     IEnumerator DelayedShowBuildingPanelAfterRestart()
     {
         yield return new WaitForSeconds(2f);
@@ -1348,7 +1348,7 @@ public class GameManager : MonoBehaviour
         
         if (isOnStart)
         {
-            Debug.Log($"{currentPlayer.playerName} 已回到起始点，弹出建筑选择面板");
+            Debug.Log($"{currentPlayer.playerName} ???????????????????????");
             
             currentState = GameState.BuildingSelection;
             isPlayerTurn = false;
