@@ -10,6 +10,11 @@ public class PlayerMovement : MonoBehaviour
     public float landingDelay = 0.1f;    // ??????????
     public float heightOffset = 0.375f;   // ?????????????????????????+?????????
 
+    [Header("跳跃动画速度")]
+    [Tooltip("跳跃动画速度倍率（1为正常速度）")]
+    [Range(0.5f, 3f)]
+    public float jumpSpeedMultiplier = 1.0f;
+
     [Header("??")]
     [HideInInspector] public bool isMoving = false;
     [HideInInspector] public BoardTile currentTile;
@@ -210,7 +215,7 @@ public class PlayerMovement : MonoBehaviour
         endPos.y = baseY;
 
         // ???public??jumpDuration???? (?????0.5f)
-        float duration = jumpDuration;  // ?????ò??????????????
+        float duration = jumpDuration / jumpSpeedMultiplier;  // ?????ò??????????????
         float elapsed = 0f;
 
         while (elapsed < duration)
@@ -414,5 +419,18 @@ public class PlayerMovement : MonoBehaviour
         {
             particles.Play();
         }
+    }
+
+    // 设置跳跃动画速度倍率
+    public void SetJumpSpeedMultiplier(float multiplier)
+    {
+        jumpSpeedMultiplier = Mathf.Clamp(multiplier, 0.5f, 3f);
+        Debug.Log($"PlayerMovement: ?????????????={jumpSpeedMultiplier}x");
+    }
+
+    // 获取跳跃动画速度倍率
+    public float GetJumpSpeedMultiplier()
+    {
+        return jumpSpeedMultiplier;
     }
 }

@@ -59,7 +59,7 @@ public class SFXManager : MonoBehaviour
 
     [Header("对象池")]
     [Tooltip("AudioSource对象池大小")]
-    public int poolSize = 8;
+    public int poolSize = 16;
 
     private Dictionary<SFXClip, AudioClip> clipCache = new Dictionary<SFXClip, AudioClip>();
     private List<AudioSource> audioSources = new List<AudioSource>();
@@ -204,6 +204,28 @@ public class SFXManager : MonoBehaviour
             SFXCategory category = GetCategoryForClip(clip);
             float finalVolume = GetCategoryVolume(category) * volumeScale;
             AudioSource.PlayClipAtPoint(audioClip, position, finalVolume);
+        }
+    }
+
+    public void PlayCustomClipAtPosition(AudioClip clip, Vector3 position, float volumeScale = 1f)
+    {
+        if (clip != null)
+        {
+            float finalVolume = masterVolume * eventVolume * volumeScale;
+            AudioSource.PlayClipAtPoint(clip, position, finalVolume);
+        }
+    }
+
+    public void PlayCustomClip(AudioClip clip, float volumeScale = 1f)
+    {
+        if (clip != null)
+        {
+            AudioSource source = GetAvailableSource();
+            float finalVolume = masterVolume * eventVolume * volumeScale;
+            source.clip = clip;
+            source.volume = finalVolume;
+            source.Play();
+            Debug.Log($"SFXManager: ??????????");
         }
     }
 
