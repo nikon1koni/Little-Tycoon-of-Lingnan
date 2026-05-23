@@ -3549,6 +3549,7 @@ MonoBehaviour:
   speedMultiplierPerEffect: 1.15
   maxSpeedMultiplier: 3
   effectSoundVolume: 1
+  enableDebugLog: 0
 --- !u!4 &378509887
 Transform:
   m_ObjectHideFlags: 0

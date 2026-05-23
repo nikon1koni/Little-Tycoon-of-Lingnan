@@ -37,28 +37,28 @@ public class SFXManager : MonoBehaviour
 {
     public static SFXManager Instance;
 
-    [Header("音效配置")]
+    [Header("??Ч????")]
     public SFXConfig config;
 
-    [Header("音量控制")]
+    [Header("????????")]
     [Range(0f, 1f)]
-    [Tooltip("总音量")]
+    [Tooltip("??????")]
     public float masterVolume = 1f;
     [Range(0f, 1f)]
-    [Tooltip("UI音效音量")]
+    [Tooltip("UI??Ч????")]
     public float uiVolume = 0.8f;
     [Range(0f, 1f)]
-    [Tooltip("角色音效音量")]
+    [Tooltip("?????Ч????")]
     public float characterVolume = 0.7f;
     [Range(0f, 1f)]
-    [Tooltip("事件音效音量")]
+    [Tooltip("?????Ч????")]
     public float eventVolume = 0.7f;
     [Range(0f, 1f)]
-    [Tooltip("骰子音效音量")]
+    [Tooltip("??????Ч????")]
     public float diceVolume = 0.8f;
 
-    [Header("对象池")]
-    [Tooltip("AudioSource对象池大小")]
+    [Header("?????")]
+    [Tooltip("AudioSource??????С")]
     public int poolSize = 16;
 
     private Dictionary<SFXClip, AudioClip> clipCache = new Dictionary<SFXClip, AudioClip>();
@@ -128,7 +128,7 @@ public class SFXManager : MonoBehaviour
     {
         if (config == null)
         {
-            Debug.LogWarning("SFXManager: 未配置SFXConfig，音效将无法播放");
+            Debug.LogWarning("SFXManager: δ????SFXConfig????Ч?????????");
             return;
         }
 
@@ -143,7 +143,7 @@ public class SFXManager : MonoBehaviour
             }
         }
 
-        Debug.Log($"SFXManager: 已加载 {clipCache.Count} 个音效");
+        Debug.Log($"SFXManager: ????? {clipCache.Count} ????Ч");
     }
 
     AudioSource GetAvailableSource()

@@ -59,14 +59,14 @@ public class GameManager : MonoBehaviour
     public bool enableBackgroundMusic = true;
     public MusicManager musicManager;
 
-    [Header("音效")]
+    [Header("??Ч")]
     public SFXConfig sfxConfig;
     public bool enableSFX = true;
 
-    [Header("骰子控制")]
-    [Range(0f, 3f)]
-    public float diceCooldownTime = 0f; // 骰子冷却时间（秒）
-    private float lastDiceRollTime = -100f; // 上次掷骰子时间
+    [Header("???????")]
+    [Range(0f, 10f)]
+    public float diceCooldownTime = 0f; // ????????????
+    private float lastDiceRollTime = -1000f; // ???????????????????????
 
     // ????????
     public enum GameState
@@ -545,7 +545,7 @@ public class GameManager : MonoBehaviour
     public void OnDiceRolled(int value)
     {
         lastDiceValue = value;
-        lastDiceRollTime = Time.time; // 记录掷骰子时间
+        lastDiceRollTime = Time.time; // ????????????
         Debug.Log($"??????: {value}");
 
         int previousRound = CurrentRound;
@@ -698,7 +698,7 @@ public class GameManager : MonoBehaviour
     // === ???3: ??????????????? ===
     public bool CanRollDice()
     {
-        // 检查冷却时间
+        // ?????????
         float timeSinceLastRoll = Time.time - lastDiceRollTime;
         bool cooldownFinished = timeSinceLastRoll >= diceCooldownTime;
         
@@ -1310,6 +1310,9 @@ public class GameManager : MonoBehaviour
         basePressureCost = 50f;
         
         // ???????????
+        ResetDiceCooldown();
+        
+        // ???????????
         ClearAllBuildings();
         startPurchaseTileCache = null;
         
@@ -1547,7 +1550,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // 设置骰子滚动速度倍率
+    // ?????????????????
     public void SetDiceRollSpeed(float multiplier)
     {
         if (dice3DController != null)
@@ -1556,28 +1559,43 @@ public class GameManager : MonoBehaviour
         }
         if (diceController != null)
         {
-            // 如果也有DiceController，可以在这里添加支持
+            // ??????DiceController???????????????????
         }
-        Debug.Log($"GameManager: 骰子滚动速度设置为 {multiplier}x");
+        Debug.Log($"GameManager: ??????????????? {multiplier}x");
     }
 
-    // 设置骰子冷却时间
+    // ??????????????
     public void SetDiceCooldown(float cooldownSeconds)
     {
         diceCooldownTime = Mathf.Max(0f, cooldownSeconds);
-        Debug.Log($"GameManager: 骰子冷却时间设置为 {diceCooldownTime}秒");
+        Debug.Log($"GameManager: ??????????????? {diceCooldownTime}??");
     }
 
-    // 获取骰子冷却时间
+    // ?????????????
     public float GetDiceCooldown()
     {
         return diceCooldownTime;
     }
 
-    // 获取骰子剩余冷却时间
+    // ????????????????
     public float GetDiceCooldownRemaining()
     {
         float timeSinceLastRoll = Time.time - lastDiceRollTime;
         return Mathf.Max(0f, diceCooldownTime - timeSinceLastRoll);
+    }
+
+    // ?????????????????
+    public void ResetDiceCooldown()
+    {
+        lastDiceRollTime = -1000f;
+        Debug.Log("GameManager: ???????????????????");
+    }
+
+    // ???????????
+    public void DisableDiceCooldown()
+    {
+        diceCooldownTime = 0f;
+        ResetDiceCooldown();
+        Debug.Log("GameManager: ????????????");
     }
 }

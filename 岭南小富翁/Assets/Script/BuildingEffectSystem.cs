@@ -26,10 +26,14 @@ public class BuildingEffectSystem : MonoBehaviour
     [Tooltip("????????????????")]
     public float maxSpeedMultiplier = 3.0f;
 
-    [Header("音效设置")]
-    [Tooltip("音效音量（0-1）")]
+    [Header("??Ч????")]
+    [Tooltip("??Ч??????0-1??")]
     [Range(0f, 1f)]
     public float effectSoundVolume = 0.7f;
+
+    [Header("Debug????")]
+    [Tooltip("????????????Debug????")]
+    public bool enableDebugLog = true;
 
     private Queue<EffectRequest> effectQueue = new Queue<EffectRequest>();
     private bool isPlayingEffect = false;
@@ -58,33 +62,58 @@ public class BuildingEffectSystem : MonoBehaviour
         }
     }
 
+    // Debug????
+    private void DebugLog(string message)
+    {
+        if (enableDebugLog)
+        {
+            Debug.Log(message);
+        }
+    }
+
+    private void DebugLogWarning(string message)
+    {
+        if (enableDebugLog)
+        {
+            Debug.LogWarning(message);
+        }
+    }
+
+    private void DebugLogError(string message)
+    {
+        if (enableDebugLog)
+        {
+            Debug.LogError(message);
+        }
+    }
+
     public void QueueBuildingEffect(Transform buildingTransform, BuildingData buildingData)
     {
         if (buildingData == null)
         {
-            Debug.LogWarning("QueueBuildingEffect: buildingData ???");
+            DebugLogWarning("QueueBuildingEffect: buildingData ???");
             return;
         }
 
         if (buildingTransform == null)
         {
-            Debug.LogWarning($"QueueBuildingEffect: buildingTransform ??? for {buildingData.buildingName}");
+            DebugLogWarning($"QueueBuildingEffect: buildingTransform ??? for {buildingData.buildingName}");
             return;
         }
 
         // ??? BuildingEffectSystem ??????
         if (Instance == null)
         {
-            Debug.LogWarning("BuildingEffectSystem.Instance ?????????????...");
+            DebugLogWarning("BuildingEffectSystem.Instance ?????????????...");
             BuildingEffectSystem existing = FindObjectOfType<BuildingEffectSystem>();
             if (existing != null)
             {
                 Instance = existing;
-                Debug.Log("????????? BuildingEffectSystem");
+                DebugLog("????????? BuildingEffectSystem");
             }
             else
             {
-                Debug.LogError("?????? BuildingEffectSystem??????????????? BuildingEffectSystem ????");
+                DebugLogError("?????? BuildingEffectSystem??????????????? BuildingEffectSystem ????");
                 return;
             }
         }
@@ -92,11 +121,11 @@ public class BuildingEffectSystem : MonoBehaviour
         bool hasEffect = buildingData.effectIconPrefab != null || buildingData.effectSound != null;
         if (!hasEffect)
         {
-            Debug.Log($"QueueBuildingEffect: {buildingData.buildingName} ??????? effectIconPrefab ?? effectSound");
+            DebugLog($"QueueBuildingEffect: {buildingData.buildingName} ??????? effectIconPrefab ?? effectSound");
             return;
         }
 
-        Debug.Log($"QueueBuildingEffect: ???? {buildingData.buildingName} ??????????");
+        DebugLog($"QueueBuildingEffect: ???? {buildingData.buildingName} ??????????");
 
         effectQueue.Enqueue(new EffectRequest
         {
@@ -120,7 +149,7 @@ public class BuildingEffectSystem : MonoBehaviour
             effectIndex++;
             
             float currentSpeed = GetCurrentSpeed(effectIndex);
-            Debug.Log($"ProcessEffectQueue: ?????????{effectIndex}, ????={currentSpeed:F2}x");
+            DebugLog($"ProcessEffectQueue: ?????????{effectIndex}, ????={currentSpeed:F2}x");
 
             EffectRequest request = effectQueue.Dequeue();
             yield return StartCoroutine(PlayBuildingEffect(request.buildingTransform, request.buildingData, currentSpeed));
@@ -165,7 +194,7 @@ public class BuildingEffectSystem : MonoBehaviour
 
         if (buildingData.effectSound != null)
         {
-            Debug.Log($"BuildingEffectSystem: ?????????? {buildingData.buildingName}");
+            DebugLog($"BuildingEffectSystem: ?????????? {buildingData.buildingName}");
             if (SFXManager.Instance != null)
             {
                 SFXManager.Instance.PlayCustomClip(buildingData.effectSound, effectSoundVolume);
@@ -177,7 +206,7 @@ public class BuildingEffectSystem : MonoBehaviour
         }
         else if (SFXManager.Instance != null)
         {
-            Debug.Log($"BuildingEffectSystem: ?????????? {buildingData.buildingName}");
+            DebugLog($"BuildingEffectSystem: ?????????? {buildingData.buildingName}");
             SFXManager.Instance.PlaySFX(SFXClip.EventBuffActivated, effectSoundVolume);
         }
 
@@ -237,42 +266,56 @@ public class BuildingEffectSystem : MonoBehaviour
     public void SetAnimationSpeed(float speed)
     {
         animationSpeed = Mathf.Max(0.1f, speed);
-        Debug.Log($"BuildingEffectSystem: ?????????????={animationSpeed}x");
+        DebugLog($"BuildingEffectSystem: ?????????????={animationSpeed}x");
     }
 
     public void SetNormalSpeedCount(int count)
     {
         normalSpeedCount = Mathf.Max(0, count);
-        Debug.Log($"BuildingEffectSystem: ????????????????={normalSpeedCount}");
+        DebugLog($"BuildingEffectSystem: ????????????????={normalSpeedCount}");
     }
 
     public void SetSpeedMultiplierPerEffect(float multiplier)
     {
         speedMultiplierPerEffect = Mathf.Max(1.0f, multiplier);
-        Debug.Log($"BuildingEffectSystem: ?????????????????={speedMultiplierPerEffect}");
+        DebugLog($"BuildingEffectSystem: ?????????????????={speedMultiplierPerEffect}");
     }
 
     public void SetMaxSpeedMultiplier(float multiplier)
     {
         maxSpeedMultiplier = Mathf.Max(1.0f, multiplier);
-        Debug.Log($"BuildingEffectSystem: ?????????????????={maxSpeedMultiplier}");
+        DebugLog($"BuildingEffectSystem: ?????????????????={maxSpeedMultiplier}");
     }
 
     public void SetDelayBetweenEffects(float delay)
     {
         delayBetweenEffects = Mathf.Max(0f, delay);
-        Debug.Log($"BuildingEffectSystem: ??????????????={delayBetweenEffects}秒");
+        DebugLog($"BuildingEffectSystem: ??????????????={delayBetweenEffects}??");
     }
 
     public void SetEffectSoundVolume(float volume)
     {
         effectSoundVolume = Mathf.Clamp01(volume);
-        Debug.Log($"BuildingEffectSystem: ??????????????={effectSoundVolume}");
+        DebugLog($"BuildingEffectSystem: ??????????????={effectSoundVolume}");
     }
 
     public void ClearEffectQueue()
     {
         effectQueue.Clear();
-        Debug.Log($"BuildingEffectSystem: ?????????????");
+        DebugLog($"BuildingEffectSystem: ?????????????");
+    }
+
+    // Debug?????????
+    public void SetDebugLogEnabled(bool enabled)
+    {
+        enableDebugLog = enabled;
+        string status = enabled ? "????" : "????";
+        Debug.Log($"BuildingEffectSystem: Debug????{status}");
+    }
+
+    // ????Debug????
+    public bool IsDebugLogEnabled()
+    {
+        return enableDebugLog;
     }
 }
