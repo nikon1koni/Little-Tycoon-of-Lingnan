@@ -4,29 +4,29 @@ using System.Collections;
 
 public class Dice3DController : MonoBehaviour
 {
-    [Header("3D???????")]
-    public GameObject dice3D; // pCube1????
+    [Header("3D骰子模型")]
+    public GameObject dice3D; // pCube1物体
 
-    [Header("UI????")]
+    [Header("UI元素")]
     public Button rollDiceButton;
     public Text diceResultText;
 
-    [Header("???????")]
-    public float rotationSpeed = 1200f; // ????????? (??/??)
-    public float rollDuration = 2f;     // ???????? (??)
+    [Header("滚动参数")]
+    public float rotationSpeed = 1200f; // 旋转速度 (度/秒)
+    public float rollDuration = 2f;     // 滚动时长 (秒)
 
-    [Header("??????")]
+    [Header("速度控制")]
     [Range(0.5f, 3f)]
-    public float rollSpeedMultiplier = 1f; // ?????????????
+    public float rollSpeedMultiplier = 1f; // 整体滚动速度倍率
 
-    [Header("??Ч")]
+    [Header("音效")]
     public AudioClip rollSound;
     public AudioClip stopSound;
 
-    [Header("????")]
+    [Header("引用")]
     public GameManager gameManager;
 
-    [Header("??????????? (????DiceFaceCalibratorУ?)")]
+    [Header("各个面的旋转角 (可以用DiceFaceCalibrator设置)")]
     public Vector3 face1Rotation = Vector3.zero;
     public Vector3 face2Rotation = new Vector3(90, 0, 0);
     public Vector3 face3Rotation = new Vector3(0, 0, 90);
@@ -34,7 +34,7 @@ public class Dice3DController : MonoBehaviour
     public Vector3 face5Rotation = new Vector3(-90, 0, 0);
     public Vector3 face6Rotation = new Vector3(0, 180, 0);
 
-    [Header("???????")]
+    [Header("编辑器预览")]
     [Range(1, 6)]
     public int previewFace = 1;
 
@@ -93,7 +93,7 @@ public class Dice3DController : MonoBehaviour
         }
         else
         {
-            Debug.Log("????????????У??????...");
+            Debug.Log("骰子正在滚动中，请稍等...");
         }
     }
 
@@ -111,39 +111,39 @@ public class Dice3DController : MonoBehaviour
             SFXManager.Instance.PlaySFX(SFXClip.DiceRoll);
 
         currentDiceValue = Random.Range(1, 7);
-        Debug.Log($"????????: {currentDiceValue}??");
+        Debug.Log($"骰子结果: {currentDiceValue}点");
 
         Quaternion targetRotation = faceRotations[currentDiceValue];
         
-        // ????????????????????????????????б???????
+        // 生成随机旋转轴，让每次滚动看起来不同
         Vector3 rotationAxis = Random.onUnitSphere.normalized;
         
         float elapsed = 0f;
         Quaternion startRotation = dice3D.transform.localRotation;
-        float adjustedDuration = rollDuration / rollSpeedMultiplier; // ?????????
+        float adjustedDuration = rollDuration / rollSpeedMultiplier; // 调整时长
 
         while (elapsed < adjustedDuration)
         {
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / adjustedDuration);
             
-            // ?????????????????????????????????
-            // ?????speed = initialSpeed * e^(-k * t^2) ???? k ?????????
+            // 使用指数衰减曲线让旋转速度先快后慢
+            // 公式 speed = initialSpeed * e^(-k * t^2) 其中 k 控制衰减速度
             float speedCurve = Mathf.Exp(-2.5f * t * t);
             float currentSpeed = rotationSpeed * speedCurve * rollSpeedMultiplier;
             
-            // ?????????????
+            // 计算本帧旋转角度
             float rotationThisFrame = currentSpeed * Time.deltaTime;
             
-            // ?????????????????????
+            // 应用旋转，使骰子看起来在随机滚动
             dice3D.transform.localRotation *= 
                 Quaternion.AngleAxis(rotationThisFrame, rotationAxis);
             
             yield return null;
         }
         
-        // ??????????????λ????????????????????
-        float smoothTime = 0.4f / rollSpeedMultiplier; // ?????????
+        // 现在让骰子平滑地转到目标位置
+        float smoothTime = 0.4f / rollSpeedMultiplier; // 调整时长
         float smoothElapsed = 0f;
         Quaternion rotationBeforeSmooth = dice3D.transform.localRotation;
         
@@ -152,17 +152,17 @@ public class Dice3DController : MonoBehaviour
             smoothElapsed += Time.deltaTime;
             float t = Mathf.Clamp01(smoothElapsed / smoothTime);
             
-            // ??? SmoothStep ?ù?????????
+            // 用 SmoothStep 函数让插值更柔和
             float smoothT = SmoothStep(t);
             
-            // ????λ?? Slerp ?????λ??
+            // 从当前位置 Slerp 到目标位置
             dice3D.transform.localRotation = 
                 Quaternion.Slerp(rotationBeforeSmooth, targetRotation, smoothT);
             
             yield return null;
         }
 
-        // ????????λ
+        // 确保最终位置正确
         dice3D.transform.localRotation = targetRotation;
 
         if (SFXManager.Instance != null)
@@ -176,12 +176,12 @@ public class Dice3DController : MonoBehaviour
             gameManager.OnDiceRolled(currentDiceValue);
         }
 
-        Debug.Log($"???????????: {currentDiceValue}??");
+        Debug.Log($"骰子最终停止: {currentDiceValue}点");
 
         isRolling = false;
     }
 
-    // SmoothStep ??????????????????м????????
+    // SmoothStep 函数让旋转在开始和结束时更慢，中间更快
     float SmoothStep(float t)
     {
         return t * t * (3f - 2f * t);
@@ -205,14 +205,14 @@ public class Dice3DController : MonoBehaviour
             diceResultText.text = "";
     }
 
-    // ?????????????????
+    // 设置骰子滚动速度倍率
     public void SetRollSpeedMultiplier(float multiplier)
     {
         rollSpeedMultiplier = Mathf.Clamp(multiplier, 0.5f, 3f);
-        Debug.Log($"Dice3DController: ??????????????? {rollSpeedMultiplier}x");
+        Debug.Log($"Dice3DController: 设置骰子滚动速度为 {rollSpeedMultiplier}x");
     }
 
-    // ????????????????
+    // 获取骰子滚动速度倍率
     public float GetRollSpeedMultiplier()
     {
         return rollSpeedMultiplier;
