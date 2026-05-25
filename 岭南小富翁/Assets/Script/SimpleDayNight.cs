@@ -11,7 +11,7 @@ public class SimpleDayNight : MonoBehaviour
     public Color daySkyHorizon = new Color(0.5f, 0.65f, 0.85f);
     public Color daySkyGround = new Color(0.3f, 0.4f, 0.5f);
     public Color daySun = new Color(1f, 0.95f, 0.7f);
-    public Color dayAmbient = new Color(0.6f, 0.7f, 0.8f);
+    public Color dayAmbient = new Color(0.8f, 0.85f, 0.95f);
     public Color dayShadow = new Color(0.15f, 0.2f, 0.3f);
     public Color dayFog = new Color(0.6f, 0.7f, 0.85f);
     
@@ -27,8 +27,23 @@ public class SimpleDayNight : MonoBehaviour
     [Header("Skybox Material")]
     public Material skyboxMaterial;
     
-    [Header("Lighting Settings")]
-    [Range(0, 1)] public float ambientIntensity = 1f;
+    [Header("Light Intensity Settings")]
+    [Tooltip("白天太阳光强度")]
+    [Range(1f, 5f)] public float daySunIntensity = 4.0f;
+    
+    [Tooltip("夜晚太阳光强度")]
+    [Range(0f, 1f)] public float nightSunIntensity = 0.15f;
+    
+    [Tooltip("白天平行光强度")]
+    [Range(1f, 5f)] public float dayLightIntensity = 3.0f;
+    
+    [Tooltip("夜晚平行光强度")]
+    [Range(0f, 1f)] public float nightLightIntensity = 0.15f;
+    
+    [Tooltip("环境光强度系数")]
+    [Range(0f, 2f)] public float ambientIntensity = 1f;
+    
+    [Tooltip("雾浓度")]
     [Range(0, 1)] public float fogDensity = 0.01f;
     public bool useFog = true;
     
@@ -50,14 +65,14 @@ public class SimpleDayNight : MonoBehaviour
         
         if (skyboxMaterial == null)
         {
-            Debug.LogError("Skybox 材质未设置！");
+            Debug.LogError("Skybox ????δ?????");
             enabled = false;
             return;
         }
         
         if (sunLight == null)
         {
-            Debug.LogError("太阳光未设置！");
+            Debug.LogError("?????δ?????");
             enabled = false;
             return;
         }
@@ -66,7 +81,7 @@ public class SimpleDayNight : MonoBehaviour
         fogColorBackup = RenderSettings.fogColor;
         fogDensityBackup = RenderSettings.fogDensity;
         
-        Debug.Log("SimpleDayNight 初始化完成！");
+        Debug.Log("SimpleDayNight ?????????");
         initialized = true;
     }
     
@@ -89,8 +104,8 @@ public class SimpleDayNight : MonoBehaviour
         Color fogColor = Color.Lerp(nightFog, dayFog, sunProgress);
         Color atmosphereColor = Color.Lerp(new Color(0.2f, 0.2f, 0.3f), new Color(0.8f, 0.6f, 0.4f), sunProgress);
         
-        float sunIntensity = Mathf.Lerp(0.1f, 2.5f, sunProgress);
-        float lightIntensity = Mathf.Lerp(0.1f, 1.5f, sunProgress);
+        float sunIntensity = Mathf.Lerp(nightSunIntensity, daySunIntensity, sunProgress);
+        float lightIntensity = Mathf.Lerp(nightLightIntensity, dayLightIntensity, sunProgress);
         
         skyboxMaterial.SetColor("_SkyColor", skyTop);
         skyboxMaterial.SetColor("_HorizonColor", skyHorizon);
@@ -124,13 +139,13 @@ public class SimpleDayNight : MonoBehaviour
         
         if (debugMode && Time.frameCount % 30 == 0)
         {
-            string period = "夜晚";
-            if (t < 0.25f || t >= 0.9f) period = "夜晚";
-            else if (t < 0.45f) period = "黎明";
-            else if (t < 0.7f) period = "白天";
-            else period = "黄昏";
+            string period = "???";
+            if (t < 0.25f || t >= 0.9f) period = "???";
+            else if (t < 0.45f) period = "????";
+            else if (t < 0.7f) period = "????";
+            else period = "???";
             
-            Debug.Log($"时间: {period} {t:F2} | 太阳角度: {sunPitch:F0}度 | 环境亮度: {(int)(ambientColor.grayscale * 100)}%");
+            Debug.Log($"???: {period} {t:F2} | ??????: {sunPitch:F0}?? | ????????: {(int)(ambientColor.grayscale * 100)}%");
         }
     }
     
