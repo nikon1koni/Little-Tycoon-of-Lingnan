@@ -14,6 +14,10 @@ Shader "Skybox/Procedural"
         _CloudScale ("Cloud Scale", Float) = 8
         _CloudColor ("Cloud Color", Color) = (1.0, 1.0, 1.0, 1)
         _CloudDensity ("Cloud Density", Range(0, 1)) = 0.6
+        _CloudGlobal ("Global Clouds", Range(0, 1)) = 1
+        _CloudMinHeight ("Cloud Min Height", Range(-1, 1)) = -0.5
+        _CloudMaxHeight ("Cloud Max Height", Range(-1, 1)) = 1.0
+        _CloudIntensity ("Cloud Intensity", Range(0, 1)) = 0.7
     }
 
     SubShader
@@ -53,6 +57,10 @@ Shader "Skybox/Procedural"
             float _CloudScale;
             float4 _CloudColor;
             float _CloudDensity;
+            float _CloudGlobal;
+            float _CloudMinHeight;
+            float _CloudMaxHeight;
+            float _CloudIntensity;
 
             float random(float2 st)
             {
@@ -116,14 +124,14 @@ Shader "Skybox/Procedural"
                 float atmosphere = pow(1 - max(0, dir.y), _AtmosphereThickness);
                 skyColor = lerp(skyColor, _AtmosphereColor.rgb, atmosphere);
                 
-                // ????????????????????
-                if (height > 0.0)
-                {
-                    float clouds = FBM(dir.xz * _CloudScale + _Time.x * _CloudSpeed, 4);
-                    clouds = smoothstep(0.4 - _CloudDensity * 0.4, 0.5 + _CloudDensity * 0.4, clouds);
-                    clouds *= smoothstep(0.0, 0.7, height);  // ????????????
-                    skyColor = lerp(skyColor, _CloudColor.rgb, clouds * 0.7);
-                }
+                float clouds = FBM(dir.xz * _CloudScale + _Time.x * _CloudSpeed, 4);
+                clouds = smoothstep(0.4 - _CloudDensity * 0.4, 0.5 + _CloudDensity * 0.4, clouds);
+                
+                float heightMask = smoothstep(_CloudMinHeight, _CloudMaxHeight, height);
+                clouds *= heightMask;
+                clouds *= _CloudGlobal;
+                
+                skyColor = lerp(skyColor, _CloudColor.rgb, clouds * _CloudIntensity);
                 
                 float4 finalColor = float4(skyColor + sun * _SunColor.rgb, 1);
                 return finalColor;
