@@ -140,4 +140,9 @@ public class SimpleDayNight : MonoBehaviour
         RenderSettings.fogColor = fogColorBackup;
         RenderSettings.fogDensity = fogDensityBackup;
     }
+    
+    public float GetTime()
+    {
+        return time;
+    }
 }
