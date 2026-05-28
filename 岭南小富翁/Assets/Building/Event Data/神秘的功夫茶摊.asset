@@ -12,18 +12,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a476e0b345cc52d4194ddfcec2ae8c03, type: 3}
   m_Name: "\u795E\u79D8\u7684\u529F\u592B\u8336\u644A"
   m_EditorClassIdentifier: 
-  eventTitle: "\u3010\u795E\u79D8\u7684\u529F\u592B\u8336\u644A\u3011"
+  eventTitle: "[\u795E\u79D8\u7684\u529F\u592B\u8336\u644A]"
   eventImage: {fileID: 0}
   eventDescription: "\u4E00\u4F4D\u8001\u5E08\u5085\u8BF7\u4F60\u559D\u4E00\u676F\u8336\uFF0C\u8336\u9999\u6C81\u4EBA\u5FC3\u813E\uFF0C\u4F46\u4ED6\u4F3C\u4E4E\u6709\u8BDD\u8981\u8BF4\u3002"
   options:
-  - optionText: "\u652F\u4ED85\u94DC\u677F -> \u4E0B\u4E00\u6B21\u6B65\u6570\u7FFB\u500D"
+  - optionText: "\u652F\u4ED85\u94DC\u94B1 -> \u4E0B\u4E00\u6B21\u9AB0\u5B50\u6B65\u6570\u7FFB\u500D"
     onOptionSelected:
       m_PersistentCalls:
         m_Calls: []
-    optionCostAmount: 0
+    optionCostAmount: 5
     optionRewardAmount: 0
     optionIncomeBoost: 0
     optionBuffDurationRounds: 0
+    effectType: 9
+    stepsModifier: 0
+    buildingDowngradeCount: 0
+    incomeReductionPercent: 0
+    incomeReductionRounds: 0
+    taxReductionPercent: 0
+    taxReductionRounds: 0
+    roundsImmuneToNegativeEvents: 0
+    nextRollMultiplier: 2
+    propertyCompensationPercent: 0
+    loanAmount: 0
+    loanRepayMultiplier: 1
+    loanRepayRounds: 0
   - optionText: "\u559D\u5B8C\u9053\u8C22 -> \u65E0\u4E8B\u53D1\u751F"
     onOptionSelected:
       m_PersistentCalls:
@@ -32,6 +45,19 @@ MonoBehaviour:
     optionRewardAmount: 0
     optionIncomeBoost: 0
     optionBuffDurationRounds: 0
+    effectType: 0
+    stepsModifier: 0
+    buildingDowngradeCount: 0
+    incomeReductionPercent: 0
+    incomeReductionRounds: 0
+    taxReductionPercent: 0
+    taxReductionRounds: 0
+    roundsImmuneToNegativeEvents: 0
+    nextRollMultiplier: 1
+    propertyCompensationPercent: 0
+    loanAmount: 0
+    loanRepayMultiplier: 1
+    loanRepayRounds: 0
   costAmount: 0
   rewardAmount: 0
   incomeBoost: 0

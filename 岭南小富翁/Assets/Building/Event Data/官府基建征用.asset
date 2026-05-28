@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a476e0b345cc52d4194ddfcec2ae8c03, type: 3}
   m_Name: "\u5B98\u5E9C\u57FA\u5EFA\u5F81\u7528"
   m_EditorClassIdentifier: 
-  eventTitle: "\u3010\u5B98\u5E9C\u57FA\u5EFA\u5F81\u7528\u3011"
+  eventTitle: "[\u5B98\u5E9C\u57FA\u5EFA\u5F81\u7528]"
   eventImage: {fileID: 0}
   eventDescription: "\u5B98\u5E9C\u8981\u4FEE\u8DEF\uFF0C\u9700\u8981\u5F81\u7528\u4F60\u7684\u4E00\u5757\u5730\uFF0C\u4F1A\u7ED9\u4E88\u8865\u507F\u3002"
   options:
-  - optionText: "\u540C\u610F\u5F81\u7528 -> \u5931\u53BB\u4EA7\u4E1A\uFF0C\u83B7\u5F97\u8BE5\u4EA7\u4E1A\u6295\u5165\u6210\u672C120%\u7684\u8865\u507F"
+  - optionText: "\u540C\u610F\u5F81\u7528 -> \u5931\u53BB\u4EA7\u4E1A\uFF0C\u83B7\u5F97120%\u8865\u507F"
     onOptionSelected:
       m_PersistentCalls:
         m_Calls: []
@@ -24,15 +24,40 @@ MonoBehaviour:
     optionRewardAmount: 0
     optionIncomeBoost: 0
     optionBuffDurationRounds: 0
-  - optionText: "\u652F\u4ED8\u8BE5\u4EA7\u4E1A\u5F53\u524D\u8D2D\u4E70\u4EF730%\u7684\u6253\u70B9\u8D39
-      -> \u4FDD\u7559\u4EA7\u4E1A"
+    effectType: 10
+    stepsModifier: 0
+    buildingDowngradeCount: 0
+    incomeReductionPercent: 0
+    incomeReductionRounds: 0
+    taxReductionPercent: 0
+    taxReductionRounds: 0
+    roundsImmuneToNegativeEvents: 0
+    nextRollMultiplier: 1
+    propertyCompensationPercent: 1.2
+    loanAmount: 0
+    loanRepayMultiplier: 1
+    loanRepayRounds: 0
+  - optionText: "\u652F\u4ED830\u94DC\u94B1\u6253\u70B9\u8D39 -> \u4FDD\u7559\u4EA7\u4E1A"
     onOptionSelected:
       m_PersistentCalls:
         m_Calls: []
-    optionCostAmount: 0
+    optionCostAmount: 30
     optionRewardAmount: 0
     optionIncomeBoost: 0
     optionBuffDurationRounds: 0
+    effectType: 0
+    stepsModifier: 0
+    buildingDowngradeCount: 0
+    incomeReductionPercent: 0
+    incomeReductionRounds: 0
+    taxReductionPercent: 0
+    taxReductionRounds: 0
+    roundsImmuneToNegativeEvents: 0
+    nextRollMultiplier: 1
+    propertyCompensationPercent: 0
+    loanAmount: 0
+    loanRepayMultiplier: 1
+    loanRepayRounds: 0
   costAmount: 0
   rewardAmount: 0
   incomeBoost: 0

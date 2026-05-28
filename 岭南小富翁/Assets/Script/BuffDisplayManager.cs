@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,13 +6,13 @@ public class BuffDisplayManager : MonoBehaviour
 {
     public static BuffDisplayManager Instance { get; private set; }
     
-    [Header("Buff ???????")]
+    [Header("Buff ")]
     public GameObject buffIconPrefab;
     public Transform buffContainer;
     public GameObject buffTooltipPrefab;
     public Vector2 tooltipOffset = new Vector2(50, 50);
     
-    [Header("Buff ??????")]
+    [Header("Buff ")]
     public Sprite moveSpeedIcon;
     public Sprite diceBoostIcon;
     public Sprite incomeMultiplierIcon;
@@ -43,7 +43,7 @@ public class BuffDisplayManager : MonoBehaviour
     
     private void Update()
     {
-        // ??????????????????
+        // 
         CheckForUpdate();
     }
     

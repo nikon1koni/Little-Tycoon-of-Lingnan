@@ -1,15 +1,15 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 
 public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    [Header("UI ???")]
+    [Header("UI ")]
     public Image iconImage;
     public TextMeshProUGUI stackText;
     
-    [Header("Buff ??????????")]
+    [Header("Buff ")]
     public GameObject tooltipPrefab;
     public Vector2 tooltipOffset = new Vector2(50, 50);
     private GameObject activeTooltip;
@@ -113,19 +113,19 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         string description = "";
         description += $"<b>{BuildingData.GetBuffEffectName(currentBuff.effectType)}</b>\n";
         description += $"+{currentBuff.value * 100:F1}%\n";
-        description += $"???: {currentBuff.sourceName}\n";
+        description += $": {currentBuff.sourceName}\n";
         
         if (currentBuff.isPermanent)
         {
-            description += "<color=green>????</color>";
+            description += "<color=green></color>";
         }
         else if (currentBuff.useRoundTimer)
         {
-            description += $"??? {currentBuff.remainingRounds} ???";
+            description += $" {currentBuff.remainingRounds} ";
         }
         else
         {
-            description += $"??? {currentBuff.remainingTime:F1} ??";
+            description += $" {currentBuff.remainingTime:F1} ";
         }
         
         return description;

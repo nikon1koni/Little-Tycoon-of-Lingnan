@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class SimpleDayNight : MonoBehaviour
 {
@@ -28,22 +28,22 @@ public class SimpleDayNight : MonoBehaviour
     public Material skyboxMaterial;
     
     [Header("Light Intensity Settings")]
-    [Tooltip("°×ÌìÌ«Ñô¹âÇ¿¶È")]
+    [Tooltip("ï¿½ï¿½ï¿½ï¿½Ì«ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½")]
     [Range(1f, 5f)] public float daySunIntensity = 4.0f;
     
-    [Tooltip("Ò¹ÍíÌ«Ñô¹âÇ¿¶È")]
+    [Tooltip("Ò¹ï¿½ï¿½Ì«ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½")]
     [Range(0f, 1f)] public float nightSunIntensity = 0.15f;
     
-    [Tooltip("°×ÌìÆ½ÐÐ¹âÇ¿¶È")]
+    [Tooltip("ï¿½ï¿½ï¿½ï¿½Æ½ï¿½Ð¹ï¿½Ç¿ï¿½ï¿½")]
     [Range(1f, 5f)] public float dayLightIntensity = 3.0f;
     
-    [Tooltip("Ò¹ÍíÆ½ÐÐ¹âÇ¿¶È")]
+    [Tooltip("Ò¹ï¿½ï¿½Æ½ï¿½Ð¹ï¿½Ç¿ï¿½ï¿½")]
     [Range(0f, 1f)] public float nightLightIntensity = 0.15f;
     
-    [Tooltip("»·¾³¹âÇ¿¶ÈÏµÊý")]
+    [Tooltip("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½Ïµï¿½ï¿½")]
     [Range(0f, 2f)] public float ambientIntensity = 1f;
     
-    [Tooltip("ÎíÅ¨¶È")]
+    [Tooltip("ï¿½ï¿½Å¨ï¿½ï¿½")]
     [Range(0, 1)] public float fogDensity = 0.01f;
     public bool useFog = true;
     
@@ -65,14 +65,14 @@ public class SimpleDayNight : MonoBehaviour
         
         if (skyboxMaterial == null)
         {
-            Debug.LogError("Skybox ????¦Ä?????");
+            Debug.LogError("Skybox ï¿½ï¿½");
             enabled = false;
             return;
         }
         
         if (sunLight == null)
         {
-            Debug.LogError("?????¦Ä?????");
+            Debug.LogError("ï¿½ï¿½");
             enabled = false;
             return;
         }
@@ -81,7 +81,7 @@ public class SimpleDayNight : MonoBehaviour
         fogColorBackup = RenderSettings.fogColor;
         fogDensityBackup = RenderSettings.fogDensity;
         
-        Debug.Log("SimpleDayNight ?????????");
+        Debug.Log("SimpleDayNight ");
         initialized = true;
     }
     
@@ -139,13 +139,13 @@ public class SimpleDayNight : MonoBehaviour
         
         if (debugMode && Time.frameCount % 30 == 0)
         {
-            string period = "???";
-            if (t < 0.25f || t >= 0.9f) period = "???";
-            else if (t < 0.45f) period = "????";
-            else if (t < 0.7f) period = "????";
-            else period = "???";
+            string period = "";
+            if (t < 0.25f || t >= 0.9f) period = "";
+            else if (t < 0.45f) period = "";
+            else if (t < 0.7f) period = "";
+            else period = "";
             
-            Debug.Log($"???: {period} {t:F2} | ??????: {sunPitch:F0}?? | ????????: {(int)(ambientColor.grayscale * 100)}%");
+            Debug.Log($": {period} {t:F2} | : {sunPitch:F0} | : {(int)(ambientColor.grayscale * 100)}%");
         }
     }
     

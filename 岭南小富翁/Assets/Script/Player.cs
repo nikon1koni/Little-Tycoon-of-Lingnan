@@ -21,6 +21,19 @@ public class Player : MonoBehaviour
     [HideInInspector] public BoardTile currentTile;  // 当前所在格子
     [HideInInspector] public int currentTileIndex = 0;  // 当前格子索引
 
+    [Header("事件临时状态")]
+    public int stepsModifier = 0;
+    public float incomeReductionPercent = 0f;
+    public int incomeReductionRounds = 0;
+    public float taxReductionPercent = 0f;
+    public int taxReductionRounds = 0;
+    public int roundsImmuneToNegativeEvents = 0;
+    public float nextRollMultiplier = 1f;
+    
+    public int loanAmount = 0;
+    public float loanRepayMultiplier = 1f;
+    public int loanRepayRounds = 0;
+
     // 引用
     private PlayerMovement playerMovement;
 
@@ -248,5 +261,108 @@ public class Player : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public void AddStepsModifier(int modifier)
+    {
+        stepsModifier += modifier;
+    }
+
+    public int GetStepsModifier()
+    {
+        int modifier = stepsModifier;
+        stepsModifier = 0;
+        return modifier;
+    }
+
+    public void AddIncomeReductionDebuff(float percent, int rounds)
+    {
+        incomeReductionPercent = percent;
+        incomeReductionRounds = rounds;
+    }
+
+    public float GetIncomeReduction()
+    {
+        float reduction = incomeReductionPercent;
+        if (incomeReductionRounds > 0)
+        {
+            incomeReductionRounds--;
+            if (incomeReductionRounds <= 0)
+            {
+                incomeReductionPercent = 0f;
+            }
+        }
+        return reduction;
+    }
+
+    public void AddTaxReductionBuff(float percent, int rounds)
+    {
+        taxReductionPercent = percent;
+        taxReductionRounds = rounds;
+    }
+
+    public float GetTaxReduction()
+    {
+        float reduction = taxReductionPercent;
+        if (taxReductionRounds > 0)
+        {
+            taxReductionRounds--;
+            if (taxReductionRounds <= 0)
+            {
+                taxReductionPercent = 0f;
+            }
+        }
+        return reduction;
+    }
+
+    public void SetImmuneToNegativeEvents(int rounds)
+    {
+        roundsImmuneToNegativeEvents = rounds;
+    }
+
+    public bool IsImmuneToNegativeEvents()
+    {
+        if (roundsImmuneToNegativeEvents > 0)
+        {
+            roundsImmuneToNegativeEvents--;
+            return true;
+        }
+        return false;
+    }
+
+    public void SetNextRollMultiplier(float multiplier)
+    {
+        nextRollMultiplier = multiplier;
+    }
+
+    public float GetNextRollMultiplier()
+    {
+        float multiplier = nextRollMultiplier;
+        nextRollMultiplier = 1f;
+        return multiplier;
+    }
+
+    public void AddLoanDebt(int amount, float repayMultiplier, int repayRounds)
+    {
+        loanAmount = amount;
+        loanRepayMultiplier = repayMultiplier;
+        loanRepayRounds = repayRounds;
+    }
+
+    public void ProcessLoanRepayment()
+    {
+        if (loanAmount > 0)
+        {
+            loanRepayRounds--;
+            if (loanRepayRounds <= 0)
+            {
+                int repayAmount = Mathf.RoundToInt(loanAmount * loanRepayMultiplier);
+                PayCash(repayAmount);
+                Debug.Log($"{playerName} 偿还贷款: {repayAmount} 铜钱");
+                loanAmount = 0;
+                loanRepayMultiplier = 1f;
+                loanRepayRounds = 0;
+            }
+        }
     }
 }

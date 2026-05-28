@@ -4,7 +4,7 @@ using TMPro;
 
 public class EventPanel : MonoBehaviour
 {
-    [Header("UI 引用")]
+    [Header("UI ???")]
     public TextMeshProUGUI titleText;
     public Image eventImage;
     public TextMeshProUGUI descriptionText;
@@ -67,25 +67,25 @@ public class EventPanel : MonoBehaviour
 
     void CreateOptions(EventData.EventOption[] options)
     {
-        Debug.Log("=== 创建选项按钮 ===");
-        Debug.Log("optionsContainer 是否为空: " + (optionsContainer == null));
-        Debug.Log("optionButtonPrefab 是否为空: " + (optionButtonPrefab == null));
-        Debug.Log("选项数量: " + (options?.Length ?? 0));
+        Debug.Log("===  ===");
+        Debug.Log("optionsContainer : " + (optionsContainer == null));
+        Debug.Log("optionButtonPrefab : " + (optionButtonPrefab == null));
+        Debug.Log("options.Length: " + (options.Length > 0));
 
         if (optionsContainer == null || optionButtonPrefab == null) 
         {
-            Debug.LogError("选项容器或按钮预制体为空！");
+            Debug.LogError("");
             return;
         }
 
-        Debug.Log("开始创建按钮...");
+        Debug.Log("...");
         
         for (int i = 0; i < options.Length; i++)
         {
             EventData.EventOption option = options[i];
-            int optionIndex = i;  // 闭包捕获索引
+            int optionIndex = i;  // 
             
-            Debug.Log($"创建按钮 [{optionIndex}]: {option.optionText}");
+            Debug.Log($" [{optionIndex}]: {option.optionText}");
             
             Button button = Instantiate(optionButtonPrefab, optionsContainer);
             button.gameObject.SetActive(true);
@@ -94,14 +94,14 @@ public class EventPanel : MonoBehaviour
             if (buttonText != null)
             {
                 buttonText.text = option.optionText;
-                Debug.Log($"按钮文本已设置: {option.optionText}");
+                Debug.Log($": {option.optionText}");
             }
             else
             {
-                Debug.LogWarning("按钮没有找到 TextMeshPro 组件！");
+                Debug.LogWarning(" TextMeshPro ");
             }
 
-            // 检查是否可以支付（使用选项单独配置或全局配置）
+            // 
             int costToPay = option.optionCostAmount > 0 ? option.optionCostAmount : currentEvent.costAmount;
             bool canAfford = true;
             
@@ -111,9 +111,9 @@ public class EventPanel : MonoBehaviour
                 
                 if (!canAfford)
                 {
-                    Debug.Log($"选项 [{optionIndex}] 需要支付 {costToPay} 金币，但玩家只有 {currentPlayer.cash} 金币，禁用按钮");
+                    Debug.Log($" [{optionIndex}]  {costToPay}  {currentPlayer.cash} ");
                     
-                    // 设置按钮为半透明/禁用状态
+                    // /
                     Image buttonImage = button.GetComponent<Image>();
                     if (buttonImage != null)
                     {
@@ -136,17 +136,17 @@ public class EventPanel : MonoBehaviour
             
             button.onClick.AddListener(() =>
             {
-                Debug.Log($"=== 选项按钮被点击 [{finalIndex}] ===");
+                Debug.Log($"===  [{finalIndex}] ===");
                 Debug.Log($"EventEffectHandler.Instance: {EventEffectHandler.Instance != null}");
                 Debug.Log($"currentPlayer: {currentPlayer?.playerName ?? "NULL"}");
                 Debug.Log($"currentEvent: {currentEvent?.eventTitle ?? "NULL"}");
                 
                 if (!finalCanAfford)
                 {
-                    Debug.LogWarning("金币不足！");
+                    Debug.LogWarning("");
                     if (UIManager.Instance != null)
                     {
-                        UIManager.ShowToastStatic("金币不足，无法选择此选项！", 2f);
+                        UIManager.ShowToastStatic("", 2f);
                     }
                     return;
                 }
@@ -154,25 +154,25 @@ public class EventPanel : MonoBehaviour
                 if (SFXManager.Instance != null)
                     SFXManager.Instance.PlaySFX(SFXClip.UIClick);
 
-                // 调用原有的UnityEvent回调
-                option.onOptionSelected?.Invoke();
+                // ??UnityEvent
+                option.onOptionSelected.Invoke();
                 
-                // ? 新增：调用事件效果处理器
+                //  ??
                 if (EventEffectHandler.Instance != null && currentPlayer != null)
                 {
-                    Debug.Log($"? 调用 ProcessOption: player={currentPlayer.playerName}, event={currentEvent.eventTitle}, option={finalIndex}");
+                    Debug.Log($"  ProcessOption: player={currentPlayer.playerName}, event={currentEvent.eventTitle}, option={finalIndex}");
                     EventEffectHandler.Instance.ProcessOption(currentPlayer, currentEvent, finalIndex);
                 }
                 else
                 {
-                    Debug.LogError($"? 无法调用 ProcessOption! Instance={EventEffectHandler.Instance != null}, Player={currentPlayer != null}");
+                    Debug.LogError($"  ProcessOption! Instance={EventEffectHandler.Instance != null}, Player={currentPlayer != null}");
                 }
 
                 HidePanel();
             });
         }
         
-        Debug.Log("=== 选项按钮创建完成 ===");
+        Debug.Log("===  ===");
     }
 
     public void HidePanel()

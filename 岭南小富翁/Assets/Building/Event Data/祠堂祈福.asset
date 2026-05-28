@@ -12,11 +12,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a476e0b345cc52d4194ddfcec2ae8c03, type: 3}
   m_Name: "\u7960\u5802\u7948\u798F"
   m_EditorClassIdentifier: 
-  eventTitle: "\u3010\u7960\u5802\u7948\u798F\u3011"
+  eventTitle: "[\u7960\u5802\u7948\u798F]"
   eventImage: {fileID: 0}
-  eventDescription: "\u9547\u4E0A\u7684\u8001\u7960\u5802\u9999\u706B\u9F0E\u76DB\uFF0C\u636E\u8BF4\u7948\u798F\u5F88\u7075\u9A8C\u3002"
+  eventDescription: "\u9547\u4E0A\u7684\u8001\u7960\u5802\u9999\u706B\u65FA\u76DB\uFF0C\u636E\u8BF4\u7948\u798F\u5F88\u7075\u9A8C\u3002"
   options:
-  - optionText: "\u652F\u4ED830\u94DC\u677F -> \u83B7\u5F97\u3010\u7956\u5148\u5E87\u4F51\u3011(2\u5708\u5185\u6BCF\u6B21\u8FC7\u8D77\u70B9\u989D\u5916\u83B710\u94DC\u677F\u3001\u7A0E\u6536\u51CF\u534A)"
+  - optionText: "\u652F\u4ED830\u94DC\u94B1 -> 2\u56DE\u5408\u5185\u7A0E\u6536\u51CF\u534A"
+    onOptionSelected:
+      m_PersistentCalls:
+        m_Calls: []
+    optionCostAmount: 30
+    optionRewardAmount: 0
+    optionIncomeBoost: 0
+    optionBuffDurationRounds: 0
+    effectType: 7
+    stepsModifier: 0
+    buildingDowngradeCount: 0
+    incomeReductionPercent: 0
+    incomeReductionRounds: 0
+    taxReductionPercent: 0.5
+    taxReductionRounds: 2
+    roundsImmuneToNegativeEvents: 0
+    nextRollMultiplier: 1
+    propertyCompensationPercent: 0
+    loanAmount: 0
+    loanRepayMultiplier: 1
+    loanRepayRounds: 0
+  - optionText: "\u8BDA\u5FC3\u4E0A\u9999 -> 1\u56DE\u5408\u5185\u514D\u75AB\u8D1F\u9762\u4E8B\u4EF6"
     onOptionSelected:
       m_PersistentCalls:
         m_Calls: []
@@ -24,14 +45,19 @@ MonoBehaviour:
     optionRewardAmount: 0
     optionIncomeBoost: 0
     optionBuffDurationRounds: 0
-  - optionText: "\u8BDA\u5FC3\u4E0A\u9999 -> 1\u5708\u5185\u514D\u75AB\u6240\u6709\u8D1F\u9762\u4E8B\u4EF6"
-    onOptionSelected:
-      m_PersistentCalls:
-        m_Calls: []
-    optionCostAmount: 0
-    optionRewardAmount: 0
-    optionIncomeBoost: 0
-    optionBuffDurationRounds: 0
+    effectType: 8
+    stepsModifier: 0
+    buildingDowngradeCount: 0
+    incomeReductionPercent: 0
+    incomeReductionRounds: 0
+    taxReductionPercent: 0
+    taxReductionRounds: 0
+    roundsImmuneToNegativeEvents: 1
+    nextRollMultiplier: 1
+    propertyCompensationPercent: 0
+    loanAmount: 0
+    loanRepayMultiplier: 1
+    loanRepayRounds: 0
   costAmount: 0
   rewardAmount: 0
   incomeBoost: 0

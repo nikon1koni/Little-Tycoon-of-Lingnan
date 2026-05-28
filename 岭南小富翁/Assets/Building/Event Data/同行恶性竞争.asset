@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a476e0b345cc52d4194ddfcec2ae8c03, type: 3}
   m_Name: "\u540C\u884C\u6076\u6027\u7ADE\u4E89"
   m_EditorClassIdentifier: 
-  eventTitle: "\u3010\u540C\u884C\u6076\u6027\u7ADE\u4E89\u3011"
+  eventTitle: "[\u540C\u884C\u6076\u6027\u7ADE\u4E89]"
   eventImage: {fileID: 0}
-  eventDescription: "\u9694\u58C1\u8857\u7684\u8001\u677F\u5F00\u59CB\u964D\u4EF7\u62A2\u751F\u610F\uFF0C\u4F60\u7684\u5BA2\u6E90\u88AB\u5206\u6D41\u3002"
+  eventDescription: "\u9694\u58C1\u8857\u7684\u8001\u5E97\u5F00\u59CB\u964D\u4EF7\u62A2\u751F\u610F\uFF0C\u4F60\u7684\u5BA2\u6E90\u88AB\u5206\u6D41\u3002"
   options:
-  - optionText: "\u5F3A\u5236\u6548\u679C: \u6240\u6709\u4EA7\u4E1A\u4E0B\u4E00\u8F6E\u6536\u76CA\u51CF\u534A"
+  - optionText: "\u88AB\u52A8\u5E94\u5BF9: \u6240\u6709\u4EA7\u4E1A\u4E0B\u4E00\u56DE\u5408\u6536\u5165\u51CF\u534A"
     onOptionSelected:
       m_PersistentCalls:
         m_Calls: []
@@ -24,15 +24,41 @@ MonoBehaviour:
     optionRewardAmount: 0
     optionIncomeBoost: 0
     optionBuffDurationRounds: 0
-  - optionText: "\u652F\u4ED820\u94DC\u677F\u8FDB\u884C\u8425\u9500\u53CD\u51FB ->
-      \u6D88\u9664\u51CF\u76CA\u5E76\u6062\u590D\u6B63\u5E38\u6536\u76CA"
+    effectType: 6
+    stepsModifier: 0
+    buildingDowngradeCount: 0
+    incomeReductionPercent: 0.5
+    incomeReductionRounds: 1
+    taxReductionPercent: 0
+    taxReductionRounds: 0
+    roundsImmuneToNegativeEvents: 0
+    nextRollMultiplier: 1
+    propertyCompensationPercent: 0
+    loanAmount: 0
+    loanRepayMultiplier: 1
+    loanRepayRounds: 0
+  - optionText: "\u652F\u4ED820\u94DC\u94B1\u8FDB\u884C\u8425\u9500\u53CD\u51FB ->
+      \u6D88\u9664\u51CF\u6536"
     onOptionSelected:
       m_PersistentCalls:
         m_Calls: []
-    optionCostAmount: 0
+    optionCostAmount: 20
     optionRewardAmount: 0
     optionIncomeBoost: 0
     optionBuffDurationRounds: 0
+    effectType: 0
+    stepsModifier: 0
+    buildingDowngradeCount: 0
+    incomeReductionPercent: 0
+    incomeReductionRounds: 0
+    taxReductionPercent: 0
+    taxReductionRounds: 0
+    roundsImmuneToNegativeEvents: 0
+    nextRollMultiplier: 1
+    propertyCompensationPercent: 0
+    loanAmount: 0
+    loanRepayMultiplier: 1
+    loanRepayRounds: 0
   costAmount: 0
   rewardAmount: 0
   incomeBoost: 0

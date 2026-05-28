@@ -21940,16 +21940,40 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
       propertyPath: eventDataArray.Array.size
-      value: 1
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
       propertyPath: eventDataArray.Array.data[0]
       value: 
-      objectReference: {fileID: 11400000, guid: 51c63fa8cf0e09247861c540977a7bf0, type: 2}
+      objectReference: {fileID: 11400000, guid: 98b2c40a30aa9664c972c71c6fb9b109, type: 2}
     - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
       propertyPath: eventDataArray.Array.data[1]
       value: 
       objectReference: {fileID: 11400000, guid: 51c63fa8cf0e09247861c540977a7bf0, type: 2}
+    - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
+      propertyPath: eventDataArray.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 8fec4a6a7b955334b89c0d731a116352, type: 2}
+    - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
+      propertyPath: eventDataArray.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 5498b013ef6ecb648949b45061151407, type: 2}
+    - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
+      propertyPath: eventDataArray.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: b421d74338fb6c540a4212da32746790, type: 2}
+    - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
+      propertyPath: eventDataArray.Array.data[5]
+      value: 
+      objectReference: {fileID: 11400000, guid: 587a8ee98b97cdb4ba207affa28cd8ce, type: 2}
+    - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
+      propertyPath: eventDataArray.Array.data[6]
+      value: 
+      objectReference: {fileID: 11400000, guid: a95eb3a4f71ce234c80d7c422cdae6dd, type: 2}
+    - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
+      propertyPath: eventDataArray.Array.data[7]
+      value: 
+      objectReference: {fileID: 11400000, guid: 1708a99d4022c714e924556c4d076fb0, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
