@@ -4067,6 +4067,10 @@ MonoBehaviour:
   nightShadow: {r: 0.05, g: 0.05, b: 0.1, a: 1}
   nightFog: {r: 0.1, g: 0.1, b: 0.15, a: 1}
   skyboxMaterial: {fileID: 2100000, guid: 6cf0ba085351e0d47919321f16c4cab6, type: 2}
+  daySunIntensity: 4
+  nightSunIntensity: 0.15
+  dayLightIntensity: 3
+  nightLightIntensity: 0.15
   ambientIntensity: 1
   fogDensity: 0.01
   useFog: 0
