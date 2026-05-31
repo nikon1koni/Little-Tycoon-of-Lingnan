@@ -117,7 +117,9 @@ public class GameManager : MonoBehaviour
             currentPlayer = players[currentPlayerIndex];
         }
 
-        // ??
+        // 
+        GiveStartingItemsToPlayers();
+
         currentState = GameState.Waiting;
         isGameStarted = true;
 
@@ -161,6 +163,27 @@ public class GameManager : MonoBehaviour
         else
         {
             Debug.LogWarning("MusicManager ??");
+        }
+    }
+
+    void GiveStartingItemsToPlayers()
+    {
+        if (ItemManager.Instance == null)
+        {
+            Debug.LogWarning("ItemManager 不存在，无法发放初始道具");
+            return;
+        }
+
+        foreach (Player player in players)
+        {
+            ItemManager.Instance.GiveStartingItemsToPlayer(player);
+            Debug.Log($"已给玩家 {player.playerName} 发放初始道具");
+        }
+
+        if (ItemHandManager.Instance != null && currentPlayer != null)
+        {
+            ItemHandManager.Instance.SetupHand(currentPlayer);
+            Debug.Log("手牌已初始化");
         }
     }
 

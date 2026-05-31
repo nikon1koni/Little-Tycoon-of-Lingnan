@@ -1,24 +1,30 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ItemHandManager : MonoBehaviour
 {
     public static ItemHandManager Instance { get; private set; }
 
-    [Header("????????")]
+    [Header("手动拖拽UI")]
+    public Button toggleButton;
     public Transform handContainer;
 
-    [Header("?????????")]
+    [Header("卡牌预制体")]
     public GameObject dragCardPrefab;
 
-    [Header("???????????")]
+    [Header("布局设置")]
     public float cardWidth = 120f;
     public float cardSpacing = 10f;
     public float centerOffsetY = -100f;
     public float fanAngle = 15f;
 
+    [Header("初始状态")]
+    public bool startVisible = true;
+
     private List<ItemDragCard> handCards = new List<ItemDragCard>();
     private Player currentPlayer;
+    private bool isVisible = true;
 
     void Awake()
     {
@@ -34,6 +40,7 @@ public class ItemHandManager : MonoBehaviour
 
     void Start()
     {
+        // 创建手牌容器（如果没有）
         if (handContainer == null)
         {
             GameObject container = new GameObject("HandContainer");
@@ -48,6 +55,32 @@ public class ItemHandManager : MonoBehaviour
             rect.anchoredPosition = new Vector2(0, centerOffsetY);
             rect.sizeDelta = new Vector2(Screen.width, 300);
         }
+
+        // 设置开关按钮
+        if (toggleButton != null)
+        {
+            toggleButton.onClick.AddListener(ToggleHand);
+        }
+
+        // 设置初始显示状态
+        isVisible = startVisible;
+        UpdateHandVisibility();
+
+        // 尝试自动初始化（如果当前玩家已存在）
+        AutoInitialize();
+    }
+
+    private void AutoInitialize()
+    {
+        if (GameManager.Instance != null && GameManager.Instance.currentPlayer != null)
+        {
+            Debug.Log("ItemHandManager: 自动初始化手牌");
+            SetupHand(GameManager.Instance.currentPlayer);
+        }
+        else
+        {
+            Debug.Log("ItemHandManager: 等待玩家初始化...");
+        }
     }
 
     public void SetupHand(Player player)
@@ -55,20 +88,36 @@ public class ItemHandManager : MonoBehaviour
         currentPlayer = player;
         ClearHand();
 
-        if (ItemManager.Instance == null) return;
+        if (ItemManager.Instance == null)
+        {
+            Debug.LogWarning("ItemHandManager: ItemManager 不存在");
+            return;
+        }
 
         List<ItemData> items = ItemManager.Instance.GetPlayerItems(player);
+        
+        if (items.Count == 0)
+        {
+            Debug.Log("ItemHandManager: 当前玩家没有道具");
+            return;
+        }
+
         foreach (ItemData item in items)
         {
             AddCardToHand(item, player);
         }
 
         LayoutHand();
+        Debug.Log($"ItemHandManager: 已加载 {items.Count} 张卡牌");
     }
 
     public void AddCardToHand(ItemData item, Player player)
     {
-        if (handContainer == null || dragCardPrefab == null) return;
+        if (handContainer == null || dragCardPrefab == null)
+        {
+            Debug.LogWarning("ItemHandManager: 缺少容器或预制体");
+            return;
+        }
 
         GameObject cardObj = Instantiate(dragCardPrefab, handContainer);
         ItemDragCard dragCard = cardObj.GetComponent<ItemDragCard>();
@@ -114,6 +163,42 @@ public class ItemHandManager : MonoBehaviour
         }
     }
 
+    public void ToggleHand()
+    {
+        isVisible = !isVisible;
+        UpdateHandVisibility();
+
+        // 更新按钮文字
+        if (toggleButton != null)
+        {
+            Text buttonText = toggleButton.GetComponentInChildren<Text>();
+            if (buttonText != null)
+            {
+                buttonText.text = isVisible ? "隐藏手牌" : "显示手牌";
+            }
+        }
+    }
+
+    private void UpdateHandVisibility()
+    {
+        if (handContainer != null)
+        {
+            handContainer.gameObject.SetActive(isVisible);
+        }
+    }
+
+    public void ShowHand()
+    {
+        isVisible = true;
+        UpdateHandVisibility();
+    }
+
+    public void HideHand()
+    {
+        isVisible = false;
+        UpdateHandVisibility();
+    }
+
     private void LayoutHand()
     {
         int cardCount = handCards.Count;
@@ -127,11 +212,9 @@ public class ItemHandManager : MonoBehaviour
             ItemDragCard card = handCards[i];
             RectTransform rect = card.GetComponent<RectTransform>();
 
-            // ????λ??
             float baseX = startX + i * (cardWidth + cardSpacing);
             float baseY = 0f;
 
-            // ????Ч??
             float angle = 0f;
             float yOffset = 0f;
 
@@ -142,7 +225,6 @@ public class ItemHandManager : MonoBehaviour
                 yOffset = Mathf.Abs(normalizedPos) * 20f;
             }
 
-            // ????λ??
             rect.anchorMin = new Vector2(0.5f, 0.5f);
             rect.anchorMax = new Vector2(0.5f, 0.5f);
             rect.pivot = new Vector2(0.5f, 0.5f);
@@ -171,5 +253,12 @@ public class ItemHandManager : MonoBehaviour
     public int GetCardCount()
     {
         return handCards.Count;
+    }
+
+    // 监听玩家切换
+    public void OnPlayerChanged(Player newPlayer)
+    {
+        currentPlayer = newPlayer;
+        SetupHand(newPlayer);
     }
 }
