@@ -20999,6 +20999,8 @@ MonoBehaviour:
   zoneNameText: {fileID: 0}
   instructionText: {fileID: 0}
   zoneImage: {fileID: 0}
+  showZoneName: 0
+  showInstruction: 0
 --- !u!1001 &1399182630
 PrefabInstance:
   m_ObjectHideFlags: 0
