@@ -66,20 +66,20 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     {
         if (itemData == null) return;
 
-        // 更新图标
+        // ???????
         if (iconImage != null)
         {
             iconImage.sprite = itemData.itemIcon;
             iconImage.color = itemData.itemIcon != null ? Color.white : Color.gray;
         }
 
-        // 更新名称
+        // ????????
         if (nameText != null)
         {
             nameText.text = itemData.itemName;
         }
 
-        // 更新描述
+        // ????????
         if (descriptionText != null)
         {
             descriptionText.text = itemData.itemDescription;
@@ -159,7 +159,7 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     {
         if (draggedCardInstance == null) 
         {
-            Debug.Log("IsOverValidDropZone: draggedCardInstance 为空");
+            Debug.Log("IsOverValidDropZone: draggedCardInstance ???");
             return false;
         }
 
@@ -173,24 +173,24 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
         if (raycastResults.Count == 0)
         {
-            Debug.Log("IsOverValidDropZone: 没有检测到任何UI元素");
+            Debug.Log("IsOverValidDropZone: ??????????UI???");
         }
         else
         {
-            Debug.Log($"IsOverValidDropZone: 检测到 {raycastResults.Count} 个UI元素");
+            Debug.Log($"IsOverValidDropZone: ??? {raycastResults.Count} ??UI???");
             foreach (var result in raycastResults)
             {
                 Debug.Log($"  - {result.gameObject.name} (Tag: {result.gameObject.tag})");
                 if (result.gameObject.CompareTag(validDropZoneTag) ||
                     result.gameObject.GetComponent<ItemDropZone>() != null)
                 {
-                    Debug.Log("检测到有效释放区域: " + result.gameObject.name);
+                    Debug.Log("??????????????: " + result.gameObject.name);
                     return true;
                 }
             }
         }
 
-        Debug.Log("IsOverValidDropZone: 未检测到有效释放区域");
+        Debug.Log("IsOverValidDropZone: ????????????????");
         return false;
     }
 
@@ -211,7 +211,7 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     {
         if (itemData == null || ownerPlayer == null) return;
 
-        // ??????Ч
+        // ????????
         if (SFXManager.Instance != null)
         {
             SFXManager.Instance.PlaySFX(SFXClip.UIClick);
@@ -324,7 +324,7 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         }
     }
 
-    // ??????????ú???????????
+    // ???????????????????????
     public void DisableCard()
     {
         canDrag = false;

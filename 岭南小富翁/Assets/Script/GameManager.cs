@@ -129,7 +129,7 @@ public class GameManager : MonoBehaviour
         InitializeSFXSystem();
 
         Debug.Log($": {players.Count}");
-        Debug.Log($"当前玩家: {currentPlayer?.playerName ?? ""}");
+        Debug.Log($"??????: {currentPlayer?.playerName ?? ""}");
     }
 
     void InitializeMusicSystem()
@@ -170,20 +170,20 @@ public class GameManager : MonoBehaviour
     {
         if (ItemManager.Instance == null)
         {
-            Debug.LogWarning("ItemManager 不存在，无法发放初始道具");
+            Debug.LogWarning("ItemManager ????????????????????");
             return;
         }
 
         foreach (Player player in players)
         {
             ItemManager.Instance.GiveStartingItemsToPlayer(player);
-            Debug.Log($"已给玩家 {player.playerName} 发放初始道具");
+            Debug.Log($"?????? {player.playerName} ??????????");
         }
 
         if (ItemHandManager.Instance != null && currentPlayer != null)
         {
             ItemHandManager.Instance.SetupHand(currentPlayer);
-            Debug.Log("手牌已初始化");
+            Debug.Log("??????????");
         }
     }
 
@@ -921,7 +921,7 @@ public class GameManager : MonoBehaviour
 
     public void OnPropertyPurchaseComplete(bool purchased)
     {
-        Debug.Log($"购买结果: {(purchased ? "成功" : "失败")}");
+        Debug.Log($"??????: {(purchased ? "???" : "???")}");
         StartCoroutine(EndMoveAfterDelay(0.5f));
     }
 
@@ -982,13 +982,13 @@ public class GameManager : MonoBehaviour
         float incomeReduction = player.GetIncomeReduction();
         if (incomeReduction > 0)
         {
-            Debug.Log($"{player.playerName} ???????Ч??: {incomeReduction * 100}%");
+            Debug.Log($"{player.playerName} ???????????: {incomeReduction * 100}%");
         }
 
         float taxReduction = player.GetTaxReduction();
         if (taxReduction > 0)
         {
-            Debug.Log($"{player.playerName} ??????Ч??: {taxReduction * 100}%");
+            Debug.Log($"{player.playerName} ??????????: {taxReduction * 100}%");
         }
     }
 
@@ -1098,7 +1098,7 @@ public class GameManager : MonoBehaviour
         {
             Player player = players[0];
             bool isWinner = !player.isBankrupt;
-            Debug.Log($"=== 游戏结束! {player.playerName}: {(isWinner ? "胜利" : "失败")} ===");
+            Debug.Log($"=== ???????! {player.playerName}: {(isWinner ? "???" : "???")} ===");
 
             if (uiManager != null)
             {

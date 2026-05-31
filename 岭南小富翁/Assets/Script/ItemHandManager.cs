@@ -6,20 +6,20 @@ public class ItemHandManager : MonoBehaviour
 {
     public static ItemHandManager Instance { get; private set; }
 
-    [Header("手动拖拽UI")]
+    [Header("Hand UI")]
     public Button toggleButton;
     public Transform handContainer;
 
-    [Header("卡牌预制体")]
+    [Header("Card Prefab")]
     public GameObject dragCardPrefab;
 
-    [Header("布局设置")]
+    [Header("Card Settings")]
     public float cardWidth = 120f;
     public float cardSpacing = 10f;
-    public float centerOffsetY = 100f;
+    public float bottomPadding = 50f;
     public float fanAngle = 15f;
 
-    [Header("初始状态")]
+    [Header("Visibility")]
     public bool startVisible = true;
 
     private List<ItemDragCard> handCards = new List<ItemDragCard>();
@@ -63,7 +63,7 @@ public class ItemHandManager : MonoBehaviour
             if (canvas != null)
             {
                 transform.SetParent(canvas.transform);
-                Debug.Log("ItemHandManager: 已移动到 Canvas 下");
+                Debug.Log("ItemHandManager: Moved to existing Canvas");
             }
             else
             {
@@ -73,7 +73,7 @@ public class ItemHandManager : MonoBehaviour
                 canvasObj.AddComponent<CanvasScaler>();
                 canvasObj.AddComponent<GraphicRaycaster>();
                 transform.SetParent(canvas.transform);
-                Debug.Log("ItemHandManager: 创建了新的 Canvas");
+                Debug.Log("ItemHandManager: Created new Canvas");
             }
         }
     }
@@ -92,20 +92,20 @@ public class ItemHandManager : MonoBehaviour
         rect.anchorMin = new Vector2(0.5f, 0f);
         rect.anchorMax = new Vector2(0.5f, 0f);
         rect.pivot = new Vector2(0.5f, 0.5f);
-        rect.anchoredPosition = new Vector2(0, centerOffsetY);
-        rect.sizeDelta = new Vector2(Screen.width, 300);
+        rect.anchoredPosition = Vector2.zero;
+        rect.sizeDelta = new Vector2(Screen.width, 400);
     }
 
     private void AutoInitialize()
     {
         if (GameManager.Instance != null && GameManager.Instance.currentPlayer != null)
         {
-            Debug.Log("ItemHandManager: 自动初始化手牌");
+            Debug.Log("ItemHandManager: Auto initializing...");
             SetupHand(GameManager.Instance.currentPlayer);
         }
         else
         {
-            Debug.Log("ItemHandManager: 等待玩家初始化...");
+            Debug.Log("ItemHandManager: Waiting for player...");
         }
     }
 
@@ -116,7 +116,7 @@ public class ItemHandManager : MonoBehaviour
 
         if (ItemManager.Instance == null)
         {
-            Debug.LogWarning("ItemHandManager: ItemManager 不存在");
+            Debug.LogWarning("ItemHandManager: ItemManager not found");
             return;
         }
 
@@ -124,7 +124,7 @@ public class ItemHandManager : MonoBehaviour
         
         if (items.Count == 0)
         {
-            Debug.Log("ItemHandManager: 当前玩家没有道具");
+            Debug.Log("ItemHandManager: No items to display");
             return;
         }
 
@@ -134,14 +134,14 @@ public class ItemHandManager : MonoBehaviour
         }
 
         LayoutHand();
-        Debug.Log($"ItemHandManager: 已加载 {items.Count} 张卡牌");
+        Debug.Log($"ItemHandManager: Displayed {items.Count} items");
     }
 
     public void AddCardToHand(ItemData item, Player player)
     {
         if (handContainer == null || dragCardPrefab == null)
         {
-            Debug.LogWarning("ItemHandManager: 缺少容器或预制体");
+            Debug.LogWarning("ItemHandManager: Missing references");
             return;
         }
 
@@ -199,7 +199,7 @@ public class ItemHandManager : MonoBehaviour
             Text buttonText = toggleButton.GetComponentInChildren<Text>();
             if (buttonText != null)
             {
-                buttonText.text = isVisible ? "隐藏手牌" : "显示手牌";
+                buttonText.text = isVisible ? "Hide Items" : "Show Items";
             }
         }
     }
@@ -232,30 +232,35 @@ public class ItemHandManager : MonoBehaviour
         float totalWidth = (cardCount - 1) * (cardWidth + cardSpacing);
         float startX = -totalWidth / 2f;
 
+        float cardHeight = cardWidth * 1.5f;
+
+        Debug.Log($"LayoutHand: cardCount={cardCount}, totalWidth={totalWidth}, bottomPadding={bottomPadding}, Screen.height={Screen.height}");
+
         for (int i = 0; i < cardCount; i++)
         {
             ItemDragCard card = handCards[i];
             RectTransform rect = card.GetComponent<RectTransform>();
 
-            float baseX = startX + i * (cardWidth + cardSpacing);
-            float baseY = 0f;
+            float x = startX + i * (cardWidth + cardSpacing);
 
             float angle = 0f;
-            float yOffset = 0f;
+            float fanY = 0f;
 
             if (cardCount > 1)
             {
                 float normalizedPos = (float)i / (cardCount - 1) - 0.5f;
                 angle = normalizedPos * fanAngle;
-                yOffset = Mathf.Abs(normalizedPos) * 20f;
+                fanY = Mathf.Abs(normalizedPos) * 20f;
             }
 
-            rect.anchorMin = new Vector2(0.5f, 0.5f);
-            rect.anchorMax = new Vector2(0.5f, 0.5f);
-            rect.pivot = new Vector2(0.5f, 0.5f);
-            rect.anchoredPosition = new Vector2(baseX, baseY + yOffset);
+            rect.anchorMin = new Vector2(0.5f, 0f);
+            rect.anchorMax = new Vector2(0.5f, 0f);
+            rect.pivot = new Vector2(0.5f, 0f);
+            rect.anchoredPosition = new Vector2(x, bottomPadding + fanY);
             rect.localRotation = Quaternion.Euler(0, 0, angle);
-            rect.sizeDelta = new Vector2(cardWidth, cardWidth * 1.5f);
+            rect.sizeDelta = new Vector2(cardWidth, cardHeight);
+
+            Debug.Log($"Card {i}: x={x}, y={bottomPadding + fanY}, anchoredPosition={rect.anchoredPosition}, anchorMin={rect.anchorMin}");
         }
     }
 
@@ -284,5 +289,15 @@ public class ItemHandManager : MonoBehaviour
     {
         currentPlayer = newPlayer;
         SetupHand(newPlayer);
+    }
+
+    void OnRectTransformDimensionsChange()
+    {
+        if (handContainer != null)
+        {
+            RectTransform rect = handContainer.GetComponent<RectTransform>();
+            rect.anchoredPosition = new Vector2(0, bottomPadding + 100f);
+            rect.sizeDelta = new Vector2(Screen.width, 300);
+        }
     }
 }
