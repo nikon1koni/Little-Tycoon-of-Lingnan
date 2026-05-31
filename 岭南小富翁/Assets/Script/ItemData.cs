@@ -4,35 +4,35 @@ using UnityEngine;
 public class ItemData : ScriptableObject
 {
     [Header("Item Info")]
-    [InspectorName("名称")]
+    [InspectorName("????")]
     public string itemName;
     
-    [InspectorName("图标")]
+    [InspectorName("???")]
     public Sprite itemIcon;
     
     [TextArea(3, 10)]
-    [InspectorName("描述")]
+    [InspectorName("????")]
     public string itemDescription;
 
     [Header("Item Effect")]
-    [InspectorName("效果类型")]
+    [InspectorName("Ч??????")]
     public ItemEffectType effectType;
     
     [Header("Effect Parameters")]
-    [InspectorName("效果数值")]
+    [InspectorName("Ч?????")]
     public int effectValue = 0;
     
-    [InspectorName("效果百分比")]
+    [InspectorName("Ч??????")]
     public float effectPercent = 0f;
     
-    [InspectorName("持续回合数")]
+    [InspectorName("?????????")]
     public int durationRounds = 0;
     
     [Header("Usage Limits")]
-    [InspectorName("随时可用")]
+    [InspectorName("???????")]
     public bool canUseAnytime = true;
     
-    [InspectorName("回合内可用")]
+    [InspectorName("????????")]
     public bool canUseOnTurn = true;
 
     public enum ItemEffectType
