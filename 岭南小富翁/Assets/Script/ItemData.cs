@@ -15,14 +15,14 @@ public class ItemData : ScriptableObject
     public string itemDescription;
 
     [Header("Item Effect")]
-    [InspectorName("งน??????")]
+    [InspectorName("????????")]
     public ItemEffectType effectType;
     
     [Header("Effect Parameters")]
-    [InspectorName("งน?????")]
+    [InspectorName("???????")]
     public int effectValue = 0;
     
-    [InspectorName("งน??????")]
+    [InspectorName("????????")]
     public float effectPercent = 0f;
     
     [InspectorName("?????????")]
