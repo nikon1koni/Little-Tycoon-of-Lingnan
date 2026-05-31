@@ -16,7 +16,7 @@ public class ItemHandManager : MonoBehaviour
     [Header("布局设置")]
     public float cardWidth = 120f;
     public float cardSpacing = 10f;
-    public float centerOffsetY = -100f;
+    public float centerOffsetY = 100f;
     public float fanAngle = 15f;
 
     [Header("初始状态")]
@@ -40,34 +40,60 @@ public class ItemHandManager : MonoBehaviour
 
     void Start()
     {
-        // 创建手牌容器（如果没有）
+        EnsureCanvasParent();
+        CreateHandContainer();
+
+        if (toggleButton != null)
+        {
+            toggleButton.onClick.AddListener(ToggleHand);
+        }
+
+        isVisible = startVisible;
+        UpdateHandVisibility();
+
+        AutoInitialize();
+    }
+
+    private void EnsureCanvasParent()
+    {
+        Canvas canvas = GetComponentInParent<Canvas>();
+        if (canvas == null)
+        {
+            canvas = FindObjectOfType<Canvas>();
+            if (canvas != null)
+            {
+                transform.SetParent(canvas.transform);
+                Debug.Log("ItemHandManager: 已移动到 Canvas 下");
+            }
+            else
+            {
+                GameObject canvasObj = new GameObject("Canvas");
+                canvas = canvasObj.AddComponent<Canvas>();
+                canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+                canvasObj.AddComponent<CanvasScaler>();
+                canvasObj.AddComponent<GraphicRaycaster>();
+                transform.SetParent(canvas.transform);
+                Debug.Log("ItemHandManager: 创建了新的 Canvas");
+            }
+        }
+    }
+
+    private void CreateHandContainer()
+    {
         if (handContainer == null)
         {
             GameObject container = new GameObject("HandContainer");
             container.transform.SetParent(transform);
             container.AddComponent<RectTransform>();
             handContainer = container.transform;
-
-            RectTransform rect = handContainer.GetComponent<RectTransform>();
-            rect.anchorMin = new Vector2(0.5f, 0f);
-            rect.anchorMax = new Vector2(0.5f, 0f);
-            rect.pivot = new Vector2(0.5f, 0.5f);
-            rect.anchoredPosition = new Vector2(0, centerOffsetY);
-            rect.sizeDelta = new Vector2(Screen.width, 300);
         }
 
-        // 设置开关按钮
-        if (toggleButton != null)
-        {
-            toggleButton.onClick.AddListener(ToggleHand);
-        }
-
-        // 设置初始显示状态
-        isVisible = startVisible;
-        UpdateHandVisibility();
-
-        // 尝试自动初始化（如果当前玩家已存在）
-        AutoInitialize();
+        RectTransform rect = handContainer.GetComponent<RectTransform>();
+        rect.anchorMin = new Vector2(0.5f, 0f);
+        rect.anchorMax = new Vector2(0.5f, 0f);
+        rect.pivot = new Vector2(0.5f, 0.5f);
+        rect.anchoredPosition = new Vector2(0, centerOffsetY);
+        rect.sizeDelta = new Vector2(Screen.width, 300);
     }
 
     private void AutoInitialize()
@@ -168,7 +194,6 @@ public class ItemHandManager : MonoBehaviour
         isVisible = !isVisible;
         UpdateHandVisibility();
 
-        // 更新按钮文字
         if (toggleButton != null)
         {
             Text buttonText = toggleButton.GetComponentInChildren<Text>();
@@ -255,7 +280,6 @@ public class ItemHandManager : MonoBehaviour
         return handCards.Count;
     }
 
-    // 监听玩家切换
     public void OnPlayerChanged(Player newPlayer)
     {
         currentPlayer = newPlayer;

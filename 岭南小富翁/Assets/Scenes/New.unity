@@ -19174,7 +19174,7 @@ MonoBehaviour:
   dragCardPrefab: {fileID: 6252345139265869957, guid: 854d3a34f445dbb4696d1f09a47f2244, type: 3}
   cardWidth: 120
   cardSpacing: 10
-  centerOffsetY: -100
+  centerOffsetY: -250
   fanAngle: 15
   startVisible: 1
 --- !u!1001 &1204150387
@@ -20953,9 +20953,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1396678563}
-  m_Layer: 8
+  - component: {fileID: 1396678564}
+  m_Layer: 5
   m_Name: ItemDropZone
-  m_TagString: Untagged
+  m_TagString: ItemDropZone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -20979,6 +20980,25 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 400, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1396678564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1396678562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a1f25de430801a45b9a41ecf5335214, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  zoneName: Zone
+  normalColor: {r: 0.2, g: 0.2, b: 0.8, a: 0}
+  hoverColor: {r: 0.2, g: 0.8, b: 0.2, a: 0.5}
+  activeColor: {r: 0.8, g: 0.2, b: 0.2, a: 0.5}
+  zoneNameText: {fileID: 0}
+  instructionText: {fileID: 0}
+  zoneImage: {fileID: 0}
 --- !u!1001 &1399182630
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27852,7 +27872,6 @@ SceneRoots:
   - {fileID: 41562755}
   - {fileID: 802980337}
   - {fileID: 628688774}
-  - {fileID: 1201507421}
   - {fileID: 2053796372}
   - {fileID: 467410587}
   - {fileID: 1459597473}
@@ -27872,3 +27891,4 @@ SceneRoots:
   - {fileID: 448367728}
   - {fileID: 1262232810}
   - {fileID: 1474040949}
+  - {fileID: 1201507421}

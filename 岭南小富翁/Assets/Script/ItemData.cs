@@ -4,35 +4,35 @@ using UnityEngine;
 public class ItemData : ScriptableObject
 {
     [Header("Item Info")]
-    [InspectorName("????")]
+    [InspectorName("Name")]
     public string itemName;
     
-    [InspectorName("???")]
+    [InspectorName("Icon")]
     public Sprite itemIcon;
     
     [TextArea(3, 10)]
-    [InspectorName("????")]
+    [InspectorName("Description")]
     public string itemDescription;
 
     [Header("Item Effect")]
-    [InspectorName("????????")]
+    [InspectorName("Effect Type")]
     public ItemEffectType effectType;
     
     [Header("Effect Parameters")]
-    [InspectorName("???????")]
+    [InspectorName("Effect Value")]
     public int effectValue = 0;
     
-    [InspectorName("????????")]
+    [InspectorName("Effect Percent")]
     public float effectPercent = 0f;
     
-    [InspectorName("?????????")]
+    [InspectorName("Duration Rounds")]
     public int durationRounds = 0;
     
     [Header("Usage Limits")]
-    [InspectorName("???????")]
+    [InspectorName("Can Use Anytime")]
     public bool canUseAnytime = true;
     
-    [InspectorName("????????")]
+    [InspectorName("Can Use On Turn")]
     public bool canUseOnTurn = true;
 
     public enum ItemEffectType

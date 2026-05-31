@@ -4,16 +4,20 @@ using TMPro;
 
 public class ItemDropZone : MonoBehaviour
 {
-    [Header("????????")]
-    public string zoneName = "?????????";
+    [Header("Zone Settings")]
+    public string zoneName = "Drop Zone";
     public Color normalColor = new Color(0.2f, 0.2f, 0.8f, 0.3f);
     public Color hoverColor = new Color(0.2f, 0.8f, 0.2f, 0.5f);
     public Color activeColor = new Color(0.8f, 0.2f, 0.2f, 0.5f);
 
-    [Header("UI???")]
+    [Header("UI Elements")]
     public TextMeshProUGUI zoneNameText;
     public TextMeshProUGUI instructionText;
     public Image zoneImage;
+
+    [Header("Text Visibility")]
+    public bool showZoneName = true;
+    public bool showInstruction = true;
 
     private bool isActive = true;
     private int hoveringCards = 0;
@@ -25,7 +29,6 @@ public class ItemDropZone : MonoBehaviour
 
     private void SetupVisuals()
     {
-        // ??????UI???????????
         if (zoneImage == null)
         {
             zoneImage = GetComponent<Image>();
@@ -40,7 +43,7 @@ public class ItemDropZone : MonoBehaviour
             zoneImage.color = normalColor;
         }
 
-        if (zoneNameText == null)
+        if (showZoneName && zoneNameText == null)
         {
             GameObject textObj = new GameObject("ZoneName");
             textObj.transform.SetParent(transform);
@@ -58,12 +61,17 @@ public class ItemDropZone : MonoBehaviour
             textRect.sizeDelta = new Vector2(200, 30);
         }
 
-        if (instructionText == null)
+        if (zoneNameText != null)
+        {
+            zoneNameText.gameObject.SetActive(showZoneName);
+        }
+
+        if (showInstruction && instructionText == null)
         {
             GameObject instructObj = new GameObject("Instruction");
             instructObj.transform.SetParent(transform);
             instructionText = instructObj.AddComponent<TextMeshProUGUI>();
-            instructionText.text = "???????????????";
+            instructionText.text = "Drag items here to use";
             instructionText.fontSize = 12;
             instructionText.alignment = TextAlignmentOptions.Center;
             instructionText.color = new Color(1, 1, 1, 0.7f);
@@ -75,8 +83,30 @@ public class ItemDropZone : MonoBehaviour
             instructRect.offsetMax = new Vector2(-10, -30);
         }
 
-        // ????????????????
+        if (instructionText != null)
+        {
+            instructionText.gameObject.SetActive(showInstruction);
+        }
+
         gameObject.tag = "ItemDropZone";
+    }
+
+    public void ToggleZoneName()
+    {
+        showZoneName = !showZoneName;
+        if (zoneNameText != null)
+        {
+            zoneNameText.gameObject.SetActive(showZoneName);
+        }
+    }
+
+    public void ToggleInstruction()
+    {
+        showInstruction = !showInstruction;
+        if (instructionText != null)
+        {
+            instructionText.gameObject.SetActive(showInstruction);
+        }
     }
 
     public void OnCardEnter()

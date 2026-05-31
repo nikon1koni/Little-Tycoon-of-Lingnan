@@ -5,29 +5,29 @@ using TMPro;
 
 public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    [Header("卡牌信息")]
+    [Header("Card Info")]
     public ItemData itemData;
     public Player ownerPlayer;
 
-    [Header("UI组件")]
-    [Tooltip("拖拽子对象Icon进来")]
+    [Header("UI Components")]
+    [Tooltip("Drag Icon child object here")]
     public Image iconImage;
-    [Tooltip("拖拽子对象Name进来")]
+    [Tooltip("Drag Name child object here")]
     public TextMeshProUGUI nameText;
-    [Tooltip("拖拽子对象Description进来")]
+    [Tooltip("Drag Description child object here")]
     public TextMeshProUGUI descriptionText;
 
-    [Header("拖拽设置")]
+    [Header("Drag Settings")]
     public float dragScale = 1.2f;
     public float dragYOffset = 50f;
     public bool canDrag = true;
 
-    [Header("视觉反馈")]
+    [Header("Visual Feedback")]
     public Color normalColor = Color.white;
     public Color dragColor = Color.yellow;
     public Color invalidColor = Color.red;
 
-    [Header("释放区域")]
+    [Header("Drop Zone")]
     public GameObject dropZone;
     public string validDropZoneTag = "ItemDropZone";
 
@@ -98,15 +98,12 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
         isDragging = true;
 
-        // ????????
         originalPosition = transform.position;
         originalRotation = transform.rotation;
 
-        // ??????????????????????????????
         draggedCardInstance = Instantiate(gameObject, transform.parent);
         draggedCardInstance.name = "DraggingCard";
 
-        // ????????????????
         ItemDragCard dragCard = draggedCardInstance.GetComponent<ItemDragCard>();
         dragCard.enabled = false;
         dragCard.canvasGroup.blocksRaycasts = false;
@@ -114,13 +111,10 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         RectTransform dragRect = draggedCardInstance.GetComponent<RectTransform>();
         dragRect.sizeDelta = rectTransform.sizeDelta;
 
-        // ??????????
         canvasGroup.blocksRaycasts = false;
 
-        // ????Ч??
         StartCoroutine(ScaleTo(draggedCardInstance.transform, originalScale * dragScale, 0.1f));
 
-        // ??????
         draggedCardInstance.transform.SetAsLastSibling();
     }
 
@@ -128,11 +122,9 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     {
         if (!isDragging || draggedCardInstance == null) return;
 
-        // ?????????????????????
         Vector3 mousePos = Input.mousePosition;
         draggedCardInstance.transform.position = new Vector3(mousePos.x, mousePos.y + dragYOffset, mousePos.z);
 
-        // ??????????Ч???????
         CheckDropZone();
     }
 
@@ -142,57 +134,63 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
         isDragging = false;
 
-        // ?????????????Ч????
         bool droppedOnValidZone = IsOverValidDropZone();
 
         if (droppedOnValidZone && itemData != null)
         {
-            // ??????
             UseItem();
+            return;
         }
         else
         {
-            // ?????λ
             ReturnToOriginalPosition();
         }
 
-        // ??????????
         if (draggedCardInstance != null)
         {
             Destroy(draggedCardInstance);
+            draggedCardInstance = null;
         }
 
-        // ?????????
         canvasGroup.blocksRaycasts = true;
     }
 
     private bool IsOverValidDropZone()
     {
-        if (draggedCardInstance == null) return false;
-
-        // ???????????
-        Vector3 screenPos = RectTransformUtility.WorldToScreenPoint(
-            Camera.main, 
-            draggedCardInstance.transform.position
-        );
+        if (draggedCardInstance == null) 
+        {
+            Debug.Log("IsOverValidDropZone: draggedCardInstance 为空");
+            return false;
+        }
 
         PointerEventData pointerData = new PointerEventData(EventSystem.current)
         {
-            position = screenPos
+            position = Input.mousePosition
         };
 
         var raycastResults = new System.Collections.Generic.List<RaycastResult>();
         EventSystem.current.RaycastAll(pointerData, raycastResults);
 
-        foreach (var result in raycastResults)
+        if (raycastResults.Count == 0)
         {
-            if (result.gameObject.CompareTag(validDropZoneTag) ||
-                result.gameObject.GetComponent<ItemDropZone>() != null)
+            Debug.Log("IsOverValidDropZone: 没有检测到任何UI元素");
+        }
+        else
+        {
+            Debug.Log($"IsOverValidDropZone: 检测到 {raycastResults.Count} 个UI元素");
+            foreach (var result in raycastResults)
             {
-                return true;
+                Debug.Log($"  - {result.gameObject.name} (Tag: {result.gameObject.tag})");
+                if (result.gameObject.CompareTag(validDropZoneTag) ||
+                    result.gameObject.GetComponent<ItemDropZone>() != null)
+                {
+                    Debug.Log("检测到有效释放区域: " + result.gameObject.name);
+                    return true;
+                }
             }
         }
 
+        Debug.Log("IsOverValidDropZone: 未检测到有效释放区域");
         return false;
     }
 
@@ -231,7 +229,6 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         }
         else
         {
-            // ????????????λ
             ReturnToOriginalPosition();
         }
     }
@@ -240,20 +237,37 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     {
         if (draggedCardInstance == null) yield break;
 
-        // ??????Ч??
         Vector3 startPos = draggedCardInstance.transform.position;
-        Vector3 targetPos = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, 10));
+        Vector3 targetPos;
+        
+        if (Camera.main != null)
+        {
+            targetPos = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width / 2, Screen.height / 2, 10));
+        }
+        else
+        {
+            targetPos = new Vector3(Screen.width / 2, Screen.height / 2, 10);
+        }
+        
         float duration = 0.3f;
         float elapsed = 0f;
 
         while (elapsed < duration)
         {
+            if (draggedCardInstance == null) yield break;
+            
             elapsed += Time.deltaTime;
             float t = elapsed / duration;
             draggedCardInstance.transform.position = Vector3.Lerp(startPos, targetPos, t);
             draggedCardInstance.transform.localScale = Vector3.Lerp(originalScale * dragScale, Vector3.zero, t);
             yield return null;
         }
+
+        Destroy(draggedCardInstance);
+        draggedCardInstance = null;
+
+        ItemHandManager.Instance.RemoveCardFromHand(itemData);
+        Destroy(gameObject);
     }
 
     private void ReturnToOriginalPosition()
@@ -266,34 +280,48 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
     private System.Collections.IEnumerator MoveToPosition(Transform target, Vector3 destination, float duration)
     {
+        if (target == null) yield break;
+        
         Vector3 startPos = target.position;
         float elapsed = 0f;
 
         while (elapsed < duration)
         {
+            if (target == null) yield break;
+            
             elapsed += Time.deltaTime;
             float t = elapsed / duration;
             target.position = Vector3.Lerp(startPos, destination, t);
             yield return null;
         }
 
-        target.position = destination;
+        if (target != null)
+        {
+            target.position = destination;
+        }
     }
 
     private System.Collections.IEnumerator ScaleTo(Transform target, Vector3 destinationScale, float duration)
     {
+        if (target == null) yield break;
+        
         Vector3 startScale = target.localScale;
         float elapsed = 0f;
 
         while (elapsed < duration)
         {
+            if (target == null) yield break;
+            
             elapsed += Time.deltaTime;
             float t = elapsed / duration;
             target.localScale = Vector3.Lerp(startScale, destinationScale, t);
             yield return null;
         }
 
-        target.localScale = destinationScale;
+        if (target != null)
+        {
+            target.localScale = destinationScale;
+        }
     }
 
     // ??????????ú???????????
