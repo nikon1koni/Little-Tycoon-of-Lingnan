@@ -1019,6 +1019,13 @@ public class UIManager : MonoBehaviour
         // ===  ===
         UpdateCashDisplay(player.cash);
         // ===  ===
+
+        // === ?????????? ===
+        if (ItemPanelUI.Instance != null)
+        {
+            ItemPanelUI.Instance.UpdateItemDisplay();
+        }
+        // ===  ===
     }
 
     public void SwitchUI(UIType uiType)
@@ -1134,7 +1141,7 @@ public class UIManager : MonoBehaviour
 
         UnityEngine.Debug.Log($": ={playerName}, ={isWinner}, ={roundCount}, ={diceCount}, ??={score}");
 
-        SetText("ResultText", isWinner ? $"{playerName} Ê¤Àû!" : $"{playerName} Ê§°Ü");
+        SetText("ResultText", isWinner ? $"{playerName} ???!" : $"{playerName} ???");
         SetText("RoundText", $": {roundCount}");
         SetText("DiceText", $": {diceCount}");
         SetText("ScoreText", $"??: {score}");
