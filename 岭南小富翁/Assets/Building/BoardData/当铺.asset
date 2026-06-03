@@ -10,24 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6d2d4598ad43c9b4c9588967c26b1eb0, type: 3}
-  m_Name: LargeHouse
+  m_Name: "\u5F53\u94FA"
   m_EditorClassIdentifier: 
   buildingType: 0
-  isFinalLevel: 1
-  buildingLevel: 3
-  buffValues:
-  - 0.1
-  - 0.2
-  - 0.3
-  - 0.4
-  buildingName: "\u5927\u623F\u5C4B"
-  purchasePrice: 550
+  isFinalLevel: 0
+  buildingLevel: 1
+  buffValues: []
+  buildingName: "\u5F53\u94FA "
+  purchasePrice: 100
   upgradePrice: 50
-  minTileScale: 3
-  maxTileScale: 3
-  requiredScale: 2
-  functionType: 0
-  baseIncome: 100
+  minTileScale: 1
+  maxTileScale: 4
+  requiredScale: 1
+  functionType: 3
+  baseIncome: 10
   incomeGrowthRate: 1.2
   enableIncomeGrowth: 0
   buffConfigs: []
@@ -37,11 +33,13 @@ MonoBehaviour:
   buffDuration: 0
   mixedBaseIncome: 5
   mixedIncomeGrowthRate: 1.1
-  diceEvenReward: 20
+  diceEvenReward: 25
   buildingIcon: {fileID: 0}
-  buildingPrefab: {fileID: 0}
+  buildingPrefab: {fileID: 7532133801244312915, guid: c59ef2fab0c92914180904b850275dbd, type: 3}
   nextLevelBuilding: {fileID: 0}
+  positionOffset: {x: 0, y: 1.4, z: 0}
+  rotationEuler: {x: 0, y: 180, z: 0}
   effectIconPrefab: {fileID: 919132149155446097, guid: 89d1daaefdad3d24c889bbdebdee51dc, type: 3}
   effectSound: {fileID: 8300000, guid: f674a041c334b1e40af4fcd60e27bea8, type: 3}
   effectDuration: 1.5
-  description: "\u8FD9\u662F\u5927\u623F\u5B50"
+  description: "\u5EFA\u7B51\u63CF\u8FF0"
