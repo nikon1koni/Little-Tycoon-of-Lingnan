@@ -56,9 +56,70 @@ public class BuildingData : ScriptableObject
     public int mixedBaseIncome = 5;
     public float mixedIncomeGrowthRate = 1.1f;
 
-    [Header("")]
-    [Tooltip("(2,4,6)")]
-    public int diceEvenReward = 20;
+    [Header("骰子规则")]
+    [Tooltip("触发收益的目标骰子点数（空=所有1~6，如[2,4,6]或[1,6]）")]
+    public int[] targetDiceValues = new int[] { 2, 4, 6 };
+    [Tooltip("骰子奖励模式：固定金额 或 点数倍率")]
+    public DiceRewardMode diceRewardMode = DiceRewardMode.FixedValue;
+    [Tooltip("固定金额模式的奖励数")]
+    public int diceFixedReward = 20;
+    [Tooltip("倍率模式：点数 × 此值")]
+    public float diceMultiplier = 5f;
+
+    // 骰子奖励模式
+    public enum DiceRewardMode
+    {
+        FixedValue,     // 固定金额
+        DiceMultiplier  // 点数 × 倍率
+    }
+
+    /// <summary> 根据骰子值计算收益，返回0表示不触发 </summary>
+    public int CalculateDiceReward(int diceValue)
+    {
+        if (!IsDiceValueMatch(diceValue)) return 0;
+
+        switch (diceRewardMode)
+        {
+            case DiceRewardMode.FixedValue:
+                return diceFixedReward;
+            case DiceRewardMode.DiceMultiplier:
+                return Mathf.RoundToInt(diceValue * diceMultiplier);
+            default:
+                return 0;
+        }
+    }
+
+    /// <summary> 判断骰子值是否匹配目标点数 </summary>
+    public bool IsDiceValueMatch(int diceValue)
+    {
+        if (targetDiceValues == null || targetDiceValues.Length == 0)
+            return true; // 空数组=所有点数都匹配
+        for (int i = 0; i < targetDiceValues.Length; i++)
+        {
+            if (targetDiceValues[i] == diceValue) return true;
+        }
+        return false;
+    }
+
+    /// <summary> 获取骰子规则描述文本 </summary>
+    public string GetDiceRuleDescription()
+    {
+        string targetDesc;
+        if (targetDiceValues == null || targetDiceValues.Length == 0)
+            targetDesc = "任意";
+        else
+            targetDesc = string.Join(",", targetDiceValues);
+
+        switch (diceRewardMode)
+        {
+            case DiceRewardMode.FixedValue:
+                return $"掷出 {targetDesc} 得 {diceFixedReward}";
+            case DiceRewardMode.DiceMultiplier:
+                return $"掷出 {targetDesc} 得 点数×{diceMultiplier}({diceMultiplier}~{diceMultiplier * 6})";
+            default:
+                return "";
+        }
+    }
 
     [Header("")]
     public Sprite buildingIcon;
@@ -66,7 +127,7 @@ public class BuildingData : ScriptableObject
     public BuildingData nextLevelBuilding;
 
     [Header("????????")]
-    [Tooltip("???????????λ????????????????")]
+    [Tooltip("?????????????????????????????")]
     public Vector3 positionOffset = new Vector3(0, 0.5f, 0);
     [Tooltip("??????????????????Euler??????")]
     public Vector3 rotationEuler = Vector3.zero;
@@ -259,8 +320,8 @@ public class BuildingData : ScriptableObject
                 break;
 
             case BuildingFunctionType.DiceEven:
-                desc += $": \n";
-                desc += $": {diceEvenReward} ";
+                desc += $": 骰子触发\n";
+                desc += $": {GetDiceRuleDescription()}\n";
                 break;
         }
 

@@ -33,9 +33,12 @@ MonoBehaviour:
   buffDuration: 0
   mixedBaseIncome: 5
   mixedIncomeGrowthRate: 1.1
-  diceEvenReward: 25
+  targetDiceValues: 
+  diceRewardMode: 0
+  diceFixedReward: 20
+  diceMultiplier: 5
   buildingIcon: {fileID: 0}
-  buildingPrefab: {fileID: 4993402672226001664, guid: 1e68dab3edfa29b49b7ce5bcec92aa5f, type: 3}
+  buildingPrefab: {fileID: 919132149155446097, guid: 5a686bb3862c596488ca26d38bc82a70, type: 3}
   nextLevelBuilding: {fileID: 11400000, guid: b4442b0b1d555bc4db3b8bc530ddc893, type: 2}
   positionOffset: {x: 0, y: 1.4, z: 0}
   rotationEuler: {x: 0, y: 180, z: 0}

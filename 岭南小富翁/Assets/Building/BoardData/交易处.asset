@@ -17,12 +17,12 @@ MonoBehaviour:
   buildingLevel: 1
   buffValues: []
   buildingName: "\u4EA4\u6613\u5904 "
-  purchasePrice: 100
-  upgradePrice: 50
+  purchasePrice: 30
+  upgradePrice: 35
   minTileScale: 1
   maxTileScale: 4
   requiredScale: 1
-  functionType: 3
+  functionType: 0
   baseIncome: 10
   incomeGrowthRate: 1.2
   enableIncomeGrowth: 0
@@ -33,10 +33,13 @@ MonoBehaviour:
   buffDuration: 0
   mixedBaseIncome: 5
   mixedIncomeGrowthRate: 1.1
-  diceEvenReward: 25
+  targetDiceValues: 010000000200000003000000040000000500000006000000
+  diceRewardMode: 0
+  diceFixedReward: 20
+  diceMultiplier: 5
   buildingIcon: {fileID: 0}
-  buildingPrefab: {fileID: 6066899992970886948, guid: 970a825ba92ed7548bac0194aba781d6, type: 3}
-  nextLevelBuilding: {fileID: 0}
+  buildingPrefab: {fileID: 919132149155446097, guid: b382fd53053eda448975f63bb490b13a, type: 3}
+  nextLevelBuilding: {fileID: 11400000, guid: 241e4c090caee49489fc48d97ef69fa3, type: 2}
   positionOffset: {x: 0, y: 1.4, z: 0}
   rotationEuler: {x: 0, y: 180, z: 0}
   effectIconPrefab: {fileID: 919132149155446097, guid: 89d1daaefdad3d24c889bbdebdee51dc, type: 3}

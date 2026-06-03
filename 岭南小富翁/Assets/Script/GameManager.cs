@@ -595,36 +595,35 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// 检查骰子触发的建筑收益
     /// </summary>
     private void CheckDiceEvenBuildings(int diceValue)
     {
-        // 2, 4, 6
-        if (diceValue % 2 != 0) return;
-
         if (currentPlayer == null) return;
 
-        Debug.Log($"  {diceValue}...");
+        Debug.Log($"检查骰子触发建筑: 骰子值={diceValue}...");
 
         int totalReward = 0;
         int buildingCount = 0;
 
-        // ??
+        // 遍历玩家所有建筑
         foreach (BoardTile property in currentPlayer.ownedProperties)
         {
             if (property == null || property.currentBuildingData == null) continue;
 
-            // DiceEven
+            // DiceEven 类型
             if (property.currentBuildingData.functionType == BuildingData.BuildingFunctionType.DiceEven)
             {
-                int reward = property.currentBuildingData.diceEvenReward;
+                int reward = property.currentBuildingData.CalculateDiceReward(diceValue);
+                if (reward <= 0) continue; // 不匹配则跳过
+
                 currentPlayer.ReceiveCash(reward);
                 totalReward += reward;
                 buildingCount++;
 
-                Debug.Log($" {property.tileName} ({property.currentBuildingData.buildingName}) : {reward} ");
+                Debug.Log($"骰子触发: {property.tileName} ({property.currentBuildingData.buildingName}) 获得 {reward} 铜板");
 
-                // ??
+                // 播放特效
                 Transform effectTransform = property.transform;
                 if (property.currentBuilding != null)
                 {

@@ -1604,7 +1604,7 @@ public class UIManager : MonoBehaviour
                 return $": {mixedIncome} {mixedMultiplierInfo} + {buffName}: +{buffValue * 100}%";
 
             case BuildingData.BuildingFunctionType.DiceEven:
-                return $": (2,4,6) {buildingData.diceEvenReward} ";
+                return $": {buildingData.GetDiceRuleDescription()}";
 
             default:
                 return "??";
