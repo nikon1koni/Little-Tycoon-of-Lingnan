@@ -1606,6 +1606,9 @@ public class UIManager : MonoBehaviour
             case BuildingData.BuildingFunctionType.DiceEven:
                 return $": {buildingData.GetDiceRuleDescription()}";
 
+            case BuildingData.BuildingFunctionType.Appreciation:
+                return $": 每持有1圈, 估值+{buildingData.appreciationPerRound}";
+
             default:
                 return "??";
         }

@@ -677,8 +677,18 @@ public class BoardTile : MonoBehaviour
     public int GetSellPrice()
     {
         if (currentBuildingData == null) return 0;
-        
-        // 
+
+        float ratio = BuildingDataConfig.Instance != null ? BuildingDataConfig.Instance.GetSellPriceRatio() : 0.5f;
+
+        // 增值建筑：卖出价 = 当前估值 × 比例
+        if (currentBuildingData.functionType == BuildingData.BuildingFunctionType.Appreciation)
+        {
+            int roundsOwned = GetBuildingTurnsOwned();
+            int appreciatedValue = currentBuildingData.GetAppreciatedValue(roundsOwned);
+            return Mathf.RoundToInt(appreciatedValue * ratio);
+        }
+
+        // 普通建筑：卖出价 = 总投入 × 比例
         int totalInvested = currentBuildingData.purchasePrice;
         
         BuildingData nextData = currentBuildingData.nextLevelBuilding;
@@ -691,11 +701,8 @@ public class BoardTile : MonoBehaviour
             nextData = nextData.nextLevelBuilding;
             tempLevel--;
         }
-        
-        // 
-        float ratio = BuildingDataConfig.Instance != null ? BuildingDataConfig.Instance.GetSellPriceRatio() : 0.5f;
-        
-        //  =   
+
+        // 卖出价 = 总投入 × 比例
         return Mathf.RoundToInt(totalInvested * ratio);
     }
 

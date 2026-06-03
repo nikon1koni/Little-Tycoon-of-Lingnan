@@ -121,7 +121,17 @@ public class BuildingData : ScriptableObject
         }
     }
 
-    [Header("")]
+    [Header("增值规则")]
+    [Tooltip("每持有1圈，估值增加的金额")]
+    public int appreciationPerRound = 0;
+
+    // 增值估值计算：购买价 + 持有圈数 × 每圈增值
+    public int GetAppreciatedValue(int roundsOwned)
+    {
+        return purchasePrice + (roundsOwned * appreciationPerRound);
+    }
+
+    // --- 以下是预制体和特效配置 ---
     public Sprite buildingIcon;
     public GameObject buildingPrefab;
     public BuildingData nextLevelBuilding;
@@ -156,7 +166,8 @@ public class BuildingData : ScriptableObject
         Income,
         Buff,
         Mixed,
-        DiceEven  // 
+        DiceEven,  // 骰子触发
+        Appreciation  // 增值：持有每圈估值增加
     }
 
     // Buff??
@@ -322,6 +333,11 @@ public class BuildingData : ScriptableObject
             case BuildingFunctionType.DiceEven:
                 desc += $": 骰子触发\n";
                 desc += $": {GetDiceRuleDescription()}\n";
+                break;
+
+            case BuildingFunctionType.Appreciation:
+                desc += $": 增值\n";
+                desc += $": 每持有1圈, 估值+{appreciationPerRound}\n";
                 break;
         }
 

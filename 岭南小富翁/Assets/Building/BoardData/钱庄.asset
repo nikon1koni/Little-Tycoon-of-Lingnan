@@ -22,7 +22,7 @@ MonoBehaviour:
   minTileScale: 1
   maxTileScale: 4
   requiredScale: 1
-  functionType: 0
+  functionType: 4
   baseIncome: 10
   incomeGrowthRate: 1.2
   enableIncomeGrowth: 0
@@ -37,11 +37,12 @@ MonoBehaviour:
   diceRewardMode: 0
   diceFixedReward: 20
   diceMultiplier: 5
+  appreciationPerRound: 50
   buildingIcon: {fileID: 0}
   buildingPrefab: {fileID: 919132149155446097, guid: bbd902da361a43b4bbbc15bd188bc40c, type: 3}
   nextLevelBuilding: {fileID: 0}
-  positionOffset: {x: 0, y: 1.4, z: 0}
-  rotationEuler: {x: 0, y: 180, z: 0}
+  positionOffset: {x: 0, y: 1.55, z: 0}
+  rotationEuler: {x: 0, y: -90, z: 0}
   effectIconPrefab: {fileID: 919132149155446097, guid: 89d1daaefdad3d24c889bbdebdee51dc, type: 3}
   effectSound: {fileID: 8300000, guid: f674a041c334b1e40af4fcd60e27bea8, type: 3}
   effectDuration: 1.5

@@ -37,10 +37,11 @@ MonoBehaviour:
   diceRewardMode: 0
   diceFixedReward: 20
   diceMultiplier: 5
+  appreciationPerRound: 0
   buildingIcon: {fileID: 0}
   buildingPrefab: {fileID: 919132149155446097, guid: 5a686bb3862c596488ca26d38bc82a70, type: 3}
   nextLevelBuilding: {fileID: 11400000, guid: b4442b0b1d555bc4db3b8bc530ddc893, type: 2}
-  positionOffset: {x: 0, y: 1.4, z: 0}
+  positionOffset: {x: 0, y: 1.25, z: 0}
   rotationEuler: {x: 0, y: 180, z: 0}
   effectIconPrefab: {fileID: 919132149155446097, guid: 89d1daaefdad3d24c889bbdebdee51dc, type: 3}
   effectSound: {fileID: 8300000, guid: f674a041c334b1e40af4fcd60e27bea8, type: 3}

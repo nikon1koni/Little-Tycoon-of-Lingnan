@@ -7578,8 +7578,7 @@ MonoBehaviour:
   availableBuildings:
   - {fileID: 11400000, guid: a1ffad684d98b7246a5241b9fb99bfda, type: 2}
   - {fileID: 11400000, guid: ca706debc2d2e4341809a902240213aa, type: 2}
-  - {fileID: 11400000, guid: 5d7ac4b7db414f54396ef939972c9c9a, type: 2}
-  - {fileID: 11400000, guid: 14a529911dbe422449afd5043bd9fb41, type: 2}
+  - {fileID: 11400000, guid: 59de5a787727b7b40b703913a592f489, type: 2}
   buildingUpgradePanel: {fileID: 44749199}
   upgradeButton: {fileID: 0}
   upgradeCostText: {fileID: 0}
