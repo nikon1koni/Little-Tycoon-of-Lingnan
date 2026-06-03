@@ -35,6 +35,7 @@ public class ItemDropZone : MonoBehaviour
             if (zoneImage == null)
             {
                 zoneImage = gameObject.AddComponent<Image>();
+                zoneImage.raycastTarget = false;
             }
         }
 

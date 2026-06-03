@@ -857,7 +857,9 @@ public class UIManager : MonoBehaviour
 
         if (buildingData.buildingPrefab != null)
         {
-            GameObject buildingObj = Instantiate(buildingData.buildingPrefab, tile.transform.position + Vector3.up * 0.5f, Quaternion.identity);
+            Vector3 pos = tile.transform.position + buildingData.positionOffset;
+            Quaternion rot = Quaternion.Euler(buildingData.rotationEuler);
+            GameObject buildingObj = Instantiate(buildingData.buildingPrefab, pos, rot);
             buildingObj.transform.SetParent(tile.transform);
             tile.currentBuilding = buildingObj;
         }

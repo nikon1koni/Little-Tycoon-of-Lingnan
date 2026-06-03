@@ -433,8 +433,8 @@ public class BoardTile : MonoBehaviour
         BuildingData data = buildingTile.currentBuildingData;
         
         Debug.Log($"PlayBuildingEffect:  {data.buildingName} ??");
-        Debug.Log($"  - effectIconPrefab: {(data.effectIconPrefab != null ? "´æÔÚ" : "null")}");
-        Debug.Log($"  - effectSound: {(data.effectSound != null ? "´æÔÚ" : "null")}");
+        Debug.Log($"  - effectIconPrefab: {(data.effectIconPrefab != null ? "????" : "null")}");
+        Debug.Log($"  - effectSound: {(data.effectSound != null ? "????" : "null")}");
         
         if (data.effectIconPrefab != null || data.effectSound != null)
         {
@@ -647,10 +647,12 @@ public class BoardTile : MonoBehaviour
                 }
 
                 // 
+                Vector3 pos = transform.position + nextBuildingData.positionOffset;
+                Quaternion rot = Quaternion.Euler(nextBuildingData.rotationEuler);
                 GameObject newBuilding = Instantiate(
                     nextBuildingData.buildingPrefab,
-                    transform.position + Vector3.up * 0.5f,
-                    Quaternion.identity
+                    pos,
+                    rot
                 );
                 newBuilding.transform.SetParent(transform);
                 currentBuilding = newBuilding;

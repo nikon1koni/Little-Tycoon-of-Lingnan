@@ -1,4 +1,4 @@
-ï»¿using UnityEngine;
+using UnityEngine;
 using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "NewBuildingData", menuName = "Building/Building Data")]
@@ -42,8 +42,8 @@ public class BuildingData : ScriptableObject
     public float incomeGrowthRate = 1.2f;
     public bool enableIncomeGrowth = false;
 
-    [Header("Buffï¿½ï¿½")]
-    [Tooltip(" Buff ï¿½ï¿½")]
+    [Header("Buff??")]
+    [Tooltip(" Buff ??")]
     public List<BuildingBuffConfig> buffConfigs = new List<BuildingBuffConfig>();
     
     [Header("() Buff")]
@@ -65,7 +65,13 @@ public class BuildingData : ScriptableObject
     public GameObject buildingPrefab;
     public BuildingData nextLevelBuilding;
 
-    [Header("ï¿½ï¿½ï¿½ï¿½")]
+    [Header("????????")]
+    [Tooltip("???????????¦Ë????????????????")]
+    public Vector3 positionOffset = new Vector3(0, 0.5f, 0);
+    [Tooltip("??????????????????Euler??????")]
+    public Vector3 rotationEuler = Vector3.zero;
+
+    [Header("????")]
     public GameObject effectIconPrefab;
     public AudioClip effectSound;
     public float effectDuration = 1.5f;
@@ -92,7 +98,7 @@ public class BuildingData : ScriptableObject
         DiceEven  // 
     }
 
-    // Buffï¿½ï¿½
+    // Buff??
     public enum BuffEffect
     {
         MoveSpeedBoost,
@@ -207,7 +213,7 @@ public class BuildingData : ScriptableObject
     {
         string desc = $"{buildingName}\n";
         desc += $": {purchasePrice}\n";
-        desc += $"ï¿½ï¿½: {minTileScale}-{maxTileScale}\n";
+        desc += $"??: {minTileScale}-{maxTileScale}\n";
 
         switch (functionType)
         {
@@ -220,7 +226,7 @@ public class BuildingData : ScriptableObject
                 break;
 
             case BuildingFunctionType.Buff:
-                desc += $":  Buff ï¿½ï¿½\n";
+                desc += $":  Buff ??\n";
                 List<BuildingBuffConfig> configs = GetBuffConfigs();
                 foreach (var config in configs)
                 {
@@ -228,7 +234,7 @@ public class BuildingData : ScriptableObject
                     desc += $"- {GetBuffEffectName(config.effectType)}: +{value * 100:F1}%\n";
                     if (config.isPermanent)
                     {
-                        desc += "  (ï¿½ï¿½)\n";
+                        desc += "  (??)\n";
                     }
                     else if (config.durationRounds > 0)
                     {
@@ -266,7 +272,7 @@ public class BuildingData : ScriptableObject
         return desc;
     }
 
-    // Buffï¿½ï¿½
+    // Buff??
     public static string GetBuffEffectName(BuffEffect effect)
     {
         switch (effect)
@@ -277,7 +283,7 @@ public class BuildingData : ScriptableObject
             case BuffEffect.DefenseBoost: return "";
             case BuffEffect.LuckBoost: return "";
             case BuffEffect.AllIncomeBoost: return "";
-            default: return "ï¿½ï¿½Buffï¿½ï¿½";
+            default: return "??Buff??";
         }
     }
 }

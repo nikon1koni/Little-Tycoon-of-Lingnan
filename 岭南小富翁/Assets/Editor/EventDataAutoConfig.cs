@@ -6,54 +6,54 @@ public static class EventDataAutoConfig
     [MenuItem("Tools/Configure All Event Data NOW")]
     public static void ConfigureAllEvents()
     {
-        Debug.Log("开始配置所有事件数据...");
+        Debug.Log("??????????????????...");
 
-        // 疍家渔民求助
+        // ?D??????????
         ConfigureDanJiaFishermanEvent();
         
-        // 百年凉茶秘方
+        // ???????????
         ConfigureHerbalTeaEvent();
         
-        // 同行恶性竞争
+        // ??????????
         ConfigureCompetitorEvent();
         
-        // 官府基建征用
+        // ???????????
         ConfigureGovernmentEvent();
         
-        // 祠堂祈福
+        // ????????
         ConfigureAncestralHallEvent();
         
-        // 神秘的功夫茶摊
+        // ??????????
         ConfigureTeaStandEvent();
         
-        // 台风过境
+        // ??????
         ConfigureTyphoonEvent();
         
-        // 老字号商会邀约
+        // ???????????
         ConfigureOldBrandGuildEvent();
 
         AssetDatabase.SaveAssets();
-        Debug.Log("=== 所有事件数据配置完成！ ===");
-        EditorUtility.DisplayDialog("配置完成", "所有8个事件数据已配置完成！", "确定");
+        Debug.Log("=== ??????????????????? ===");
+        EditorUtility.DisplayDialog("???????", "????8???????????????????", "???");
     }
 
     private static void ConfigureDanJiaFishermanEvent()
     {
-        EventData eventData = AssetDatabase.LoadAssetAtPath<EventData>("Assets/Building/Event Data/疍家渔民求助.asset");
+        EventData eventData = AssetDatabase.LoadAssetAtPath<EventData>("Assets/Building/Event Data/?D??????????.asset");
         if (eventData == null)
         {
-            Debug.LogError("未找到: 疍家渔民求助.asset");
+            Debug.LogError("?????: ?D??????????.asset");
             return;
         }
 
-        eventData.eventTitle = "[疍家渔民求助]";
-        eventData.eventDescription = "一队疍民遭遇风浪，货物受损，请求借款维修资金，承诺加倍奉还。";
+        eventData.eventTitle = "[?D??????????]";
+        eventData.eventDescription = "???D????????????????????????????????????????";
 
         eventData.options = new EventData.EventOption[]
         {
             new EventData.EventOption()
             {
-                optionText = "借出20铜钱 -> 2回合后返还50铜钱",
+                optionText = "???20?? -> 2?????50??",
                 optionCostAmount = 20,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.Loan,
@@ -63,7 +63,7 @@ public static class EventDataAutoConfig
             },
             new EventData.EventOption()
             {
-                optionText = "借出30铜钱 -> 2回合后返还80铜钱",
+                optionText = "???30?? -> 2?????80??",
                 optionCostAmount = 30,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.Loan,
@@ -73,7 +73,7 @@ public static class EventDataAutoConfig
             },
             new EventData.EventOption()
             {
-                optionText = "爱莫能助 -> 下一次步数减半",
+                optionText = "??????? -> ?????????????",
                 optionCostAmount = 0,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.NextRollMultiplier,
@@ -82,40 +82,40 @@ public static class EventDataAutoConfig
         };
 
         EditorUtility.SetDirty(eventData);
-        Debug.Log("配置完成: 疍家渔民求助");
+        Debug.Log("???????: ?D??????????");
     }
 
     private static void ConfigureHerbalTeaEvent()
     {
-        EventData eventData = AssetDatabase.LoadAssetAtPath<EventData>("Assets/Building/Event Data/百年凉茶秘方.asset");
+        EventData eventData = AssetDatabase.LoadAssetAtPath<EventData>("Assets/Building/Event Data/???????????.asset");
         if (eventData == null)
         {
-            Debug.LogError("未找到: 百年凉茶秘方.asset");
+            Debug.LogError("?????: ???????????.asset");
             return;
         }
 
-        eventData.eventTitle = "[百年凉茶秘方]";
-        eventData.eventDescription = "你在旧书店发现一张发黄的凉茶配方，可能价值连城，也可能一文不值。";
+        eventData.eventTitle = "[???????????]";
+        eventData.eventDescription = "????????????????????????????????????????????????";
 
         eventData.options = new EventData.EventOption[]
         {
             new EventData.EventOption()
             {
-                optionText = "花5铜钱买下研究 -> 10%概率获得50铜钱",
+                optionText = "??5?????????? -> 10%??????50??",
                 optionCostAmount = 5,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.None
             },
             new EventData.EventOption()
             {
-                optionText = "花10铜钱买下研究 -> 20%概率获得100铜钱",
+                optionText = "??10?????????? -> 20%??????100??",
                 optionCostAmount = 10,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.None
             },
             new EventData.EventOption()
             {
-                optionText = "无视 -> 无事发生",
+                optionText = "???? -> ????????",
                 optionCostAmount = 0,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.None
@@ -123,26 +123,26 @@ public static class EventDataAutoConfig
         };
 
         EditorUtility.SetDirty(eventData);
-        Debug.Log("配置完成: 百年凉茶秘方");
+        Debug.Log("???????: ???????????");
     }
 
     private static void ConfigureCompetitorEvent()
     {
-        EventData eventData = AssetDatabase.LoadAssetAtPath<EventData>("Assets/Building/Event Data/同行恶性竞争.asset");
+        EventData eventData = AssetDatabase.LoadAssetAtPath<EventData>("Assets/Building/Event Data/??????????.asset");
         if (eventData == null)
         {
-            Debug.LogError("未找到: 同行恶性竞争.asset");
+            Debug.LogError("?????: ??????????.asset");
             return;
         }
 
-        eventData.eventTitle = "[同行恶性竞争]";
-        eventData.eventDescription = "隔壁街的老店开始降价抢生意，你的客源被分流。";
+        eventData.eventTitle = "[??????????]";
+        eventData.eventDescription = "?????????????????????????????????";
 
         eventData.options = new EventData.EventOption[]
         {
             new EventData.EventOption()
             {
-                optionText = "被动应对: 所有产业下一回合收入减半",
+                optionText = "???????: ????????????????????",
                 optionCostAmount = 0,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.IncomeReduction,
@@ -151,7 +151,7 @@ public static class EventDataAutoConfig
             },
             new EventData.EventOption()
             {
-                optionText = "支付20铜钱进行营销反击 -> 消除减收",
+                optionText = "???20????????????? -> ????????",
                 optionCostAmount = 20,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.None
@@ -159,26 +159,26 @@ public static class EventDataAutoConfig
         };
 
         EditorUtility.SetDirty(eventData);
-        Debug.Log("配置完成: 同行恶性竞争");
+        Debug.Log("???????: ??????????");
     }
 
     private static void ConfigureGovernmentEvent()
     {
-        EventData eventData = AssetDatabase.LoadAssetAtPath<EventData>("Assets/Building/Event Data/官府基建征用.asset");
+        EventData eventData = AssetDatabase.LoadAssetAtPath<EventData>("Assets/Building/Event Data/???????????.asset");
         if (eventData == null)
         {
-            Debug.LogError("未找到: 官府基建征用.asset");
+            Debug.LogError("?????: ???????????.asset");
             return;
         }
 
-        eventData.eventTitle = "[官府基建征用]";
-        eventData.eventDescription = "官府要修路，需要征用你的一块地，会给予补偿。";
+        eventData.eventTitle = "[???????????]";
+        eventData.eventDescription = "??????????????????????????????K????";
 
         eventData.options = new EventData.EventOption[]
         {
             new EventData.EventOption()
             {
-                optionText = "同意征用 -> 失去产业，获得120%补偿",
+                optionText = "??????? -> ??????????120%????",
                 optionCostAmount = 0,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.PropertyCompensation,
@@ -186,7 +186,7 @@ public static class EventDataAutoConfig
             },
             new EventData.EventOption()
             {
-                optionText = "支付30铜钱打点费 -> 保留产业",
+                optionText = "???30?????? -> ???????",
                 optionCostAmount = 30,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.None
@@ -194,26 +194,26 @@ public static class EventDataAutoConfig
         };
 
         EditorUtility.SetDirty(eventData);
-        Debug.Log("配置完成: 官府基建征用");
+        Debug.Log("???????: ???????????");
     }
 
     private static void ConfigureAncestralHallEvent()
     {
-        EventData eventData = AssetDatabase.LoadAssetAtPath<EventData>("Assets/Building/Event Data/祠堂祈福.asset");
+        EventData eventData = AssetDatabase.LoadAssetAtPath<EventData>("Assets/Building/Event Data/????????.asset");
         if (eventData == null)
         {
-            Debug.LogError("未找到: 祠堂祈福.asset");
+            Debug.LogError("?????: ????????.asset");
             return;
         }
 
-        eventData.eventTitle = "[祠堂祈福]";
-        eventData.eventDescription = "镇上的老祠堂香火旺盛，据说祈福很灵验。";
+        eventData.eventTitle = "[????????]";
+        eventData.eventDescription = "????????????????????????????????";
 
         eventData.options = new EventData.EventOption[]
         {
             new EventData.EventOption()
             {
-                optionText = "支付30铜钱 -> 2回合内税收减半",
+                optionText = "???30?? -> 2???????????",
                 optionCostAmount = 30,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.TaxReduction,
@@ -222,7 +222,7 @@ public static class EventDataAutoConfig
             },
             new EventData.EventOption()
             {
-                optionText = "诚心上香 -> 1回合内免疫负面事件",
+                optionText = "???????? -> 1???????????????",
                 optionCostAmount = 0,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.ImmuneToNegativeEvents,
@@ -231,26 +231,26 @@ public static class EventDataAutoConfig
         };
 
         EditorUtility.SetDirty(eventData);
-        Debug.Log("配置完成: 祠堂祈福");
+        Debug.Log("???????: ????????");
     }
 
     private static void ConfigureTeaStandEvent()
     {
-        EventData eventData = AssetDatabase.LoadAssetAtPath<EventData>("Assets/Building/Event Data/神秘的功夫茶摊.asset");
+        EventData eventData = AssetDatabase.LoadAssetAtPath<EventData>("Assets/Building/Event Data/??????????.asset");
         if (eventData == null)
         {
-            Debug.LogError("未找到: 神秘的功夫茶摊.asset");
+            Debug.LogError("?????: ??????????.asset");
             return;
         }
 
-        eventData.eventTitle = "[神秘的功夫茶摊]";
-        eventData.eventDescription = "一位老师傅请你喝一杯茶，茶香沁人心脾，但他似乎有话要说。";
+        eventData.eventTitle = "[??????????]";
+        eventData.eventDescription = "??????????????????k????????????????????????????";
 
         eventData.options = new EventData.EventOption[]
         {
             new EventData.EventOption()
             {
-                optionText = "支付5铜钱 -> 下一次骰子步数翻倍",
+                optionText = "???5?? -> ????????????????",
                 optionCostAmount = 5,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.NextRollMultiplier,
@@ -258,7 +258,7 @@ public static class EventDataAutoConfig
             },
             new EventData.EventOption()
             {
-                optionText = "喝完道谢 -> 无事发生",
+                optionText = "??????? -> ????????",
                 optionCostAmount = 0,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.None
@@ -266,26 +266,26 @@ public static class EventDataAutoConfig
         };
 
         EditorUtility.SetDirty(eventData);
-        Debug.Log("配置完成: 神秘的功夫茶摊");
+        Debug.Log("???????: ??????????");
     }
 
     private static void ConfigureTyphoonEvent()
     {
-        EventData eventData = AssetDatabase.LoadAssetAtPath<EventData>("Assets/Building/Event Data/台风过境.asset");
+        EventData eventData = AssetDatabase.LoadAssetAtPath<EventData>("Assets/Building/Event Data/??????.asset");
         if (eventData == null)
         {
-            Debug.LogError("未找到: 台风过境.asset");
+            Debug.LogError("?????: ??????.asset");
             return;
         }
 
-        eventData.eventTitle = "[台风过境]";
-        eventData.eventDescription = "狂风暴雨席卷小镇，部分产业受损。";
+        eventData.eventTitle = "[??????]";
+        eventData.eventDescription = "???e??????????????????";
 
         eventData.options = new EventData.EventOption[]
         {
             new EventData.EventOption()
             {
-                optionText = "支付20铜钱加固防护 -> 随机1处产业降1级",
+                optionText = "???20???????? -> ???1???????1??",
                 optionCostAmount = 20,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.BuildingDowngrade,
@@ -293,7 +293,7 @@ public static class EventDataAutoConfig
             },
             new EventData.EventOption()
             {
-                optionText = "听天由命 -> 随机2处产业降1级",
+                optionText = "???????? -> ???2???????1??",
                 optionCostAmount = 0,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.BuildingDowngrade,
@@ -302,26 +302,26 @@ public static class EventDataAutoConfig
         };
 
         EditorUtility.SetDirty(eventData);
-        Debug.Log("配置完成: 台风过境");
+        Debug.Log("???????: ??????");
     }
 
     private static void ConfigureOldBrandGuildEvent()
     {
-        EventData eventData = AssetDatabase.LoadAssetAtPath<EventData>("Assets/Building/Event Data/老字号商会邀约.asset");
+        EventData eventData = AssetDatabase.LoadAssetAtPath<EventData>("Assets/Building/Event Data/???????????.asset");
         if (eventData == null)
         {
-            Debug.LogError("未找到: 老字号商会邀约.asset");
+            Debug.LogError("?????: ???????????.asset");
             return;
         }
 
-        eventData.eventTitle = "[老字号商会邀约]";
-        eventData.eventDescription = "商会会长看中你的潜力，邀请你加入。加入需缴纳一笔会费，但从此商路亨通。";
+        eventData.eventTitle = "[???????????]";
+        eventData.eventDescription = "??????????????????????????????????????????????????????";
 
         eventData.options = new EventData.EventOption[]
         {
             new EventData.EventOption()
             {
-                optionText = "缴纳30铜钱入会费 -> 获得[商誉](3回合内收入+40%)",
+                optionText = "????30?????? -> ???[????](3?????????+40%)",
                 optionCostAmount = 30,
                 optionRewardAmount = 0,
                 optionIncomeBoost = 0.4f,
@@ -330,7 +330,7 @@ public static class EventDataAutoConfig
             },
             new EventData.EventOption()
             {
-                optionText = "婉言谢绝 -> 获得15铜钱",
+                optionText = "???????? -> ???15??",
                 optionCostAmount = 0,
                 optionRewardAmount = 15,
                 effectType = EventData.EventEffectType.None
@@ -338,6 +338,6 @@ public static class EventDataAutoConfig
         };
 
         EditorUtility.SetDirty(eventData);
-        Debug.Log("配置完成: 老字号商会邀约");
+        Debug.Log("???????: ???????????");
     }
 }

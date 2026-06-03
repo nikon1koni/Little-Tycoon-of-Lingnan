@@ -3,26 +3,26 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewEvent", menuName = "Game/Event Data")]
 public class EventData : ScriptableObject
 {
-    [Header("事件信息")]
+    [Header("??????")]
     public string eventTitle;
     public Sprite eventImage;
     [TextArea(3, 10)]
     public string eventDescription;
 
-    [Header("选项")]
+    [Header("???")]
     public EventOption[] options;
 
-    [Header("事件效果")]
-    [Tooltip("事件基础消耗金额，0表示无消耗")]
+    [Header("???????")]
+    [Tooltip("?????????????0?????????")]
     public int costAmount = 0;
 
-    [Tooltip("事件基础奖励金额，0表示无奖励")]
+    [Tooltip("??????????????0????????")]
     public int rewardAmount = 0;
 
-    [Tooltip("收入提升比例，0.4表示+40%，0表示无提升")]
+    [Tooltip("??????????????0.4???+40%??0?????????")]
     public float incomeBoost = 0f;
 
-    [Tooltip("Buff持续回合数，0表示立即生效")]
+    [Tooltip("Buff???????????0???????????")]
     public int buffDurationRounds = 0;
 
     [System.Serializable]
@@ -31,13 +31,13 @@ public class EventData : ScriptableObject
         public string optionText;
         public UnityEngine.Events.UnityEvent onOptionSelected;
         
-        [Header("选项效果（优先级高于事件基础效果）")]
+        [Header("???????????????????????????????")]
         public int optionCostAmount = 0;
         public int optionRewardAmount = 0;
         public float optionIncomeBoost = 0f;
         public int optionBuffDurationRounds = 0;
 
-        [Header("特殊效果")]
+        [Header("????????")]
         public EventEffectType effectType = EventEffectType.None;
         
         public int stepsModifier = 0;

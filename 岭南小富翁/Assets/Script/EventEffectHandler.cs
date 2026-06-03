@@ -93,7 +93,7 @@ public class EventEffectHandler : MonoBehaviour
                 Debug.LogWarning($"{player.playerName} cannot afford {costToPay}");
                 if (UIManager.Instance != null)
                 {
-                    UIManager.ShowToastStatic("资金不足", 2f);
+                    UIManager.ShowToastStatic("?????", 2f);
                 }
                 return;
             }
@@ -130,8 +130,8 @@ public class EventEffectHandler : MonoBehaviour
                     Debug.Log($"{player.playerName} steps modifier changed by {option.stepsModifier}");
                     if (UIManager.Instance != null)
                     {
-                        string directionText = option.stepsModifier > 0 ? "增加" : "减少";
-                        UIManager.Instance.ShowToast($"下一次骰子步数{directionText} {Mathf.Abs(option.stepsModifier)}", 2f);
+                        string directionText = option.stepsModifier > 0 ? "????" : "????";
+                        UIManager.Instance.ShowToast($"????????????{directionText} {Mathf.Abs(option.stepsModifier)}", 2f);
                     }
                 }
                 break;
@@ -151,7 +151,7 @@ public class EventEffectHandler : MonoBehaviour
                     if (UIManager.Instance != null)
                     {
                         float reductionPercent = option.incomeReductionPercent * 100;
-                        UIManager.Instance.ShowToast($"收入减少{reductionPercent:0}%，持续{option.incomeReductionRounds}回合", 2f);
+                        UIManager.Instance.ShowToast($"???????{reductionPercent:0}%??????{option.incomeReductionRounds}???", 2f);
                     }
                 }
                 break;
@@ -164,7 +164,7 @@ public class EventEffectHandler : MonoBehaviour
                     if (UIManager.Instance != null)
                     {
                         float reductionPercent = option.taxReductionPercent * 100;
-                        UIManager.Instance.ShowToast($"税收减少{reductionPercent:0}%，持续{option.taxReductionRounds}回合", 2f);
+                        UIManager.Instance.ShowToast($"??????{reductionPercent:0}%??????{option.taxReductionRounds}???", 2f);
                     }
                 }
                 break;
@@ -176,7 +176,7 @@ public class EventEffectHandler : MonoBehaviour
                     Debug.Log($"{player.playerName} immune to negative events for {option.roundsImmuneToNegativeEvents} rounds");
                     if (UIManager.Instance != null)
                     {
-                        UIManager.Instance.ShowToast($"获得{option.roundsImmuneToNegativeEvents}回合负面事件免疫", 2f);
+                        UIManager.Instance.ShowToast($"???{option.roundsImmuneToNegativeEvents}?????????????", 2f);
                     }
                 }
                 break;
@@ -188,8 +188,8 @@ public class EventEffectHandler : MonoBehaviour
                     Debug.Log($"{player.playerName} next roll multiplier set to {option.nextRollMultiplier}x");
                     if (UIManager.Instance != null)
                     {
-                        string modifierText = option.nextRollMultiplier > 1 ? "翻倍" : "减半";
-                        UIManager.Instance.ShowToast($"下一次骰子{modifierText}", 2f);
+                        string modifierText = option.nextRollMultiplier > 1 ? "????" : "????";
+                        UIManager.Instance.ShowToast($"?????????{modifierText}", 2f);
                     }
                 }
                 break;
@@ -247,7 +247,7 @@ public class EventEffectHandler : MonoBehaviour
 
         if (downgradedCount > 0 && UIManager.Instance != null)
         {
-            UIManager.Instance.ShowToast($"{downgradedCount}处产业被降级", 2f);
+            UIManager.Instance.ShowToast($"{downgradedCount}???????????", 2f);
         }
     }
 
@@ -275,7 +275,7 @@ public class EventEffectHandler : MonoBehaviour
             Debug.Log($"{player.playerName} received {totalCompensation} compensation");
             if (UIManager.Instance != null)
             {
-                UIManager.Instance.ShowToast($"获得{totalCompensation}铜钱补偿", 2f);
+                UIManager.Instance.ShowToast($"???{totalCompensation}??????", 2f);
             }
         }
     }
@@ -289,7 +289,7 @@ public class EventEffectHandler : MonoBehaviour
         if (UIManager.Instance != null)
         {
             int repayAmount = Mathf.RoundToInt(amount * repayMultiplier);
-            UIManager.Instance.ShowToast($"借得{amount}铜钱，{repayRounds}回合后需偿还{repayAmount}铜钱", 2f);
+            UIManager.Instance.ShowToast($"???{amount}????{repayRounds}??????w??{repayAmount}??", 2f);
         }
     }
 
@@ -299,18 +299,18 @@ public class EventEffectHandler : MonoBehaviour
 
         if (eventData.costAmount > 0)
         {
-            message += $"花费 {eventData.costAmount} 铜钱\n";
+            message += $"???? {eventData.costAmount} ??\n";
         }
 
         if (eventData.rewardAmount > 0)
         {
-            message += $"获得 {eventData.rewardAmount} 铜钱\n";
+            message += $"??? {eventData.rewardAmount} ??\n";
         }
 
         if (eventData.incomeBoost > 0)
         {
             float boostPercent = eventData.incomeBoost * 100;
-            message += $"收入提升({eventData.buffDurationRounds}回合内+{boostPercent:0}%)";
+            message += $"????????({eventData.buffDurationRounds}?????+{boostPercent:0}%)";
         }
 
         if (!string.IsNullOrEmpty(message))
