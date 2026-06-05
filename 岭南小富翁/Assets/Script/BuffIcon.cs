@@ -1,4 +1,4 @@
-锘縰sing UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
@@ -105,30 +105,44 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     
     private string GetBuffDescription()
     {
+        string resultDescription = "";
+        
         if (!string.IsNullOrEmpty(currentBuff.customDescription))
         {
-            return currentBuff.customDescription;
+            // 对于自定义描述，添加剩余时间行
+            resultDescription = currentBuff.customDescription;
+            resultDescription += "\n" + GetRemainingTimeText();
+            return resultDescription;
         }
         
-        string description = "";
-        description += $"<b>{BuildingData.GetBuffEffectName(currentBuff.effectType)}</b>\n";
-        description += $"+{currentBuff.value * 100:F1}%\n";
-        description += $": {currentBuff.sourceName}\n";
+        resultDescription += $"<b>{BuildingData.GetBuffEffectName(currentBuff.effectType)}</b>\n";
+        resultDescription += $"+{currentBuff.value * 100:F1}%\n";
+        resultDescription += $"来源: {currentBuff.sourceName}\n";
+        
+        // 添加剩余时间行
+        resultDescription += GetRemainingTimeText();
+        
+        return resultDescription;
+    }
+    
+    private string GetRemainingTimeText()
+    {
+        string timeText = "";
         
         if (currentBuff.isPermanent)
         {
-            description += "<color=green></color>";
+            timeText = "剩余回合：永远";
         }
         else if (currentBuff.useRoundTimer)
         {
-            description += $" {currentBuff.remainingRounds} ";
+            timeText = $"剩余回合：{currentBuff.remainingRounds}";
         }
         else
         {
-            description += $" {currentBuff.remainingTime:F1} ";
+            timeText = $"剩余时间：{currentBuff.remainingTime:F1}秒";
         }
         
-        return description;
+        return timeText;
     }
     
     private void OnDestroy()
