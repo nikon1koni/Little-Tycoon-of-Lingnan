@@ -4,7 +4,7 @@ using TMPro;
 
 public class ItemCardUI : MonoBehaviour
 {
-    [Header("UI???")]
+    [Header("UI×é¼þ")]
     public Image iconImage;
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI descriptionText;

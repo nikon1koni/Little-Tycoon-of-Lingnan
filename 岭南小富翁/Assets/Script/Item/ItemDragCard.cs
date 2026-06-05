@@ -123,20 +123,20 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     {
         if (itemData == null) return;
 
-        // ???????
+        // 更新图标
         if (iconImage != null)
         {
             iconImage.sprite = itemData.itemIcon;
             iconImage.color = itemData.itemIcon != null ? Color.white : Color.gray;
         }
 
-        // ????????
+        // 更新名称
         if (nameText != null)
         {
             nameText.text = itemData.itemName;
         }
 
-        // ????????
+        // 更新描述
         if (descriptionText != null)
         {
             descriptionText.text = itemData.itemDescription;
@@ -258,7 +258,7 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     {
         if (draggedCardInstance == null) 
         {
-            Debug.Log("IsOverValidDropZone: draggedCardInstance ???");
+            Debug.Log("IsOverValidDropZone: draggedCardInstance 为空");
             return false;
         }
 
@@ -272,24 +272,24 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
         if (raycastResults.Count == 0)
         {
-            Debug.Log("IsOverValidDropZone: ??????????UI???");
+            Debug.Log("IsOverValidDropZone: 没有检测到任何UI元素");
         }
         else
         {
-            Debug.Log($"IsOverValidDropZone: ??? {raycastResults.Count} ??UI???");
+            Debug.Log($"IsOverValidDropZone: 检测到 {raycastResults.Count} 个UI元素");
             foreach (var result in raycastResults)
             {
                 Debug.Log($"  - {result.gameObject.name} (Tag: {result.gameObject.tag})");
                 if (result.gameObject.CompareTag(validDropZoneTag) ||
                     result.gameObject.GetComponent<ItemDropZone>() != null)
                 {
-                    Debug.Log("??????????????: " + result.gameObject.name);
+                    Debug.Log("检测到有效放置区域: " + result.gameObject.name);
                     return true;
                 }
             }
         }
 
-        Debug.Log("IsOverValidDropZone: ????????????????");
+        Debug.Log("IsOverValidDropZone: 未检测到有效放置区域");
         return false;
     }
 
@@ -346,20 +346,20 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     {
         if (itemData == null || ownerPlayer == null) return;
 
-        // ????????
+        // 播放音效
         if (SFXManager.Instance != null)
         {
             SFXManager.Instance.PlaySFX(SFXClip.UIClick);
         }
 
-        // ??????
+        // 使用物品
         bool success = ItemManager.Instance.UseItem(ownerPlayer, itemData);
 
         if (success)
         {
-            Debug.Log($"{ownerPlayer.playerName} ?????????: {itemData.itemName}");
+            Debug.Log($"{ownerPlayer.playerName} 成功使用物品: {itemData.itemName}");
 
-            // ??????? - ??????????
+            // 播放动画 - 卡片飞向目标
             StartCoroutine(FlyToTarget());
         }
         else
@@ -459,14 +459,14 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         }
     }
 
-    // ???????????????????????
+    // 禁用卡牌 - 使其无法拖拽并变暗
     public void DisableCard()
     {
         canDrag = false;
         canvasGroup.alpha = 0.5f;
     }
 
-    // ???????
+    // 启用卡牌
     public void EnableCard()
     {
         canDrag = true;

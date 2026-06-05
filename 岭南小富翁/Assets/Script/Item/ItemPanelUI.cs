@@ -7,13 +7,13 @@ public class ItemPanelUI : MonoBehaviour
 {
     public static ItemPanelUI Instance { get; private set; }
 
-    [Header("????????UI???")]
+    [Header("物品面板UI组件")]
     public GameObject itemPanel;
     public Button toggleButton;
     public Transform itemCardsContainer;
     public GameObject itemCardPrefab;
 
-    [Header("????")]
+    [Header("初始设置")]
     public bool startHidden = true;
 
     private bool isPanelVisible = false;
@@ -198,7 +198,7 @@ public class ItemPanelUI : MonoBehaviour
         buttonTextRect.anchorMax = Vector2.one;
         buttonTextRect.offsetMin = Vector2.zero;
         buttonTextRect.offsetMax = Vector2.zero;
-        buttonText.text = "???";
+        buttonText.text = "使用";
         buttonText.alignment = TextAlignmentOptions.Center;
         buttonText.fontSize = 12;
         buttonText.color = Color.white;

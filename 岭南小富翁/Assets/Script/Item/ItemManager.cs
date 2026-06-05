@@ -5,12 +5,12 @@ public class ItemManager : MonoBehaviour
 {
     public static ItemManager Instance { get; private set; }
 
-    [Header("??????")]
-    [Tooltip("??????????????????")]
+    [Header("初始物品")]
+    [Tooltip("游戏开始时给每个玩家的物品")]
     public List<ItemData> startingItems = new List<ItemData>();
 
-    [Header("?????б?")]
-    [Tooltip("??????????????б??????????")]
+    [Header("调试当前物品")]
+    [Tooltip("在编辑器中显示当前玩家的物品列表")]
     public List<ItemData> debugCurrentItems = new List<ItemData>();
 
     private Dictionary<Player, List<ItemData>> playerInventories = new Dictionary<Player, List<ItemData>>();
@@ -29,7 +29,7 @@ public class ItemManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ????????????
+    /// 给玩家发放初始物品
     /// </summary>
     public void GiveStartingItemsToPlayer(Player player)
     {
@@ -43,23 +43,23 @@ public class ItemManager : MonoBehaviour
             }
         }
 
-        Debug.Log($"??????? {player.playerName} ??? {startingItems.Count} ?????");
+        Debug.Log($"已给 {player.playerName} 发放 {startingItems.Count} 个初始物品");
     }
 
     /// <summary>
-    /// ????????????????
+    /// 给所有玩家发放初始物品
     /// </summary>
     public void GiveStartingItemsToAllPlayers()
     {
         if (GameManager.Instance == null) return;
 
-        // ???GameManager?????????GiveStartingItemsToPlayer
-        // ???????????????????
-        Debug.Log("??? GiveStartingItemsToPlayer(player) ?????????");
+        // 通过GameManager的玩家列表循环调用GiveStartingItemsToPlayer
+        // 这里暂时留空，根据实际需求添加
+        Debug.Log("请调用 GiveStartingItemsToPlayer(player) 给每个玩家发放物品");
     }
     
     /// <summary>
-    /// ???????????????????????????
+    /// 清空指定玩家的物品栏（重置用）
     /// </summary>
     public void ResetPlayerInventory(Player player)
     {
@@ -68,7 +68,7 @@ public class ItemManager : MonoBehaviour
             playerInventories[player].Clear();
             UpdateItemDisplay();
             UpdateDebugList(player);
-            Debug.Log($"??????? {player.playerName} ?????");
+            Debug.Log($"已清空 {player.playerName} 的物品");
         }
     }
 
@@ -80,11 +80,11 @@ public class ItemManager : MonoBehaviour
         }
 
         playerInventories[player].Add(item);
-        Debug.Log($"{player.playerName} ??????: {item.itemName}");
+        Debug.Log($"{player.playerName} 获得物品: {item.itemName}");
 
         if (UIManager.Instance != null)
         {
-            UIManager.Instance.ShowToast($"??????: {item.itemName}!", 2f);
+            UIManager.Instance.ShowToast($"获得卡牌: {item.itemName}!", 2f);
         }
 
         UpdateItemDisplay();
@@ -95,13 +95,13 @@ public class ItemManager : MonoBehaviour
     {
         if (!HasItem(player, item))
         {
-            Debug.LogWarning($"{player.playerName} ??????????: {item.itemName}");
+            Debug.LogWarning($"{player.playerName} 没有该物品: {item.itemName}");
             return false;
         }
 
         if (!CanUseItem(player, item))
         {
-            Debug.LogWarning($"{player.playerName} ?????????????????: {item.itemName}");
+            Debug.LogWarning($"{player.playerName} 当前无法使用该物品: {item.itemName}");
             return false;
         }
 
@@ -130,7 +130,7 @@ public class ItemManager : MonoBehaviour
         if (playerInventories.ContainsKey(player))
         {
             playerInventories[player].Remove(item);
-            Debug.Log($"{player.playerName} ???/???????: {item.itemName}");
+            Debug.Log($"{player.playerName} 失去/使用物品: {item.itemName}");
             UpdateItemDisplay();
             UpdateDebugList(player);
         }
@@ -141,7 +141,7 @@ public class ItemManager : MonoBehaviour
         if (playerInventories.ContainsKey(player))
         {
             playerInventories[player].Clear();
-            Debug.Log($"{player.playerName} ??????????");
+            Debug.Log($"{player.playerName} 物品已清空");
             UpdateItemDisplay();
             UpdateDebugList(player);
         }
@@ -152,7 +152,7 @@ public class ItemManager : MonoBehaviour
         playerInventories.Clear();
         debugCurrentItems.Clear();
         UpdateItemDisplay();
-        Debug.Log("????????????????");
+        Debug.Log("已清空所有玩家的物品");
     }
 
     public bool CanUseItem(Player player, ItemData item)
@@ -169,18 +169,18 @@ public class ItemManager : MonoBehaviour
 
     private void ApplyItemEffect(Player player, ItemData item)
     {
-        Debug.Log($"{player.playerName} ??????: {item.itemName}");
+        Debug.Log($"{player.playerName} 使用物品: {item.itemName}");
 
         switch (item.effectType)
         {
             case ItemData.ItemEffectType.GainMoney:
                 player.ReceiveCash(item.effectValue);
-                UIManager.Instance?.ShowToast($"??? {item.effectValue} ???!", 2f);
+                UIManager.Instance?.ShowToast($"获得 {item.effectValue} 金币!", 2f);
                 break;
 
             case ItemData.ItemEffectType.LoseMoney:
                 player.PayCash(item.effectValue);
-                UIManager.Instance?.ShowToast($"?? {item.effectValue} ???!", 2f);
+                UIManager.Instance?.ShowToast($"失去 {item.effectValue} 金币!", 2f);
                 break;
 
             case ItemData.ItemEffectType.IncomeBoost:
@@ -231,7 +231,7 @@ public class ItemManager : MonoBehaviour
                 break;
 
             default:
-                Debug.LogWarning($"?????????????: {item.effectType}");
+                Debug.LogWarning($"未处理的物品效果类型: {item.effectType}");
                 break;
         }
 

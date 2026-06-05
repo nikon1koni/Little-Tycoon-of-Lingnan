@@ -6,14 +6,14 @@ public class ItemHandManager : MonoBehaviour
 {
     public static ItemHandManager Instance { get; private set; }
 
-    [Header("????UI")]
+    [Header("手牌UI")]
     public Button toggleButton;
     public Transform handContainer;
 
-    [Header("?????????")]
+    [Header("默认卡牌预制体")]
     public GameObject defaultCardPrefab;
     
-    [Header("??ж???????")]
+    [Header("稀有度卡牌预制体")]
     public RarityCardPrefab[] rarityPrefabs;
     
     [System.Serializable]
@@ -23,17 +23,17 @@ public class ItemHandManager : MonoBehaviour
         public GameObject cardPrefab;
     }
 
-    [Header("???????")]
+    [Header("布局设置")]
     public float cardWidth = 120f;
     public float cardSpacing = 10f;
     public float centerOffsetY = 100f;
     public float fanAngle = 15f;
 
-    [Header("???Ч??")]
+    [Header("悬停效果")]
     public float hoverScale = 1.1f;
     public float hoverYOffset = 50f;
 
-    [Header("?????")]
+    [Header("初始可见性")]
     public bool startVisible = true;
 
     private List<ItemDragCard> handCards = new List<ItemDragCard>();
@@ -75,20 +75,20 @@ public class ItemHandManager : MonoBehaviour
         {
             canvas = FindObjectOfType<Canvas>();
             if (canvas != null)
-            {
-                transform.SetParent(canvas.transform);
-                Debug.Log("ItemHandManager: ??????? Canvas ??");
-            }
-            else
-            {
-                GameObject canvasObj = new GameObject("Canvas");
-                canvas = canvasObj.AddComponent<Canvas>();
-                canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-                canvasObj.AddComponent<CanvasScaler>();
-                canvasObj.AddComponent<GraphicRaycaster>();
-                transform.SetParent(canvas.transform);
-                Debug.Log("ItemHandManager: ????????? Canvas");
-            }
+                {
+                    transform.SetParent(canvas.transform);
+                    Debug.Log("ItemHandManager: 已找到并设置为 Canvas 子对象");
+                }
+                else
+                {
+                    GameObject canvasObj = new GameObject("Canvas");
+                    canvas = canvasObj.AddComponent<Canvas>();
+                    canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+                    canvasObj.AddComponent<CanvasScaler>();
+                    canvasObj.AddComponent<GraphicRaycaster>();
+                    transform.SetParent(canvas.transform);
+                    Debug.Log("ItemHandManager: 创建并设置为新 Canvas 子对象");
+                }
         }
     }
 
@@ -114,12 +114,12 @@ public class ItemHandManager : MonoBehaviour
     {
         if (GameManager.Instance != null && GameManager.Instance.currentPlayer != null)
         {
-            Debug.Log("ItemHandManager: ????????????");
+            Debug.Log("ItemHandManager: 自动初始化手牌");
             SetupHand(GameManager.Instance.currentPlayer);
         }
         else
         {
-            Debug.Log("ItemHandManager: ??????????...");
+            Debug.Log("ItemHandManager: GameManager 未就绪...");
         }
     }
 
@@ -130,7 +130,7 @@ public class ItemHandManager : MonoBehaviour
 
         if (ItemManager.Instance == null)
         {
-            Debug.LogWarning("ItemHandManager: ItemManager ??????");
+            Debug.LogWarning("ItemHandManager: ItemManager 未找到");
             return;
         }
 
@@ -138,7 +138,7 @@ public class ItemHandManager : MonoBehaviour
         
         if (items.Count == 0)
         {
-            Debug.Log("ItemHandManager: ?????????????");
+            Debug.Log("ItemHandManager: 该玩家没有物品");
             return;
         }
 
@@ -148,21 +148,21 @@ public class ItemHandManager : MonoBehaviour
         }
 
         LayoutHand();
-        Debug.Log($"ItemHandManager: ????? {items.Count} ?????");
+        Debug.Log($"ItemHandManager: 已加载 {items.Count} 张卡牌");
     }
 
     public void AddCardToHand(ItemData item, Player player)
     {
         if (handContainer == null)
         {
-            Debug.LogWarning("ItemHandManager: ??????????????");
+            Debug.LogWarning("ItemHandManager: 手牌容器未设置");
             return;
         }
 
         GameObject prefabToUse = GetCardPrefabByRarity(item.rarity);
         if (prefabToUse == null)
         {
-            Debug.LogWarning($"ItemHandManager: ??????? {item.rarity} ????");
+            Debug.LogWarning($"ItemHandManager: 未找到 {item.rarity} 稀有度的预制体");
             return;
         }
 
@@ -233,7 +233,7 @@ public class ItemHandManager : MonoBehaviour
             Text buttonText = toggleButton.GetComponentInChildren<Text>();
             if (buttonText != null)
             {
-                buttonText.text = isVisible ? "????????" : "???????";
+                buttonText.text = isVisible ? "隐藏手牌" : "显示手牌";
             }
         }
     }

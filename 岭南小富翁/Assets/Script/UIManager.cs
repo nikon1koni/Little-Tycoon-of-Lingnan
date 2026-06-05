@@ -349,7 +349,7 @@ public class UIManager : MonoBehaviour
 
         if (tileInfoText != null)
         {
-            tileInfoText.text = $"{buildableTile.tileName} - : {buildableTile.propertyPrice} ";
+            tileInfoText.text = $"{buildableTile.tileName} - 价格: {buildableTile.propertyPrice}";
             tileInfoText.raycastTarget = false;
         }
 
@@ -609,7 +609,7 @@ public class UIManager : MonoBehaviour
                     TextMeshProUGUI nameTmp = nameTransform.GetComponent<TextMeshProUGUI>();
                     if (nameTmp != null)
                     {
-                        nameTmp.text = $"{building.buildingName}\n{building.purchasePrice}";
+                        nameTmp.text = $"{building.buildingName}\n{building.purchasePrice} 金币";
                     }
                 }
 
@@ -651,7 +651,7 @@ public class UIManager : MonoBehaviour
         }
 
         // 3. 
-        ShowPersistentToast($"??????: {building.buildingName}");
+        ShowPersistentToast($"已选择建筑: {building.buildingName}");
 
         // 4. 
         HighlightPlaceableTiles(currentBuildingPlayer, (int)building.requiredScale);
@@ -764,7 +764,7 @@ public class UIManager : MonoBehaviour
 
         if (highlightCount == 0)
         {
-            ShowToast("??", 2f);
+            ShowToast("没有可放置的位置", 2f);
         }
     }
 
@@ -804,13 +804,13 @@ public class UIManager : MonoBehaviour
 
         if (currentBuildingPlayer.cash < selectedBuildingData.purchasePrice)
         {
-            ShowToast("", 2f);
+            ShowToast("现金不足", 2f);
             return;
         }
 
         if (!IsTilePlaceable(tile, currentBuildingPlayer, (int)selectedBuildingData.requiredScale))
         {
-            ShowToast("", 2f);
+            ShowToast("无法放置在这里", 2f);
             return;
         }
 
@@ -840,7 +840,7 @@ public class UIManager : MonoBehaviour
                 }
             }
             
-            ShowToast("??", 2f);
+            ShowToast("放置成功", 2f);
         }
     }
 
@@ -1015,17 +1015,17 @@ public class UIManager : MonoBehaviour
 
         if (currentPlayerText != null)
         {
-            currentPlayerText.text = $"???: {player.playerName}";
+            currentPlayerText.text = $"玩家: {player.playerName}";
         }
 
         if (playerCashText != null)
         {
-            playerCashText.text = $"???: {player.cash}";
+            playerCashText.text = $"现金: {player.cash}";
         }
 
         if (currentTileText != null && player.currentTile != null)
         {
-            currentTileText.text = $"λ??: {player.currentTile.tileName}";
+            currentTileText.text = $"位置: {player.currentTile.tileName}";
         }
 
         // ===  ===
@@ -1098,7 +1098,7 @@ public class UIManager : MonoBehaviour
             propertyNameText.text = property.tileName;
 
         if (priceText != null)
-            priceText.text = $": {property.propertyPrice} ";
+            priceText.text = $"价格: {property.propertyPrice} 金币";
 
         if (buyButton != null)
         {

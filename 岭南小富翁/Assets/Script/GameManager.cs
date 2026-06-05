@@ -879,7 +879,7 @@ public class GameManager : MonoBehaviour
 
             if (uiManager != null)
             {
-                uiManager.ShowToast($"{salary}", 2f);
+                uiManager.ShowToast($"获得工资: {salary} 金币", 2f);
             }
 
             // 2. 
