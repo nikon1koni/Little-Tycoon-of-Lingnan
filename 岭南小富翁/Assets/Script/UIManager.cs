@@ -1015,17 +1015,17 @@ public class UIManager : MonoBehaviour
 
         if (currentPlayerText != null)
         {
-            currentPlayerText.text = $": {player.playerName}";
+            currentPlayerText.text = $"玩家: {player.playerName}";
         }
 
         if (playerCashText != null)
         {
-            playerCashText.text = $": {player.cash}";
+            playerCashText.text = $"现金: {player.cash}";
         }
 
         if (currentTileText != null && player.currentTile != null)
         {
-            currentTileText.text = $"??: {player.currentTile.tileName}";
+            currentTileText.text = $"位置: {player.currentTile.tileName}";
         }
 
         // ===  ===
@@ -1065,7 +1065,7 @@ public class UIManager : MonoBehaviour
                 break;
         }
 
-        UnityEngine.Debug.Log($"?? {uiType} ");
+        UnityEngine.Debug.Log($"切换UI: {uiType}");
     }
 
     public void SwitchToMenuUI() => SwitchUI(UIType.Menu);
@@ -1151,12 +1151,12 @@ public class UIManager : MonoBehaviour
         
         int score = roundCount * 100 + diceCount + 10;
 
-        UnityEngine.Debug.Log($": ={playerName}, ={isWinner}, ={roundCount}, ={diceCount}, ??={score}");
+        UnityEngine.Debug.Log($"玩家={playerName}, 胜利={isWinner}, 回合={roundCount}, 骰子={diceCount}, 分数={score}");
 
-        SetText("ResultText", isWinner ? $"{playerName} ???!" : $"{playerName} ???");
-        SetText("RoundText", $": {roundCount}");
-        SetText("DiceText", $": {diceCount}");
-        SetText("ScoreText", $"??: {score}");
+        SetText("ResultText", isWinner ? $"{playerName} 胜利!" : $"{playerName} 失败");
+        SetText("RoundText", $"回合: {roundCount}");
+        SetText("DiceText", $"骰子: {diceCount}");
+        SetText("ScoreText", $"分数: {score}");
 
         Button restartButton = FindRestartButton();
         if (restartButton != null)
@@ -1196,28 +1196,28 @@ public class UIManager : MonoBehaviour
             return;
         }
 
-        UnityEngine.Debug.LogError($"{objectName}  Text  TextMeshProUGUI ");
+        UnityEngine.Debug.LogError($"{objectName} 没有找到 Text 或 TextMeshProUGUI 组件");
     }
 
     private Button FindRestartButton()
     {
         if (gameOverPanel == null)
         {
-            UnityEngine.Debug.LogError("gameOverPanel ??");
+            UnityEngine.Debug.LogError("gameOverPanel 缺失");
             return null;
         }
 
         Button button = gameOverPanel.transform.Find("RestartButton").GetComponent<Button>();
         if (button != null)
         {
-            UnityEngine.Debug.Log($": RestartButton");
+            UnityEngine.Debug.Log($"找到: RestartButton");
             return button;
         }
 
         button = gameOverPanel.transform.Find("Button").GetComponent<Button>();
         if (button != null)
         {
-            UnityEngine.Debug.Log($": Button");
+            UnityEngine.Debug.Log($"找到: Button");
             return button;
         }
 
@@ -1228,30 +1228,30 @@ public class UIManager : MonoBehaviour
             return button;
         }
 
-        UnityEngine.Debug.LogError(" gameOverPanel ?? Button ");
+        UnityEngine.Debug.LogError("在 gameOverPanel 中没有找到 Button 组件");
         return null;
     }
 
     private void OnRestartButtonClicked()
     {
-        UnityEngine.Debug.Log("===  ===");
+        UnityEngine.Debug.Log("=== 重新开始游戏 ===");
         
         if (gameOverPanel != null)
         {
             gameOverPanel.SetActive(false);
-            UnityEngine.Debug.Log("");
+            UnityEngine.Debug.Log("隐藏游戏结束面板");
         }
         else
         {
-            UnityEngine.Debug.LogError("gameOverPanel ");
+            UnityEngine.Debug.LogError("gameOverPanel 为空");
         }
         
         SwitchToGameUI();
-        UnityEngine.Debug.Log("??UI");
+        UnityEngine.Debug.Log("切换到游戏UI");
         
         if (GameManager.Instance != null)
         {
-            UnityEngine.Debug.Log("GameManager");
+            UnityEngine.Debug.Log("调用 GameManager");
             GameManager.Instance.RestartFromGameOver();
         }
         else
@@ -1317,10 +1317,10 @@ public class UIManager : MonoBehaviour
     public void UpdatePlayerInfoUI(PlayerInfoUI infoUI)
     {
         if (infoUI.playerNameText != null)
-            infoUI.playerNameText.text = infoUI.player.playerName;
+            infoUI.playerNameText.text = $"{infoUI.player.playerName}";
 
         if (infoUI.cashText != null)
-            infoUI.cashText.text = $"{infoUI.player.cash} ";
+            infoUI.cashText.text = $"{infoUI.player.cash} 铜板";
 
         if (infoUI.playerColorImage != null)
             infoUI.playerColorImage.color = infoUI.player.playerColor;
