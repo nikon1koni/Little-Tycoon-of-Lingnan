@@ -20820,11 +20820,11 @@ MonoBehaviour:
   rollDiceButton: {fileID: 1949729216}
   boardManager: {fileID: 1704728942}
   uiManager: {fileID: 993115949}
-  startingCash: 100
-  salaryAmount: 200
+  startingCash: 50
+  salaryAmount: 5
   jailTurns: 3
   enablePressureSystem: 1
-  basePressureCost: 50
+  basePressureCost: 5
   pressureMultiplier: 1.2
   bankruptBuffData: {fileID: 11400000, guid: e44fa2a885efced49a398c882846efc1, type: 2}
   bankruptGraceRounds: 1

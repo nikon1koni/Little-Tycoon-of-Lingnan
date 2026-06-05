@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: "\u542F\u52A8\u8D44\u91D1"
   itemIcon: {fileID: 0}
-  itemDescription: "\u83B7\u5F97200\u91D1\u5E01"
+  itemDescription: "\u83B7\u5F9750\u91D1\u5E01"
   rarity: 3
   effectType: 0
-  effectValue: 200
+  effectValue: 50
   effectPercent: 0
   durationRounds: 0
   canUseAnytime: 1
