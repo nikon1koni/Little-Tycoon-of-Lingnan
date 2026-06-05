@@ -12,13 +12,14 @@ public class BuffDisplayManager : MonoBehaviour
     public GameObject buffTooltipPrefab;
     public Vector2 tooltipOffset = new Vector2(50, 50);
     
-    [Header("Buff ")]
+    [Header("Buff 图标")]
     public Sprite moveSpeedIcon;
     public Sprite diceBoostIcon;
     public Sprite incomeMultiplierIcon;
     public Sprite defenseBoostIcon;
     public Sprite luckBoostIcon;
     public Sprite allIncomeBoostIcon;
+    public Sprite bankruptIcon;
     
     private Dictionary<Player, List<BuffIcon>> playerBuffIcons = new Dictionary<Player, List<BuffIcon>>();
     private Player currentPlayer;
@@ -139,6 +140,8 @@ public class BuffDisplayManager : MonoBehaviour
                 return luckBoostIcon;
             case BuildingData.BuffEffect.AllIncomeBoost:
                 return allIncomeBoostIcon;
+            case BuildingData.BuffEffect.Bankrupt:
+                return bankruptIcon;
             default:
                 return null;
         }

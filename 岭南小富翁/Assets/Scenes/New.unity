@@ -6631,6 +6631,7 @@ MonoBehaviour:
   defenseBoostIcon: {fileID: 0}
   luckBoostIcon: {fileID: 0}
   allIncomeBoostIcon: {fileID: 0}
+  bankruptIcon: {fileID: 21300000, guid: 81bafada34060bb428cb6a62a44e9995, type: 3}
 --- !u!1 &844658800
 GameObject:
   m_ObjectHideFlags: 0
@@ -20824,6 +20825,7 @@ MonoBehaviour:
   enablePressureSystem: 1
   basePressureCost: 50
   pressureMultiplier: 1.2
+  bankruptGraceRounds: 1
   enableDebugKeys: 1
   enableBackgroundMusic: 1
   musicManager: {fileID: 0}

@@ -10,36 +10,36 @@ public class UIManager : MonoBehaviour
     // 
     public static UIManager Instance;
 
-    [Header("UI  (??)")]
+    [Header("UI 预制件 (Prefabs)")]
     public GameObject rollDiceButtonPrefab;
     public GameObject playerInfoPrefab;
     public GameObject propertyPanelPrefab;
 
-    [Header("UI ")]
+    [Header("UI 文本")]
     public Canvas mainCanvas;
     public Text diceResultText;
     public Text currentPlayerText;
     public Text playerCashText;
     public Text currentTileText;
 
-    [Header("UI ")]
+    [Header("UI 面板")]
     public GameObject gamePanel;
     public GameObject menuPanel;
     public GameObject pausePanel;
     public GameObject gameOverPanel;
     public GameObject propertyPurchasePanel;
 
-    [Header("UI ")]
+    [Header("UI 按钮")]
     public Button rollDiceButton;
     public Text diceAnimationText;
 
-    [Header("UI??")]
+    [Header("UI玩家信息")]
     public List<PlayerInfoUI> playerInfoUIs = new List<PlayerInfoUI>();
 
-    [Header("??")]
-    public Vector2 diceButtonPosition = new Vector2(-20, -10); // ??
+    [Header("按钮位置")]
+    public Vector2 diceButtonPosition = new Vector2(-20, -10); // 骰子按钮位置
 
-    [Header("UI")]
+    [Header("UI建筑选择")]
     public GameObject buildingSelectionPanel;
     public Button[] buildingButtons = new Button[4];
     public TextMeshProUGUI tileInfoText;
@@ -48,10 +48,10 @@ public class UIManager : MonoBehaviour
     public Image selectedBuildingImage;
     public Text buildingPriceText;
 
-    [Header("??")]
+    [Header("可用建筑")]
     public List<BuildingData> availableBuildings = new List<BuildingData>();
 
-    [Header("UI")]
+    [Header("UI建筑升级")]
     public GameObject buildingUpgradePanel;
     public Button upgradeButton;
     public Text upgradeCostText;
@@ -60,7 +60,7 @@ public class UIManager : MonoBehaviour
     public Image upgradeBuildingImage;
     public Button closeUpgradePanelButton;
 
-    [Header("Toast")]
+    [Header("Toast持久提示")]
     public GameObject persistentToastPanel;
     public Text persistentToastText;
     public Vector2 toastPosition = new Vector2(20, 20);
@@ -69,52 +69,52 @@ public class UIManager : MonoBehaviour
     public GameObject buildingPlacementHintPanel;
     public TextMeshProUGUI buildingPlacementHintText;
 
-    [Header("")]
+    [Header("现金显示")]
     [SerializeField] private GameObject cashDisplayPanel;
     [SerializeField] private TextMeshProUGUI cashText;
 
-    [Header("UI")]
+    [Header("UI压力系统")]
     public GameObject pressureSystemPanel;
     public TextMeshProUGUI diceRollCountText;
     public TextMeshProUGUI currentRoundText;
 
-    [Header("UI")]
+    [Header("UI回合公告")]
     public GameObject turnAnnouncePanel;
     public TextMeshProUGUI turnAnnounceText;
     public float announceDuration = 2.5f;
 
-    [Header("UI")]
+    [Header("UI事件面板")]
     public EventPanel eventPanel;
 
-    [Header("ToastUI")]
+    [Header("Toast信息UI")]
     public GameObject infoToastPanel;
     public TextMeshProUGUI infoToastText;
     private Coroutine hideInfoToastCoroutine;
 
     public TextMeshProUGUI CashText => cashText;
 
-    // 
+    // 建筑选择状态
     private bool isBuildingSelected = false;
     private GameObject activePersistentToast;
     private List<int> activeBuildingButtonIndices = new List<int>();
 
-    // ??
+    // 升级相关
     private BoardTile upgradeSelectedTile = null;
     private Player upgradeSelectedPlayer = null;
 
-    // ??
+    // 建筑选择相关
     private BuildingData selectedBuildingData = null;
     private BoardTile selectedBoardTile = null;
     private Player currentBuildingPlayer = null;
 
-    // 
+    // 瓦片颜色缓存
     private Dictionary<BoardTile, Color> originalTileColors = new Dictionary<BoardTile, Color>();
     private List<BoardTile> highlightableTiles = new List<BoardTile>();
 
-    // UI
+    // UI类型
     private UIType currentUIType = UIType.Game;
 
-    // UI 
+    // UI 类型枚举
     public enum UIType
     {
         Menu,
@@ -123,7 +123,7 @@ public class UIManager : MonoBehaviour
         GameOver
     }
 
-    // UI
+    // UI玩家信息结构
     [System.Serializable]
     public class PlayerInfoUI
     {
@@ -136,31 +136,31 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
-        // ESC
+        // ESC键处理
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            // 
+            // 如果是升级模式
             if (BuildingDataConfig.Instance != null && BuildingDataConfig.Instance.IsUpgradeModeActive())
             {
-                // 
+                // 退出升级模式
                 BuildingDataConfig.Instance.ExitUpgradeMode();
-                return; // ESC
+                return; // ESC已处理
             }
-            // 
+            // 如果是出售模式
             else if (BuildingDataConfig.Instance != null && BuildingDataConfig.Instance.IsSellModeActive())
             {
-                // 
+                // 退出出售模式
                 BuildingDataConfig.Instance.ExitSellMode();
-                return; // ESC
+                return; // ESC已处理
             }
             else if (isBuildingSelected)
             {
-                // 
+                // 取消建筑选择
                 OnCancelBuildingSelection();
             }
             else if (buildingSelectionPanel != null && buildingSelectionPanel.activeSelf)
             {
-                // 
+                // 隐藏建筑选择面板
                 HideBuildingSelectionUI();
             }
         }
@@ -181,18 +181,18 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
-        UnityEngine.Debug.Log("=== UI ===");
+        UnityEngine.Debug.Log("=== UI初始化 ===");
         InitializeUI();
 
-        // 
+        // 隐藏建筑选择面板
         if (buildingSelectionPanel != null)
         {
             buildingSelectionPanel.SetActive(false);
-            UnityEngine.Debug.Log("UIManager: ");
+            UnityEngine.Debug.Log("UIManager: 建筑选择面板已隐藏");
         }
         else
         {
-            UnityEngine.Debug.LogWarning("UIManager: ??Inspector");
+            UnityEngine.Debug.LogWarning("UIManager: 建筑选择面板未在Inspector中设置");
         }
     }
 

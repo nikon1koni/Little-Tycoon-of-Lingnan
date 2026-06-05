@@ -98,10 +98,34 @@ public class BuffSystem : MonoBehaviour
                     buff.remainingRounds--;
                     if (buff.remainingRounds <= 0)
                     {
+                        // 特殊处理破产Debuff - 结束时触发游戏失败
+                        if (buff.effectType == BuildingData.BuffEffect.Bankrupt)
+                        {
+                            HandleBankruptBuffExpired(player);
+                        }
                         RemoveBuff(player, buff);
                     }
                 }
             }
+        }
+    }
+    
+    // 处理破产Debuff到期
+    private void HandleBankruptBuffExpired(Player player)
+    {
+        Debug.Log($"{player.playerName} 的破产Debuff到期，游戏失败！");
+        
+        player.isBankrupt = true;
+        
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.ShowToast($"{player.playerName} 破产失败！", 3f);
+        }
+        
+        // 检查游戏是否结束
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.CheckGameOverAfterBankrupt();
         }
     }
 

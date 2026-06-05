@@ -178,7 +178,8 @@ public class BuildingData : ScriptableObject
         IncomeMultiplier,
         DefenseBoost,
         LuckBoost,
-        AllIncomeBoost
+        AllIncomeBoost,
+        Bankrupt
     }
 
     // 
@@ -354,13 +355,14 @@ public class BuildingData : ScriptableObject
     {
         switch (effect)
         {
-            case BuffEffect.MoveSpeedBoost: return "";
-            case BuffEffect.DiceBoost: return "";
-            case BuffEffect.IncomeMultiplier: return "";
-            case BuffEffect.DefenseBoost: return "";
-            case BuffEffect.LuckBoost: return "";
-            case BuffEffect.AllIncomeBoost: return "";
-            default: return "??Buff??";
+            case BuffEffect.MoveSpeedBoost: return "移动加速";
+            case BuffEffect.DiceBoost: return "骰子加成";
+            case BuffEffect.IncomeMultiplier: return "收入加成";
+            case BuffEffect.DefenseBoost: return "防御加成";
+            case BuffEffect.LuckBoost: return "幸运加成";
+            case BuffEffect.AllIncomeBoost: return "全收入加成";
+            case BuffEffect.Bankrupt: return "破产";
+            default: return "未知Buff效果";
         }
     }
 }

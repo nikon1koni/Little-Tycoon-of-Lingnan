@@ -251,16 +251,55 @@ public class Player : MonoBehaviour
         return 0f;
     }
 
-    // ??????
+    // 检查破产
     public bool CheckBankruptcy()
     {
         if (cash < 0)
         {
             isBankrupt = true;
-            Debug.Log($"{playerName} ?????");
+            Debug.Log($"{playerName} 破产了");
             return true;
         }
         return false;
+    }
+    
+    // 检查是否有破产Debuff
+    public bool HasBankruptBuff()
+    {
+        if (BuffSystem.Instance != null)
+        {
+            List<BuffSystem.Buff> buffs = BuffSystem.Instance.GetPlayerBuffs(this);
+            foreach (var buff in buffs)
+            {
+                if (buff.effectType == BuildingData.BuffEffect.Bankrupt)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    // 清除破产Debuff（当玩家恢复资金时）
+    public void ClearBankruptBuff()
+    {
+        if (BuffSystem.Instance != null)
+        {
+            List<BuffSystem.Buff> buffs = BuffSystem.Instance.GetPlayerBuffs(this);
+            foreach (var buff in buffs)
+            {
+                if (buff.effectType == BuildingData.BuffEffect.Bankrupt)
+                {
+                    BuffSystem.Instance.RemoveBuff(this, buff);
+                    Debug.Log($"{playerName} 清除了破产Debuff");
+                    if (UIManager.Instance != null)
+                    {
+                        UIManager.Instance.ShowToast($"{playerName} 成功恢复！", 2f);
+                    }
+                    break;
+                }
+            }
+        }
     }
 
     public void AddStepsModifier(int modifier)

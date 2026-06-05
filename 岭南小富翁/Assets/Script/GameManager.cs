@@ -40,14 +40,17 @@ public class GameManager : MonoBehaviour
     public int salaryAmount = 200;
     public int jailTurns = 3;
 
-    [Header("")]
+    [Header("压力系统")]
     public bool enablePressureSystem = true;
 
-    private int diceRollCount = 0;          // 
-    private int pressureInterval = 1;        // N
-    private int nextPressureAt = 1;          // ??
-    public float basePressureCost = 50f;   // 
+    private int diceRollCount = 0;          // 骰子投掷次数
+    private int pressureInterval = 1;        // 压力触发间隔（每N个回合）
+    private int nextPressureAt = 1;          // 下一次压力触发的回合数
+    public float basePressureCost = 50f;   // 基础压力费用
     public float pressureMultiplier = 1.2f;
+    
+    [Header("破产设置")]
+    public int bankruptGraceRounds = 3;     // 破产后给予的缓冲回合数（持有破产Debuff持续此回合数后结算失败）
 
     public int DiceRollCount => diceRollCount;
     public int CurrentRound => diceRollCount / 6;
@@ -98,13 +101,13 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("===  ===");
+        Debug.Log("=== 游戏开始 ===");
         InitializeGame();
-        // === 1:  ===
+        // === 阶段1: 初始建筑放置 ===
         StartCoroutine(StartInitialBuildingPhase());
     }
 
-    // 
+    // 初始化游戏
     void InitializeGame()
     {
         FindRequiredComponents();
@@ -117,7 +120,7 @@ public class GameManager : MonoBehaviour
             currentPlayer = players[currentPlayerIndex];
         }
 
-        // 
+        // 给玩家发放初始物品
         GiveStartingItemsToPlayers();
 
         currentState = GameState.Waiting;
@@ -128,15 +131,15 @@ public class GameManager : MonoBehaviour
         InitializeMusicSystem();
         InitializeSFXSystem();
 
-        Debug.Log($": {players.Count}");
-        Debug.Log($"??????: {currentPlayer?.playerName ?? ""}");
+        Debug.Log($"玩家数量: {players.Count}");
+        Debug.Log($"当前玩家: {currentPlayer?.playerName ?? ""}");
     }
 
     void InitializeMusicSystem()
     {
         if (!enableBackgroundMusic)
         {
-            Debug.Log("");
+            Debug.Log("背景音乐已禁用");
             return;
         }
 
@@ -151,18 +154,18 @@ public class GameManager : MonoBehaviour
             {
                 musicObj = new GameObject("MusicManager");
                 musicManager = musicObj.AddComponent<MusicManager>();
-                Debug.Log("MusicManager ");
+                Debug.Log("MusicManager 创建");
             }
         }
 
         if (musicManager != null && musicManager.GetTotalTracks() > 0)
         {
             musicManager.Play();
-            Debug.Log("");
+            Debug.Log("背景音乐开始播放");
         }
         else
         {
-            Debug.LogWarning("MusicManager ??");
+            Debug.LogWarning("MusicManager 未找到音乐");
         }
     }
 
@@ -170,20 +173,20 @@ public class GameManager : MonoBehaviour
     {
         if (ItemManager.Instance == null)
         {
-            Debug.LogWarning("ItemManager ????????????????????");
+            Debug.LogWarning("ItemManager 未找到，请确保已正确设置");
             return;
         }
 
         foreach (Player player in players)
         {
             ItemManager.Instance.GiveStartingItemsToPlayer(player);
-            Debug.Log($"?????? {player.playerName} ??????????");
+            Debug.Log($"给玩家 {player.playerName} 发放初始物品");
         }
 
         if (ItemHandManager.Instance != null && currentPlayer != null)
         {
             ItemHandManager.Instance.SetupHand(currentPlayer);
-            Debug.Log("??????????");
+            Debug.Log("初始化手牌显示");
         }
     }
 
@@ -191,7 +194,7 @@ public class GameManager : MonoBehaviour
     {
         if (!enableSFX)
         {
-            Debug.Log("??");
+            Debug.Log("音效已禁用");
             return;
         }
 
@@ -215,11 +218,11 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogWarning("SFXConfig ??InspectorResources");
+                    Debug.LogWarning("SFXConfig 未在Inspector或Resources中设置");
                 }
             }
 
-            Debug.Log("SFXManager ");
+            Debug.Log("SFXManager 创建");
         }
         else if (sfxConfig != null && SFXManager.Instance.config == null)
         {
@@ -228,7 +231,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // ===  ===
+    // === 初始建筑放置阶段 ===
     IEnumerator StartInitialBuildingPhase()
     {
         // UI
@@ -662,16 +665,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // 
+    // 触发压力系统
     private void TriggerPressure(int currentRound)
     {
-        Debug.Log($" {currentRound} ");
+        Debug.Log($"压力触发: 回合 {currentRound}");
 
         int cost = Mathf.RoundToInt(basePressureCost);
 
-        // ??
+        // 计算下一次压力触发
         nextPressureAt++;
         basePressureCost *= pressureMultiplier;
+
+        bool hasBankruptPlayer = false;
 
         foreach (Player p in players)
         {
@@ -682,38 +687,50 @@ public class GameManager : MonoBehaviour
 
             if (!success || p.cash < 0)
             {
-                p.isBankrupt = true;
-
-                if (UIManager.Instance != null)
-                {
-                    if (players.Count == 1)
-                    {
-                        UIManager.Instance.ShowGameOverPanel(p.playerName, false);
-                    }
-                    else
-                    {
-                        Player winner = players.Find(p2 => !p2.isBankrupt);
-                        if (winner != null)
-                        {
-                            UIManager.Instance.ShowGameOverPanel(winner.playerName, true);
-                        }
-                        else
-                        {
-                            UIManager.Instance.ShowGameOverPanel(p.playerName, false);
-                        }
-                    }
-                }
-
-                GameOver();
-                return;
+                // 给予破产Debuff而不是立即结算失败
+                ApplyBankruptDebuff(p);
+                hasBankruptPlayer = true;
             }
         }
 
-        if (UIManager.Instance != null)
+        // 如果有玩家获得破产Debuff，显示提示
+        if (hasBankruptPlayer && UIManager.Instance != null)
         {
             UIManager.Instance.ShowTurnAnnouncement(
-                $" {currentRound}     {cost} "
+                $"压力回合 {currentRound} - 部分玩家陷入破产危机！"
             );
+        }
+        else if (!hasBankruptPlayer && UIManager.Instance != null)
+        {
+            UIManager.Instance.ShowTurnAnnouncement(
+                $"压力回合 {currentRound} - 每位玩家支付 {cost} 铜板"
+            );
+        }
+    }
+    
+    // 应用破产Debuff
+    private void ApplyBankruptDebuff(Player player)
+    {
+        if (BuffSystem.Instance != null)
+        {
+            string buffId = $"bankrupt_{player.playerName}";
+            BuffSystem.Buff bankruptBuff = new BuffSystem.Buff(
+                buffId,
+                "压力系统",
+                BuildingData.BuffEffect.Bankrupt,
+                0f,
+                0f,
+                bankruptGraceRounds,
+                null,
+                "破产危机！在" + bankruptGraceRounds + "回合内无法恢复将导致失败！"
+            );
+            BuffSystem.Instance.AddBuff(player, bankruptBuff);
+            Debug.Log($"{player.playerName} 获得破产Debuff，持续 {bankruptGraceRounds} 回合");
+        }
+        
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.ShowToast($"{player.playerName} 陷入破产危机！", 3f);
         }
     }
 
@@ -1532,6 +1549,32 @@ public class GameManager : MonoBehaviour
                 return player;
         }
         return null;
+    }
+    
+    // 破产Debuff到期后检查游戏是否结束
+    public void CheckGameOverAfterBankrupt()
+    {
+        Debug.Log("检查破产后的游戏状态...");
+        
+        Player winner = GetWinner();
+        if (winner != null)
+        {
+            Debug.Log($"游戏结束！获胜者: {winner.playerName}");
+            if (UIManager.Instance != null)
+            {
+                UIManager.Instance.ShowGameOverPanel(winner.playerName, true);
+            }
+            GameOver();
+        }
+        else
+        {
+            Debug.Log("所有玩家都破产了！");
+            if (UIManager.Instance != null)
+            {
+                UIManager.Instance.ShowGameOverPanel("所有人", false);
+            }
+            GameOver();
+        }
     }
 
     public void OnEventPanelClosed()
