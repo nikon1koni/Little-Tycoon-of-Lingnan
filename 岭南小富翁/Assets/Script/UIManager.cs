@@ -64,6 +64,10 @@ public class UIManager : MonoBehaviour
     public GameObject persistentToastPanel;
     public Text persistentToastText;
     public Vector2 toastPosition = new Vector2(20, 20);
+    
+    [Header("建筑放置提示UI")]
+    public GameObject buildingPlacementHintPanel;
+    public TextMeshProUGUI buildingPlacementHintText;
 
     [Header("")]
     [SerializeField] private GameObject cashDisplayPanel;
@@ -647,7 +651,7 @@ public class UIManager : MonoBehaviour
         }
 
         // 3. 
-        ShowPersistentToast($": {building.buildingName}\nESC");
+        ShowPersistentToast($"当前选择: {building.buildingName}");
 
         // 4. 
         HighlightPlaceableTiles(currentBuildingPlayer, (int)building.requiredScale);
@@ -657,23 +661,25 @@ public class UIManager : MonoBehaviour
 
     private void ShowPersistentToast(string message)
     {
-        // ??Toast
         HidePersistentToast();
 
-        // Toast
-        if (persistentToastPanel != null)
+        if (buildingPlacementHintPanel != null && buildingPlacementHintText != null)
+        {
+            buildingPlacementHintPanel.SetActive(true);
+            buildingPlacementHintText.text = message;
+            activePersistentToast = buildingPlacementHintPanel;
+        }
+        else if (persistentToastPanel != null)
         {
             activePersistentToast = Instantiate(persistentToastPanel, mainCanvas.transform);
             activePersistentToast.name = "PersistentToast";
 
-            // 
             Text toastText = activePersistentToast.GetComponentInChildren<Text>();
             if (toastText != null)
             {
                 toastText.text = message;
             }
 
-            // ?? - 
             RectTransform rt = activePersistentToast.GetComponent<RectTransform>();
             rt.anchorMin = new Vector2(0, 0);
             rt.anchorMax = new Vector2(0, 0);
@@ -684,7 +690,6 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            // Toast
             activePersistentToast = new GameObject("PersistentToast");
             activePersistentToast.transform.SetParent(mainCanvas.transform);
 
@@ -700,7 +705,6 @@ public class UIManager : MonoBehaviour
             text.color = Color.white;
             text.alignment = TextAnchor.MiddleLeft;
 
-            // UI??
             RectTransform rt = activePersistentToast.GetComponent<RectTransform>();
             rt.sizeDelta = new Vector2(200, 40);
             rt.anchorMin = new Vector2(0, 0);
@@ -708,7 +712,6 @@ public class UIManager : MonoBehaviour
             rt.pivot = new Vector2(0, 0);
             rt.anchoredPosition = toastPosition;
 
-            // ??
             RectTransform textRt = textObj.GetComponent<RectTransform>();
             textRt.anchorMin = Vector2.zero;
             textRt.anchorMax = Vector2.one;
@@ -721,7 +724,14 @@ public class UIManager : MonoBehaviour
     {
         if (activePersistentToast != null)
         {
-            Destroy(activePersistentToast);
+            if (activePersistentToast == buildingPlacementHintPanel)
+            {
+                activePersistentToast.SetActive(false);
+            }
+            else
+            {
+                Destroy(activePersistentToast);
+            }
             activePersistentToast = null;
         }
     }
