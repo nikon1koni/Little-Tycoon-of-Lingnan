@@ -26,8 +26,9 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
     [Header("Visual Feedback")]
     public Color normalColor = Color.white;
-    public Color dragColor = Color.yellow;
-    public Color invalidColor = Color.red;
+    public Color dragOutlineColor = Color.green;
+    public Color invalidOutlineColor = Color.red;
+    public float outlineWidth = 5f;
 
     [Header("Drop Zone")]
     public GameObject dropZone;
@@ -36,6 +37,7 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     private RectTransform rectTransform;
     private CanvasGroup canvasGroup;
     private Image cardImage;
+    private Outline cardOutline;
     private Vector3 originalPosition;
     private Quaternion originalRotation;
     private Vector3 originalScale;
@@ -49,11 +51,21 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
         cardImage = GetComponent<Image>();
+        cardOutline = GetComponent<Outline>();
 
         if (canvasGroup == null)
         {
             canvasGroup = gameObject.AddComponent<CanvasGroup>();
         }
+
+        if (cardOutline == null)
+        {
+            cardOutline = gameObject.AddComponent<Outline>();
+        }
+        
+        cardOutline.enabled = false;
+        cardOutline.effectColor = dragOutlineColor;
+        cardOutline.effectDistance = new Vector2(outlineWidth, outlineWidth);
 
         originalScale = transform.localScale;
     }
@@ -156,6 +168,20 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         RectTransform dragRect = draggedCardInstance.GetComponent<RectTransform>();
         dragRect.sizeDelta = rectTransform.sizeDelta;
 
+        Outline outline = draggedCardInstance.GetComponent<Outline>();
+        if (outline == null)
+        {
+            outline = draggedCardInstance.AddComponent<Outline>();
+        }
+        outline.enabled = true;
+        
+        bool canUse = CanUseCard();
+        Color targetColor = canUse ? dragOutlineColor : invalidOutlineColor;
+        outline.effectColor = targetColor;
+        outline.effectDistance = new Vector2(outlineWidth, outlineWidth);
+        
+        Debug.Log($"OnBeginDrag: canUse={canUse}, outlineColor={targetColor}, GameManager.isMoving={GameManager.Instance?.isMoving ?? false}");
+
         canvasGroup.blocksRaycasts = false;
 
         StartCoroutine(ScaleTo(draggedCardInstance.transform, originalScale * dragScale, 0.1f));
@@ -182,8 +208,9 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         isDragging = false;
 
         bool droppedOnValidZone = IsOverValidDropZone();
+        bool canUse = CanUseCard();
 
-        if (droppedOnValidZone && itemData != null)
+        if (droppedOnValidZone && itemData != null && canUse)
         {
             UseItem();
         }
@@ -260,16 +287,53 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         return false;
     }
 
+    private bool CanUseCard()
+    {
+        if (GameManager.Instance == null)
+        {
+            Debug.Log("CanUseCard: GameManager.Instance is null");
+            return true;
+        }
+        
+        if (GameManager.Instance.isMoving)
+        {
+            Debug.Log("CanUseCard: Player is moving, cannot use card");
+            return false;
+        }
+        
+        if (ItemManager.Instance != null)
+        {
+            bool canUse = ItemManager.Instance.CanUseItem(ownerPlayer, itemData);
+            Debug.Log($"CanUseCard: ItemManager.CanUseItem returned {canUse}");
+            return canUse;
+        }
+        
+        Debug.Log("CanUseCard: ItemManager.Instance is null, returning true");
+        return true;
+    }
+
     private void CheckDropZone()
     {
         if (draggedCardInstance == null) return;
 
-        bool isOverZone = IsOverValidDropZone();
-        Image img = draggedCardInstance.GetComponent<Image>();
+        bool canUse = CanUseCard();
+        Outline outline = draggedCardInstance.GetComponent<Outline>();
 
-        if (img != null)
+        if (outline != null)
         {
-            img.color = isOverZone ? Color.green : normalColor;
+            outline.enabled = true;
+            
+            if (!canUse)
+            {
+                outline.effectColor = invalidOutlineColor;
+            }
+            else
+            {
+                bool isOverZone = IsOverValidDropZone();
+                outline.effectColor = isOverZone ? dragOutlineColor : invalidOutlineColor;
+            }
+            
+            outline.effectDistance = new Vector2(outlineWidth, outlineWidth);
         }
     }
 

@@ -443,7 +443,8 @@ MonoBehaviour:
   dragYOffset: 50
   canDrag: 1
   normalColor: {r: 1, g: 1, b: 1, a: 1}
-  dragColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  invalidColor: {r: 1, g: 0, b: 0, a: 1}
+  dragOutlineColor: {r: 0, g: 1, b: 0, a: 1}
+  invalidOutlineColor: {r: 1, g: 0, b: 0, a: 1}
+  outlineWidth: 1
   dropZone: {fileID: 0}
   validDropZoneTag: ItemDropZone
