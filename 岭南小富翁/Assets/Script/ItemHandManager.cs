@@ -11,7 +11,17 @@ public class ItemHandManager : MonoBehaviour
     public Transform handContainer;
 
     [Header("卡牌预制体")]
-    public GameObject dragCardPrefab;
+    public GameObject defaultCardPrefab;
+    
+    [Header("稀有度预制体")]
+    public RarityCardPrefab[] rarityPrefabs;
+    
+    [System.Serializable]
+    public class RarityCardPrefab
+    {
+        public ItemData.ItemRarity rarity;
+        public GameObject cardPrefab;
+    }
 
     [Header("布局设置")]
     public float cardWidth = 120f;
@@ -143,13 +153,20 @@ public class ItemHandManager : MonoBehaviour
 
     public void AddCardToHand(ItemData item, Player player)
     {
-        if (handContainer == null || dragCardPrefab == null)
+        if (handContainer == null)
         {
             Debug.LogWarning("ItemHandManager: ??????????????");
             return;
         }
 
-        GameObject cardObj = Instantiate(dragCardPrefab, handContainer);
+        GameObject prefabToUse = GetCardPrefabByRarity(item.rarity);
+        if (prefabToUse == null)
+        {
+            Debug.LogWarning($"ItemHandManager: ??????? {item.rarity} ????");
+            return;
+        }
+
+        GameObject cardObj = Instantiate(prefabToUse, handContainer);
         ItemDragCard dragCard = cardObj.GetComponent<ItemDragCard>();
 
         if (dragCard != null)
@@ -183,6 +200,19 @@ public class ItemHandManager : MonoBehaviour
             }
         }
         handCards.Clear();
+    }
+
+    private GameObject GetCardPrefabByRarity(ItemData.ItemRarity rarity)
+    {
+        foreach (RarityCardPrefab pair in rarityPrefabs)
+        {
+            if (pair.rarity == rarity && pair.cardPrefab != null)
+            {
+                return pair.cardPrefab;
+            }
+        }
+        
+        return defaultCardPrefab;
     }
 
     public void RefreshHand()

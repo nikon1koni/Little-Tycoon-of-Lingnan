@@ -13,6 +13,17 @@ public class ItemData : ScriptableObject
     [TextArea(3, 10)]
     [InspectorName("Description")]
     public string itemDescription;
+    
+    [InspectorName("Rarity")]
+    public ItemRarity rarity;
+    
+    public enum ItemRarity
+    {
+        Common,
+        Rare,
+        Epic,
+        Legendary
+    }
 
     [Header("Item Effect")]
     [InspectorName("Effect Type")]

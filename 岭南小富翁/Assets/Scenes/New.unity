@@ -19091,12 +19091,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   toggleButton: {fileID: 1135244038}
   handContainer: {fileID: 0}
-  dragCardPrefab: {fileID: 6252345139265869957, guid: 854d3a34f445dbb4696d1f09a47f2244, type: 3}
+  defaultCardPrefab: {fileID: 6252345139265869957, guid: 854d3a34f445dbb4696d1f09a47f2244, type: 3}
+  rarityPrefabs:
+  - rarity: 0
+    cardPrefab: {fileID: 6252345139265869957, guid: 854d3a34f445dbb4696d1f09a47f2244, type: 3}
+  - rarity: 1
+    cardPrefab: {fileID: 6252345139265869957, guid: 854d3a34f445dbb4696d1f09a47f2244, type: 3}
+  - rarity: 2
+    cardPrefab: {fileID: 6252345139265869957, guid: 854d3a34f445dbb4696d1f09a47f2244, type: 3}
+  - rarity: 3
+    cardPrefab: {fileID: 6252345139265869957, guid: 854d3a34f445dbb4696d1f09a47f2244, type: 3}
   cardWidth: 120
   cardSpacing: 10
   centerOffsetY: -300
-  centerOffsetYHover: 50
   fanAngle: 15
+  hoverScale: 1.1
+  hoverYOffset: 75
   startVisible: 1
 --- !u!1001 &1204150387
 PrefabInstance:
