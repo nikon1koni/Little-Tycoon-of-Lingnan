@@ -59,18 +59,19 @@ public class Player : MonoBehaviour
         }
     }
 
-    // 支付现金
     public bool PayCash(int amount)
     {
+        int previousCash = cash;
         bool canAfford = cash >= amount;
         cash -= amount;
         Debug.Log($"{playerName} 支付 {amount} 后剩余: {cash}");
 
         NotifyCashChanged();
+        UpdateBankruptState(previousCash);
+        
         return canAfford;
     }
 
-    // 收到现金
     public void ReceiveCash(int amount)
     {
         int previousCash = cash;
@@ -78,12 +79,7 @@ public class Player : MonoBehaviour
         Debug.Log($"{playerName} 收到 {amount} 后现在: {cash}");
 
         NotifyCashChanged();
-        
-        // ????????????????????????????????Debuff???????Debuff
-        if (previousCash < 0 && cash >= 0 && HasBankruptBuff())
-        {
-            ClearBankruptBuff();
-        }
+        UpdateBankruptState(previousCash);
     }
 
     private void NotifyCashChanged()
@@ -96,6 +92,24 @@ public class Player : MonoBehaviour
         if (GameManager.Instance != null && GameManager.Instance.currentPlayer == this)
         {
             GameManager.Instance.UpdateUI();
+        }
+    }
+    
+    public void UpdateBankruptState(int previousCash)
+    {
+        if (cash < 0 && previousCash >= 0)
+        {
+            if (!HasBankruptBuff() && !isBankrupt)
+            {
+                GameManager.Instance?.ApplyBankruptDebuff(this);
+            }
+        }
+        else if (cash >= 0 && previousCash < 0)
+        {
+            if (HasBankruptBuff())
+            {
+                ClearBankruptBuff();
+            }
         }
     }
 
@@ -287,7 +301,6 @@ public class Player : MonoBehaviour
         return false;
     }
     
-    // ??????Debuff???????????????
     public void ClearBankruptBuff()
     {
         if (BuffSystem.Instance != null)
@@ -298,6 +311,7 @@ public class Player : MonoBehaviour
                 if (buff.effectType == BuildingData.BuffEffect.Bankrupt)
                 {
                     BuffSystem.Instance.RemoveBuff(this, buff);
+                    isBankrupt = false;
                     Debug.Log($"{playerName} ????????Debuff");
                     if (UIManager.Instance != null)
                     {

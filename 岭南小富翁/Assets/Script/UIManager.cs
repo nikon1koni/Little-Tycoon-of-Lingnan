@@ -36,8 +36,8 @@ public class UIManager : MonoBehaviour
     [Header("UI??????")]
     public List<PlayerInfoUI> playerInfoUIs = new List<PlayerInfoUI>();
 
-    [Header("????λ??")]
-    public Vector2 diceButtonPosition = new Vector2(-20, -10); // ??????λ??
+    [Header("????????")]
+    public Vector2 diceButtonPosition = new Vector2(-20, -10); // ??????????
 
     [Header("UI???????")]
     public GameObject buildingSelectionPanel;
@@ -261,7 +261,7 @@ public class UIManager : MonoBehaviour
 
         if (currentRoundText != null)
         {
-            currentRoundText.text = $"回合数: {currentRound}";
+            currentRoundText.text = $"当前回合: {currentRound}";
         }
     }
 
@@ -349,7 +349,7 @@ public class UIManager : MonoBehaviour
 
         if (tileInfoText != null)
         {
-            tileInfoText.text = $"{buildableTile.tileName} - 价格: {buildableTile.propertyPrice}";
+            tileInfoText.text = $"{buildableTile.tileName} - ???: {buildableTile.propertyPrice}";
             tileInfoText.raycastTarget = false;
         }
 
@@ -651,7 +651,7 @@ public class UIManager : MonoBehaviour
         }
 
         // 3. 
-        ShowPersistentToast($"已选择建筑: {building.buildingName}");
+        ShowPersistentToast($"???????: {building.buildingName}");
 
         // 4. 
         HighlightPlaceableTiles(currentBuildingPlayer, (int)building.requiredScale);
@@ -764,7 +764,7 @@ public class UIManager : MonoBehaviour
 
         if (highlightCount == 0)
         {
-            ShowToast("没有可放置的位置", 2f);
+            ShowToast("??п?????λ??", 2f);
         }
     }
 
@@ -804,13 +804,13 @@ public class UIManager : MonoBehaviour
 
         if (currentBuildingPlayer.cash < selectedBuildingData.purchasePrice)
         {
-            ShowToast("现金不足", 2f);
+            ShowToast("?????", 2f);
             return;
         }
 
         if (!IsTilePlaceable(tile, currentBuildingPlayer, (int)selectedBuildingData.requiredScale))
         {
-            ShowToast("无法放置在这里", 2f);
+            ShowToast("?????????????", 2f);
             return;
         }
 
@@ -840,7 +840,7 @@ public class UIManager : MonoBehaviour
                 }
             }
             
-            ShowToast("放置成功", 2f);
+            ShowToast("???ó??", 2f);
         }
     }
 
@@ -1015,17 +1015,17 @@ public class UIManager : MonoBehaviour
 
         if (currentPlayerText != null)
         {
-            currentPlayerText.text = $"玩家: {player.playerName}";
+            currentPlayerText.text = $"???: {player.playerName}";
         }
 
         if (playerCashText != null)
         {
-            playerCashText.text = $"现金: {player.cash}";
+            playerCashText.text = $"???: {player.cash}";
         }
 
         if (currentTileText != null && player.currentTile != null)
         {
-            currentTileText.text = $"位置: {player.currentTile.tileName}";
+            currentTileText.text = $"λ??: {player.currentTile.tileName}";
         }
 
         // ===  ===
@@ -1065,7 +1065,7 @@ public class UIManager : MonoBehaviour
                 break;
         }
 
-        UnityEngine.Debug.Log($"?л?UI: {uiType}");
+        UnityEngine.Debug.Log($"????UI: {uiType}");
     }
 
     public void SwitchToMenuUI() => SwitchUI(UIType.Menu);
@@ -1098,7 +1098,7 @@ public class UIManager : MonoBehaviour
             propertyNameText.text = property.tileName;
 
         if (priceText != null)
-            priceText.text = $"价格: {property.propertyPrice} 金币";
+            priceText.text = $"???: {property.propertyPrice} ???";
 
         if (buyButton != null)
         {
@@ -1134,7 +1134,7 @@ public class UIManager : MonoBehaviour
     {
         if (gameOverPanel == null)
         {
-            UnityEngine.Debug.LogError("UIManager: ??Inspector");
+            UnityEngine.Debug.LogError("UIManager: 在Inspector中未设置GameOverPanel");
             return;
         }
 
@@ -1151,23 +1151,23 @@ public class UIManager : MonoBehaviour
         
         int score = roundCount * 100 + diceCount + 10;
 
-        UnityEngine.Debug.Log($"???={playerName}, ???={isWinner}, ???={roundCount}, ????={diceCount}, ????={score}");
+        UnityEngine.Debug.Log($"玩家={playerName}, 是否胜利={isWinner}, 回合={roundCount}, 骰子数={diceCount}, 分数={score}");
 
-        SetText("ResultText", isWinner ? $"{playerName} ???!" : $"{playerName} ???");
-        SetText("RoundText", $"???: {roundCount}");
-        SetText("DiceText", $"????: {diceCount}");
-        SetText("ScoreText", $"????: {score}");
+        SetText("ResultText", isWinner ? $"{playerName} 胜利!" : $"{playerName} 失败");
+        SetText("RoundText", $"回合: {roundCount}");
+        SetText("DiceText", $"骰子数: {diceCount}");
+        SetText("ScoreText", $"最终得分: {score}");
 
         Button restartButton = FindRestartButton();
         if (restartButton != null)
         {
-            UnityEngine.Debug.Log("");
+            UnityEngine.Debug.Log("找到重新开始按钮");
             restartButton.onClick.RemoveAllListeners();
             restartButton.onClick.AddListener(OnRestartButtonClicked);
         }
         else
         {
-            UnityEngine.Debug.LogError("??");
+            UnityEngine.Debug.LogError("未找到重新开始按钮");
         }
     }
 
@@ -1247,7 +1247,7 @@ public class UIManager : MonoBehaviour
         }
         
         SwitchToGameUI();
-        UnityEngine.Debug.Log("?л??????UI");
+        UnityEngine.Debug.Log("?????????UI");
         
         if (GameManager.Instance != null)
         {

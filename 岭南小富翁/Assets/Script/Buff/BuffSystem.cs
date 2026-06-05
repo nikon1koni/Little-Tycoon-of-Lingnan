@@ -152,9 +152,8 @@ public class BuffSystem : MonoBehaviour
     {
         if (playerBuffs.ContainsKey(player) && playerBuffs[player].Remove(buff))
         {
-            Debug.Log($"{player.playerName} ??? Buff ????: {BuildingData.GetBuffEffectName(buff.effectType)} (???: {buff.sourceName})");
+            Debug.Log($"{player.playerName} 移除 Buff 效果: {BuildingData.GetBuffEffectName(buff.effectType)} (来源: {buff.sourceName})");
             
-            // ???? Buff ???
             UpdateBuffDisplay();
         }
     }
