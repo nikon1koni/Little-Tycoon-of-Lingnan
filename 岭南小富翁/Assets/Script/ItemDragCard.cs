@@ -116,6 +116,8 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         StartCoroutine(ScaleTo(draggedCardInstance.transform, originalScale * dragScale, 0.1f));
 
         draggedCardInstance.transform.SetAsLastSibling();
+
+        EnableAllDropZones();
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -139,20 +141,39 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         if (droppedOnValidZone && itemData != null)
         {
             UseItem();
-            return;
         }
         else
         {
             ReturnToOriginalPosition();
+
+            if (draggedCardInstance != null)
+            {
+                Destroy(draggedCardInstance);
+                draggedCardInstance = null;
+            }
+
+            canvasGroup.blocksRaycasts = true;
         }
 
-        if (draggedCardInstance != null)
+        DisableAllDropZones();
+    }
+
+    private void EnableAllDropZones()
+    {
+        ItemDropZone[] dropZones = FindObjectsOfType<ItemDropZone>();
+        foreach (ItemDropZone zone in dropZones)
         {
-            Destroy(draggedCardInstance);
-            draggedCardInstance = null;
+            zone.EnableDropDetection();
         }
+    }
 
-        canvasGroup.blocksRaycasts = true;
+    private void DisableAllDropZones()
+    {
+        ItemDropZone[] dropZones = FindObjectsOfType<ItemDropZone>();
+        foreach (ItemDropZone zone in dropZones)
+        {
+            zone.DisableDropDetection();
+        }
     }
 
     private bool IsOverValidDropZone()

@@ -35,13 +35,14 @@ public class ItemDropZone : MonoBehaviour
             if (zoneImage == null)
             {
                 zoneImage = gameObject.AddComponent<Image>();
-                zoneImage.raycastTarget = false;
+                zoneImage.raycastTarget = true;
             }
         }
 
         if (zoneImage != null)
         {
             zoneImage.color = normalColor;
+            zoneImage.raycastTarget = false;
         }
 
         if (showZoneName && zoneNameText == null)
@@ -144,6 +145,22 @@ public class ItemDropZone : MonoBehaviour
         if (zoneImage != null)
         {
             zoneImage.color = activeColor;
+        }
+    }
+
+    public void EnableDropDetection()
+    {
+        if (zoneImage != null)
+        {
+            zoneImage.raycastTarget = true;
+        }
+    }
+
+    public void DisableDropDetection()
+    {
+        if (zoneImage != null)
+        {
+            zoneImage.raycastTarget = false;
         }
     }
 
