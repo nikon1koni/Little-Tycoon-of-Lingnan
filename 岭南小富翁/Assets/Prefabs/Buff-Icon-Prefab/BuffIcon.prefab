@@ -197,6 +197,12 @@ MonoBehaviour:
   iconImage: {fileID: 6622021778414652929}
   stackText: {fileID: 8239094854305173070}
   tooltipPrefab: {fileID: 0}
+  tooltipOffset: {x: 50, y: 50}
+  roundThreshold: 1
+  buffBelowThresholdColor: {r: 1, g: 0, b: 0, a: 1}
+  buffAboveThresholdColor: {r: 0, g: 1, b: 0, a: 1}
+  debuffBelowThresholdColor: {r: 0, g: 1, b: 0, a: 1}
+  debuffAboveThresholdColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &8177628998018967020
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -14,6 +14,13 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public Vector2 tooltipOffset = new Vector2(50, 50);
     private GameObject activeTooltip;
     
+    [Header("剩余时间显示设置")]
+    public int roundThreshold = 3;              // 回合临界值
+    public Color buffBelowThresholdColor = Color.red;      // Buff低于临界值颜色
+    public Color buffAboveThresholdColor = Color.green;     // Buff高于临界值颜色
+    public Color debuffBelowThresholdColor = Color.green;   // Debuff低于临界值颜色
+    public Color debuffAboveThresholdColor = Color.red;     // Debuff高于临界值颜色
+    
     private BuffSystem.Buff currentBuff;
     
     public void Initialize(BuffSystem.Buff buff, Sprite icon)
@@ -131,18 +138,58 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         
         if (currentBuff.isPermanent)
         {
-            timeText = "剩余回合：永远";
+            timeText = "剩余回合：<color=green>永远</color>";
         }
         else if (currentBuff.useRoundTimer)
         {
-            timeText = $"剩余回合：{currentBuff.remainingRounds}";
+            // 判断是Buff还是Debuff
+            bool isDebuff = IsDebuff();
+            Color textColor = GetTimeColor(isDebuff, currentBuff.remainingRounds);
+            string colorHex = ColorToHex(textColor);
+            timeText = $"剩余回合：<color={colorHex}>{currentBuff.remainingRounds}</color>";
         }
         else
         {
+            // 时间计时器不应用颜色
             timeText = $"剩余时间：{currentBuff.remainingTime:F1}秒";
         }
         
         return timeText;
+    }
+    
+    private bool IsDebuff()
+    {
+        // 判断是否为Debuff
+        // 目前只有破产是明确的Debuff
+        if (currentBuff.effectType == BuildingData.BuffEffect.Bankrupt)
+        {
+            return true;
+        }
+        
+        // 其他BuffEffect类型都是正面Buff
+        return false;
+    }
+    
+    private Color GetTimeColor(bool isDebuff, int remainingRounds)
+    {
+        if (isDebuff)
+        {
+            // Debuff：低于临界值绿色，高于临界值红色
+            return remainingRounds <= roundThreshold ? debuffBelowThresholdColor : debuffAboveThresholdColor;
+        }
+        else
+        {
+            // Buff：低于临界值红色，高于临界值绿色
+            return remainingRounds <= roundThreshold ? buffBelowThresholdColor : buffAboveThresholdColor;
+        }
+    }
+    
+    private string ColorToHex(Color color)
+    {
+        int r = Mathf.RoundToInt(color.r * 255);
+        int g = Mathf.RoundToInt(color.g * 255);
+        int b = Mathf.RoundToInt(color.b * 255);
+        return $"#{r:X2}{g:X2}{b:X2}";
     }
     
     private void OnDestroy()
