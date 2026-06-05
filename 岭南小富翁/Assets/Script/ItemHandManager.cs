@@ -19,6 +19,10 @@ public class ItemHandManager : MonoBehaviour
     public float centerOffsetY = 100f;
     public float fanAngle = 15f;
 
+    [Header("卡牌悬停设置")]
+    public float hoverScale = 1.1f;
+    public float hoverYOffset = 50f;
+
     [Header("初始状态")]
     public bool startVisible = true;
 
@@ -63,7 +67,7 @@ public class ItemHandManager : MonoBehaviour
             if (canvas != null)
             {
                 transform.SetParent(canvas.transform);
-                Debug.Log("ItemHandManager: 已移动到 Canvas 下");
+                Debug.Log("ItemHandManager: ??????? Canvas ??");
             }
             else
             {
@@ -73,7 +77,7 @@ public class ItemHandManager : MonoBehaviour
                 canvasObj.AddComponent<CanvasScaler>();
                 canvasObj.AddComponent<GraphicRaycaster>();
                 transform.SetParent(canvas.transform);
-                Debug.Log("ItemHandManager: 创建了新的 Canvas");
+                Debug.Log("ItemHandManager: ????????? Canvas");
             }
         }
     }
@@ -100,12 +104,12 @@ public class ItemHandManager : MonoBehaviour
     {
         if (GameManager.Instance != null && GameManager.Instance.currentPlayer != null)
         {
-            Debug.Log("ItemHandManager: 自动初始化手牌");
+            Debug.Log("ItemHandManager: ????????????");
             SetupHand(GameManager.Instance.currentPlayer);
         }
         else
         {
-            Debug.Log("ItemHandManager: 等待玩家初始化...");
+            Debug.Log("ItemHandManager: ??????????...");
         }
     }
 
@@ -116,7 +120,7 @@ public class ItemHandManager : MonoBehaviour
 
         if (ItemManager.Instance == null)
         {
-            Debug.LogWarning("ItemHandManager: ItemManager 不存在");
+            Debug.LogWarning("ItemHandManager: ItemManager ??????");
             return;
         }
 
@@ -124,7 +128,7 @@ public class ItemHandManager : MonoBehaviour
         
         if (items.Count == 0)
         {
-            Debug.Log("ItemHandManager: 当前玩家没有道具");
+            Debug.Log("ItemHandManager: ?????????????");
             return;
         }
 
@@ -134,14 +138,14 @@ public class ItemHandManager : MonoBehaviour
         }
 
         LayoutHand();
-        Debug.Log($"ItemHandManager: 已加载 {items.Count} 张卡牌");
+        Debug.Log($"ItemHandManager: ????? {items.Count} ?????");
     }
 
     public void AddCardToHand(ItemData item, Player player)
     {
         if (handContainer == null || dragCardPrefab == null)
         {
-            Debug.LogWarning("ItemHandManager: 缺少容器或预制体");
+            Debug.LogWarning("ItemHandManager: ??????????????");
             return;
         }
 
@@ -199,7 +203,7 @@ public class ItemHandManager : MonoBehaviour
             Text buttonText = toggleButton.GetComponentInChildren<Text>();
             if (buttonText != null)
             {
-                buttonText.text = isVisible ? "隐藏手牌" : "显示手牌";
+                buttonText.text = isVisible ? "????????" : "???????";
             }
         }
     }
@@ -256,6 +260,8 @@ public class ItemHandManager : MonoBehaviour
             rect.anchoredPosition = new Vector2(baseX, baseY + yOffset);
             rect.localRotation = Quaternion.Euler(0, 0, angle);
             rect.sizeDelta = new Vector2(cardWidth, cardWidth * 1.5f);
+
+            card.UpdateOriginalPosition();
         }
     }
 

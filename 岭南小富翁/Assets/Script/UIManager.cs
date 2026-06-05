@@ -65,7 +65,7 @@ public class UIManager : MonoBehaviour
     public Text persistentToastText;
     public Vector2 toastPosition = new Vector2(20, 20);
     
-    [Header("建筑放置提示UI")]
+    [Header("???????????UI")]
     public GameObject buildingPlacementHintPanel;
     public TextMeshProUGUI buildingPlacementHintText;
 
@@ -651,7 +651,7 @@ public class UIManager : MonoBehaviour
         }
 
         // 3. 
-        ShowPersistentToast($"当前选择: {building.buildingName}");
+        ShowPersistentToast($"??????: {building.buildingName}");
 
         // 4. 
         HighlightPlaceableTiles(currentBuildingPlayer, (int)building.requiredScale);
@@ -1617,7 +1617,7 @@ public class UIManager : MonoBehaviour
                 return $": {buildingData.GetDiceRuleDescription()}";
 
             case BuildingData.BuildingFunctionType.Appreciation:
-                return $": 每持有1圈, 估值+{buildingData.appreciationPerRound}";
+                return $": ?????1?, ???+{buildingData.appreciationPerRound}";
 
             default:
                 return "??";

@@ -19094,7 +19094,8 @@ MonoBehaviour:
   dragCardPrefab: {fileID: 6252345139265869957, guid: 854d3a34f445dbb4696d1f09a47f2244, type: 3}
   cardWidth: 120
   cardSpacing: 10
-  centerOffsetY: -250
+  centerOffsetY: -300
+  centerOffsetYHover: 50
   fanAngle: 15
   startVisible: 1
 --- !u!1001 &1204150387

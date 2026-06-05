@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 
-public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [Header("Card Info")]
     public ItemData itemData;
@@ -22,6 +22,8 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     public float dragYOffset = 50f;
     public bool canDrag = true;
 
+    
+
     [Header("Visual Feedback")]
     public Color normalColor = Color.white;
     public Color dragColor = Color.yellow;
@@ -37,7 +39,9 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     private Vector3 originalPosition;
     private Quaternion originalRotation;
     private Vector3 originalScale;
+    private Vector2 originalAnchoredPosition;
     private bool isDragging = false;
+    private bool isHovering = false;
     private GameObject draggedCardInstance;
 
     void Awake()
@@ -54,6 +58,42 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         originalScale = transform.localScale;
     }
 
+    void Start()
+    {
+        UpdateOriginalPosition();
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (isDragging) return;
+        isHovering = true;
+        OnHoverStateChanged();
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (isDragging) return;
+        isHovering = false;
+        OnHoverStateChanged();
+    }
+
+    private void OnHoverStateChanged()
+    {
+        if (isHovering)
+        {
+            float scale = ItemHandManager.Instance != null ? ItemHandManager.Instance.hoverScale : 1.1f;
+            float yOffset = ItemHandManager.Instance != null ? ItemHandManager.Instance.hoverYOffset : 50f;
+            
+            StartCoroutine(ScaleTo(transform, originalScale * scale, 0.15f));
+            rectTransform.anchoredPosition = originalAnchoredPosition + Vector2.up * yOffset;
+        }
+        else
+        {
+            StartCoroutine(ScaleTo(transform, originalScale, 0.15f));
+            rectTransform.anchoredPosition = originalAnchoredPosition;
+        }
+    }
+
     public void Setup(ItemData item, Player player)
     {
         itemData = item;
@@ -62,24 +102,29 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         UpdateCardDisplay();
     }
 
+    public void UpdateOriginalPosition()
+    {
+        originalAnchoredPosition = rectTransform.anchoredPosition;
+    }
+
     private void UpdateCardDisplay()
     {
         if (itemData == null) return;
 
-        // 更新图标
+        // ???????
         if (iconImage != null)
         {
             iconImage.sprite = itemData.itemIcon;
             iconImage.color = itemData.itemIcon != null ? Color.white : Color.gray;
         }
 
-        // 更新名称
+        // ????????
         if (nameText != null)
         {
             nameText.text = itemData.itemName;
         }
 
-        // 更新描述
+        // ????????
         if (descriptionText != null)
         {
             descriptionText.text = itemData.itemDescription;
@@ -180,7 +225,7 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     {
         if (draggedCardInstance == null) 
         {
-            Debug.Log("IsOverValidDropZone: draggedCardInstance 为空");
+            Debug.Log("IsOverValidDropZone: draggedCardInstance ???");
             return false;
         }
 
@@ -194,24 +239,24 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
         if (raycastResults.Count == 0)
         {
-            Debug.Log("IsOverValidDropZone: 没有检测到任何UI元素");
+            Debug.Log("IsOverValidDropZone: ??????????UI???");
         }
         else
         {
-            Debug.Log($"IsOverValidDropZone: 检测到 {raycastResults.Count} 个UI元素");
+            Debug.Log($"IsOverValidDropZone: ??? {raycastResults.Count} ??UI???");
             foreach (var result in raycastResults)
             {
                 Debug.Log($"  - {result.gameObject.name} (Tag: {result.gameObject.tag})");
                 if (result.gameObject.CompareTag(validDropZoneTag) ||
                     result.gameObject.GetComponent<ItemDropZone>() != null)
                 {
-                    Debug.Log("检测到有效释放区域: " + result.gameObject.name);
+                    Debug.Log("??????????????: " + result.gameObject.name);
                     return true;
                 }
             }
         }
 
-        Debug.Log("IsOverValidDropZone: 未检测到有效释放区域");
+        Debug.Log("IsOverValidDropZone: ????????????????");
         return false;
     }
 
@@ -232,7 +277,7 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     {
         if (itemData == null || ownerPlayer == null) return;
 
-        // ??????Ч
+        // ????????
         if (SFXManager.Instance != null)
         {
             SFXManager.Instance.PlaySFX(SFXClip.UIClick);
@@ -345,7 +390,7 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         }
     }
 
-    // ??????????ú???????????
+    // ???????????????????????
     public void DisableCard()
     {
         canDrag = false;
