@@ -98,7 +98,7 @@ public class BuffSystem : MonoBehaviour
                     buff.remainingRounds--;
                     if (buff.remainingRounds <= 0)
                     {
-                        // ?????????Debuff - ???????????????
+                        // 检查破产Debuff - 触发游戏结束
                         if (buff.effectType == BuildingData.BuffEffect.Bankrupt)
                         {
                             HandleBankruptBuffExpired(player);
@@ -110,19 +110,19 @@ public class BuffSystem : MonoBehaviour
         }
     }
     
-    // ???????Debuff????
+    // 处理破产Debuff到期
     private void HandleBankruptBuffExpired(Player player)
     {
-        Debug.Log($"{player.playerName} ?????Debuff????????????");
+        Debug.Log($"{player.playerName} 破产Debuff到期，游戏结束");
         
         player.isBankrupt = true;
         
         if (UIManager.Instance != null)
         {
-            UIManager.Instance.ShowToast($"{player.playerName} ???????", 3f);
+            UIManager.Instance.ShowToast($"{player.playerName} 破产了！", 3f);
         }
         
-        // ????????????
+        // 检查游戏结束
         if (GameManager.Instance != null)
         {
             GameManager.Instance.CheckGameOverAfterBankrupt();
@@ -137,14 +137,14 @@ public class BuffSystem : MonoBehaviour
         }
 
         playerBuffs[player].Add(buff);
-        Debug.Log($"{player.playerName} ??? Buff: {BuildingData.GetBuffEffectName(buff.effectType)} +{buff.value * 100}% (???: {buff.sourceName})");
+        Debug.Log($"{player.playerName} 获得 Buff: {BuildingData.GetBuffEffectName(buff.effectType)} +{buff.value * 100}% (来源: {buff.sourceName})");
 
         if (UIManager.Instance != null)
         {
-            UIManager.Instance.ShowToast($"??? {BuildingData.GetBuffEffectName(buff.effectType)} ????!", 2f);
+            UIManager.Instance.ShowToast($"获得 {BuildingData.GetBuffEffectName(buff.effectType)} 效果!", 2f);
         }
         
-        // ???? Buff ???
+        // 更新 Buff 显示
         UpdateBuffDisplay();
     }
 

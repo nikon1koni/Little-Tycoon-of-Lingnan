@@ -3,28 +3,28 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewBuffData", menuName = "Game/Buff Data")]
 public class BuffData : ScriptableObject
 {
-    [Header("???????")]
+    [Header("基本信息")]
     public string buffName = "New Buff";
     public Sprite buffIcon;
     public bool isDebuff = false;
     
-    [Header("BuffЧ??")]
+    [Header("Buff效果")]
     public BuildingData.BuffEffect effectType = BuildingData.BuffEffect.IncomeMultiplier;
     public float value = 0.1f;
     
-    [Header("???????")]
+    [Header("持续时间")]
     public bool isPermanent = true;
     public float durationSeconds = 0f;
     public int durationRounds = 0;
     
-    [Header("????")]
+    [Header("描述")]
     [TextArea(2, 4)]
     public string description = "";
     
-    [Header("?????")]
-    public string notificationMessage = "";  // ???Buff?????????
+    [Header("通知消息")]
+    public string notificationMessage = "";  // 获得Buff时显示的消息
     
-    [Header("??????")]
+    [Header("来源信息")]
     public string sourceName = "Unknown";
     
     public bool UseRoundTimer()

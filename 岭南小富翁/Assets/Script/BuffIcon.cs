@@ -14,12 +14,12 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public Vector2 tooltipOffset = new Vector2(50, 50);
     private GameObject activeTooltip;
     
-    [Header("?????????????")]
-    public int roundThreshold = 3;              // ???????
-    public Color buffBelowThresholdColor = Color.red;      // Buff???????????
-    public Color buffAboveThresholdColor = Color.green;     // Buff???????????
-    public Color debuffBelowThresholdColor = Color.green;   // Debuff???????????
-    public Color debuffAboveThresholdColor = Color.red;     // Debuff???????????
+    [Header("剩余时间显示设置")]
+    public int roundThreshold = 3;              // 回合临界值
+    public Color buffBelowThresholdColor = Color.red;      // Buff低于临界值颜色
+    public Color buffAboveThresholdColor = Color.green;     // Buff高于临界值颜色
+    public Color debuffBelowThresholdColor = Color.green;   // Debuff低于临界值颜色
+    public Color debuffAboveThresholdColor = Color.red;     // Debuff高于临界值颜色
     
     private BuffSystem.Buff currentBuff;
     
@@ -116,7 +116,6 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         
         if (!string.IsNullOrEmpty(currentBuff.customDescription))
         {
-            // ???????????????????????????
             resultDescription = currentBuff.customDescription;
             resultDescription += "\n" + GetRemainingTimeText();
             return resultDescription;
@@ -124,9 +123,8 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         
         resultDescription += $"<b>{BuildingData.GetBuffEffectName(currentBuff.effectType)}</b>\n";
         resultDescription += $"+{currentBuff.value * 100:F1}%\n";
-        resultDescription += $"???: {currentBuff.sourceName}\n";
+        resultDescription += $"来源: {currentBuff.sourceName}\n";
         
-        // ????????????
         resultDescription += GetRemainingTimeText();
         
         return resultDescription;
@@ -138,20 +136,18 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         
         if (currentBuff.isPermanent)
         {
-            timeText = "??????<color=green>???</color>";
+            timeText = "剩余回合:<color=green>永远</color>";
         }
         else if (currentBuff.useRoundTimer)
         {
-            // ?ж???Buff????Debuff
             bool isDebuff = IsDebuff();
             Color textColor = GetTimeColor(isDebuff, currentBuff.remainingRounds);
             string colorHex = ColorToHex(textColor);
-            timeText = $"??????<color={colorHex}>{currentBuff.remainingRounds}</color>";
+            timeText = $"剩余回合:<color={colorHex}>{currentBuff.remainingRounds}</color>";
         }
         else
         {
-            // ???????????????
-            timeText = $"??????{currentBuff.remainingTime:F1}??";
+            timeText = $"剩余时间:{currentBuff.remainingTime:F1}秒";
         }
         
         return timeText;
@@ -159,14 +155,11 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     
     private bool IsDebuff()
     {
-        // ?ж?????Debuff
-        // ???????????????Debuff
         if (currentBuff.effectType == BuildingData.BuffEffect.Bankrupt)
         {
             return true;
         }
         
-        // ????BuffEffect???????????Buff
         return false;
     }
     
