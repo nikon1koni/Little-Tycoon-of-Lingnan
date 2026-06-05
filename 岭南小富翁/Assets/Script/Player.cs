@@ -3,25 +3,25 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [Header("玩家信息")]
-    public string playerName = "玩家1";
+    [Header("??????")]
+    public string playerName = "???1";
     public int playerID = 1;
     public Color playerColor = Color.red;
 
-    [Header("财务")]
-    public int cash = 1500;  // 玩家现金
-    public List<BoardTile> ownedProperties = new List<BoardTile>();  // 拥有的地产
+    [Header("????")]
+    public int cash = 1500;  // ??????
+    public List<BoardTile> ownedProperties = new List<BoardTile>();  // ??е???
 
-    [Header("状态")]
+    [Header("??")]
     public bool isInJail = false;
     public int jailTurnsRemaining = 0;
     public bool isBankrupt = false;
 
-    [Header("位置信息")]
-    [HideInInspector] public BoardTile currentTile;  // 当前所在格子
-    [HideInInspector] public int currentTileIndex = 0;  // 当前格子索引
+    [Header("λ?????")]
+    [HideInInspector] public BoardTile currentTile;  // ??????????
+    [HideInInspector] public int currentTileIndex = 0;  // ???????????
 
-    [Header("Buff效果")]
+    [Header("BuffЧ??")]
     public int stepsModifier = 0;
     public float incomeReductionPercent = 0f;
     public int incomeReductionRounds = 0;
@@ -34,7 +34,7 @@ public class Player : MonoBehaviour
     public float loanRepayMultiplier = 1f;
     public int loanRepayRounds = 0;
 
-    // 组件引用
+    // ???????
     private PlayerMovement playerMovement;
 
     void Start()
@@ -70,16 +70,16 @@ public class Player : MonoBehaviour
         return canAfford;
     }
 
-    // 收到现金
+    // ??????
     public void ReceiveCash(int amount)
     {
         int previousCash = cash;
         cash += amount;
-        Debug.Log($"{playerName} 收到 {amount} 铜板，当前现金: {cash}");
+        Debug.Log($"{playerName} ??? {amount} ??壬??????: {cash}");
 
         NotifyCashChanged();
         
-        // 如果之前现金为负，现在恢复为非负，且有破产Debuff，则清除Debuff
+        // ????????????????????????????????Debuff???????Debuff
         if (previousCash < 0 && cash >= 0 && HasBankruptBuff())
         {
             ClearBankruptBuff();

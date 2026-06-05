@@ -10,36 +10,36 @@ public class UIManager : MonoBehaviour
     // 
     public static UIManager Instance;
 
-    [Header("UI 预制件 (Prefabs)")]
+    [Header("UI ???? (Prefabs)")]
     public GameObject rollDiceButtonPrefab;
     public GameObject playerInfoPrefab;
     public GameObject propertyPanelPrefab;
 
-    [Header("UI 文本")]
+    [Header("UI ???")]
     public Canvas mainCanvas;
     public Text diceResultText;
     public Text currentPlayerText;
     public Text playerCashText;
     public Text currentTileText;
 
-    [Header("UI 面板")]
+    [Header("UI ???")]
     public GameObject gamePanel;
     public GameObject menuPanel;
     public GameObject pausePanel;
     public GameObject gameOverPanel;
     public GameObject propertyPurchasePanel;
 
-    [Header("UI 按钮")]
+    [Header("UI ???")]
     public Button rollDiceButton;
     public Text diceAnimationText;
 
-    [Header("UI玩家信息")]
+    [Header("UI??????")]
     public List<PlayerInfoUI> playerInfoUIs = new List<PlayerInfoUI>();
 
-    [Header("骰子位置")]
-    public Vector2 diceButtonPosition = new Vector2(-20, -10); // 骰子按钮位置
+    [Header("????λ??")]
+    public Vector2 diceButtonPosition = new Vector2(-20, -10); // ??????λ??
 
-    [Header("UI建筑选择")]
+    [Header("UI???????")]
     public GameObject buildingSelectionPanel;
     public Button[] buildingButtons = new Button[4];
     public TextMeshProUGUI tileInfoText;
@@ -48,10 +48,10 @@ public class UIManager : MonoBehaviour
     public Image selectedBuildingImage;
     public Text buildingPriceText;
 
-    [Header("可用建筑")]
+    [Header("???????")]
     public List<BuildingData> availableBuildings = new List<BuildingData>();
 
-    [Header("UI建筑升级")]
+    [Header("UI????????")]
     public GameObject buildingUpgradePanel;
     public Button upgradeButton;
     public Text upgradeCostText;
@@ -60,33 +60,33 @@ public class UIManager : MonoBehaviour
     public Image upgradeBuildingImage;
     public Button closeUpgradePanelButton;
 
-    [Header("Toast提示")]
+    [Header("Toast???")]
     public GameObject persistentToastPanel;
     public Text persistentToastText;
     public Vector2 toastPosition = new Vector2(20, 20);
     
-    [Header("建筑放置提示UI")]
+    [Header("???????????UI")]
     public GameObject buildingPlacementHintPanel;
     public TextMeshProUGUI buildingPlacementHintText;
 
-    [Header("现金显示")]
+    [Header("??????")]
     [SerializeField] private GameObject cashDisplayPanel;
     [SerializeField] private TextMeshProUGUI cashText;
 
-    [Header("UI压力系统")]
+    [Header("UI?????")]
     public GameObject pressureSystemPanel;
     public TextMeshProUGUI diceRollCountText;
     public TextMeshProUGUI currentRoundText;
 
-    [Header("UI回合通知")]
+    [Header("UI?????")]
     public GameObject turnAnnouncePanel;
     public TextMeshProUGUI turnAnnounceText;
     public float announceDuration = 2.5f;
 
-    [Header("UI事件面板")]
+    [Header("UI??????")]
     public EventPanel eventPanel;
 
-    [Header("Toast信息UI")]
+    [Header("Toast???UI")]
     public GameObject infoToastPanel;
     public TextMeshProUGUI infoToastText;
     private Coroutine hideInfoToastCoroutine;
@@ -192,7 +192,7 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            UnityEngine.Debug.LogWarning("UIManager: ??????????δ??Inspector??????");
+            UnityEngine.Debug.LogWarning("UIManager: ??????????????Inspector??????");
         }
     }
 
@@ -1015,17 +1015,17 @@ public class UIManager : MonoBehaviour
 
         if (currentPlayerText != null)
         {
-            currentPlayerText.text = $"玩家: {player.playerName}";
+            currentPlayerText.text = $"???: {player.playerName}";
         }
 
         if (playerCashText != null)
         {
-            playerCashText.text = $"现金: {player.cash}";
+            playerCashText.text = $"???: {player.cash}";
         }
 
         if (currentTileText != null && player.currentTile != null)
         {
-            currentTileText.text = $"位置: {player.currentTile.tileName}";
+            currentTileText.text = $"λ??: {player.currentTile.tileName}";
         }
 
         // ===  ===
@@ -1065,7 +1065,7 @@ public class UIManager : MonoBehaviour
                 break;
         }
 
-        UnityEngine.Debug.Log($"切换UI: {uiType}");
+        UnityEngine.Debug.Log($"?л?UI: {uiType}");
     }
 
     public void SwitchToMenuUI() => SwitchUI(UIType.Menu);
@@ -1151,12 +1151,12 @@ public class UIManager : MonoBehaviour
         
         int score = roundCount * 100 + diceCount + 10;
 
-        UnityEngine.Debug.Log($"玩家={playerName}, 胜利={isWinner}, 回合={roundCount}, 骰子={diceCount}, 分数={score}");
+        UnityEngine.Debug.Log($"???={playerName}, ???={isWinner}, ???={roundCount}, ????={diceCount}, ????={score}");
 
-        SetText("ResultText", isWinner ? $"{playerName} 胜利!" : $"{playerName} 失败");
-        SetText("RoundText", $"回合: {roundCount}");
-        SetText("DiceText", $"骰子: {diceCount}");
-        SetText("ScoreText", $"分数: {score}");
+        SetText("ResultText", isWinner ? $"{playerName} ???!" : $"{playerName} ???");
+        SetText("RoundText", $"???: {roundCount}");
+        SetText("DiceText", $"????: {diceCount}");
+        SetText("ScoreText", $"????: {score}");
 
         Button restartButton = FindRestartButton();
         if (restartButton != null)
@@ -1196,28 +1196,28 @@ public class UIManager : MonoBehaviour
             return;
         }
 
-        UnityEngine.Debug.LogError($"{objectName} 没有找到 Text 或 TextMeshProUGUI 组件");
+        UnityEngine.Debug.LogError($"{objectName} ?????? Text ?? TextMeshProUGUI ???");
     }
 
     private Button FindRestartButton()
     {
         if (gameOverPanel == null)
         {
-            UnityEngine.Debug.LogError("gameOverPanel 缺失");
+            UnityEngine.Debug.LogError("gameOverPanel ??");
             return null;
         }
 
         Button button = gameOverPanel.transform.Find("RestartButton").GetComponent<Button>();
         if (button != null)
         {
-            UnityEngine.Debug.Log($"找到: RestartButton");
+            UnityEngine.Debug.Log($"???: RestartButton");
             return button;
         }
 
         button = gameOverPanel.transform.Find("Button").GetComponent<Button>();
         if (button != null)
         {
-            UnityEngine.Debug.Log($"找到: Button");
+            UnityEngine.Debug.Log($"???: Button");
             return button;
         }
 
@@ -1228,30 +1228,30 @@ public class UIManager : MonoBehaviour
             return button;
         }
 
-        UnityEngine.Debug.LogError("在 gameOverPanel 中没有找到 Button 组件");
+        UnityEngine.Debug.LogError("?? gameOverPanel ???????? Button ???");
         return null;
     }
 
     private void OnRestartButtonClicked()
     {
-        UnityEngine.Debug.Log("=== 重新开始游戏 ===");
+        UnityEngine.Debug.Log("=== ????????? ===");
         
         if (gameOverPanel != null)
         {
             gameOverPanel.SetActive(false);
-            UnityEngine.Debug.Log("隐藏游戏结束面板");
+            UnityEngine.Debug.Log("??????????????");
         }
         else
         {
-            UnityEngine.Debug.LogError("gameOverPanel 为空");
+            UnityEngine.Debug.LogError("gameOverPanel ???");
         }
         
         SwitchToGameUI();
-        UnityEngine.Debug.Log("切换到游戏UI");
+        UnityEngine.Debug.Log("?л??????UI");
         
         if (GameManager.Instance != null)
         {
-            UnityEngine.Debug.Log("调用 GameManager");
+            UnityEngine.Debug.Log("???? GameManager");
             GameManager.Instance.RestartFromGameOver();
         }
         else
@@ -1320,7 +1320,7 @@ public class UIManager : MonoBehaviour
             infoUI.playerNameText.text = $"{infoUI.player.playerName}";
 
         if (infoUI.cashText != null)
-            infoUI.cashText.text = $"{infoUI.player.cash} 铜板";
+            infoUI.cashText.text = $"{infoUI.player.cash} ???";
 
         if (infoUI.playerColorImage != null)
             infoUI.playerColorImage.color = infoUI.player.playerColor;

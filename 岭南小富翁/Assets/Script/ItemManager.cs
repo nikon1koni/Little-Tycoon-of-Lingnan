@@ -5,12 +5,12 @@ public class ItemManager : MonoBehaviour
 {
     public static ItemManager Instance { get; private set; }
 
-    [Header("初始物品")]
-    [Tooltip("游戏开始时给予玩家的物品")]
+    [Header("??????")]
+    [Tooltip("??????????????????")]
     public List<ItemData> startingItems = new List<ItemData>();
 
-    [Header("调试列表")]
-    [Tooltip("显示当前玩家的物品列表（调试用）")]
+    [Header("?????б?")]
+    [Tooltip("??????????????б??????????")]
     public List<ItemData> debugCurrentItems = new List<ItemData>();
 
     private Dictionary<Player, List<ItemData>> playerInventories = new Dictionary<Player, List<ItemData>>();
@@ -29,7 +29,7 @@ public class ItemManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 给予玩家初始物品
+    /// ????????????
     /// </summary>
     public void GiveStartingItemsToPlayer(Player player)
     {
@@ -43,23 +43,23 @@ public class ItemManager : MonoBehaviour
             }
         }
 
-        Debug.Log($"给予玩家 {player.playerName} 初始 {startingItems.Count} 个物品");
+        Debug.Log($"??????? {player.playerName} ??? {startingItems.Count} ?????");
     }
 
     /// <summary>
-    /// 给予所有玩家初始物品
+    /// ????????????????
     /// </summary>
     public void GiveStartingItemsToAllPlayers()
     {
         if (GameManager.Instance == null) return;
 
-        // 注意：GameManager会逐个调用GiveStartingItemsToPlayer
-        // 这里预留供其他地方使用
-        Debug.Log("使用 GiveStartingItemsToPlayer(player) 来给予物品");
+        // ???GameManager?????????GiveStartingItemsToPlayer
+        // ???????????????????
+        Debug.Log("??? GiveStartingItemsToPlayer(player) ?????????");
     }
     
     /// <summary>
-    /// 重置玩家物品（用于重新开始游戏）
+    /// ???????????????????????????
     /// </summary>
     public void ResetPlayerInventory(Player player)
     {
@@ -68,7 +68,7 @@ public class ItemManager : MonoBehaviour
             playerInventories[player].Clear();
             UpdateItemDisplay();
             UpdateDebugList(player);
-            Debug.Log($"重置玩家 {player.playerName} 的物品");
+            Debug.Log($"??????? {player.playerName} ?????");
         }
     }
 
@@ -231,7 +231,7 @@ public class ItemManager : MonoBehaviour
                 break;
 
             default:
-                Debug.LogWarning($"????Ч??δ???: {item.effectType}");
+                Debug.LogWarning($"?????????????: {item.effectType}");
                 break;
         }
 

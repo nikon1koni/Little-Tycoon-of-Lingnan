@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class SimpleDayNight : MonoBehaviour
 {
@@ -28,22 +28,22 @@ public class SimpleDayNight : MonoBehaviour
     public Material skyboxMaterial;
     
     [Header("Light Intensity Settings")]
-    [Tooltip("����̫���ǿ��")]
+    [Tooltip("??????????")]
     [Range(1f, 5f)] public float daySunIntensity = 4.0f;
     
-    [Tooltip("ҹ��̫���ǿ��")]
+    [Tooltip("?????????")]
     [Range(0f, 1f)] public float nightSunIntensity = 0.15f;
     
-    [Tooltip("����ƽ�й�ǿ��")]
+    [Tooltip("??????????")]
     [Range(1f, 5f)] public float dayLightIntensity = 3.0f;
     
-    [Tooltip("ҹ��ƽ�й�ǿ��")]
+    [Tooltip("?????????")]
     [Range(0f, 1f)] public float nightLightIntensity = 0.15f;
     
-    [Tooltip("������ǿ��ϵ��")]
+    [Tooltip("??????????")]
     [Range(0f, 2f)] public float ambientIntensity = 1f;
     
-    [Tooltip("��Ũ��")]
+    [Tooltip("?????")]
     [Range(0, 1)] public float fogDensity = 0.01f;
     public bool useFog = true;
     
@@ -65,14 +65,14 @@ public class SimpleDayNight : MonoBehaviour
         
         if (skyboxMaterial == null)
         {
-            Debug.LogError("Skybox ��");
+            Debug.LogError("Skybox ??");
             enabled = false;
             return;
         }
         
         if (sunLight == null)
         {
-            Debug.LogError("��");
+            Debug.LogError("??");
             enabled = false;
             return;
         }
@@ -133,19 +133,20 @@ public class SimpleDayNight : MonoBehaviour
         sunLight.color = sunColor;
         sunLight.intensity = lightIntensity;
         
-        Vector3 forward = sunRot * Vector3.forward;
-        Vector4 sunDir = new Vector4(-forward.x, -forward.y, -forward.z, 0);
-        skyboxMaterial.SetVector("_WorldSpaceLightPos0", sunDir);
+        // Light????????????Shader?????????????????????
+        // Vector3 forward = sunRot * Vector3.forward;
+        // Vector4 sunDir = new Vector4(-forward.x, -forward.y, -forward.z, 0);
+        // skyboxMaterial.SetVector("_WorldSpaceLightPos0", sunDir);
         
         if (debugMode && Time.frameCount % 30 == 0)
         {
             string period = "";
-            if (t < 0.25f || t >= 0.9f) period = "";
-            else if (t < 0.45f) period = "";
-            else if (t < 0.7f) period = "";
-            else period = "";
+            if (t < 0.25f || t >= 0.9f) period = "???";
+            else if (t < 0.45f) period = "????";
+            else if (t < 0.7f) period = "????";
+            else period = "???";
             
-            Debug.Log($": {period} {t:F2} | : {sunPitch:F0} | : {(int)(ambientColor.grayscale * 100)}%");
+            Debug.Log($"???: {period} {t:F2} | ??????: {sunPitch:F0} | ????: {(int)(ambientColor.grayscale * 100)}%");
         }
     }
     

@@ -141,7 +141,7 @@ public class BuffSystem : MonoBehaviour
 
         if (UIManager.Instance != null)
         {
-            UIManager.Instance.ShowToast($"??? {BuildingData.GetBuffEffectName(buff.effectType)} งน??!", 2f);
+            UIManager.Instance.ShowToast($"??? {BuildingData.GetBuffEffectName(buff.effectType)} ????!", 2f);
         }
         
         // ???? Buff ???
@@ -152,7 +152,7 @@ public class BuffSystem : MonoBehaviour
     {
         if (playerBuffs.ContainsKey(player) && playerBuffs[player].Remove(buff))
         {
-            Debug.Log($"{player.playerName} ??? Buff งน??: {BuildingData.GetBuffEffectName(buff.effectType)} (???: {buff.sourceName})");
+            Debug.Log($"{player.playerName} ??? Buff ????: {BuildingData.GetBuffEffectName(buff.effectType)} (???: {buff.sourceName})");
             
             // ???? Buff ???
             UpdateBuffDisplay();
