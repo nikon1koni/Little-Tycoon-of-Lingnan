@@ -90,6 +90,23 @@ public class UIManager : MonoBehaviour
     public GameObject infoToastPanel;
     public TextMeshProUGUI infoToastText;
     private Coroutine hideInfoToastCoroutine;
+    
+    [Header("Toast????")]
+    public float toastInterval = 0.5f;
+    private Queue<ToastMessage> toastQueue = new Queue<ToastMessage>();
+    private bool isToastPlaying = false;
+    
+    public struct ToastMessage
+    {
+        public string message;
+        public float duration;
+        
+        public ToastMessage(string msg, float dur)
+        {
+            message = msg;
+            duration = dur;
+        }
+    }
 
     public TextMeshProUGUI CashText => cashText;
 
@@ -1336,14 +1353,12 @@ public class UIManager : MonoBehaviour
 
     public void ShowToast(string message, float duration = 2f)
     {
-        // UI
         if (infoToastPanel != null && infoToastText != null)
         {
-            ShowInfoToast(message, duration);
+            EnqueueToast(message, duration);
             return;
         }
 
-        // Toast
         GameObject toastObj = new GameObject("ToastMessage");
         toastObj.transform.SetParent(mainCanvas.transform);
 
@@ -1373,7 +1388,51 @@ public class UIManager : MonoBehaviour
         Destroy(toastObj, duration);
     }
 
-    // UI
+    private void EnqueueToast(string message, float duration)
+    {
+        toastQueue.Enqueue(new ToastMessage(message, duration));
+        
+        if (!isToastPlaying)
+        {
+            StartCoroutine(ProcessToastQueue());
+        }
+    }
+
+    private System.Collections.IEnumerator ProcessToastQueue()
+    {
+        isToastPlaying = true;
+        
+        while (toastQueue.Count > 0)
+        {
+            ToastMessage msg = toastQueue.Dequeue();
+            yield return StartCoroutine(ShowInfoToastWithDelay(msg.message, msg.duration));
+            yield return new WaitForSeconds(toastInterval);
+        }
+        
+        isToastPlaying = false;
+    }
+
+    private System.Collections.IEnumerator ShowInfoToastWithDelay(string message, float duration)
+    {
+        if (hideInfoToastCoroutine != null)
+        {
+            StopCoroutine(hideInfoToastCoroutine);
+        }
+
+        infoToastText.text = message;
+        infoToastPanel.SetActive(true);
+        infoToastPanel.transform.SetAsLastSibling();
+
+        yield return new WaitForSeconds(duration);
+        
+        if (infoToastPanel != null && toastQueue.Count == 0)
+        {
+            infoToastPanel.SetActive(false);
+        }
+        
+        hideInfoToastCoroutine = null;
+    }
+
     private void ShowInfoToast(string message, float duration = 2f)
     {
         if (hideInfoToastCoroutine != null)
