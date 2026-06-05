@@ -171,28 +171,42 @@ public class ItemManager : MonoBehaviour
     {
         Debug.Log($"{player.playerName} 使用物品: {item.itemName}");
 
-        switch (item.effectType)
+        // 遍历所有效果并逐个应用
+        foreach (var effect in item.effects)
+        {
+            ApplySingleEffect(player, item, effect);
+        }
+
+        if (SFXManager.Instance != null)
+        {
+            SFXManager.Instance.PlaySFX(SFXClip.UIOpen);
+        }
+    }
+
+    private void ApplySingleEffect(Player player, ItemData item, ItemEffect effect)
+    {
+        switch (effect.effectType)
         {
             case ItemData.ItemEffectType.GainMoney:
-                player.ReceiveCash(item.effectValue);
-                UIManager.Instance?.ShowToast($"获得 {item.effectValue} 金币!", 2f);
+                player.ReceiveCash(effect.effectValue);
+                UIManager.Instance?.ShowToast($"获得 {effect.effectValue} 金币!", 2f);
                 break;
 
             case ItemData.ItemEffectType.LoseMoney:
-                player.PayCash(item.effectValue);
-                UIManager.Instance?.ShowToast($"失去 {item.effectValue} 金币!", 2f);
+                player.PayCash(effect.effectValue);
+                UIManager.Instance?.ShowToast($"失去 {effect.effectValue} 金币!", 2f);
                 break;
 
             case ItemData.ItemEffectType.IncomeBoost:
                 if (BuffSystem.Instance != null)
                 {
                     var buff = new BuffSystem.Buff(
-                        $"item_{item.GetInstanceID()}",
+                        $"item_{item.GetInstanceID()}_{effect.effectType}",
                         item.itemName,
                         BuildingData.BuffEffect.IncomeMultiplier,
-                        item.effectPercent,
+                        effect.effectPercent,
                         0f,
-                        item.durationRounds,
+                        effect.durationRounds,
                         item
                     );
                     BuffSystem.Instance.AddBuff(player, buff);
@@ -203,12 +217,12 @@ public class ItemManager : MonoBehaviour
                 if (BuffSystem.Instance != null)
                 {
                     var buff = new BuffSystem.Buff(
-                        $"item_{item.GetInstanceID()}",
+                        $"item_{item.GetInstanceID()}_{effect.effectType}",
                         item.itemName,
                         BuildingData.BuffEffect.DefenseBoost,
                         1f,
                         0f,
-                        item.durationRounds,
+                        effect.durationRounds,
                         item
                     );
                     BuffSystem.Instance.AddBuff(player, buff);
@@ -230,14 +244,58 @@ public class ItemManager : MonoBehaviour
                 }
                 break;
 
-            default:
-                Debug.LogWarning($"未处理的物品效果类型: {item.effectType}");
+            case ItemData.ItemEffectType.AddDice:
+                if (BuffSystem.Instance != null)
+                {
+                    var buff = new BuffSystem.Buff(
+                        $"item_{item.GetInstanceID()}_{effect.effectType}",
+                        item.itemName,
+                        BuildingData.BuffEffect.DiceBoost,
+                        0f,
+                        effect.effectValue,
+                        effect.durationRounds,
+                        item
+                    );
+                    BuffSystem.Instance.AddBuff(player, buff);
+                }
                 break;
-        }
 
-        if (SFXManager.Instance != null)
-        {
-            SFXManager.Instance.PlaySFX(SFXClip.UIOpen);
+            case ItemData.ItemEffectType.SkipTurn:
+                // 跳过回合逻辑
+                Debug.Log($"{player.playerName} 跳过下回合");
+                break;
+
+            case ItemData.ItemEffectType.StealMoney:
+                // 偷取金钱逻辑（需要目标玩家）
+                Debug.Log($"偷取金钱效果: {effect.effectValue}");
+                break;
+
+            case ItemData.ItemEffectType.DestroyBuilding:
+                // 摧毁建筑逻辑
+                Debug.Log($"摧毁建筑效果");
+                break;
+
+            case ItemData.ItemEffectType.GiveBuff:
+                // 给予Buff逻辑
+                Debug.Log($"给予Buff效果");
+                break;
+
+            case ItemData.ItemEffectType.TeleportToTile:
+                // 传送到指定格子
+                if (BoardManager.Instance != null && effect.effectValue >= 0 && effect.effectValue < BoardManager.Instance.allTiles.Count)
+                {
+                    player.MoveToTile(BoardManager.Instance.allTiles[effect.effectValue], true);
+                }
+                break;
+
+            case ItemData.ItemEffectType.Custom:
+                // 自定义效果
+                Debug.Log($"自定义效果: {effect.effectValue}");
+                break;
+
+            default:
+                Debug.LogWarning($"未处理的物品效果类型: {effect.effectType}");
+                break;
         }
     }
 

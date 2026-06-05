@@ -16,9 +16,10 @@ MonoBehaviour:
   itemIcon: {fileID: 0}
   itemDescription: "\u83B7\u5F9750\u91D1\u5E01"
   rarity: 3
-  effectType: 0
-  effectValue: 50
-  effectPercent: 0
-  durationRounds: 0
+  effects:
+  - effectType: 0
+    effectValue: 50
+    effectPercent: 0
+    durationRounds: 0
   canUseAnytime: 1
   canUseOnTurn: 1
