@@ -113,7 +113,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    // ??????
     public bool BuyProperty(BoardTile property)
     {
         if (property == null) return false;
@@ -122,13 +121,13 @@ public class Player : MonoBehaviour
             property.tileType != BoardTile.TileType.Railroad &&
             property.tileType != BoardTile.TileType.Utility)
         {
-            Debug.LogWarning($"??? {property.tileName} ?????????????");
+            Debug.LogWarning($"地块 {property.tileName} 不能购买");
             return false;
         }
 
         if (property.ownerPlayer != null)
         {
-            Debug.LogWarning($"{property.tileName} ??????");
+            Debug.LogWarning($"{property.tileName} 已被购买");
             return false;
         }
 
@@ -136,7 +135,7 @@ public class Player : MonoBehaviour
         {
             property.ownerPlayer = this;
             ownedProperties.Add(property);
-            Debug.Log($"{playerName} ???????? {property.tileName}");
+            Debug.Log($"{playerName} 成功购买 {property.tileName}");
 
             if (SFXManager.Instance != null)
                 SFXManager.Instance.PlaySFX(SFXClip.EventPropertyBought);
@@ -147,12 +146,10 @@ public class Player : MonoBehaviour
         return false;
     }
 
-    // ??????
     public bool PayRent(int rentAmount, GameObject owner)
     {
         if (PayCash(rentAmount))
         {
-            // ????????????????
             Player ownerPlayer = owner.GetComponent<Player>();
             if (ownerPlayer != null)
             {
@@ -163,14 +160,12 @@ public class Player : MonoBehaviour
         return false;
     }
 
-    // ????????????
     public void MoveToTile(BoardTile tile, bool teleport = false)
     {
         if (tile == null) return;
 
         if (playerMovement != null && !teleport)
         {
-            // ???????????
             int steps = GetStepsToTile(tile);
             if (steps > 0)
             {
@@ -179,17 +174,14 @@ public class Player : MonoBehaviour
         }
         else
         {
-            // ??????????????
             transform.position = tile.transform.position + Vector3.up * 0.5f;
             currentTile = tile;
             currentTileIndex = BoardManager.Instance?.allTiles.IndexOf(tile) ?? 0;
 
-            // ???????????
             tile.OnLanded(this);
         }
     }
 
-    // ??????????????
     private int GetStepsToTile(BoardTile targetTile)
     {
         if (BoardManager.Instance == null || currentTile == null || targetTile == null)
@@ -204,7 +196,6 @@ public class Player : MonoBehaviour
 
         if (targetIndex <= currentIndex)
         {
-            // ????
             return (allTiles.Count - currentIndex) + targetIndex;
         }
         else
@@ -213,20 +204,18 @@ public class Player : MonoBehaviour
         }
     }
 
-    // ??????????????????
     public int GetDiceValueWithBoost(int baseValue)
     {
         if (BuffSystem.Instance != null && BuffSystem.Instance.HasDiceBoost(this))
         {
             int boost = BuffSystem.Instance.GetDiceBoostValue(this);
             int boostedValue = baseValue + boost;
-            Debug.Log($"{playerName} ??????: {baseValue} + {boost} = {boostedValue}");
-            return Mathf.Clamp(boostedValue, 1, 12); // ???12??
+            Debug.Log($"{playerName} 骰子加成: {baseValue} + {boost} = {boostedValue}");
+            return Mathf.Clamp(boostedValue, 1, 12); // 上限12
         }
         return baseValue;
     }
 
-    // ????????????????
     public int GetIncomeWithMultiplier(int baseIncome)
     {
         float multiplier = 1f;
@@ -237,12 +226,11 @@ public class Player : MonoBehaviour
         int finalIncome = Mathf.RoundToInt(baseIncome * multiplier);
         if (multiplier > 1.0f)
         {
-            Debug.Log($"{playerName} ??????: {baseIncome} * {multiplier} = {finalIncome}");
+            Debug.Log($"{playerName} 收入加成: {baseIncome} * {multiplier} = {finalIncome}");
         }
         return finalIncome;
     }
 
-    // ???????????
     public float GetMoveSpeedMultiplier()
     {
         if (BuffSystem.Instance != null)
@@ -252,7 +240,6 @@ public class Player : MonoBehaviour
         return 1f;
     }
 
-    // ?????????
     public float GetLuckBoost()
     {
         if (BuffSystem.Instance != null)
@@ -262,7 +249,6 @@ public class Player : MonoBehaviour
         return 0f;
     }
 
-    // ??????????
     public float GetDefenseBoost()
     {
         if (BuffSystem.Instance != null)
@@ -272,19 +258,17 @@ public class Player : MonoBehaviour
         return 0f;
     }
 
-    // ??????
     public bool CheckBankruptcy()
     {
         if (cash < 0)
         {
             isBankrupt = true;
-            Debug.Log($"{playerName} ?????");
+            Debug.Log($"{playerName} 破产了");
             return true;
         }
         return false;
     }
     
-    // ???????????Debuff
     public bool HasBankruptBuff()
     {
         if (BuffSystem.Instance != null)

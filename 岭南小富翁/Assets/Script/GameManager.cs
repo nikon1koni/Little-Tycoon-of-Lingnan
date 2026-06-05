@@ -8,50 +8,50 @@ public class GameManager : MonoBehaviour
     // 
     public static GameManager Instance;
 
-    [Header("?????")]
+    [Header("游戏状态")]
     public GameState currentState = GameState.Waiting;
     public int currentPlayerIndex = 0;
     public bool isGameStarted = false;
     public bool isPlayerTurn = true;
     public bool isMoving = false;
 
-    [Header("???")]
+    [Header("玩家")]
     public List<Player> players = new List<Player>();
     public Player currentPlayer;
 
-    [Header("????")]
+    [Header("骰子")]
     public DiceController diceController;
     public Dice3DController dice3DController;
     public int lastDiceValue = 0;
 
-    [Header("UI ???")]
+    [Header("UI 引用")]
     public Text currentPlayerText;
     public Text playerCashText;
     public Text diceResultText;
     public Text currentTileText;
     public Button rollDiceButton;
 
-    [Header("??????")]
+    [Header("管理器")]
     public BoardManager boardManager;
     public UIManager uiManager;
 
-    [Header("???????")]
+    [Header("游戏配置")]
     public int startingCash = 1500;
     public int salaryAmount = 200;
     public int jailTurns = 3;
 
-    [Header("?????")]
+    [Header("压力系统")]
     public bool enablePressureSystem = true;
 
-    private int diceRollCount = 0;          // ???????????
-    private int pressureInterval = 1;        // ?????????????N??????
-    private int nextPressureAt = 1;          // ??????????????????
-    public float basePressureCost = 50f;   // ???????????
+    private int diceRollCount = 0;          // 骰子投掷次数
+    private int pressureInterval = 1;        // 压力触发间隔(每N回合)
+    private int nextPressureAt = 1;          // 下一次压力触发的回合
+    public float basePressureCost = 50f;   // 基础压力费用
     public float pressureMultiplier = 1.2f;
     
-    [Header("???????")]
-    public BuffData bankruptBuffData;        // ???Debuff?????????Inspector??????????
-    public int bankruptGraceRounds = 3;     // ????????????????
+    [Header("破产系统")]
+    public BuffData bankruptBuffData;        // 破产Debuff数据(在Inspector中配置)
+    public int bankruptGraceRounds = 3;     // 破产豁免回合数
 
     public int DiceRollCount => diceRollCount;
     public int CurrentRound => diceRollCount / 6;
@@ -666,10 +666,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // ?????????
     private void TriggerPressure(int currentRound)
     {
-        Debug.Log($"???????: ??? {currentRound}");
+        Debug.Log($"压力触发: 回合 {currentRound}");
 
         int cost = Mathf.RoundToInt(basePressureCost);
 
