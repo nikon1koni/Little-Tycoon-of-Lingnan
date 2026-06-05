@@ -36,7 +36,7 @@ public class UIManager : MonoBehaviour
     [Header("UI玩家信息")]
     public List<PlayerInfoUI> playerInfoUIs = new List<PlayerInfoUI>();
 
-    [Header("按钮位置")]
+    [Header("骰子位置")]
     public Vector2 diceButtonPosition = new Vector2(-20, -10); // 骰子按钮位置
 
     [Header("UI建筑选择")]
@@ -60,7 +60,7 @@ public class UIManager : MonoBehaviour
     public Image upgradeBuildingImage;
     public Button closeUpgradePanelButton;
 
-    [Header("Toast持久提示")]
+    [Header("Toast提示")]
     public GameObject persistentToastPanel;
     public Text persistentToastText;
     public Vector2 toastPosition = new Vector2(20, 20);
@@ -78,7 +78,7 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI diceRollCountText;
     public TextMeshProUGUI currentRoundText;
 
-    [Header("UI回合公告")]
+    [Header("UI回合通知")]
     public GameObject turnAnnouncePanel;
     public TextMeshProUGUI turnAnnounceText;
     public float announceDuration = 2.5f;
@@ -93,28 +93,28 @@ public class UIManager : MonoBehaviour
 
     public TextMeshProUGUI CashText => cashText;
 
-    // 建筑选择状态
+    // ?????????
     private bool isBuildingSelected = false;
     private GameObject activePersistentToast;
     private List<int> activeBuildingButtonIndices = new List<int>();
 
-    // 升级相关
+    // ???????
     private BoardTile upgradeSelectedTile = null;
     private Player upgradeSelectedPlayer = null;
 
-    // 建筑选择相关
+    // ??????????
     private BuildingData selectedBuildingData = null;
     private BoardTile selectedBoardTile = null;
     private Player currentBuildingPlayer = null;
 
-    // 瓦片颜色缓存
+    // ??????????
     private Dictionary<BoardTile, Color> originalTileColors = new Dictionary<BoardTile, Color>();
     private List<BoardTile> highlightableTiles = new List<BoardTile>();
 
-    // UI类型
+    // UI????
     private UIType currentUIType = UIType.Game;
 
-    // UI 类型枚举
+    // UI ???????
     public enum UIType
     {
         Menu,
@@ -123,7 +123,7 @@ public class UIManager : MonoBehaviour
         GameOver
     }
 
-    // UI玩家信息结构
+    // UI????????
     [System.Serializable]
     public class PlayerInfoUI
     {
@@ -136,31 +136,31 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
-        // ESC键处理
+        // ESC??????
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            // 如果是升级模式
+            // ???????????
             if (BuildingDataConfig.Instance != null && BuildingDataConfig.Instance.IsUpgradeModeActive())
             {
-                // 退出升级模式
+                // ?????????
                 BuildingDataConfig.Instance.ExitUpgradeMode();
-                return; // ESC已处理
+                return; // ESC?????
             }
-            // 如果是出售模式
+            // ??????????
             else if (BuildingDataConfig.Instance != null && BuildingDataConfig.Instance.IsSellModeActive())
             {
-                // 退出出售模式
+                // ?????????
                 BuildingDataConfig.Instance.ExitSellMode();
-                return; // ESC已处理
+                return; // ESC?????
             }
             else if (isBuildingSelected)
             {
-                // 取消建筑选择
+                // ??????????
                 OnCancelBuildingSelection();
             }
             else if (buildingSelectionPanel != null && buildingSelectionPanel.activeSelf)
             {
-                // 隐藏建筑选择面板
+                // ?????????????
                 HideBuildingSelectionUI();
             }
         }
@@ -181,18 +181,18 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
-        UnityEngine.Debug.Log("=== UI初始化 ===");
+        UnityEngine.Debug.Log("=== UI????? ===");
         InitializeUI();
 
-        // 隐藏建筑选择面板
+        // ?????????????
         if (buildingSelectionPanel != null)
         {
             buildingSelectionPanel.SetActive(false);
-            UnityEngine.Debug.Log("UIManager: 建筑选择面板已隐藏");
+            UnityEngine.Debug.Log("UIManager: ????????????????");
         }
         else
         {
-            UnityEngine.Debug.LogWarning("UIManager: 建筑选择面板未在Inspector中设置");
+            UnityEngine.Debug.LogWarning("UIManager: ??????????δ??Inspector??????");
         }
     }
 
@@ -651,7 +651,7 @@ public class UIManager : MonoBehaviour
         }
 
         // 3. 
-        ShowPersistentToast($"当前选择: {building.buildingName}");
+        ShowPersistentToast($"??????: {building.buildingName}");
 
         // 4. 
         HighlightPlaceableTiles(currentBuildingPlayer, (int)building.requiredScale);

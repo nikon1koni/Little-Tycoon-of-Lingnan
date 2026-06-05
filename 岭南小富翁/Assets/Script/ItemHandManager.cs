@@ -6,14 +6,14 @@ public class ItemHandManager : MonoBehaviour
 {
     public static ItemHandManager Instance { get; private set; }
 
-    [Header("??????UI")]
+    [Header("手牌UI")]
     public Button toggleButton;
     public Transform handContainer;
 
-    [Header("?????????")]
+    [Header("默认卡牌预制")]
     public GameObject defaultCardPrefab;
     
-    [Header("??ж??????")]
+    [Header("稀有度卡牌预制")]
     public RarityCardPrefab[] rarityPrefabs;
     
     [System.Serializable]
@@ -23,17 +23,17 @@ public class ItemHandManager : MonoBehaviour
         public GameObject cardPrefab;
     }
 
-    [Header("????????")]
+    [Header("卡牌布局")]
     public float cardWidth = 120f;
     public float cardSpacing = 10f;
     public float centerOffsetY = 100f;
     public float fanAngle = 15f;
 
-    [Header("???????????")]
+    [Header("悬停效果")]
     public float hoverScale = 1.1f;
     public float hoverYOffset = 50f;
 
-    [Header("?????")]
+    [Header("初始状态")]
     public bool startVisible = true;
 
     private List<ItemDragCard> handCards = new List<ItemDragCard>();

@@ -56,24 +56,24 @@ public class BuildingData : ScriptableObject
     public int mixedBaseIncome = 5;
     public float mixedIncomeGrowthRate = 1.1f;
 
-    [Header("骰子规则")]
-    [Tooltip("触发收益的目标骰子点数（空=所有1~6，如[2,4,6]或[1,6]）")]
+    [Header("???????")]
+    [Tooltip("???????????????????????=????1~6????[2,4,6]??[1,6]??")]
     public int[] targetDiceValues = new int[] { 2, 4, 6 };
-    [Tooltip("骰子奖励模式：固定金额 或 点数倍率")]
+    [Tooltip("????????????????? ?? ????????")]
     public DiceRewardMode diceRewardMode = DiceRewardMode.FixedValue;
-    [Tooltip("固定金额模式的奖励数")]
+    [Tooltip("???????????????")]
     public int diceFixedReward = 20;
-    [Tooltip("倍率模式：点数 × 此值")]
+    [Tooltip("???????????? ?? ???")]
     public float diceMultiplier = 5f;
 
-    // 骰子奖励模式
+    // ?????????
     public enum DiceRewardMode
     {
-        FixedValue,     // 固定金额
-        DiceMultiplier  // 点数 × 倍率
+        FixedValue,     // ??????
+        DiceMultiplier  // ???? ?? ????
     }
 
-    /// <summary> 根据骰子值计算收益，返回0表示不触发 </summary>
+    /// <summary> ????????????????棬????0????????? </summary>
     public int CalculateDiceReward(int diceValue)
     {
         if (!IsDiceValueMatch(diceValue)) return 0;
@@ -89,11 +89,11 @@ public class BuildingData : ScriptableObject
         }
     }
 
-    /// <summary> 判断骰子值是否匹配目标点数 </summary>
+    /// <summary> ?ж?????????????????? </summary>
     public bool IsDiceValueMatch(int diceValue)
     {
         if (targetDiceValues == null || targetDiceValues.Length == 0)
-            return true; // 空数组=所有点数都匹配
+            return true; // ??????=???е????????
         for (int i = 0; i < targetDiceValues.Length; i++)
         {
             if (targetDiceValues[i] == diceValue) return true;
@@ -101,37 +101,37 @@ public class BuildingData : ScriptableObject
         return false;
     }
 
-    /// <summary> 获取骰子规则描述文本 </summary>
+    /// <summary> ????????????????? </summary>
     public string GetDiceRuleDescription()
     {
         string targetDesc;
         if (targetDiceValues == null || targetDiceValues.Length == 0)
-            targetDesc = "任意";
+            targetDesc = "????";
         else
             targetDesc = string.Join(",", targetDiceValues);
 
         switch (diceRewardMode)
         {
             case DiceRewardMode.FixedValue:
-                return $"掷出 {targetDesc} 得 {diceFixedReward}";
+                return $"???? {targetDesc} ?? {diceFixedReward}";
             case DiceRewardMode.DiceMultiplier:
-                return $"掷出 {targetDesc} 得 点数×{diceMultiplier}({diceMultiplier}~{diceMultiplier * 6})";
+                return $"???? {targetDesc} ?? ??????{diceMultiplier}({diceMultiplier}~{diceMultiplier * 6})";
             default:
                 return "";
         }
     }
 
-    [Header("增值规则")]
-    [Tooltip("每持有1圈，估值增加的金额")]
+    [Header("???????")]
+    [Tooltip("?????1?????????????")]
     public int appreciationPerRound = 0;
 
-    // 增值估值计算：购买价 + 持有圈数 × 每圈增值
+    // ??????????????? + ??????? ?? ?????
     public int GetAppreciatedValue(int roundsOwned)
     {
         return purchasePrice + (roundsOwned * appreciationPerRound);
     }
 
-    // --- 以下是预制体和特效配置 ---
+    // --- ??????????????Ч???? ---
     public Sprite buildingIcon;
     public GameObject buildingPrefab;
     public BuildingData nextLevelBuilding;
@@ -166,8 +166,8 @@ public class BuildingData : ScriptableObject
         Income,
         Buff,
         Mixed,
-        DiceEven,  // 骰子触发
-        Appreciation  // 增值：持有每圈估值增加
+        DiceEven,  // ???????
+        Appreciation  // ??????????????????
     }
 
     // Buff??
@@ -332,13 +332,13 @@ public class BuildingData : ScriptableObject
                 break;
 
             case BuildingFunctionType.DiceEven:
-                desc += $": 骰子触发\n";
+                desc += $": ???????\n";
                 desc += $": {GetDiceRuleDescription()}\n";
                 break;
 
             case BuildingFunctionType.Appreciation:
-                desc += $": 增值\n";
-                desc += $": 每持有1圈, 估值+{appreciationPerRound}\n";
+                desc += $": ???\n";
+                desc += $": ?????1?, ???+{appreciationPerRound}\n";
                 break;
         }
 
@@ -355,14 +355,14 @@ public class BuildingData : ScriptableObject
     {
         switch (effect)
         {
-            case BuffEffect.MoveSpeedBoost: return "移动加速";
-            case BuffEffect.DiceBoost: return "骰子加成";
-            case BuffEffect.IncomeMultiplier: return "收入加成";
-            case BuffEffect.DefenseBoost: return "防御加成";
-            case BuffEffect.LuckBoost: return "幸运加成";
-            case BuffEffect.AllIncomeBoost: return "全收入加成";
-            case BuffEffect.Bankrupt: return "破产";
-            default: return "未知Buff效果";
+            case BuffEffect.MoveSpeedBoost: return "???????";
+            case BuffEffect.DiceBoost: return "??????";
+            case BuffEffect.IncomeMultiplier: return "??????";
+            case BuffEffect.DefenseBoost: return "???????";
+            case BuffEffect.LuckBoost: return "??????";
+            case BuffEffect.AllIncomeBoost: return "???????";
+            case BuffEffect.Bankrupt: return "???";
+            default: return "δ?BuffЧ??";
         }
     }
 }

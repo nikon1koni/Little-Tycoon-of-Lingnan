@@ -98,7 +98,7 @@ public class BuffSystem : MonoBehaviour
                     buff.remainingRounds--;
                     if (buff.remainingRounds <= 0)
                     {
-                        // 特殊处理破产Debuff - 结束时触发游戏失败
+                        // ?????????Debuff - ???????????????
                         if (buff.effectType == BuildingData.BuffEffect.Bankrupt)
                         {
                             HandleBankruptBuffExpired(player);
@@ -110,19 +110,19 @@ public class BuffSystem : MonoBehaviour
         }
     }
     
-    // 处理破产Debuff到期
+    // ???????Debuff????
     private void HandleBankruptBuffExpired(Player player)
     {
-        Debug.Log($"{player.playerName} 的破产Debuff到期，游戏失败！");
+        Debug.Log($"{player.playerName} ?????Debuff????????????");
         
         player.isBankrupt = true;
         
         if (UIManager.Instance != null)
         {
-            UIManager.Instance.ShowToast($"{player.playerName} 破产失败！", 3f);
+            UIManager.Instance.ShowToast($"{player.playerName} ???????", 3f);
         }
         
-        // 检查游戏是否结束
+        // ????????????
         if (GameManager.Instance != null)
         {
             GameManager.Instance.CheckGameOverAfterBankrupt();
@@ -137,14 +137,14 @@ public class BuffSystem : MonoBehaviour
         }
 
         playerBuffs[player].Add(buff);
-        Debug.Log($"{player.playerName} 获得 Buff: {BuildingData.GetBuffEffectName(buff.effectType)} +{buff.value * 100}% (来源: {buff.sourceName})");
+        Debug.Log($"{player.playerName} ??? Buff: {BuildingData.GetBuffEffectName(buff.effectType)} +{buff.value * 100}% (???: {buff.sourceName})");
 
         if (UIManager.Instance != null)
         {
-            UIManager.Instance.ShowToast($"获得 {BuildingData.GetBuffEffectName(buff.effectType)} 效果!", 2f);
+            UIManager.Instance.ShowToast($"??? {BuildingData.GetBuffEffectName(buff.effectType)} Ч??!", 2f);
         }
         
-        // 更新 Buff 显示
+        // ???? Buff ???
         UpdateBuffDisplay();
     }
 
@@ -152,9 +152,9 @@ public class BuffSystem : MonoBehaviour
     {
         if (playerBuffs.ContainsKey(player) && playerBuffs[player].Remove(buff))
         {
-            Debug.Log($"{player.playerName} 移除 Buff 效果: {BuildingData.GetBuffEffectName(buff.effectType)} (来源: {buff.sourceName})");
+            Debug.Log($"{player.playerName} ??? Buff Ч??: {BuildingData.GetBuffEffectName(buff.effectType)} (???: {buff.sourceName})");
             
-            // 更新 Buff 显示
+            // ???? Buff ???
             UpdateBuffDisplay();
         }
     }
@@ -275,7 +275,7 @@ public class BuffSystem : MonoBehaviour
         return buffs;
     }
 
-    // 创建建筑Buff
+    // ????????Buff
     public Buff CreateBuildingBuff(BuildingData data, int level, BoardTile sourceTile)
     {
         string buffId = $"building_{sourceTile.GetInstanceID()}_{data.buildingName}";

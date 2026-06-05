@@ -5,12 +5,12 @@ public class ItemManager : MonoBehaviour
 {
     public static ItemManager Instance { get; private set; }
 
-    [Header("???????????")]
-    [Tooltip("????????????????????????")]
+    [Header("初始物品")]
+    [Tooltip("游戏开始时给予玩家的物品")]
     public List<ItemData> startingItems = new List<ItemData>();
 
-    [Header("?????????")]
-    [Tooltip("???????????????????????????")]
+    [Header("调试列表")]
+    [Tooltip("显示当前玩家的物品列表（调试用）")]
     public List<ItemData> debugCurrentItems = new List<ItemData>();
 
     private Dictionary<Player, List<ItemData>> playerInventories = new Dictionary<Player, List<ItemData>>();
@@ -29,7 +29,7 @@ public class ItemManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ?????????????????
+    /// 给予玩家初始物品
     /// </summary>
     public void GiveStartingItemsToPlayer(Player player)
     {
@@ -43,19 +43,33 @@ public class ItemManager : MonoBehaviour
             }
         }
 
-        Debug.Log($"?????? {player.playerName} ???? {startingItems.Count} ?????????");
+        Debug.Log($"给予玩家 {player.playerName} 初始 {startingItems.Count} 个物品");
     }
 
     /// <summary>
-    /// ??????????????????
+    /// 给予所有玩家初始物品
     /// </summary>
     public void GiveStartingItemsToAllPlayers()
     {
         if (GameManager.Instance == null) return;
 
-        // ???? GameManager ?????????б???????????????????????????
-        // ?????У????????????? GiveStartingItemsToPlayer()
-        Debug.Log("????? GiveStartingItemsToPlayer(player) ??????????????");
+        // 注意：GameManager会逐个调用GiveStartingItemsToPlayer
+        // 这里预留供其他地方使用
+        Debug.Log("使用 GiveStartingItemsToPlayer(player) 来给予物品");
+    }
+    
+    /// <summary>
+    /// 重置玩家物品（用于重新开始游戏）
+    /// </summary>
+    public void ResetPlayerInventory(Player player)
+    {
+        if (playerInventories.ContainsKey(player))
+        {
+            playerInventories[player].Clear();
+            UpdateItemDisplay();
+            UpdateDebugList(player);
+            Debug.Log($"重置玩家 {player.playerName} 的物品");
+        }
     }
 
     public void GiveItem(Player player, ItemData item)

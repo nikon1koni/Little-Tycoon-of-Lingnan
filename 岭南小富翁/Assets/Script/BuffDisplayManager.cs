@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,6 +20,9 @@ public class BuffDisplayManager : MonoBehaviour
     public Sprite luckBoostIcon;
     public Sprite allIncomeBoostIcon;
     public Sprite bankruptIcon;
+    
+    [Header("Buff数据配置")]
+    public BuffData bankruptBuffData;        // 破产Debuff数据（用于获取图标）
     
     private Dictionary<Player, List<BuffIcon>> playerBuffIcons = new Dictionary<Player, List<BuffIcon>>();
     private Player currentPlayer;
@@ -126,8 +129,15 @@ public class BuffDisplayManager : MonoBehaviour
     
     private Sprite GetBuffIcon(BuildingData.BuffEffect effectType)
     {
+        // 优先使用 BuffData 中的图标配置
         switch (effectType)
         {
+            case BuildingData.BuffEffect.Bankrupt:
+                if (bankruptBuffData != null && bankruptBuffData.buffIcon != null)
+                {
+                    return bankruptBuffData.buffIcon;
+                }
+                return bankruptIcon;
             case BuildingData.BuffEffect.MoveSpeedBoost:
                 return moveSpeedIcon;
             case BuildingData.BuffEffect.DiceBoost:
@@ -140,8 +150,6 @@ public class BuffDisplayManager : MonoBehaviour
                 return luckBoostIcon;
             case BuildingData.BuffEffect.AllIncomeBoost:
                 return allIncomeBoostIcon;
-            case BuildingData.BuffEffect.Bankrupt:
-                return bankruptIcon;
             default:
                 return null;
         }

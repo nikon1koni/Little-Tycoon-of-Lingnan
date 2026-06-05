@@ -6632,6 +6632,7 @@ MonoBehaviour:
   luckBoostIcon: {fileID: 0}
   allIncomeBoostIcon: {fileID: 0}
   bankruptIcon: {fileID: 21300000, guid: 81bafada34060bb428cb6a62a44e9995, type: 3}
+  bankruptBuffData: {fileID: 11400000, guid: e44fa2a885efced49a398c882846efc1, type: 2}
 --- !u!1 &844658800
 GameObject:
   m_ObjectHideFlags: 0
@@ -20819,12 +20820,13 @@ MonoBehaviour:
   rollDiceButton: {fileID: 1949729216}
   boardManager: {fileID: 1704728942}
   uiManager: {fileID: 993115949}
-  startingCash: 200
+  startingCash: -10
   salaryAmount: 200
   jailTurns: 3
   enablePressureSystem: 1
   basePressureCost: 50
   pressureMultiplier: 1.2
+  bankruptBuffData: {fileID: 11400000, guid: e44fa2a885efced49a398c882846efc1, type: 2}
   bankruptGraceRounds: 1
   enableDebugKeys: 1
   enableBackgroundMusic: 1
