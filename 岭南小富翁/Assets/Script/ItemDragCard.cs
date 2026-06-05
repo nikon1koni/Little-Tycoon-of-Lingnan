@@ -153,6 +153,12 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
         if (itemData == null || ownerPlayer == null) return;
 
+        if (!CanUseCard())
+        {
+            eventData.pointerDrag = null;
+            return;
+        }
+
         isDragging = true;
 
         originalPosition = transform.position;
@@ -329,8 +335,7 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
             }
             else
             {
-                bool isOverZone = IsOverValidDropZone();
-                outline.effectColor = isOverZone ? dragOutlineColor : invalidOutlineColor;
+                outline.effectColor = dragOutlineColor;
             }
             
             outline.effectDistance = new Vector2(outlineWidth, outlineWidth);

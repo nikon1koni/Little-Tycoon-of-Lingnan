@@ -420,11 +420,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   allBuildingData:
-  - {fileID: 11400000, guid: c13a57a19aef02d40b89e35e1b86965a, type: 2}
-  - {fileID: 11400000, guid: 927c2d5dc59b9814ba01a9a51edd1066, type: 2}
-  - {fileID: 11400000, guid: 7e70ab51739fef143b971fb9e8c0e3dc, type: 2}
-  - {fileID: 11400000, guid: 5d7ac4b7db414f54396ef939972c9c9a, type: 2}
-  - {fileID: 11400000, guid: 14a529911dbe422449afd5043bd9fb41, type: 2}
+  - {fileID: 11400000, guid: a1ffad684d98b7246a5241b9fb99bfda, type: 2}
+  - {fileID: 11400000, guid: ca706debc2d2e4341809a902240213aa, type: 2}
+  - {fileID: 11400000, guid: 59de5a787727b7b40b703913a592f489, type: 2}
   upgradeUIController: {fileID: 1784433109}
   sellBuildingUIController: {fileID: 1606670959}
   buildingSelectionPanelController: {fileID: 1992595236}
