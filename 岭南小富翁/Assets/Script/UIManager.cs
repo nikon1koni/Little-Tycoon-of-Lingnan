@@ -65,7 +65,7 @@ public class UIManager : MonoBehaviour
     public Text persistentToastText;
     public Vector2 toastPosition = new Vector2(20, 20);
     
-    [Header("???????????UI")]
+    [Header("建筑放置提示UI")]
     public GameObject buildingPlacementHintPanel;
     public TextMeshProUGUI buildingPlacementHintText;
 
@@ -651,7 +651,7 @@ public class UIManager : MonoBehaviour
         }
 
         // 3. 
-        ShowPersistentToast($"??????: {building.buildingName}");
+        ShowPersistentToast($"当前选择: {building.buildingName}");
 
         // 4. 
         HighlightPlaceableTiles(currentBuildingPlayer, (int)building.requiredScale);
