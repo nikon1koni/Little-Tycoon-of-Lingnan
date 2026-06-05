@@ -1193,16 +1193,16 @@ public class GameManager : MonoBehaviour
         if (currentPlayer == null) return;
 
         if (currentPlayerText != null)
-            currentPlayerText.text = $"???: {currentPlayer.playerName}";
+            currentPlayerText.text = $"玩家: {currentPlayer.playerName}";
 
         if (playerCashText != null)
-            playerCashText.text = $"???: {currentPlayer.cash}";
+            playerCashText.text = $"现金: {currentPlayer.cash}";
 
         if (diceResultText != null)
-            diceResultText.text = $"????: {lastDiceValue}";
+            diceResultText.text = $"骰子: {lastDiceValue}";
 
         if (currentTileText != null && currentPlayer.currentTile != null)
-            currentTileText.text = $"λ??: {currentPlayer.currentTile.tileName}";
+            currentTileText.text = $"位置: {currentPlayer.currentTile.tileName}";
 
         if (uiManager != null)
         {

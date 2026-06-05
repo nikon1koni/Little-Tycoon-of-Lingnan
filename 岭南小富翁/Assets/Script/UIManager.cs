@@ -256,12 +256,12 @@ public class UIManager : MonoBehaviour
 
         if (diceRollCountText != null)
         {
-            diceRollCountText.text = $": {diceInCurrentRound}/6";
+            diceRollCountText.text = $"骰子次数: {diceInCurrentRound}/6";
         }
 
         if (currentRoundText != null)
         {
-            currentRoundText.text = $": {currentRound}";
+            currentRoundText.text = $"回合数: {currentRound}";
         }
     }
 

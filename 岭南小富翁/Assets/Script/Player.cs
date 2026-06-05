@@ -3,25 +3,25 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [Header("??????")]
-    public string playerName = "???1";
+    [Header("玩家信息")]
+    public string playerName = "玩家1";
     public int playerID = 1;
     public Color playerColor = Color.red;
 
-    [Header("????")]
-    public int cash = 1500;  // ??????
-    public List<BoardTile> ownedProperties = new List<BoardTile>();  // ??е???
+    [Header("资金")]
+    public int cash = 1500;  // 初始资金
+    public List<BoardTile> ownedProperties = new List<BoardTile>();  // 拥有的地产
 
-    [Header("??")]
+    [Header("状态")]
     public bool isInJail = false;
     public int jailTurnsRemaining = 0;
     public bool isBankrupt = false;
 
-    [Header("λ?????")]
-    [HideInInspector] public BoardTile currentTile;  // ??????????
-    [HideInInspector] public int currentTileIndex = 0;  // ???????????
+    [Header("位置信息")]
+    [HideInInspector] public BoardTile currentTile;  // 当前所在格子
+    [HideInInspector] public int currentTileIndex = 0;  // 当前格子索引
 
-    [Header("BuffЧ??")]
+    [Header("Buff效果")]
     public int stepsModifier = 0;
     public float incomeReductionPercent = 0f;
     public int incomeReductionRounds = 0;
@@ -34,7 +34,7 @@ public class Player : MonoBehaviour
     public float loanRepayMultiplier = 1f;
     public int loanRepayRounds = 0;
 
-    // ???????
+    // 组件引用
     private PlayerMovement playerMovement;
 
     void Start()
@@ -42,16 +42,16 @@ public class Player : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();
         if (playerMovement == null)
         {
-            Debug.LogWarning($"??? {playerName} ??? PlayerMovement ???");
+            Debug.LogWarning($"玩家 {playerName} 缺少 PlayerMovement 组件");
         }
 
-        // ??????????
+        // 设置玩家颜色
         SetPlayerColor();
     }
 
     void SetPlayerColor()
     {
-        // ?????????????
+        // 设置玩家颜色到渲染器
         MeshRenderer renderer = GetComponentInChildren<MeshRenderer>();
         if (renderer != null)
         {
@@ -59,23 +59,23 @@ public class Player : MonoBehaviour
         }
     }
 
-    // ???
+    // 支付现金
     public bool PayCash(int amount)
     {
         bool canAfford = cash >= amount;
         cash -= amount;
-        Debug.Log($"{playerName} ??? {amount} ???????: {cash}");
+        Debug.Log($"{playerName} 支付 {amount} 后剩余: {cash}");
 
         NotifyCashChanged();
         return canAfford;
     }
 
-    // ??????
+    // 收到现金
     public void ReceiveCash(int amount)
     {
         int previousCash = cash;
         cash += amount;
-        Debug.Log($"{playerName} ??? {amount} ??壬??????: {cash}");
+        Debug.Log($"{playerName} 收到 {amount} 后现在: {cash}");
 
         NotifyCashChanged();
         
