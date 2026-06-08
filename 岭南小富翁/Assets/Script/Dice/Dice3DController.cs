@@ -89,6 +89,10 @@ public class Dice3DController : MonoBehaviour
     {
         if (!isRolling)
         {
+            // 播放骰子点击音效
+            if (SFXManager.Instance != null)
+                SFXManager.Instance.PlayDiceClickSound();
+            
             StartCoroutine(RollDice3D());
         }
         else

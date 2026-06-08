@@ -136,14 +136,14 @@ public class EventPanel : MonoBehaviour
             
             button.onClick.AddListener(() =>
             {
-                Debug.Log($"===  [{finalIndex}] ===");
+                Debug.Log($"=== 选项 [{finalIndex}] 被点击 ===");
                 Debug.Log($"EventEffectHandler.Instance: {EventEffectHandler.Instance != null}");
                 Debug.Log($"currentPlayer: {currentPlayer?.playerName ?? "NULL"}");
                 Debug.Log($"currentEvent: {currentEvent?.eventTitle ?? "NULL"}");
                 
                 if (!finalCanAfford)
                 {
-                    Debug.LogWarning("");
+                    Debug.LogWarning("无法支付选项费用");
                     if (UIManager.Instance != null)
                     {
                         UIManager.ShowToastStatic("", 2f);
@@ -151,6 +151,10 @@ public class EventPanel : MonoBehaviour
                     return;
                 }
 
+                // 播放事件选择音效
+                if (SFXManager.Instance != null)
+                    SFXManager.Instance.PlayEventSelectSound();
+                
                 if (SFXManager.Instance != null)
                     SFXManager.Instance.PlaySFX(SFXClip.UIClick);
 

@@ -7737,6 +7737,7 @@ MonoBehaviour:
   eventPanel: {fileID: 212661033}
   infoToastPanel: {fileID: 1529493083}
   infoToastText: {fileID: 620667435}
+  toastInterval: 0.5
 --- !u!1 &999821965
 GameObject:
   m_ObjectHideFlags: 0
@@ -20833,6 +20834,10 @@ MonoBehaviour:
   musicManager: {fileID: 0}
   sfxConfig: {fileID: 11400000, guid: d32ad7b7a21f2ae4eb3e1cb120263198, type: 2}
   enableSFX: 1
+  eventSoundVolume: 0.35
+  uiSoundVolume: 0.8
+  characterSoundVolume: 0.7
+  diceSoundVolume: 0.8
   diceCooldownTime: 0
 --- !u!1 &1396678562
 GameObject:

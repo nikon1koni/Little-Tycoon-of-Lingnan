@@ -29,6 +29,12 @@ public class SFXConfig : ScriptableObject
     public AudioClip diceRoll;
     public AudioClip diceStop;
 
+    [Header("交互音效")]
+    public AudioClip diceClick;        // 骰子点击音效
+    public AudioClip tileSelect;       // 地块选择音效
+    public AudioClip buildingSold;      // 出售建筑音效
+    public AudioClip eventSelect;      // 事件选择音效
+
     public List<SFXEntry> GetAllEntries()
     {
         List<SFXEntry> entries = new List<SFXEntry>();
@@ -53,6 +59,11 @@ public class SFXConfig : ScriptableObject
 
         entries.Add(new SFXEntry(SFXClip.DiceRoll, diceRoll));
         entries.Add(new SFXEntry(SFXClip.DiceStop, diceStop));
+
+        entries.Add(new SFXEntry(SFXClip.DiceClick, diceClick));
+        entries.Add(new SFXEntry(SFXClip.TileSelect, tileSelect));
+        entries.Add(new SFXEntry(SFXClip.BuildingSold, buildingSold));
+        entries.Add(new SFXEntry(SFXClip.EventSelect, eventSelect));
 
         return entries;
     }

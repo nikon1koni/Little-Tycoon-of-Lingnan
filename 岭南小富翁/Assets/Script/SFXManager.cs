@@ -30,7 +30,12 @@ public enum SFXClip
     EventBuffActivated,
 
     DiceRoll,
-    DiceStop
+    DiceStop,
+
+    DiceClick,       // 骰子点击音效
+    TileSelect,      // 地块选择音效
+    BuildingSold,    // 出售建筑音效
+    EventSelect     // 事件选择音效
 }
 
 public class SFXManager : MonoBehaviour
@@ -51,11 +56,23 @@ public class SFXManager : MonoBehaviour
     [Tooltip("角色音效音量")]
     public float characterVolume = 0.7f;
     [Range(0f, 1f)]
-    [Tooltip("事件音效音量")]
-    public float eventVolume = 0.7f;
+[Tooltip("事件音效音量")]
+public float eventVolume = 0.4f;
     [Range(0f, 1f)]
     [Tooltip("骰子音效音量")]
     public float diceVolume = 0.8f;
+    [Range(0f, 1f)]
+    [Tooltip("骰子点击音效音量")]
+    public float diceClickVolume = 0.8f;
+    [Range(0f, 1f)]
+    [Tooltip("地块选择音效音量")]
+    public float tileSelectVolume = 1f;
+    [Range(0f, 1f)]
+    [Tooltip("出售建筑音效音量")]
+    public float buildingSoldVolume = 1f;
+    [Range(0f, 1f)]
+    [Tooltip("事件选择音效音量")]
+    public float eventSelectVolume = 1f;
 
     [Header("音效池")]
     [Tooltip("AudioSource池的大小")]
@@ -111,6 +128,10 @@ public class SFXManager : MonoBehaviour
 
         clipCategoryMap[SFXClip.DiceRoll] = SFXCategory.Dice;
         clipCategoryMap[SFXClip.DiceStop] = SFXCategory.Dice;
+        clipCategoryMap[SFXClip.DiceClick] = SFXCategory.UI;
+        clipCategoryMap[SFXClip.TileSelect] = SFXCategory.Event;
+        clipCategoryMap[SFXClip.BuildingSold] = SFXCategory.Event;
+        clipCategoryMap[SFXClip.EventSelect] = SFXCategory.Event;
     }
 
     void CreateAudioSourcePool()
@@ -226,6 +247,84 @@ public class SFXManager : MonoBehaviour
             source.volume = finalVolume;
             source.Play();
             Debug.Log($"SFXManager: 播放自定义音效");
+        }
+    }
+
+    /// <summary>
+    /// 播放骰子点击音效（音量设置为系统默认的80%）
+    /// </summary>
+    public void PlayDiceClickSound()
+    {
+        if (clipCache.TryGetValue(SFXClip.DiceClick, out AudioClip audioClip) && audioClip != null)
+        {
+            AudioSource source = GetAvailableSource();
+            float finalVolume = masterVolume * diceClickVolume;
+            source.clip = audioClip;
+            source.volume = finalVolume;
+            source.Play();
+            Debug.Log("SFXManager: 播放骰子点击音效");
+        }
+    }
+
+    /// <summary>
+    /// 播放地块选择音效（需要验证建筑选择状态）
+    /// </summary>
+    /// <param name="hasBuildingSelected">是否已选择建筑</param>
+    public void PlayTileSelectSound(bool hasBuildingSelected = true)
+    {
+        if (!hasBuildingSelected)
+        {
+            Debug.Log("地块选择音效未播放：未选择建筑");
+            return;
+        }
+
+        if (clipCache.TryGetValue(SFXClip.TileSelect, out AudioClip audioClip) && audioClip != null)
+        {
+            AudioSource source = GetAvailableSource();
+            float finalVolume = masterVolume * tileSelectVolume;
+            source.clip = audioClip;
+            source.volume = finalVolume;
+            source.Play();
+            Debug.Log("SFXManager: 播放地块选择音效");
+        }
+    }
+
+    /// <summary>
+    /// 播放出售建筑音效（需要验证交易成功）
+    /// </summary>
+    /// <param name="transactionSuccess">交易是否成功</param>
+    public void PlayBuildingSoldSound(bool transactionSuccess)
+    {
+        if (!transactionSuccess)
+        {
+            Debug.Log("出售建筑音效未播放：交易失败");
+            return;
+        }
+
+        if (clipCache.TryGetValue(SFXClip.BuildingSold, out AudioClip audioClip) && audioClip != null)
+        {
+            AudioSource source = GetAvailableSource();
+            float finalVolume = masterVolume * buildingSoldVolume;
+            source.clip = audioClip;
+            source.volume = finalVolume;
+            source.Play();
+            Debug.Log("SFXManager: 播放出售建筑音效");
+        }
+    }
+
+    /// <summary>
+    /// 播放事件选择音效
+    /// </summary>
+    public void PlayEventSelectSound()
+    {
+        if (clipCache.TryGetValue(SFXClip.EventSelect, out AudioClip audioClip) && audioClip != null)
+        {
+            AudioSource source = GetAvailableSource();
+            float finalVolume = masterVolume * eventSelectVolume;
+            source.clip = audioClip;
+            source.volume = finalVolume;
+            source.Play();
+            Debug.Log("SFXManager: 播放事件选择音效");
         }
     }
 

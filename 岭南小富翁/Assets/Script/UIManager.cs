@@ -831,6 +831,11 @@ public class UIManager : MonoBehaviour
             return;
         }
 
+        // 播放地块选择音效（验证是否已选择建筑）
+        bool hasBuildingSelected = selectedBuildingData != null;
+        if (SFXManager.Instance != null)
+            SFXManager.Instance.PlayTileSelectSound(hasBuildingSelected);
+
         if (PurchaseAndPlaceBuilding(tile, selectedBuildingData, currentBuildingPlayer))
         {
             if (SFXManager.Instance != null)
@@ -999,9 +1004,6 @@ public class UIManager : MonoBehaviour
     public void OnRollDiceButtonClicked()
     {
         UnityEngine.Debug.Log("UIManager: ");
-
-        if (SFXManager.Instance != null)
-            SFXManager.Instance.PlaySFX(SFXClip.UIClick);
 
         if (GameManager.Instance != null)
         {

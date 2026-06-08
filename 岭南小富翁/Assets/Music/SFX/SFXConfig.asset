@@ -26,6 +26,10 @@ MonoBehaviour:
   eventBuildingUpgraded: {fileID: 8300000, guid: a150c538eac2f274c9bf73504b08a9b6, type: 3}
   eventGoToJail: {fileID: 8300000, guid: c9a44ba2b6da38a49a204632fdca1c2d, type: 3}
   eventTaxPaid: {fileID: 8300000, guid: ecf70490a5bcbc042865f50b6fedcb21, type: 3}
-  eventBuffActivated: {fileID: 8300000, guid: 20f5cc979b0d26146a6ad4d0fa6e8808, type: 3}
+  eventBuffActivated: {fileID: 8300000, guid: 485a1972dca5b8c48b883b365ff972db, type: 3}
   diceRoll: {fileID: 8300000, guid: 0e8a42e2d3aae774fa3962e4eecaee9e, type: 3}
   diceStop: {fileID: 0}
+  diceClick: {fileID: 0}
+  tileSelect: {fileID: 8300000, guid: 0d5edfd440f61864f9e1785d09c80e5f, type: 3}
+  buildingSold: {fileID: 8300000, guid: e283627ec7e153a459932ad6c730bd99, type: 3}
+  eventSelect: {fileID: 8300000, guid: d6194ca937b653e498b871c479ea6819, type: 3}

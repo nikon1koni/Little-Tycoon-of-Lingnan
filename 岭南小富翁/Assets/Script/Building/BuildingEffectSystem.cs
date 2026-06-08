@@ -27,9 +27,9 @@ public class BuildingEffectSystem : MonoBehaviour
     public float maxSpeedMultiplier = 3.0f;
 
     [Header("音效设置")]
-    [Tooltip("音效播放音量0-1")]
-    [Range(0f, 1f)]
-    public float effectSoundVolume = 0.7f;
+[Tooltip("音效播放音量0-1")]
+[Range(0f, 1f)]
+public float effectSoundVolume = 0.4f;
 
     [Header("Debug控制")]
     [Tooltip("是否输出Debug日志")]

@@ -44,6 +44,6 @@ MonoBehaviour:
   positionOffset: {x: 0, y: 1.55, z: 0}
   rotationEuler: {x: 0, y: -90, z: 0}
   effectIconPrefab: {fileID: 919132149155446097, guid: 89d1daaefdad3d24c889bbdebdee51dc, type: 3}
-  effectSound: {fileID: 8300000, guid: f674a041c334b1e40af4fcd60e27bea8, type: 3}
+  effectSound: {fileID: 8300000, guid: 485a1972dca5b8c48b883b365ff972db, type: 3}
   effectDuration: 1.5
   description: "\u5EFA\u7B51\u63CF\u8FF0"

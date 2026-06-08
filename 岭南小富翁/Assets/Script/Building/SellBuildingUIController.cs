@@ -279,6 +279,10 @@ public class SellBuildingUIController : MonoBehaviour
         
         if (selectedTile.SellBuilding(currentPlayer))
         {
+            // 播放出售建筑音效（交易成功）
+            if (SFXManager.Instance != null)
+                SFXManager.Instance.PlayBuildingSoldSound(true);
+            
             if (SFXManager.Instance != null)
                 SFXManager.Instance.PlaySFX(SFXClip.EventGainMoney);
             

@@ -67,6 +67,20 @@ public class GameManager : MonoBehaviour
     public SFXConfig sfxConfig;
     public bool enableSFX = true;
 
+    [Header("????????")]
+    [Range(0f, 1f)]
+    [Tooltip("????????")]
+    public float eventSoundVolume = 0.4f;
+    [Range(0f, 1f)]
+    [Tooltip("UI??????")]
+    public float uiSoundVolume = 0.8f;
+    [Range(0f, 1f)]
+    [Tooltip("???????")]
+    public float characterSoundVolume = 0.7f;
+    [Range(0f, 1f)]
+    [Tooltip("??????")]
+    public float diceSoundVolume = 0.8f;
+
     [Header("???????")]
     [Range(0f, 10f)]
     public float diceCooldownTime = 0f; // ??????????
@@ -222,6 +236,12 @@ public class GameManager : MonoBehaviour
                     Debug.LogWarning("SFXConfig ????Inspector??Resources??????");
                 }
             }
+
+            // ????????????????????
+            sfxManager.SetCategoryVolume(SFXCategory.Event, eventSoundVolume);
+            sfxManager.SetCategoryVolume(SFXCategory.UI, uiSoundVolume);
+            sfxManager.SetCategoryVolume(SFXCategory.Character, characterSoundVolume);
+            sfxManager.SetCategoryVolume(SFXCategory.Dice, diceSoundVolume);
 
             Debug.Log("SFXManager ????");
         }
