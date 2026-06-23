@@ -41,7 +41,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1357382377317527052}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 4068373912626513877, guid: bba24aec7b4e2584e8f98be41efca8fb, type: 3}
 --- !u!23 &4233401494240993777
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -162,6 +162,7 @@ MonoBehaviour:
   currentBuildingData: {fileID: 0}
   currentBuildingType: 0
   buildingLevel: 0
+  buildingStartRound: 0
   currentBuilding: {fileID: 0}
   ownerPlayer: {fileID: 0}
   linkedBuildingTiles: []
@@ -169,13 +170,10 @@ MonoBehaviour:
   enableLinkedIncome: 1
   enableAutoIncome: 0
   autoIncomeInterval: 10
+  eventDataArray: []
   tileNameText: {fileID: 0}
   tileRenderer: {fileID: 0}
-  defaultColor: {r: 1, g: 1, b: 1, a: 1}
-  ownedColor: {r: 0, g: 0, b: 1, a: 1}
-  buildableColor: {r: 0, g: 1, b: 0, a: 1}
   buffedPlayers: []
-  buffDuration: 0
 --- !u!65 &235769867052846331
 BoxCollider:
   m_ObjectHideFlags: 0

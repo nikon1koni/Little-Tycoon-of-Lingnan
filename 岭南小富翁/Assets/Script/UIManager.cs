@@ -273,12 +273,12 @@ public class UIManager : MonoBehaviour
 
         if (diceRollCountText != null)
         {
-            diceRollCountText.text = $"骰子次数: {diceInCurrentRound}/6";
+            diceRollCountText.text = $"???????: {diceInCurrentRound}/6";
         }
 
         if (currentRoundText != null)
         {
-            currentRoundText.text = $"当前回合: {currentRound}";
+            currentRoundText.text = $"??????: {currentRound}";
         }
     }
 
@@ -626,7 +626,7 @@ public class UIManager : MonoBehaviour
                     TextMeshProUGUI nameTmp = nameTransform.GetComponent<TextMeshProUGUI>();
                     if (nameTmp != null)
                     {
-                        nameTmp.text = $"{building.buildingName}\n{building.purchasePrice} 金币";
+                        nameTmp.text = $"{building.buildingName}\n{building.purchasePrice} ???";
                     }
                 }
 
@@ -781,7 +781,7 @@ public class UIManager : MonoBehaviour
 
         if (highlightCount == 0)
         {
-            ShowToast("??п?????λ??", 2f);
+            ShowToast("?????????????", 2f);
         }
     }
 
@@ -831,7 +831,7 @@ public class UIManager : MonoBehaviour
             return;
         }
 
-        // 播放地块选择音效（验证是否已选择建筑）
+        // ??????????????????????????????
         bool hasBuildingSelected = selectedBuildingData != null;
         if (SFXManager.Instance != null)
             SFXManager.Instance.PlayTileSelectSound(hasBuildingSelected);
@@ -862,7 +862,7 @@ public class UIManager : MonoBehaviour
                 }
             }
             
-            ShowToast("???ó??", 2f);
+            ShowToast("???????", 2f);
         }
     }
 
@@ -1044,7 +1044,7 @@ public class UIManager : MonoBehaviour
 
         if (currentTileText != null && player.currentTile != null)
         {
-            currentTileText.text = $"λ??: {player.currentTile.tileName}";
+            currentTileText.text = $"????: {player.currentTile.tileName}";
         }
 
         // ===  ===
@@ -1153,7 +1153,7 @@ public class UIManager : MonoBehaviour
     {
         if (gameOverPanel == null)
         {
-            UnityEngine.Debug.LogError("UIManager: 在Inspector中未设置GameOverPanel");
+            UnityEngine.Debug.LogError("UIManager: ??Inspector????????GameOverPanel");
             return;
         }
 
@@ -1170,23 +1170,23 @@ public class UIManager : MonoBehaviour
         
         int score = roundCount * 100 + diceCount + 10;
 
-        UnityEngine.Debug.Log($"玩家={playerName}, 是否胜利={isWinner}, 回合={roundCount}, 骰子数={diceCount}, 分数={score}");
+        UnityEngine.Debug.Log($"???={playerName}, ??????={isWinner}, ???={roundCount}, ??????={diceCount}, ????={score}");
 
-        SetText("ResultText", isWinner ? $"{playerName} 胜利!" : $"{playerName} 失败");
-        SetText("RoundText", $"回合: {roundCount}");
-        SetText("DiceText", $"骰子数: {diceCount}");
-        SetText("ScoreText", $"最终得分: {score}");
+        SetText("ResultText", isWinner ? $"{playerName} ???!" : $"{playerName} ???");
+        SetText("RoundText", $"???: {roundCount}");
+        SetText("DiceText", $"??????: {diceCount}");
+        SetText("ScoreText", $"???????: {score}");
 
         Button restartButton = FindRestartButton();
         if (restartButton != null)
         {
-            UnityEngine.Debug.Log("找到重新开始按钮");
+            UnityEngine.Debug.Log("????????????");
             restartButton.onClick.RemoveAllListeners();
             restartButton.onClick.AddListener(OnRestartButtonClicked);
         }
         else
         {
-            UnityEngine.Debug.LogError("未找到重新开始按钮");
+            UnityEngine.Debug.LogError("??????????????");
         }
     }
 
@@ -1195,7 +1195,7 @@ public class UIManager : MonoBehaviour
         Transform trans = gameOverPanel.transform.Find(objectName);
         if (trans == null)
         {
-            UnityEngine.Debug.LogError($"未找到对象: {objectName}");
+            UnityEngine.Debug.LogError($"?????????: {objectName}");
             return;
         }
 
@@ -1215,28 +1215,28 @@ public class UIManager : MonoBehaviour
             return;
         }
 
-        UnityEngine.Debug.LogError($"{objectName} 组件中找不到 Text 或 TextMeshProUGUI 组件");
+        UnityEngine.Debug.LogError($"{objectName} ?????????? Text ?? TextMeshProUGUI ???");
     }
 
     private Button FindRestartButton()
     {
         if (gameOverPanel == null)
         {
-            UnityEngine.Debug.LogError("gameOverPanel 为空");
+            UnityEngine.Debug.LogError("gameOverPanel ???");
             return null;
         }
 
         Button button = gameOverPanel.transform.Find("RestartButton").GetComponent<Button>();
         if (button != null)
         {
-            UnityEngine.Debug.Log($"找到按钮: RestartButton");
+            UnityEngine.Debug.Log($"??????: RestartButton");
             return button;
         }
 
         button = gameOverPanel.transform.Find("Button").GetComponent<Button>();
         if (button != null)
         {
-            UnityEngine.Debug.Log($"找到按钮: Button");
+            UnityEngine.Debug.Log($"??????: Button");
             return button;
         }
 
@@ -1247,38 +1247,38 @@ public class UIManager : MonoBehaviour
             return button;
         }
 
-        UnityEngine.Debug.LogError("在 gameOverPanel 中未找到按钮组件");
+        UnityEngine.Debug.LogError("?? gameOverPanel ?????????????");
         return null;
     }
 
     private void OnRestartButtonClicked()
     {
-        UnityEngine.Debug.Log("=== 重新开始游戏 ===");
+        UnityEngine.Debug.Log("=== ????????? ===");
         
         if (gameOverPanel != null)
         {
             gameOverPanel.SetActive(false);
-            UnityEngine.Debug.Log("游戏结束面板已隐藏");
+            UnityEngine.Debug.Log("????????????????");
         }
         else
         {
-            UnityEngine.Debug.LogError("gameOverPanel 为空");
+            UnityEngine.Debug.LogError("gameOverPanel ???");
         }
         
         SwitchToGameUI();
-        UnityEngine.Debug.Log("切换到游戏UI");
+        UnityEngine.Debug.Log("?????????UI");
         
         if (GameManager.Instance != null)
         {
-            UnityEngine.Debug.Log("调用 GameManager");
+            UnityEngine.Debug.Log("???? GameManager");
             GameManager.Instance.RestartFromGameOver();
         }
         else
         {
-            UnityEngine.Debug.LogError("GameManager.Instance 为空");
+            UnityEngine.Debug.LogError("GameManager.Instance ???");
         }
         
-        UnityEngine.Debug.Log("=== 完成 ===");
+        UnityEngine.Debug.Log("=== ??? ===");
     }
 
     public void SetRollDiceButtonInteractable(bool interactable)
@@ -1305,7 +1305,7 @@ public class UIManager : MonoBehaviour
     {
         if (playerInfoPrefab == null)
         {
-            UnityEngine.Debug.LogWarning("玩家信息预制件为空");
+            UnityEngine.Debug.LogWarning("?????????????");
             return;
         }
 
@@ -1339,7 +1339,7 @@ public class UIManager : MonoBehaviour
             infoUI.playerNameText.text = $"{infoUI.player.playerName}";
 
         if (infoUI.cashText != null)
-            infoUI.cashText.text = $"{infoUI.player.cash} 金币";
+            infoUI.cashText.text = $"{infoUI.player.cash} ???";
 
         if (infoUI.playerColorImage != null)
             infoUI.playerColorImage.color = infoUI.player.playerColor;
@@ -1538,7 +1538,7 @@ public class UIManager : MonoBehaviour
         if (upgradeCostText != null)
         {
             int upgradeCost = upgradeSelectedTile.GetUpgradeCost();
-            upgradeCostText.text = $"升级费用: {upgradeCost} 金币";
+            upgradeCostText.text = $"????????: {upgradeCost} ???";
 
             if (upgradeSelectedPlayer.cash < upgradeCost)
             {
@@ -1552,13 +1552,13 @@ public class UIManager : MonoBehaviour
 
         if (currentLevelText != null)
         {
-            currentLevelText.text = $"当前等级: {upgradeSelectedTile.buildingLevel}";
+            currentLevelText.text = $"??????: {upgradeSelectedTile.buildingLevel}";
         }
 
         if (nextLevelText != null)
         {
             int nextLevel = upgradeSelectedTile.buildingLevel + 1;
-            nextLevelText.text = $"下一等级: {nextLevel}";
+            nextLevelText.text = $"??????: {nextLevel}";
         }
 
         if (upgradeSelectedTile.currentBuildingData != null)
@@ -1566,12 +1566,12 @@ public class UIManager : MonoBehaviour
             BuildingData buildingData = upgradeSelectedTile.currentBuildingData;
 
             string functionDesc = GetBuildingFunctionDescription(buildingData, upgradeSelectedTile.buildingLevel, upgradeSelectedTile);
-            ShowToast($"效果: {functionDesc}", 3f);
+            ShowToast($"????: {functionDesc}", 3f);
 
             if (buildingData.nextLevelBuilding != null)
             {
                 string nextFunctionDesc = GetBuildingFunctionDescription(buildingData.nextLevelBuilding, upgradeSelectedTile.buildingLevel + 1, upgradeSelectedTile);
-                UnityEngine.Debug.Log($"下一等级效果: {nextFunctionDesc}");
+                UnityEngine.Debug.Log($"??????????: {nextFunctionDesc}");
             }
         }
 
@@ -1583,7 +1583,7 @@ public class UIManager : MonoBehaviour
                 if (upgradeButton != null)
                 {
                     upgradeButton.interactable = false;
-                    ShowToast($"需要土地等级: {(int)nextBuilding.requiredScale}", 2f);
+                    ShowToast($"?????????: {(int)nextBuilding.requiredScale}", 2f);
                 }
             }
             else
@@ -1627,18 +1627,18 @@ public class UIManager : MonoBehaviour
                         multiplierInfo = $" ({multiplier:F1})";
                     }
                 }
-                return $"收入: {income} 金币 {multiplierInfo}";
+                return $"????: {income} ??? {multiplierInfo}";
 
             case BuildingData.BuildingFunctionType.Buff:
                 float buffValue = buildingData.GetBuffValue(level);
                 string buffName = GetBuffEffectName(buildingData.buffEffect);
                 if (buildingData.buffDuration > 0)
                 {
-                    return $"{buffName}: +{buffValue * 100}% ({buildingData.buffDuration}秒)";
+                    return $"{buffName}: +{buffValue * 100}% ({buildingData.buffDuration}??)";
                 }
                 else
                 {
-                    return $"{buffName}: +{buffValue * 100}% (永久)";
+                    return $"{buffName}: +{buffValue * 100}% (????)";
                 }
 
             case BuildingData.BuildingFunctionType.Mixed:
@@ -1667,16 +1667,16 @@ public class UIManager : MonoBehaviour
                         mixedMultiplierInfo = $" ({mixedMultiplier:F1})";
                     }
                 }
-                return $"收入: {mixedIncome} 金币 {mixedMultiplierInfo} + {buffName}: +{buffValue * 100}%";
+                return $"????: {mixedIncome} ??? {mixedMultiplierInfo} + {buffName}: +{buffValue * 100}%";
 
             case BuildingData.BuildingFunctionType.DiceEven:
-                return $"骰子: {buildingData.GetDiceRuleDescription()}";
+                return $"????: {buildingData.GetDiceRuleDescription()}";
 
             case BuildingData.BuildingFunctionType.Appreciation:
-                return $"增值: 每回合+{buildingData.appreciationPerRound}金币";
+                return $"???: ????+{buildingData.appreciationPerRound}???";
 
             default:
-                return "未知";
+                return "???";
         }
     }
 
@@ -1684,13 +1684,13 @@ public class UIManager : MonoBehaviour
     {
         switch (effect)
         {
-            case BuildingData.BuffEffect.MoveSpeedBoost: return "移动速度";
-            case BuildingData.BuffEffect.DiceBoost: return "骰子加成";
-            case BuildingData.BuffEffect.IncomeMultiplier: return "收入倍率";
-            case BuildingData.BuffEffect.DefenseBoost: return "防御加成";
-            case BuildingData.BuffEffect.LuckBoost: return "幸运加成";
-            case BuildingData.BuffEffect.AllIncomeBoost: return "全收入加成";
-            default: return "未知";
+            case BuildingData.BuffEffect.MoveSpeedBoost: return "??????";
+            case BuildingData.BuffEffect.DiceBoost: return "??????";
+            case BuildingData.BuffEffect.IncomeMultiplier: return "??????";
+            case BuildingData.BuffEffect.DefenseBoost: return "???????";
+            case BuildingData.BuffEffect.LuckBoost: return "??????";
+            case BuildingData.BuffEffect.AllIncomeBoost: return "???????";
+            default: return "???";
         }
     }
 
@@ -1701,7 +1701,7 @@ public class UIManager : MonoBehaviour
 
         if (upgradeSelectedTile.UpgradeBuilding(upgradeSelectedPlayer))
         {
-            ShowToast("升级成功!", 2f);
+            ShowToast("???????!", 2f);
 
             if (SFXManager.Instance != null)
                 SFXManager.Instance.PlaySFX(SFXClip.EventBuildingUpgraded);
@@ -1721,7 +1721,7 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            ShowToast("升级失败!", 2f);
+            ShowToast("???????!", 2f);
         }
     }
 

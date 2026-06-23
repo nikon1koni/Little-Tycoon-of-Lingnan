@@ -8,50 +8,50 @@ public class GameManager : MonoBehaviour
     // 
     public static GameManager Instance;
 
-    [Header("游戏状态")]
+    [Header("?????")]
     public GameState currentState = GameState.Waiting;
     public int currentPlayerIndex = 0;
     public bool isGameStarted = false;
     public bool isPlayerTurn = true;
     public bool isMoving = false;
 
-    [Header("玩家")]
+    [Header("???")]
     public List<Player> players = new List<Player>();
     public Player currentPlayer;
 
-    [Header("骰子")]
+    [Header("????")]
     public DiceController diceController;
     public Dice3DController dice3DController;
     public int lastDiceValue = 0;
 
-    [Header("UI 引用")]
+    [Header("UI ????")]
     public Text currentPlayerText;
     public Text playerCashText;
     public Text diceResultText;
     public Text currentTileText;
     public Button rollDiceButton;
 
-    [Header("管理器")]
+    [Header("??????")]
     public BoardManager boardManager;
     public UIManager uiManager;
 
-    [Header("游戏配置")]
+    [Header("???????")]
     public int startingCash = 1500;
     public int salaryAmount = 200;
     public int jailTurns = 3;
 
-    [Header("压力系统")]
+    [Header("?????")]
     public bool enablePressureSystem = true;
 
-    private int diceRollCount = 0;          // 骰子投掷次数
-    private int pressureInterval = 1;        // 压力触发间隔(每N回合)
-    private int nextPressureAt = 1;          // 下一次压力触发的回合
-    public float basePressureCost = 50f;   // 基础压力费用
+    private int diceRollCount = 0;          // ???????????
+    private int pressureInterval = 1;        // ??????????(?N???)
+    private int nextPressureAt = 1;          // ????????????????
+    public float basePressureCost = 50f;   // ???????????
     public float pressureMultiplier = 1.2f;
     
-    [Header("破产系统")]
-    public BuffData bankruptBuffData;        // 破产Debuff数据(在Inspector中配置)
-    public int bankruptGraceRounds = 3;     // 破产豁免回合数
+    [Header("?????")]
+    public BuffData bankruptBuffData;        // ???Debuff????(??Inspector??????)
+    public int bankruptGraceRounds = 3;     // ???????????
 
     public int DiceRollCount => diceRollCount;
     public int CurrentRound => diceRollCount / 6;
@@ -599,7 +599,7 @@ public class GameManager : MonoBehaviour
         diceRollCount++;
         Debug.Log($"???????: {diceRollCount}");
 
-        // ??Buff?????仯
+        // ??Buff???????
         if (CurrentRound != previousRound && BuffSystem.Instance != null)
         {
             BuffSystem.Instance.OnRoundChanged();
@@ -688,7 +688,7 @@ public class GameManager : MonoBehaviour
 
     private void TriggerPressure(int currentRound)
     {
-        Debug.Log($"压力触发: 回合 {currentRound}");
+        Debug.Log($"???????: ??? {currentRound}");
 
         int cost = Mathf.RoundToInt(basePressureCost);
 
@@ -790,7 +790,7 @@ public class GameManager : MonoBehaviour
         
         if (UIManager.Instance != null)
         {
-            // ???BuffData?е????????????
+            // ???BuffData???????????????
             string toastMessage = string.Empty;
             if (bankruptBuffData != null && !string.IsNullOrEmpty(bankruptBuffData.notificationMessage))
             {
@@ -798,7 +798,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                toastMessage = $"{player.playerName} ???????Σ????";
+                toastMessage = $"{player.playerName} ?????????????";
             }
             UIManager.Instance.ShowToast(toastMessage, 3f);
         }
@@ -897,7 +897,7 @@ public class GameManager : MonoBehaviour
 
             if (uiManager != null)
             {
-                uiManager.ShowToast($"??ù???: {salary} ???", 2f);
+                uiManager.ShowToast($"???????: {salary} ???", 2f);
             }
 
             // 2. 
@@ -1158,7 +1158,7 @@ public class GameManager : MonoBehaviour
         foreach (BoardTile property in player.ownedProperties)
         {
             property.ownerPlayer = null;
-            Debug.Log($"?黹: {property.tileName}");
+            Debug.Log($"???: {property.tileName}");
         }
         player.ownedProperties.Clear();
 
@@ -1220,7 +1220,7 @@ public class GameManager : MonoBehaviour
             diceResultText.text = $"????: {lastDiceValue}";
 
         if (currentTileText != null && currentPlayer.currentTile != null)
-            currentTileText.text = $"λ??: {currentPlayer.currentTile.tileName}";
+            currentTileText.text = $"????: {currentPlayer.currentTile.tileName}";
 
         if (uiManager != null)
         {
