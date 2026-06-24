@@ -123,6 +123,40 @@ public class EventEffectHandler : MonoBehaviour
     {
         switch (option.effectType)
         {
+            case EventData.EventEffectType.GainMoney:
+                if (option.optionRewardAmount > 0)
+                {
+                    player.ReceiveCash(option.optionRewardAmount);
+                    Debug.Log($"{player.playerName} received {option.optionRewardAmount} from event");
+                    if (UIManager.Instance != null)
+                    {
+                        UIManager.Instance.ShowToast($"获得 {option.optionRewardAmount} 金币", 2f);
+                    }
+                }
+                break;
+
+            case EventData.EventEffectType.LoseMoney:
+                if (option.optionCostAmount > 0)
+                {
+                    if (player.PayCash(option.optionCostAmount))
+                    {
+                        Debug.Log($"{player.playerName} lost {option.optionCostAmount} from event");
+                        if (UIManager.Instance != null)
+                        {
+                            UIManager.Instance.ShowToast($"失去 {option.optionCostAmount} 金币", 2f);
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"{player.playerName} cannot afford {option.optionCostAmount}");
+                        if (UIManager.Instance != null)
+                        {
+                            UIManager.ShowToastStatic("资金不足", 2f);
+                        }
+                    }
+                }
+                break;
+
             case EventData.EventEffectType.StepsModifier:
                 if (option.stepsModifier != 0)
                 {
@@ -218,30 +252,35 @@ public class EventEffectHandler : MonoBehaviour
             return;
         }
 
-        System.Collections.Generic.List<BoardTile> upgradableBuildings = new System.Collections.Generic.List<BoardTile>();
+        System.Collections.Generic.List<BoardTile> ownedBuildings = new System.Collections.Generic.List<BoardTile>();
         foreach (var property in player.ownedProperties)
         {
-            if (property != null && property.currentBuildingData != null && 
-                property.currentBuildingData.nextLevelBuilding != null)
+            if (property != null && property.currentBuildingData != null)
             {
-                upgradableBuildings.Add(property);
+                ownedBuildings.Add(property);
             }
         }
 
-        if (upgradableBuildings.Count == 0)
+        if (ownedBuildings.Count == 0)
         {
             Debug.Log($"{player.playerName} has no buildings that can be downgraded");
             return;
         }
 
         int downgradedCount = 0;
-        for (int i = 0; i < count && upgradableBuildings.Count > 0; i++)
+        for (int i = 0; i < count && ownedBuildings.Count > 0; i++)
         {
-            int randomIndex = Random.Range(0, upgradableBuildings.Count);
-            BoardTile targetBuilding = upgradableBuildings[randomIndex];
-            upgradableBuildings.RemoveAt(randomIndex);
+            int randomIndex = Random.Range(0, ownedBuildings.Count);
+            BoardTile targetBuilding = ownedBuildings[randomIndex];
+            ownedBuildings.RemoveAt(randomIndex);
 
             Debug.Log($"Downgrading building: {targetBuilding.tileName} ({targetBuilding.currentBuildingData.buildingName})");
+            
+            // 执行降级：出售建筑并获得部分返还
+            int sellPrice = targetBuilding.GetSellPrice();
+            targetBuilding.SellBuilding(player);
+            player.ReceiveCash(sellPrice);
+            
             downgradedCount++;
         }
 

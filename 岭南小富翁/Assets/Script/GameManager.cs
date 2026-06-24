@@ -829,7 +829,27 @@ public class GameManager : MonoBehaviour
     {
         if (currentPlayer == null) return;
 
-        Debug.Log($"{currentPlayer.playerName}  {lastDiceValue} ");
+        // 应用下一次骰子翻倍效果
+        float multiplier = currentPlayer.GetNextRollMultiplier();
+        int finalDiceValue = Mathf.RoundToInt(lastDiceValue * multiplier);
+        
+        if (multiplier != 1f)
+        {
+            Debug.Log($"{currentPlayer.playerName} 骰子翻倍: {lastDiceValue} * {multiplier} = {finalDiceValue}");
+        }
+
+        // 应用步数修正
+        int stepsModifier = currentPlayer.GetStepsModifier();
+        if (stepsModifier != 0)
+        {
+            finalDiceValue += stepsModifier;
+            Debug.Log($"{currentPlayer.playerName} 步数修正: {finalDiceValue} + {stepsModifier} = {finalDiceValue}");
+        }
+
+        // 确保步数至少为1
+        finalDiceValue = Mathf.Max(1, finalDiceValue);
+
+        Debug.Log($"{currentPlayer.playerName} 移动 {finalDiceValue} 步");
 
         currentState = GameState.Moving;
         isMoving = true;
@@ -837,12 +857,12 @@ public class GameManager : MonoBehaviour
         PlayerMovement movement = currentPlayer.GetComponent<PlayerMovement>();
         if (movement == null)
         {
-            Debug.LogError($"{currentPlayer.playerName}  PlayerMovement ");
+            Debug.LogError($"{currentPlayer.playerName} 缺少 PlayerMovement 组件");
             EndMove();
             return;
         }
 
-        movement.MoveSteps(lastDiceValue);
+        movement.MoveSteps(finalDiceValue);
         StartCoroutine(WaitForMoveComplete(movement));
     }
 
