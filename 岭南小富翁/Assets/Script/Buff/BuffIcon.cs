@@ -14,12 +14,12 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public Vector2 tooltipOffset = new Vector2(50, 50);
     private GameObject activeTooltip;
     
-    [Header("剩余时间显示设置")]
-    public int roundThreshold = 3;              // 回合临界值
-    public Color buffBelowThresholdColor = Color.red;      // Buff低于临界值颜色
-    public Color buffAboveThresholdColor = Color.green;     // Buff高于临界值颜色
-    public Color debuffBelowThresholdColor = Color.green;   // Debuff低于临界值颜色
-    public Color debuffAboveThresholdColor = Color.red;     // Debuff高于临界值颜色
+    [Header("?????????????")]
+    public int roundThreshold = 3;              // ???????
+    public Color buffBelowThresholdColor = Color.red;      // Buff???????????
+    public Color buffAboveThresholdColor = Color.green;     // Buff???????????
+    public Color debuffBelowThresholdColor = Color.green;   // Debuff???????????
+    public Color debuffAboveThresholdColor = Color.red;     // Debuff???????????
     
     private BuffSystem.Buff currentBuff;
     
@@ -123,7 +123,7 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         
         resultDescription += $"<b>{BuildingData.GetBuffEffectName(currentBuff.effectType)}</b>\n";
         resultDescription += $"+{currentBuff.value * 100:F1}%\n";
-        resultDescription += $"来源: {currentBuff.sourceName}\n";
+        resultDescription += $"???: {currentBuff.sourceName}\n";
         
         resultDescription += GetRemainingTimeText();
         
@@ -136,18 +136,18 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         
         if (currentBuff.isPermanent)
         {
-            timeText = "剩余回合:<color=green>永远</color>";
+            timeText = "?????:<color=green>???</color>";
         }
         else if (currentBuff.useRoundTimer)
         {
             bool isDebuff = IsDebuff();
             Color textColor = GetTimeColor(isDebuff, currentBuff.remainingRounds);
             string colorHex = ColorToHex(textColor);
-            timeText = $"剩余回合:<color={colorHex}>{currentBuff.remainingRounds}</color>";
+            timeText = $"?????:<color={colorHex}>{currentBuff.remainingRounds}</color>";
         }
         else
         {
-            timeText = $"剩余时间:{currentBuff.remainingTime:F1}秒";
+            timeText = $"??????:{currentBuff.remainingTime:F1}??";
         }
         
         return timeText;
@@ -167,12 +167,12 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         if (isDebuff)
         {
-            // Debuff根据剩余回合数返回不同颜色
+            // Debuff????????????????????
             return remainingRounds <= roundThreshold ? debuffBelowThresholdColor : debuffAboveThresholdColor;
         }
         else
         {
-            // Buff根据剩余回合数返回不同颜色
+            // Buff????????????????????
             return remainingRounds <= roundThreshold ? buffBelowThresholdColor : buffAboveThresholdColor;
         }
     }

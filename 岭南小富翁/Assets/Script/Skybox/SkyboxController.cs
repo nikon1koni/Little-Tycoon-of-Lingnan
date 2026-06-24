@@ -180,13 +180,13 @@ public class SkyboxController : MonoBehaviour
     {
         float t = currentTime;
         
-        if (t < 0.25f) return "Ò¹Íí";
-        else if (t < 0.35f) return "ÀèÃ÷";
-        else if (t < 0.45f) return "Çå³¿";
-        else if (t < 0.70f) return "°×Ìì";
-        else if (t < 0.80f) return "°øÍí";
-        else if (t < 0.90f) return "»Æ»è";
-        else return "Ò¹Íí";
+        if (t < 0.25f) return "???";
+        else if (t < 0.35f) return "????";
+        else if (t < 0.45f) return "??}";
+        else if (t < 0.70f) return "????";
+        else if (t < 0.80f) return "????";
+        else if (t < 0.90f) return "???";
+        else return "???";
     }
     
     void OnValidate()

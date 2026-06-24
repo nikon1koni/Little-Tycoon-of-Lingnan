@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: "\u795E\u79D8\u7684\u529F\u592B\u8336\u644A"
   m_EditorClassIdentifier: 
   eventTitle: "[\u795E\u79D8\u7684\u529F\u592B\u8336\u644A]"
-  eventImage: {fileID: 0}
+  eventImage: {fileID: 21300000, guid: aa91fa93e6d82a44682cffa06462df46, type: 3}
   eventDescription: "\u4E00\u4F4D\u8001\u5E08\u5085\u8BF7\u4F60\u559D\u4E00\u676F\u8336\uFF0C\u8336\u9999\u6C81\u4EBA\u5FC3\u813E\uFF0C\u4F46\u4ED6\u4F3C\u4E4E\u6709\u8BDD\u8981\u8BF4\u3002"
   options:
   - optionText: "\u652F\u4ED85\u94DC\u94B1 -> \u4E0B\u4E00\u6B21\u9AB0\u5B50\u6B65\u6570\u7FFB\u500D"

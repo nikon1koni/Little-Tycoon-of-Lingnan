@@ -3,25 +3,25 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [Header("玩家信息")]
-    public string playerName = "玩家1";
+    [Header("??????")]
+    public string playerName = "???1";
     public int playerID = 1;
     public Color playerColor = Color.red;
 
-    [Header("资金")]
-    public int cash = 1500;  // 初始资金
-    public List<BoardTile> ownedProperties = new List<BoardTile>();  // 拥有的地产
+    [Header("???")]
+    public int cash = 1500;  // ??????
+    public List<BoardTile> ownedProperties = new List<BoardTile>();  // ???????
 
-    [Header("状态")]
+    [Header("??")]
     public bool isInJail = false;
     public int jailTurnsRemaining = 0;
     public bool isBankrupt = false;
 
-    [Header("位置信息")]
-    [HideInInspector] public BoardTile currentTile;  // 当前所在格子
-    [HideInInspector] public int currentTileIndex = 0;  // 当前格子索引
+    [Header("???????")]
+    [HideInInspector] public BoardTile currentTile;  // ??????????
+    [HideInInspector] public int currentTileIndex = 0;  // ???????????
 
-    [Header("Buff效果")]
+    [Header("Buff????")]
     public int stepsModifier = 0;
     public float incomeReductionPercent = 0f;
     public int incomeReductionRounds = 0;
@@ -34,7 +34,7 @@ public class Player : MonoBehaviour
     public float loanRepayMultiplier = 1f;
     public int loanRepayRounds = 0;
 
-    // 组件引用
+    // ???????
     private PlayerMovement playerMovement;
 
     void Start()
@@ -42,16 +42,16 @@ public class Player : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();
         if (playerMovement == null)
         {
-            Debug.LogWarning($"玩家 {playerName} 缺少 PlayerMovement 组件");
+            Debug.LogWarning($"??? {playerName} ??? PlayerMovement ???");
         }
 
-        // 设置玩家颜色
+        // ??????????
         SetPlayerColor();
     }
 
     void SetPlayerColor()
     {
-        // 设置玩家颜色到渲染器
+        // ?????????????????
         MeshRenderer renderer = GetComponentInChildren<MeshRenderer>();
         if (renderer != null)
         {
@@ -64,7 +64,7 @@ public class Player : MonoBehaviour
         int previousCash = cash;
         bool canAfford = cash >= amount;
         cash -= amount;
-        Debug.Log($"{playerName} 支付 {amount} 后剩余: {cash}");
+        Debug.Log($"{playerName} ??? {amount} ?????: {cash}");
 
         NotifyCashChanged();
         UpdateBankruptState(previousCash);
@@ -76,7 +76,7 @@ public class Player : MonoBehaviour
     {
         int previousCash = cash;
         cash += amount;
-        Debug.Log($"{playerName} 收到 {amount} 后现在: {cash}");
+        Debug.Log($"{playerName} ??? {amount} ??????: {cash}");
 
         NotifyCashChanged();
         UpdateBankruptState(previousCash);
@@ -121,13 +121,13 @@ public class Player : MonoBehaviour
             property.tileType != BoardTile.TileType.Railroad &&
             property.tileType != BoardTile.TileType.Utility)
         {
-            Debug.LogWarning($"地块 {property.tileName} 不能购买");
+            Debug.LogWarning($"??? {property.tileName} ???????");
             return false;
         }
 
         if (property.ownerPlayer != null)
         {
-            Debug.LogWarning($"{property.tileName} 已被购买");
+            Debug.LogWarning($"{property.tileName} ???????");
             return false;
         }
 
@@ -135,7 +135,7 @@ public class Player : MonoBehaviour
         {
             property.ownerPlayer = this;
             ownedProperties.Add(property);
-            Debug.Log($"{playerName} 成功购买 {property.tileName}");
+            Debug.Log($"{playerName} ??????? {property.tileName}");
 
             if (SFXManager.Instance != null)
                 SFXManager.Instance.PlaySFX(SFXClip.EventPropertyBought);
@@ -210,8 +210,8 @@ public class Player : MonoBehaviour
         {
             int boost = BuffSystem.Instance.GetDiceBoostValue(this);
             int boostedValue = baseValue + boost;
-            Debug.Log($"{playerName} 骰子加成: {baseValue} + {boost} = {boostedValue}");
-            return Mathf.Clamp(boostedValue, 1, 12); // 上限12
+            Debug.Log($"{playerName} ??????: {baseValue} + {boost} = {boostedValue}");
+            return Mathf.Clamp(boostedValue, 1, 12); // ????12
         }
         return baseValue;
     }
@@ -226,7 +226,7 @@ public class Player : MonoBehaviour
         int finalIncome = Mathf.RoundToInt(baseIncome * multiplier);
         if (multiplier > 1.0f)
         {
-            Debug.Log($"{playerName} 收入加成: {baseIncome} * {multiplier} = {finalIncome}");
+            Debug.Log($"{playerName} ??????: {baseIncome} * {multiplier} = {finalIncome}");
         }
         return finalIncome;
     }
@@ -263,7 +263,7 @@ public class Player : MonoBehaviour
         if (cash < 0)
         {
             isBankrupt = true;
-            Debug.Log($"{playerName} 破产了");
+            Debug.Log($"{playerName} ?????");
             return true;
         }
         return false;
@@ -296,10 +296,10 @@ public class Player : MonoBehaviour
                 {
                     BuffSystem.Instance.RemoveBuff(this, buff);
                     isBankrupt = false;
-                    Debug.Log($"{playerName} 恢复破产状态");
+                    Debug.Log($"{playerName} ????????");
                     if (UIManager.Instance != null)
                     {
-                        UIManager.Instance.ShowToast($"{playerName} 恢复正常", 2f);
+                        UIManager.Instance.ShowToast($"{playerName} ???????", 2f);
                     }
                     break;
                 }
@@ -402,7 +402,7 @@ public class Player : MonoBehaviour
             {
                 int repayAmount = Mathf.RoundToInt(loanAmount * loanRepayMultiplier);
                 PayCash(repayAmount);
-                Debug.Log($"{playerName} 偿还贷款: {repayAmount} 金币");
+                Debug.Log($"{playerName} ????????: {repayAmount} ???");
                 loanAmount = 0;
                 loanRepayMultiplier = 1f;
                 loanRepayRounds = 0;

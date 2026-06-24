@@ -28,22 +28,22 @@ public class SimpleDayNight : MonoBehaviour
     public Material skyboxMaterial;
     
     [Header("Light Intensity Settings")]
-    [Tooltip("白天太阳光强度")]
+    [Tooltip("????????????")]
     [Range(1f, 5f)] public float daySunIntensity = 4.0f;
     
-    [Tooltip("夜晚太阳光强度")]
+    [Tooltip("???????????")]
     [Range(0f, 1f)] public float nightSunIntensity = 0.15f;
     
-    [Tooltip("白天环境光强度")]
+    [Tooltip("???????????")]
     [Range(1f, 5f)] public float dayLightIntensity = 3.0f;
     
-    [Tooltip("夜晚环境光强度")]
+    [Tooltip("????????????")]
     [Range(0f, 1f)] public float nightLightIntensity = 0.15f;
     
-    [Tooltip("环境光整体强度")]
+    [Tooltip("?????????????")]
     [Range(0f, 2f)] public float ambientIntensity = 1f;
     
-    [Tooltip("雾浓度")]
+    [Tooltip("?????")]
     [Range(0, 1)] public float fogDensity = 0.01f;
     public bool useFog = true;
     
@@ -65,14 +65,14 @@ public class SimpleDayNight : MonoBehaviour
         
         if (skyboxMaterial == null)
         {
-            Debug.LogError("Skybox材质为空");
+            Debug.LogError("Skybox???????");
             enabled = false;
             return;
         }
         
         if (sunLight == null)
         {
-            Debug.LogError("太阳光为空");
+            Debug.LogError("????????");
             enabled = false;
             return;
         }
@@ -133,7 +133,7 @@ public class SimpleDayNight : MonoBehaviour
         sunLight.color = sunColor;
         sunLight.intensity = lightIntensity;
         
-        // Light方向传递给Shader(可选)
+        // Light??????Shader(???)
         // Vector3 forward = sunRot * Vector3.forward;
         // Vector4 sunDir = new Vector4(-forward.x, -forward.y, -forward.z, 0);
         // skyboxMaterial.SetVector("_WorldSpaceLightPos0", sunDir);
@@ -141,12 +141,12 @@ public class SimpleDayNight : MonoBehaviour
         if (debugMode && Time.frameCount % 30 == 0)
         {
             string period = "";
-            if (t < 0.25f || t >= 0.9f) period = "夜晚";
-            else if (t < 0.45f) period = "白天";
-            else if (t < 0.7f) period = "白天";
-            else period = "夜晚";
+            if (t < 0.25f || t >= 0.9f) period = "???";
+            else if (t < 0.45f) period = "????";
+            else if (t < 0.7f) period = "????";
+            else period = "???";
             
-            Debug.Log($"时段: {period} {t:F2} | 太阳角度: {sunPitch:F0} | 环境亮度: {(int)(ambientColor.grayscale * 100)}%");
+            Debug.Log($"???: {period} {t:F2} | ??????: {sunPitch:F0} | ????????: {(int)(ambientColor.grayscale * 100)}%");
         }
     }
     

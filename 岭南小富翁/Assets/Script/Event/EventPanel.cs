@@ -4,7 +4,7 @@ using TMPro;
 
 public class EventPanel : MonoBehaviour
 {
-    [Header("UI 组件")]
+    [Header("UI ???")]
     public TextMeshProUGUI titleText;
     public Image eventImage;
     public TextMeshProUGUI descriptionText;
@@ -39,8 +39,21 @@ public class EventPanel : MonoBehaviour
 
         if (eventImage != null)
         {
-            eventImage.sprite = eventData.eventImage;
-            eventImage.enabled = eventData.eventImage != null;
+            if (eventData.eventImage != null)
+            {
+                eventImage.sprite = eventData.eventImage;
+                eventImage.enabled = true;
+                eventImage.gameObject.SetActive(true);
+                eventImage.transform.SetAsLastSibling();
+            }
+            else
+            {
+                eventImage.enabled = eventImage.sprite != null;
+            }
+        }
+        else
+        {
+            Debug.LogWarning("EventPanel: eventImage组件为空！");
         }
 
         if (descriptionText != null)
@@ -53,6 +66,21 @@ public class EventPanel : MonoBehaviour
 
         if (SFXManager.Instance != null)
             SFXManager.Instance.PlaySFX(SFXClip.UIOpen);
+        
+        StartCoroutine(EnsureImageEnabled());
+    }
+
+    private System.Collections.IEnumerator EnsureImageEnabled()
+    {
+        yield return null;
+        
+        if (eventImage != null && currentEvent != null && currentEvent.eventImage != null)
+        {
+            eventImage.enabled = true;
+            eventImage.gameObject.SetActive(true);
+            eventImage.transform.SetAsLastSibling();
+            Debug.Log($"EventPanel: 延迟确认图片启用 - enabled={eventImage.enabled}, active={eventImage.gameObject.activeSelf}");
+        }
     }
 
     void ClearOptions()
@@ -136,14 +164,14 @@ public class EventPanel : MonoBehaviour
             
             button.onClick.AddListener(() =>
             {
-                Debug.Log($"=== 选项 [{finalIndex}] 被点击 ===");
+                Debug.Log($"=== ??? [{finalIndex}] ????? ===");
                 Debug.Log($"EventEffectHandler.Instance: {EventEffectHandler.Instance != null}");
                 Debug.Log($"currentPlayer: {currentPlayer?.playerName ?? "NULL"}");
                 Debug.Log($"currentEvent: {currentEvent?.eventTitle ?? "NULL"}");
                 
                 if (!finalCanAfford)
                 {
-                    Debug.LogWarning("无法支付选项费用");
+                    Debug.LogWarning("????????????");
                     if (UIManager.Instance != null)
                     {
                         UIManager.ShowToastStatic("", 2f);
@@ -151,17 +179,17 @@ public class EventPanel : MonoBehaviour
                     return;
                 }
 
-                // 播放事件选择音效
+                // ??????????????
                 if (SFXManager.Instance != null)
                     SFXManager.Instance.PlayEventSelectSound();
                 
                 if (SFXManager.Instance != null)
                     SFXManager.Instance.PlaySFX(SFXClip.UIClick);
 
-                // 触发UnityEvent
+                // ????UnityEvent
                 option.onOptionSelected.Invoke();
                 
-                // 处理选项效果
+                // ???????????
                 if (EventEffectHandler.Instance != null && currentPlayer != null)
                 {
                     Debug.Log($"  ProcessOption: player={currentPlayer.playerName}, event={currentEvent.eventTitle}, option={finalIndex}");
