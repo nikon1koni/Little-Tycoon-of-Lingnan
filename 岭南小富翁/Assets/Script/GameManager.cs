@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
     private int diceRollCount = 0;          // ??????????????
     private int pressureInterval = 1;        // ??????????(?N???)
     private int nextPressureAt = 1;          // ????????????????
-    public float basePressureCost = 50f;   // ???????????
+    public float basePressureCost = 7f;   // 压力系统基础费用
     public float pressureMultiplier = 1.2f;
     
     [Header("???????")]
@@ -63,22 +63,22 @@ public class GameManager : MonoBehaviour
     public bool enableBackgroundMusic = true;
     public MusicManager musicManager;
 
-    [Header("??Ч")]
+    [Header("????")]
     public SFXConfig sfxConfig;
     public bool enableSFX = true;
 
     [Header("????????")]
     [Range(0f, 1f)]
-    [Tooltip("?????Ч????")]
+    [Tooltip("???????????")]
     public float eventSoundVolume = 0.4f;
     [Range(0f, 1f)]
-    [Tooltip("UI??Ч????")]
+    [Tooltip("UI????????")]
     public float uiSoundVolume = 0.8f;
     [Range(0f, 1f)]
-    [Tooltip("?????Ч????")]
+    [Tooltip("???????????")]
     public float characterSoundVolume = 0.7f;
     [Range(0f, 1f)]
-    [Tooltip("??????Ч????")]
+    [Tooltip("????????????")]
     public float diceSoundVolume = 0.8f;
 
     [Header("???????")]
@@ -180,7 +180,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("MusicManager ??п??????");
+            Debug.LogWarning("MusicManager ??????????");
         }
     }
 
@@ -188,7 +188,7 @@ public class GameManager : MonoBehaviour
     {
         if (ItemManager.Instance == null)
         {
-            Debug.LogWarning("ItemManager δ?????????????????");
+            Debug.LogWarning("ItemManager ???????????????????");
             return;
         }
 
@@ -209,7 +209,7 @@ public class GameManager : MonoBehaviour
     {
         if (!enableSFX)
         {
-            Debug.Log("??Ч?????");
+            Debug.Log("?????????");
             return;
         }
 
@@ -233,11 +233,11 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogWarning("SFXConfig δ??Inspector??Resources??????");
+                    Debug.LogWarning("SFXConfig ????Inspector??Resources??????");
                 }
             }
 
-            // ?????????Ч????
+            // ???????????????
             sfxManager.SetCategoryVolume(SFXCategory.Event, eventSoundVolume);
             sfxManager.SetCategoryVolume(SFXCategory.UI, uiSoundVolume);
             sfxManager.SetCategoryVolume(SFXCategory.Character, characterSoundVolume);
@@ -343,7 +343,7 @@ public class GameManager : MonoBehaviour
 
         if (boardManager.allTiles == null || boardManager.allTiles.Count == 0)
         {
-            Debug.LogWarning("????б????");
+            Debug.LogWarning("??????????");
         }
         else
         {
@@ -599,7 +599,7 @@ public class GameManager : MonoBehaviour
         diceRollCount++;
         Debug.Log($"???????????: {diceRollCount}");
 
-        // ???Buff???仯
+        // ???Buff?????
         if (CurrentRound != previousRound && BuffSystem.Instance != null)
         {
             BuffSystem.Instance.OnRoundChanged();
@@ -630,7 +630,7 @@ public class GameManager : MonoBehaviour
         int totalReward = 0;
         int buildingCount = 0;
 
-        // ?????????е????
+        // ???????????????
         foreach (BoardTile property in currentPlayer.ownedProperties)
         {
             if (property == null || property.currentBuildingData == null) continue;
@@ -639,7 +639,7 @@ public class GameManager : MonoBehaviour
             if (property.currentBuildingData.functionType == BuildingData.BuildingFunctionType.DiceEven)
             {
                 int reward = property.currentBuildingData.CalculateDiceReward(diceValue);
-                if (reward <= 0) continue; // ??н???????
+                if (reward <= 0) continue; // ???????????
 
                 currentPlayer.ReceiveCash(reward);
                 totalReward += reward;
@@ -647,7 +647,7 @@ public class GameManager : MonoBehaviour
 
                 Debug.Log($"???????: {property.tileName} ({property.currentBuildingData.buildingName}) ??? {reward} ???");
 
-                // ????Ч??
+                // ????????
                 Transform effectTransform = property.transform;
                 if (property.currentBuilding != null)
                 {
@@ -692,7 +692,7 @@ public class GameManager : MonoBehaviour
 
         int cost = Mathf.RoundToInt(basePressureCost);
 
-        // ??????δ??????????
+        // ??????????????????
         nextPressureAt++;
         basePressureCost *= pressureMultiplier;
 
@@ -829,7 +829,7 @@ public class GameManager : MonoBehaviour
     {
         if (currentPlayer == null) return;
 
-        // ???????????????Ч??
+        // ???????????????????
         float multiplier = currentPlayer.GetNextRollMultiplier();
         int finalDiceValue = Mathf.RoundToInt(lastDiceValue * multiplier);
         
@@ -838,7 +838,7 @@ public class GameManager : MonoBehaviour
             Debug.Log($"{currentPlayer.playerName} ???????: {lastDiceValue} * {multiplier} = {finalDiceValue}");
         }
 
-        // ??ò???????
+        // ???????????
         int stepsModifier = currentPlayer.GetStepsModifier();
         if (stepsModifier != 0)
         {
@@ -1083,13 +1083,13 @@ public class GameManager : MonoBehaviour
         float incomeReduction = player.GetIncomeReduction();
         if (incomeReduction > 0)
         {
-            Debug.Log($"{player.playerName} ???????Ч??: {incomeReduction * 100}%");
+            Debug.Log($"{player.playerName} ???????????: {incomeReduction * 100}%");
         }
 
         float taxReduction = player.GetTaxReduction();
         if (taxReduction > 0)
         {
-            Debug.Log($"{player.playerName} ??????Ч??: {taxReduction * 100}%");
+            Debug.Log($"{player.playerName} ??????????: {taxReduction * 100}%");
         }
     }
 
@@ -1240,7 +1240,7 @@ public class GameManager : MonoBehaviour
             diceResultText.text = $"??????: {lastDiceValue}";
 
         if (currentTileText != null && currentPlayer.currentTile != null)
-            currentTileText.text = $"???λ??: {currentPlayer.currentTile.tileName}";
+            currentTileText.text = $"???????: {currentPlayer.currentTile.tileName}";
 
         if (uiManager != null)
         {
@@ -1435,7 +1435,7 @@ public class GameManager : MonoBehaviour
         if (currentPlayer != null)
         {
             Debug.Log($"???: {currentPlayer.cash}");
-            Debug.Log($"λ??: {currentPlayer.currentTile.tileName}");
+            Debug.Log($"????: {currentPlayer.currentTile.tileName}");
             Debug.Log($"?????: {currentPlayer.isInJail}");
             Debug.Log($"???????: {currentPlayer.jailTurnsRemaining}");
         }
@@ -1452,7 +1452,7 @@ public class GameManager : MonoBehaviour
         currentPlayerIndex = 0;
         diceRollCount = 0;
         nextPressureAt = 1;
-        basePressureCost = 50f;
+        basePressureCost = 7f;
         
         // ???????????
         ResetDiceCooldown();
@@ -1481,7 +1481,7 @@ public class GameManager : MonoBehaviour
             if (startTile != null)
             {
                 p.MoveToTile(startTile, false);
-                Debug.Log($"???????λ??: {p.playerName} ?????");
+                Debug.Log($"???????????: {p.playerName} ?????");
             }
         }
         
@@ -1540,7 +1540,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // ???????н???
+    // ????????????
     private void ClearAllBuildings()
     {
         Debug.Log("????????...");
@@ -1660,7 +1660,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("???????????л????");
+            Debug.Log("?????????????????");
             if (UIManager.Instance != null)
             {
                 UIManager.Instance.ShowGameOverPanel("???????", false);
@@ -1714,10 +1714,10 @@ public class GameManager : MonoBehaviour
                         Debug.LogError($"????: {tile.tileName} ?????");
                     }
 
-                    // ???????н???
+                    // ????????????
                     if (tile.currentBuilding != null)
                     {
-                        Debug.LogError($"????: {tile.tileName} ?н???");
+                        Debug.LogError($"????: {tile.tileName} ??????");
                     }
                 }
             }

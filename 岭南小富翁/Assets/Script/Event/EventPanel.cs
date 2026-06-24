@@ -53,7 +53,7 @@ public class EventPanel : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("EventPanel: eventImage组件为空！");
+            Debug.LogWarning("EventPanel: eventImage???????");
         }
 
         if (descriptionText != null)
@@ -79,7 +79,7 @@ public class EventPanel : MonoBehaviour
             eventImage.enabled = true;
             eventImage.gameObject.SetActive(true);
             eventImage.transform.SetAsLastSibling();
-            Debug.Log($"EventPanel: 延迟确认图片启用 - enabled={eventImage.enabled}, active={eventImage.gameObject.activeSelf}");
+            Debug.Log($"EventPanel: ???????????? - enabled={eventImage.enabled}, active={eventImage.gameObject.activeSelf}");
         }
     }
 

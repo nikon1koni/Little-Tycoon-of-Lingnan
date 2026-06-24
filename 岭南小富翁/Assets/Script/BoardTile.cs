@@ -25,7 +25,7 @@ public class BoardTile : MonoBehaviour
     public Player ownerPlayer; // ??????
 
     [Header("????????")]
-    [SerializeField] private List<BoardTile> linkedBuildingTiles; // ????????????忌?
+    [SerializeField] private List<BoardTile> linkedBuildingTiles; // ???????????????
     [SerializeField] private float incomeInterval = 5.0f; // ??????
     private Dictionary<BoardTile, float> lastIncomeTime = new Dictionary<BoardTile, float>(); // ??????????
     [SerializeField] private bool enableLinkedIncome = true; // ???????????????
@@ -44,14 +44,14 @@ public class BoardTile : MonoBehaviour
 
 
     [Header("Buff???")]
-    public List<Player> buffedPlayers = new List<Player>(); // Buff????忌?
+    public List<Player> buffedPlayers = new List<Player>(); // Buff???????
 
     // ??????????
     public enum TileType
     {
         Start,          // ???
         Property,       // ???
-        Railroad,       // ??﹞
+        Railroad,       // ????
         Utility,        // ???????
         Chance,         // ????
         CommunityChest, // ????????
@@ -167,7 +167,7 @@ public class BoardTile : MonoBehaviour
 
                     if (UIManager.Instance != null)
                     {
-                        UIManager.Instance.ShowToast($"??迄??? {salary}", 2f);
+                        UIManager.Instance.ShowToast($"??????? {salary}", 2f);
                     }
                 }
                 break;
@@ -230,7 +230,7 @@ public class BoardTile : MonoBehaviour
     {
         if (ownerPlayer == null)
         {
-            // 汛?????
+            // ???????
             Debug.Log($"{tileName} ????? ??? {propertyPrice} ???");
 
             if (UIManager.Instance != null)
@@ -279,7 +279,7 @@ public class BoardTile : MonoBehaviour
     {
         int baseRent = rentPrice;
 
-        // ????扶????????????
+        // ??????????????????
         if (currentBuildingData != null)
         {
             baseRent += currentBuildingData.GetIncomeAmountByTurns(GetBuildingTurnsOwned());
@@ -334,7 +334,7 @@ public class BoardTile : MonoBehaviour
             }
         }
 
-        // ??? Buff ??????????完??
+        // ??? Buff ??????????????
         if (hasIncomeBuilding)
         {
             Debug.Log($"TriggerLinkedBuildingIncome: === ???? Buff ???? ===");
@@ -357,14 +357,14 @@ public class BoardTile : MonoBehaviour
 
                 if (buildingTile.currentBuildingData == null)
                 {
-                    Debug.Log($"  - ??扶???????");
+                    Debug.Log($"  - ???????????");
                     continue;
                 }
 
-                // Buff完????DiceEven?????
+                // Buff??????DiceEven?????
                 if (buildingTile.currentBuildingData.functionType == BuildingData.BuildingFunctionType.Buff)
                 {
-                    Debug.Log($"  - ???? Buff 完??");
+                    Debug.Log($"  - ???? Buff ????");
                     PlayBuildingEffect(buildingTile);
                     
                     if (buildingTile.currentBuildingData.effectDuration > maxEffectDuration)
@@ -374,7 +374,7 @@ public class BoardTile : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log($"  - ???? {buildingTile.currentBuildingData.functionType} 完??");
+                    Debug.Log($"  - ???? {buildingTile.currentBuildingData.functionType} ????");
                 }
             }
         }
@@ -403,7 +403,7 @@ public class BoardTile : MonoBehaviour
                 Debug.Log($"  - ???? lastIncomeTime");
             }
 
-            Debug.Log($"  - ????完??");
+            Debug.Log($"  - ????????");
             PlayBuildingEffect(buildingTile);
             
             if (buildingTile.currentBuildingData.effectDuration > maxEffectDuration)
@@ -432,7 +432,7 @@ public class BoardTile : MonoBehaviour
 
         BuildingData data = buildingTile.currentBuildingData;
         
-        Debug.Log($"PlayBuildingEffect: ???? {data.buildingName} 完??");
+        Debug.Log($"PlayBuildingEffect: ???? {data.buildingName} ????");
         Debug.Log($"  - effectIconPrefab: {(data.effectIconPrefab != null ? "??????" : "null")}");
         Debug.Log($"  - effectSound: {(data.effectSound != null ? "??????" : "null")}");
         
@@ -497,7 +497,7 @@ public class BoardTile : MonoBehaviour
         }
     }
 
-    // ?????????快????? - ?????? - ?????? + 1
+    // ???????????????? - ?????? - ?????? + 1
     public int GetBuildingTurnsOwned()
     {
         if (GameManager.Instance == null || currentBuildingData == null)
@@ -505,7 +505,7 @@ public class BoardTile : MonoBehaviour
             return 1;
         }
         int currentRound = GameManager.Instance.CurrentRound;
-        // ??抖???? = ?????? - ?????? + 1????妊?1
+        // ???????? = ?????? - ?????? + 1???????1
         return Mathf.Max(1, currentRound - buildingStartRound + 1);
     }
 
@@ -551,7 +551,7 @@ public class BoardTile : MonoBehaviour
         if (type == BuildingType.None)
         {
             // ??????????
-            Debug.LogWarning($"???? {data.buildingName} ?? buildingType汛?????????????????");
+            Debug.LogWarning($"???? {data.buildingName} ?? buildingType???????????????????");
             return InferBuildingTypeFromName(data.buildingName);
         }
         else
@@ -565,7 +565,7 @@ public class BoardTile : MonoBehaviour
     {
         string name = buildingName.ToLower();
         //?????????????
-        if (name.Contains("small") || name.Contains("妊??"))
+        if (name.Contains("small") || name.Contains("????"))
             return BuildingType.SmallHouse;
         else if (name.Contains("medium") || name.Contains("????"))
             return BuildingType.MediumHouse;
@@ -833,7 +833,7 @@ public class BoardTile : MonoBehaviour
         }
     }
 
-    // ?襌???
+    // ??????
     private void DrawCommunityChestCard(Player player)
     {
         // ??????
@@ -908,7 +908,22 @@ public class BoardTile : MonoBehaviour
     {
         if (eventDataArray != null && eventDataArray.Length > 0)
         {
-            EventData selectedEvent = eventDataArray[Random.Range(0, eventDataArray.Length)];
+            int randomIndex = Random.Range(0, eventDataArray.Length);
+            Debug.Log($"[??????] ???: {tileName}, ???????: {eventDataArray.Length}, ???????: {randomIndex}");
+            
+            for (int i = 0; i < eventDataArray.Length; i++)
+            {
+                if (eventDataArray[i] != null)
+                {
+                    Debug.Log($"  - ???{i}: {eventDataArray[i].eventTitle}");
+                }
+                else
+                {
+                    Debug.Log($"  - ???{i}: ??");
+                }
+            }
+            
+            EventData selectedEvent = eventDataArray[randomIndex];
             
             if (selectedEvent != null && UIManager.Instance != null)
             {
@@ -1037,7 +1052,7 @@ public class BoardTile : MonoBehaviour
     // ??????????
     public void SetIncomeInterval(float interval)
     {
-        incomeInterval = Mathf.Max(1.0f, interval); // ??妊?1??
+        incomeInterval = Mathf.Max(1.0f, interval); // ?????1??
     }
 
     // ??????????????????
