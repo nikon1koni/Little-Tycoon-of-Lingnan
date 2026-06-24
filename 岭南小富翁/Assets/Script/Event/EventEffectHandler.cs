@@ -247,7 +247,7 @@ public class EventEffectHandler : MonoBehaviour
 
         if (downgradedCount > 0 && UIManager.Instance != null)
         {
-            UIManager.Instance.ShowToast($"{downgradedCount}???????????", 2f);
+            UIManager.Instance.ShowToast($"{downgradedCount}栋建筑已降级", 2f);
         }
     }
 
@@ -275,7 +275,7 @@ public class EventEffectHandler : MonoBehaviour
             Debug.Log($"{player.playerName} received {totalCompensation} compensation");
             if (UIManager.Instance != null)
             {
-                UIManager.Instance.ShowToast($"???{totalCompensation}??????", 2f);
+                UIManager.Instance.ShowToast($"获得{totalCompensation}金币补偿", 2f);
             }
         }
     }
@@ -289,7 +289,7 @@ public class EventEffectHandler : MonoBehaviour
         if (UIManager.Instance != null)
         {
             int repayAmount = Mathf.RoundToInt(amount * repayMultiplier);
-            UIManager.Instance.ShowToast($"???{amount}????{repayRounds}??????w??{repayAmount}??", 2f);
+            UIManager.Instance.ShowToast($"贷款{amount}金币，{repayRounds}回合后需还{repayAmount}金币", 2f);
         }
     }
 
@@ -299,18 +299,18 @@ public class EventEffectHandler : MonoBehaviour
 
         if (eventData.costAmount > 0)
         {
-            message += $"???? {eventData.costAmount} ??\n";
+            message += $"花费 {eventData.costAmount} 金币\n";
         }
 
         if (eventData.rewardAmount > 0)
         {
-            message += $"??? {eventData.rewardAmount} ??\n";
+            message += $"获得 {eventData.rewardAmount} 金币\n";
         }
 
         if (eventData.incomeBoost > 0)
         {
             float boostPercent = eventData.incomeBoost * 100;
-            message += $"????????({eventData.buffDurationRounds}?????+{boostPercent:0}%)";
+            message += $"收入提升({eventData.buffDurationRounds}回合 +{boostPercent:0}%)";
         }
 
         if (!string.IsNullOrEmpty(message))

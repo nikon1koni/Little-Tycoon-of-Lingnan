@@ -296,10 +296,10 @@ public class Player : MonoBehaviour
                 {
                     BuffSystem.Instance.RemoveBuff(this, buff);
                     isBankrupt = false;
-                    Debug.Log($"{playerName} ????????Debuff");
+                    Debug.Log($"{playerName} »Ö¸´ÆÆ²ú×´Ì¬");
                     if (UIManager.Instance != null)
                     {
-                        UIManager.Instance.ShowToast($"{playerName} ????????", 2f);
+                        UIManager.Instance.ShowToast($"{playerName} »Ö¸´Õý³£", 2f);
                     }
                     break;
                 }
@@ -402,7 +402,7 @@ public class Player : MonoBehaviour
             {
                 int repayAmount = Mathf.RoundToInt(loanAmount * loanRepayMultiplier);
                 PayCash(repayAmount);
-                Debug.Log($"{playerName} ????????: {repayAmount} ??");
+                Debug.Log($"{playerName} ³¥»¹´û¿î: {repayAmount} ½ð±Ò");
                 loanAmount = 0;
                 loanRepayMultiplier = 1f;
                 loanRepayRounds = 0;

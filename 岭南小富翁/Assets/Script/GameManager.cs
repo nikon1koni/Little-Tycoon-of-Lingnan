@@ -8,101 +8,101 @@ public class GameManager : MonoBehaviour
     // 
     public static GameManager Instance;
 
-    [Header("?????")]
+    [Header("游戏状态")]
     public GameState currentState = GameState.Waiting;
     public int currentPlayerIndex = 0;
     public bool isGameStarted = false;
     public bool isPlayerTurn = true;
     public bool isMoving = false;
 
-    [Header("???")]
+    [Header("玩家")]
     public List<Player> players = new List<Player>();
     public Player currentPlayer;
 
-    [Header("????")]
+    [Header("骰子")]
     public DiceController diceController;
     public Dice3DController dice3DController;
     public int lastDiceValue = 0;
 
-    [Header("UI ????")]
+    [Header("UI组件")]
     public Text currentPlayerText;
     public Text playerCashText;
     public Text diceResultText;
     public Text currentTileText;
     public Button rollDiceButton;
 
-    [Header("??????")]
+    [Header("管理器")]
     public BoardManager boardManager;
     public UIManager uiManager;
 
-    [Header("???????")]
+    [Header("游戏参数")]
     public int startingCash = 1500;
     public int salaryAmount = 200;
     public int jailTurns = 3;
 
-    [Header("?????")]
+    [Header("压力系统")]
     public bool enablePressureSystem = true;
 
-    private int diceRollCount = 0;          // ???????????
-    private int pressureInterval = 1;        // ??????????(?N???)
-    private int nextPressureAt = 1;          // ????????????????
-    public float basePressureCost = 50f;   // ???????????
+    private int diceRollCount = 0;          // 累计骰子投掷次数
+    private int pressureInterval = 1;        // 压力触发间隔(每N回合)
+    private int nextPressureAt = 1;          // 下次压力触发的回合数
+    public float basePressureCost = 50f;   // 基础压力费用
     public float pressureMultiplier = 1.2f;
     
-    [Header("?????")]
-    public BuffData bankruptBuffData;        // ???Debuff????(??Inspector??????)
-    public int bankruptGraceRounds = 3;     // ???????????
+    [Header("破产设置")]
+    public BuffData bankruptBuffData;        // 破产Debuff数据(可在Inspector中设置)
+    public int bankruptGraceRounds = 3;     // 破产保护回合数
 
     public int DiceRollCount => diceRollCount;
     public int CurrentRound => diceRollCount / 6;
 
-    [Header("????")]
+    [Header("调试")]
     public bool enableDebugKeys = true;
 
-    [Header("????")]
+    [Header("音乐")]
     public bool enableBackgroundMusic = true;
     public MusicManager musicManager;
 
-    [Header("????")]
+    [Header("音效")]
     public SFXConfig sfxConfig;
     public bool enableSFX = true;
 
-    [Header("????????")]
+    [Header("音量设置")]
     [Range(0f, 1f)]
-    [Tooltip("????????")]
+    [Tooltip("事件音效音量")]
     public float eventSoundVolume = 0.4f;
     [Range(0f, 1f)]
-    [Tooltip("UI??????")]
+    [Tooltip("UI音效音量")]
     public float uiSoundVolume = 0.8f;
     [Range(0f, 1f)]
-    [Tooltip("???????")]
+    [Tooltip("角色音效音量")]
     public float characterSoundVolume = 0.7f;
     [Range(0f, 1f)]
-    [Tooltip("??????")]
+    [Tooltip("骰子音效音量")]
     public float diceSoundVolume = 0.8f;
 
-    [Header("???????")]
+    [Header("骰子冷却")]
     [Range(0f, 10f)]
-    public float diceCooldownTime = 0f; // ??????????
-    private float lastDiceRollTime = -1000f; // 
+    public float diceCooldownTime = 0f; // 骰子冷却时间
+    private float lastDiceRollTime = -1000f; // 上次投掷时间
 
-    // 
+    // 游戏状态枚举
     public enum GameState
     {
-        Waiting,           // 
-        PlayerTurn,        // 
-        RollingDice,       // 
-        Moving,            // 
-        ProcessingTile,    // ??
-        BuyingProperty,    // 
-        BuildingSelection, // 
-        BuildingPlacement, // 
-        GameOver           // 
+        Waiting,           // 等待中
+        PlayerTurn,        // 玩家回合
+        RollingDice,       // 掷骰子中
+        Moving,            // 移动中
+        ProcessingTile,    // 处理地块
+        BuyingProperty,    // 购买地产
+        BuildingSelection, // 选择建筑
+        BuildingPlacement, // 放置建筑
+        GameOver           // 游戏结束
     }
 
     void Awake()
     {
-        // 
+        // 单例初始化
         if (Instance == null)
         {
             Instance = this;
@@ -116,13 +116,13 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("=== ?????? ===");
+        Debug.Log("=== 游戏初始化 ===");
         InitializeGame();
-        // === ???1: ?????????? ===
+        // === 阶段1: 初始建筑选择 ===
         StartCoroutine(StartInitialBuildingPhase());
     }
 
-    // ????????
+    // 初始化游戏
     void InitializeGame()
     {
         FindRequiredComponents();
@@ -135,7 +135,7 @@ public class GameManager : MonoBehaviour
             currentPlayer = players[currentPlayerIndex];
         }
 
-        // ??????????
+        // 给玩家发放初始物品
         GiveStartingItemsToPlayers();
 
         currentState = GameState.Waiting;
@@ -146,15 +146,15 @@ public class GameManager : MonoBehaviour
         InitializeMusicSystem();
         InitializeSFXSystem();
 
-        Debug.Log($"???????: {players.Count}");
-        Debug.Log($"??????: {currentPlayer?.playerName ?? ""}");
+        Debug.Log($"游戏玩家数: {players.Count}");
+        Debug.Log($"当前玩家: {currentPlayer?.playerName ?? ""}");
     }
 
     void InitializeMusicSystem()
     {
         if (!enableBackgroundMusic)
         {
-            Debug.Log("?????????????");
+            Debug.Log("背景音乐已禁用");
             return;
         }
 
@@ -169,18 +169,18 @@ public class GameManager : MonoBehaviour
             {
                 musicObj = new GameObject("MusicManager");
                 musicManager = musicObj.AddComponent<MusicManager>();
-                Debug.Log("MusicManager ????");
+                Debug.Log("MusicManager 创建");
             }
         }
 
         if (musicManager != null && musicManager.GetTotalTracks() > 0)
         {
             musicManager.Play();
-            Debug.Log("??????????????");
+            Debug.Log("背景音乐开始播放");
         }
         else
         {
-            Debug.LogWarning("MusicManager ?????????");
+            Debug.LogWarning("MusicManager 没有可用曲目");
         }
     }
 
@@ -188,20 +188,20 @@ public class GameManager : MonoBehaviour
     {
         if (ItemManager.Instance == null)
         {
-            Debug.LogWarning("ItemManager ?????????????????????");
+            Debug.LogWarning("ItemManager 未找到，无法发放初始物品");
             return;
         }
 
         foreach (Player player in players)
         {
             ItemManager.Instance.GiveStartingItemsToPlayer(player);
-            Debug.Log($"????? {player.playerName} ?????????");
+            Debug.Log($"已给玩家 {player.playerName} 发放初始物品");
         }
 
         if (ItemHandManager.Instance != null && currentPlayer != null)
         {
             ItemHandManager.Instance.SetupHand(currentPlayer);
-            Debug.Log("????????????");
+            Debug.Log("物品栏已设置");
         }
     }
 
@@ -209,7 +209,7 @@ public class GameManager : MonoBehaviour
     {
         if (!enableSFX)
         {
-            Debug.Log("?????????");
+            Debug.Log("音效已禁用");
             return;
         }
 
@@ -233,17 +233,17 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogWarning("SFXConfig ????Inspector??Resources??????");
+                    Debug.LogWarning("SFXConfig 未在Inspector或Resources中设置");
                 }
             }
 
-            // ????????????????????
+            // 设置各类音效音量
             sfxManager.SetCategoryVolume(SFXCategory.Event, eventSoundVolume);
             sfxManager.SetCategoryVolume(SFXCategory.UI, uiSoundVolume);
             sfxManager.SetCategoryVolume(SFXCategory.Character, characterSoundVolume);
             sfxManager.SetCategoryVolume(SFXCategory.Dice, diceSoundVolume);
 
-            Debug.Log("SFXManager ????");
+            Debug.Log("SFXManager 创建");
         }
         else if (sfxConfig != null && SFXManager.Instance.config == null)
         {

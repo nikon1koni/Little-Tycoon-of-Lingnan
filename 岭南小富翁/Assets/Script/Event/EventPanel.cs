@@ -4,7 +4,7 @@ using TMPro;
 
 public class EventPanel : MonoBehaviour
 {
-    [Header("UI ???")]
+    [Header("UI 组件")]
     public TextMeshProUGUI titleText;
     public Image eventImage;
     public TextMeshProUGUI descriptionText;
@@ -158,10 +158,10 @@ public class EventPanel : MonoBehaviour
                 if (SFXManager.Instance != null)
                     SFXManager.Instance.PlaySFX(SFXClip.UIClick);
 
-                // ??UnityEvent
+                // 触发UnityEvent
                 option.onOptionSelected.Invoke();
                 
-                //  ??
+                // 处理选项效果
                 if (EventEffectHandler.Instance != null && currentPlayer != null)
                 {
                     Debug.Log($"  ProcessOption: player={currentPlayer.playerName}, event={currentEvent.eventTitle}, option={finalIndex}");

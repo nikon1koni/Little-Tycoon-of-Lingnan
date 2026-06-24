@@ -167,12 +167,12 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         if (isDebuff)
         {
-            // Debuff??????????????????????????
+            // Debuff根据剩余回合数返回不同颜色
             return remainingRounds <= roundThreshold ? debuffBelowThresholdColor : debuffAboveThresholdColor;
         }
         else
         {
-            // Buff??????????????????????????
+            // Buff根据剩余回合数返回不同颜色
             return remainingRounds <= roundThreshold ? buffBelowThresholdColor : buffAboveThresholdColor;
         }
     }
