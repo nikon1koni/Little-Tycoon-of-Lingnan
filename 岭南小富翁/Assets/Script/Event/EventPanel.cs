@@ -12,6 +12,10 @@ public class EventPanel : MonoBehaviour
     public Button optionButtonPrefab;
     public Button closeButton;
 
+    [Header("?????")]
+    public Sprite optionShallowSprite;
+    public Sprite optionDeepSprite;
+
     private EventData currentEvent;
     private Player currentPlayer;
 
@@ -62,6 +66,38 @@ public class EventPanel : MonoBehaviour
         ClearOptions();
         CreateOptions(eventData.options);
 
+        if (titleText != null)
+            titleText.transform.SetAsLastSibling();
+        if (descriptionText != null)
+            descriptionText.transform.SetAsLastSibling();
+        if (optionsContainer != null)
+            optionsContainer.SetAsLastSibling();
+        if (closeButton != null)
+            closeButton.transform.SetAsLastSibling();
+
+        Transform optionShallow = transform.Find("????");
+        if (optionShallow != null)
+        {
+            optionShallow.gameObject.SetActive(true);
+            optionShallow.SetAsLastSibling();
+            Debug.Log($"???????: active={optionShallow.gameObject.activeSelf}");
+        }
+        else
+        {
+            Debug.LogWarning("?????????????");
+        }
+        Transform optionDeep = transform.Find("?????");
+        if (optionDeep != null)
+        {
+            optionDeep.gameObject.SetActive(true);
+            optionDeep.SetAsLastSibling();
+            Debug.Log($"????????: active={optionDeep.gameObject.activeSelf}");
+        }
+        else
+        {
+            Debug.LogWarning("?????????????");
+        }
+
         gameObject.SetActive(true);
 
         if (SFXManager.Instance != null)
@@ -95,41 +131,80 @@ public class EventPanel : MonoBehaviour
 
     void CreateOptions(EventData.EventOption[] options)
     {
-        Debug.Log("===  ===");
-        Debug.Log("optionsContainer : " + (optionsContainer == null));
-        Debug.Log("optionButtonPrefab : " + (optionButtonPrefab == null));
-        Debug.Log("options.Length: " + (options.Length > 0));
+        Debug.Log("=== ??????? ===");
+        Debug.Log($"optionsContainer: {(optionsContainer == null ? "??" : "??????")}");
+        Debug.Log($"optionButtonPrefab: {(optionButtonPrefab == null ? "??" : "??????")}");
+        Debug.Log($"options????: {(options == null ? 0 : options.Length)}");
 
         if (optionsContainer == null || optionButtonPrefab == null) 
         {
-            Debug.LogError("");
+            Debug.LogError("optionsContainer ?? optionButtonPrefab ???????");
             return;
         }
 
-        Debug.Log("...");
+        if (options == null || options.Length == 0)
+        {
+            Debug.LogWarning("?????????");
+            return;
+        }
+
+        Debug.Log("???????????...");
         
         for (int i = 0; i < options.Length; i++)
         {
             EventData.EventOption option = options[i];
-            int optionIndex = i;  // 
+            int optionIndex = i;  
             
-            Debug.Log($" [{optionIndex}]: {option.optionText}");
+            Debug.Log($"??????? [{optionIndex}]: {option.optionText}");
             
             Button button = Instantiate(optionButtonPrefab, optionsContainer);
             button.gameObject.SetActive(true);
+            button.name = $"OptionButton_{i}";
             
             TextMeshProUGUI buttonText = button.GetComponentInChildren<TextMeshProUGUI>();
             if (buttonText != null)
             {
                 buttonText.text = option.optionText;
-                Debug.Log($": {option.optionText}");
+                buttonText.enabled = true;
+                
+                buttonText.enableWordWrapping = true;
+                buttonText.overflowMode = TextOverflowModes.Truncate;
+                buttonText.fontSize = 20;
+                buttonText.enableAutoSizing = true;
+                buttonText.fontSizeMin = 12;
+                buttonText.fontSizeMax = 24;
+                
+                Debug.Log($"?????????????: {option.optionText}");
             }
             else
             {
-                Debug.LogWarning(" TextMeshPro ");
+                Debug.LogWarning("?????????? TextMeshPro ???");
             }
 
-            // 
+            Image buttonImage = button.GetComponent<Image>();
+            if (buttonImage != null)
+            {
+                buttonImage.enabled = true;
+                
+                if (i % 2 == 0 && optionShallowSprite != null)
+                {
+                    buttonImage.sprite = optionShallowSprite;
+                    Debug.Log($"ʹ��ǳɫ����");
+                }
+                else if (i % 2 == 1 && optionDeepSprite != null)
+                {
+                    buttonImage.sprite = optionDeepSprite;
+                    Debug.Log($"ʹ����ɫ����");
+                }
+            }
+
+            RectTransform buttonRect = button.GetComponent<RectTransform>();
+            if (buttonRect != null)
+            {
+                buttonRect.sizeDelta = new Vector2(500f, buttonRect.sizeDelta.y);
+                Debug.Log($"��ť��ȵ���Ϊ: {buttonRect.sizeDelta.x}");
+            }
+
             int costToPay = option.optionCostAmount > 0 ? option.optionCostAmount : currentEvent.costAmount;
             bool canAfford = true;
             
@@ -141,8 +216,6 @@ public class EventPanel : MonoBehaviour
                 {
                     Debug.Log($" [{optionIndex}]  {costToPay}  {currentPlayer.cash} ");
                     
-                    // /
-                    Image buttonImage = button.GetComponent<Image>();
                     if (buttonImage != null)
                     {
                         Color disabledColor = buttonImage.color;
@@ -179,17 +252,14 @@ public class EventPanel : MonoBehaviour
                     return;
                 }
 
-                // 
                 if (SFXManager.Instance != null)
                     SFXManager.Instance.PlayEventSelectSound();
                 
                 if (SFXManager.Instance != null)
                     SFXManager.Instance.PlaySFX(SFXClip.UIClick);
 
-                // UnityEvent
                 option.onOptionSelected.Invoke();
                 
-                // 
                 if (EventEffectHandler.Instance != null && currentPlayer != null)
                 {
                     Debug.Log($"  ProcessOption: player={currentPlayer.playerName}, event={currentEvent.eventTitle}, option={finalIndex}");
