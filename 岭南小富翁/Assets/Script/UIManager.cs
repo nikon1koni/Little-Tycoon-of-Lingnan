@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
@@ -10,36 +10,36 @@ public class UIManager : MonoBehaviour
     // 
     public static UIManager Instance;
 
-    [Header("UI???? (Prefabs)")]
+    [Header("UI (Prefabs)")]
     public GameObject rollDiceButtonPrefab;
     public GameObject playerInfoPrefab;
     public GameObject propertyPanelPrefab;
 
-    [Header("UI???")]
+    [Header("UI")]
     public Canvas mainCanvas;
     public Text diceResultText;
     public Text currentPlayerText;
     public Text playerCashText;
     public Text currentTileText;
 
-    [Header("UI???")]
+    [Header("UI")]
     public GameObject gamePanel;
     public GameObject menuPanel;
     public GameObject pausePanel;
     public GameObject gameOverPanel;
     public GameObject propertyPurchasePanel;
 
-    [Header("UI???")]
+    [Header("UI")]
     public Button rollDiceButton;
     public Text diceAnimationText;
 
-    [Header("UI??????")]
+    [Header("UI")]
     public List<PlayerInfoUI> playerInfoUIs = new List<PlayerInfoUI>();
 
-    [Header("???????")]
-    public Vector2 diceButtonPosition = new Vector2(-20, -10); // ??????????
+    [Header("")]
+    public Vector2 diceButtonPosition = new Vector2(-20, -10); // 
 
-    [Header("UI???????")]
+    [Header("UI")]
     public GameObject buildingSelectionPanel;
     public Button[] buildingButtons = new Button[4];
     public TextMeshProUGUI tileInfoText;
@@ -48,10 +48,10 @@ public class UIManager : MonoBehaviour
     public Image selectedBuildingImage;
     public Text buildingPriceText;
 
-    [Header("???????")]
+    [Header("")]
     public List<BuildingData> availableBuildings = new List<BuildingData>();
 
-    [Header("UI????????")]
+    [Header("UI")]
     public GameObject buildingUpgradePanel;
     public Button upgradeButton;
     public Text upgradeCostText;
@@ -60,38 +60,38 @@ public class UIManager : MonoBehaviour
     public Image upgradeBuildingImage;
     public Button closeUpgradePanelButton;
 
-    [Header("Toast???")]
+    [Header("Toast")]
     public GameObject persistentToastPanel;
     public Text persistentToastText;
     public Vector2 toastPosition = new Vector2(20, 20);
     
-    [Header("???????????UI")]
+    [Header("UI")]
     public GameObject buildingPlacementHintPanel;
     public TextMeshProUGUI buildingPlacementHintText;
 
-    [Header("??????")]
+    [Header("")]
     [SerializeField] private GameObject cashDisplayPanel;
     [SerializeField] private TextMeshProUGUI cashText;
 
-    [Header("UI?????")]
+    [Header("UI")]
     public GameObject pressureSystemPanel;
     public TextMeshProUGUI diceRollCountText;
     public TextMeshProUGUI currentRoundText;
 
-    [Header("UI??????")]
+    [Header("UI")]
     public GameObject turnAnnouncePanel;
     public TextMeshProUGUI turnAnnounceText;
     public float announceDuration = 2.5f;
 
-    [Header("UI??????")]
+    [Header("UI")]
     public EventPanel eventPanel;
 
-    [Header("Toast???UI")]
+    [Header("ToastUI")]
     public GameObject infoToastPanel;
     public TextMeshProUGUI infoToastText;
     private Coroutine hideInfoToastCoroutine;
     
-    [Header("Toast????")]
+    [Header("Toast")]
     public float toastInterval = 0.5f;
     private Queue<ToastMessage> toastQueue = new Queue<ToastMessage>();
     private bool isToastPlaying = false;
@@ -110,28 +110,28 @@ public class UIManager : MonoBehaviour
 
     public TextMeshProUGUI CashText => cashText;
 
-    // ?????????
+    // 
     private bool isBuildingSelected = false;
     private GameObject activePersistentToast;
     private List<int> activeBuildingButtonIndices = new List<int>();
 
-    // ???????
+    // 
     private BoardTile upgradeSelectedTile = null;
     private Player upgradeSelectedPlayer = null;
 
-    // ???????????????
+    // 
     private BuildingData selectedBuildingData = null;
     private BoardTile selectedBoardTile = null;
     private Player currentBuildingPlayer = null;
 
-    // ??????????
+    // 
     private Dictionary<BoardTile, Color> originalTileColors = new Dictionary<BoardTile, Color>();
     private List<BoardTile> highlightableTiles = new List<BoardTile>();
 
-    // UI??
+    // UI
     private UIType currentUIType = UIType.Game;
 
-    // UI???????
+    // UI
     public enum UIType
     {
         Menu,
@@ -140,7 +140,7 @@ public class UIManager : MonoBehaviour
         GameOver
     }
 
-    // UI????????
+    // UI
     [System.Serializable]
     public class PlayerInfoUI
     {
@@ -153,31 +153,31 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
-        // ESC??????
+        // ESC
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            // ?????????????
+            // 
             if (BuildingDataConfig.Instance != null && BuildingDataConfig.Instance.IsUpgradeModeActive())
             {
-                // ?????????
+                // 
                 BuildingDataConfig.Instance.ExitUpgradeMode();
-                return; // ESC???????
+                return; // ESC
             }
-            // ????????????
+            // 
             else if (BuildingDataConfig.Instance != null && BuildingDataConfig.Instance.IsSellModeActive())
             {
-                // ?????????
+                // 
                 BuildingDataConfig.Instance.ExitSellMode();
-                return; // ESC???????
+                return; // ESC
             }
             else if (isBuildingSelected)
             {
-                // ??????????
+                // 
                 OnCancelBuildingSelection();
             }
             else if (buildingSelectionPanel != null && buildingSelectionPanel.activeSelf)
             {
-                // ?????????????
+                // 
                 HideBuildingSelectionUI();
             }
         }
@@ -198,18 +198,18 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
-        UnityEngine.Debug.Log("=== UI????? ===");
+        UnityEngine.Debug.Log("=== UI ===");
         InitializeUI();
 
-        // ???????????????????
+        // 
         if (buildingSelectionPanel != null)
         {
             buildingSelectionPanel.SetActive(false);
-            UnityEngine.Debug.Log("UIManager: ????????????????????");
+            UnityEngine.Debug.Log("UIManager: ");
         }
         else
         {
-            UnityEngine.Debug.LogWarning("UIManager: ??????????????Inspector?????");
+            UnityEngine.Debug.LogWarning("UIManager: Inspector");
         }
     }
 
@@ -226,17 +226,17 @@ public class UIManager : MonoBehaviour
         if (gameOverPanel != null) gameOverPanel.SetActive(false);
         if (propertyPurchasePanel != null) propertyPurchasePanel.SetActive(false);
 
-        // === ?????????? ===
+        // ===  ===
         if (GameManager.Instance != null && GameManager.Instance.currentPlayer != null)
         {
             UpdateCashDisplay(GameManager.Instance.currentPlayer.cash);
         }
-        // === ?????????? ===
+        // ===  ===
 
-        UnityEngine.Debug.Log("UI????????");
+        UnityEngine.Debug.Log("UI");
     }
 
-    // === ?????????? ===
+    // ===  ===
     public void UpdateCashDisplay(int cashAmount)
     {
         if (cashText != null)
@@ -245,11 +245,11 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            UnityEngine.Debug.LogWarning("UIManager: ????Inspector??????'Cash Text'");
+            UnityEngine.Debug.LogWarning("UIManager: Inspector'Cash Text'");
         }
     }
 
-    // === ?????????UI ===
+    // === UI ===
     public void UpdatePressureSystemUI()
     {
         if (GameManager.Instance == null) return;
@@ -273,12 +273,22 @@ public class UIManager : MonoBehaviour
 
         if (diceRollCountText != null)
         {
-            diceRollCountText.text = $"???????????: {diceInCurrentRound}/6";
+            string label = "骰子次数";
+            if (!string.IsNullOrEmpty(diceRollCountText.text) && diceRollCountText.text.Contains(":"))
+            {
+                label = diceRollCountText.text.Substring(0, diceRollCountText.text.IndexOf(":") + 1);
+            }
+            diceRollCountText.text = $"{label} {diceInCurrentRound}/6";
         }
 
         if (currentRoundText != null)
         {
-            currentRoundText.text = $"??????: {currentRound}";
+            string label = "回合数";
+            if (!string.IsNullOrEmpty(currentRoundText.text) && currentRoundText.text.Contains(":"))
+            {
+                label = currentRoundText.text.Substring(0, currentRoundText.text.IndexOf(":") + 1);
+            }
+            currentRoundText.text = $"{label} {currentRound}";
         }
     }
 
@@ -290,7 +300,7 @@ public class UIManager : MonoBehaviour
             if (panel != null)
             {
                 pressureSystemPanel = panel;
-                UnityEngine.Debug.Log("UIManager: ??????????????");
+                UnityEngine.Debug.Log("UIManager: ");
             }
         }
 
@@ -300,7 +310,7 @@ public class UIManager : MonoBehaviour
             if (diceTrans != null)
             {
                 diceRollCountText = diceTrans.GetComponent<TextMeshProUGUI>();
-                UnityEngine.Debug.Log("UIManager: ????????????????");
+                UnityEngine.Debug.Log("UIManager: ");
             }
         }
 
@@ -310,7 +320,7 @@ public class UIManager : MonoBehaviour
             if (roundTrans != null)
             {
                 currentRoundText = roundTrans.GetComponent<TextMeshProUGUI>();
-                UnityEngine.Debug.Log("UIManager: ????????????");
+                UnityEngine.Debug.Log("UIManager: ");
             }
         }
 
@@ -328,31 +338,31 @@ public class UIManager : MonoBehaviour
             if (panel != null)
             {
                 gameOverPanel = panel;
-                UnityEngine.Debug.Log("UIManager: ????????????????");
+                UnityEngine.Debug.Log("UIManager: ");
             }
             else
             {
-                UnityEngine.Debug.LogWarning("UIManager: ?????GameOverPanel??????Inspector??????");
+                UnityEngine.Debug.LogWarning("UIManager: GameOverPanelInspector");
             }
         }
     }
 
-    // === ??????????UI ===
+    // === UI ===
     public void ShowBuildingSelectionUI(BoardTile buildableTile, Player player)
     {
-        // ???????????????
+        // 
         selectedBoardTile = buildableTile;
         currentBuildingPlayer = player;
 
-        UnityEngine.Debug.Log($"UIManager: ??????????UI: {buildableTile.tileScale}");
+        UnityEngine.Debug.Log($"UIManager: UI: {buildableTile.tileScale}");
 
-        // ???????????
+        // 
         HidePropertyPurchasePanel();
 
-        // ????????????
+        // 
         if (buildingSelectionPanel == null)
         {
-            UnityEngine.Debug.LogError("UIManager: ?????????????");
+            UnityEngine.Debug.LogError("UIManager: ");
             return;
         }
 
@@ -366,7 +376,7 @@ public class UIManager : MonoBehaviour
 
         if (tileInfoText != null)
         {
-            tileInfoText.text = $"{buildableTile.tileName} - ???: {buildableTile.propertyPrice}";
+            tileInfoText.text = $"{buildableTile.tileName} - : {buildableTile.propertyPrice}";
             tileInfoText.raycastTarget = false;
         }
 
@@ -405,31 +415,31 @@ public class UIManager : MonoBehaviour
             
             closeBtnToUse.onClick.RemoveAllListeners();
             closeBtnToUse.onClick.AddListener(() => {
-                UnityEngine.Debug.Log("UIManager: ????????");
+                UnityEngine.Debug.Log("UIManager: ");
                 HideBuildingSelectionUI();
             });
 
-            UnityEngine.Debug.Log("UIManager: ???????????");
+            UnityEngine.Debug.Log("UIManager: ");
         }
         else
         {
-            UnityEngine.Debug.LogError("UIManager: ??????????");
+            UnityEngine.Debug.LogError("UIManager: ");
         }
 
-        // ??????????
+        // 
         SetRollDiceButtonInteractable(false);
     }
 
-    // === ??????????UI ===
+    // === UI ===
     public void HideBuildingSelectionUI(bool keepButtons = false)
     {
-        UnityEngine.Debug.Log($"??????????UI: {keepButtons}");
+        UnityEngine.Debug.Log($"UI: {keepButtons}");
 
-        // ????UI??
+        // UI
         ClearTileHighlights();
         HidePersistentToast();
 
-        // ???????
+        // 
         if (buildingSelectionPanel != null)
         {
             buildingSelectionPanel.SetActive(false);
@@ -443,7 +453,7 @@ public class UIManager : MonoBehaviour
             ClearBuildingButtons();
         }
 
-        // ?????????
+        // 
         if (!keepButtons)
         {
             selectedBuildingData = null;
@@ -456,7 +466,7 @@ public class UIManager : MonoBehaviour
             }
         }
 
-        // ??????????
+        // 
         SetRollDiceButtonInteractable(true);
     }
 
@@ -626,7 +636,7 @@ public class UIManager : MonoBehaviour
                     TextMeshProUGUI nameTmp = nameTransform.GetComponent<TextMeshProUGUI>();
                     if (nameTmp != null)
                     {
-                        nameTmp.text = $"{building.buildingName}\n{building.purchasePrice} ???";
+                        nameTmp.text = $"{building.buildingName}\n{building.purchasePrice} ";
                     }
                 }
 
@@ -646,7 +656,7 @@ public class UIManager : MonoBehaviour
     // 
     private void OnBuildingSelected(BuildingData building)
     {
-        UnityEngine.Debug.Log($"?????: {building.buildingName}, ???: {building.purchasePrice}");
+        UnityEngine.Debug.Log($": {building.buildingName}, : {building.purchasePrice}");
 
         if (SFXManager.Instance != null)
             SFXManager.Instance.PlaySFX(SFXClip.UIClick);
@@ -668,7 +678,7 @@ public class UIManager : MonoBehaviour
         }
 
         // 3. 
-        ShowPersistentToast($"????????????: {building.buildingName}");
+        ShowPersistentToast($": {building.buildingName}");
 
         // 4. 
         HighlightPlaceableTiles(currentBuildingPlayer, (int)building.requiredScale);
@@ -781,7 +791,7 @@ public class UIManager : MonoBehaviour
 
         if (highlightCount == 0)
         {
-            ShowToast("???????????", 2f);
+            ShowToast("", 2f);
         }
     }
 
@@ -790,7 +800,7 @@ public class UIManager : MonoBehaviour
         return highlightableTiles.Contains(tile);
     }
 
-    // ????????????
+    // 
     private bool IsTilePlaceable(BoardTile tile, Player player, int requiredScale)
     {
         return (tile.tileType == BoardTile.TileType.Buildable ||
@@ -821,17 +831,17 @@ public class UIManager : MonoBehaviour
 
         if (currentBuildingPlayer.cash < selectedBuildingData.purchasePrice)
         {
-            ShowToast("??????", 2f);
+            ShowToast("", 2f);
             return;
         }
 
         if (!IsTilePlaceable(tile, currentBuildingPlayer, (int)selectedBuildingData.requiredScale))
         {
-            ShowToast("?????????????", 2f);
+            ShowToast("", 2f);
             return;
         }
 
-        // ???????????
+        // 
         bool hasBuildingSelected = selectedBuildingData != null;
         if (SFXManager.Instance != null)
             SFXManager.Instance.PlayTileSelectSound(hasBuildingSelected);
@@ -862,7 +872,7 @@ public class UIManager : MonoBehaviour
                 }
             }
             
-            ShowToast("??????", 2f);
+            ShowToast("", 2f);
         }
     }
 
@@ -880,11 +890,11 @@ public class UIManager : MonoBehaviour
         
         tile.ApplyBuffToPlayer(player);
         
-        // ???????????
+        // 
         if (!player.ownedProperties.Contains(tile))
         {
             player.ownedProperties.Add(tile);
-            Debug.Log($"??? {tile.tileName} ????? {player.playerName}");
+            Debug.Log($" {tile.tileName}  {player.playerName}");
         }
 
         if (buildingData.buildingPrefab != null)
@@ -934,14 +944,14 @@ public class UIManager : MonoBehaviour
         highlightableTiles.Clear();
     }
 
-    // ??BuildingData???????????
+    // BuildingData
     private BoardTile.BuildingType GetBuildingTypeFromData(BuildingData data)
     {
-        if (data.buildingName.Contains("????") || data.buildingName.Contains("Small"))
+        if (data.buildingName.Contains("") || data.buildingName.Contains("Small"))
             return BoardTile.BuildingType.SmallHouse;
-        else if (data.buildingName.Contains("????") || data.buildingName.Contains("Medium"))
+        else if (data.buildingName.Contains("") || data.buildingName.Contains("Medium"))
             return BoardTile.BuildingType.MediumHouse;
-        else if (data.buildingName.Contains("????") || data.buildingName.Contains("Large"))
+        else if (data.buildingName.Contains("") || data.buildingName.Contains("Large"))
             return BoardTile.BuildingType.LargeHouse;
         else
             return BoardTile.BuildingType.None;
@@ -981,7 +991,7 @@ public class UIManager : MonoBehaviour
     {
         if (rollDiceButtonPrefab == null)
         {
-            UnityEngine.Debug.LogWarning("?????????????");
+            UnityEngine.Debug.LogWarning("");
             return;
         }
 
@@ -1032,23 +1042,23 @@ public class UIManager : MonoBehaviour
 
         if (currentPlayerText != null)
         {
-            currentPlayerText.text = $"???: {player.playerName}";
+            currentPlayerText.text = $": {player.playerName}";
         }
 
         if (playerCashText != null)
         {
-            playerCashText.text = $"???: {player.cash}";
+            playerCashText.text = $": {player.cash}";
         }
 
         if (currentTileText != null && player.currentTile != null)
         {
-            currentTileText.text = $"???????: {player.currentTile.tileName}";
+            currentTileText.text = $": {player.currentTile.tileName}";
         }
 
-        // ?????????
+        // 
         UpdateCashDisplay(player.cash);
 
-        // === ?????????? ===
+        // ===  ===
         if (ItemPanelUI.Instance != null)
         {
             ItemPanelUI.Instance.UpdateItemDisplay();
@@ -1081,7 +1091,7 @@ public class UIManager : MonoBehaviour
                 break;
         }
 
-        UnityEngine.Debug.Log($"????UI: {uiType}");
+        UnityEngine.Debug.Log($"UI: {uiType}");
     }
 
     public void SwitchToMenuUI() => SwitchUI(UIType.Menu);
@@ -1093,7 +1103,7 @@ public class UIManager : MonoBehaviour
     {
         if (propertyPurchasePanel == null)
         {
-            UnityEngine.Debug.LogWarning("?????????????");
+            UnityEngine.Debug.LogWarning("");
             return;
         }
 
@@ -1114,7 +1124,7 @@ public class UIManager : MonoBehaviour
             propertyNameText.text = property.tileName;
 
         if (priceText != null)
-            priceText.text = $"???: {property.propertyPrice} ???";
+            priceText.text = $": {property.propertyPrice} ";
 
         if (buyButton != null)
         {
@@ -1150,7 +1160,7 @@ public class UIManager : MonoBehaviour
     {
         if (gameOverPanel == null)
         {
-            UnityEngine.Debug.LogError("UIManager: ????Inspector??????GameOverPanel");
+            UnityEngine.Debug.LogError("UIManager: InspectorGameOverPanel");
             return;
         }
 
@@ -1167,23 +1177,23 @@ public class UIManager : MonoBehaviour
         
         int score = roundCount * 100 + diceCount + 10;
 
-        UnityEngine.Debug.Log($"???={playerName}, ?????={isWinner}, ?????={roundCount}, ???????={diceCount}, ????={score}");
+        UnityEngine.Debug.Log($"={playerName}, ={isWinner}, ={roundCount}, ={diceCount}, ={score}");
 
-        SetText("ResultText", isWinner ? $"{playerName} ???!" : $"{playerName} ???");
-        SetText("RoundText", $"?????: {roundCount}");
-        SetText("DiceText", $"???????????: {diceCount}");
-        SetText("ScoreText", $"???????: {score}");
+        SetText("ResultText", isWinner ? $"{playerName} !" : $"{playerName} ");
+        SetText("RoundText", $": {roundCount}");
+        SetText("DiceText", $": {diceCount}");
+        SetText("ScoreText", $": {score}");
 
         Button restartButton = FindRestartButton();
         if (restartButton != null)
         {
-            UnityEngine.Debug.Log("????????????");
+            UnityEngine.Debug.Log("");
             restartButton.onClick.RemoveAllListeners();
             restartButton.onClick.AddListener(OnRestartButtonClicked);
         }
         else
         {
-            UnityEngine.Debug.LogError("??????????????");
+            UnityEngine.Debug.LogError("");
         }
     }
 
@@ -1192,7 +1202,7 @@ public class UIManager : MonoBehaviour
         Transform trans = gameOverPanel.transform.Find(objectName);
         if (trans == null)
         {
-            UnityEngine.Debug.LogError($"?????????: {objectName}");
+            UnityEngine.Debug.LogError($": {objectName}");
             return;
         }
 
@@ -1212,28 +1222,28 @@ public class UIManager : MonoBehaviour
             return;
         }
 
-        UnityEngine.Debug.LogError($"{objectName} ??????? Text ?? TextMeshProUGUI ???");
+        UnityEngine.Debug.LogError($"{objectName}  Text  TextMeshProUGUI ");
     }
 
     private Button FindRestartButton()
     {
         if (gameOverPanel == null)
         {
-            UnityEngine.Debug.LogError("gameOverPanel ???");
+            UnityEngine.Debug.LogError("gameOverPanel ");
             return null;
         }
 
         Button button = gameOverPanel.transform.Find("RestartButton").GetComponent<Button>();
         if (button != null)
         {
-            UnityEngine.Debug.Log($"??????: RestartButton");
+            UnityEngine.Debug.Log($": RestartButton");
             return button;
         }
 
         button = gameOverPanel.transform.Find("Button").GetComponent<Button>();
         if (button != null)
         {
-            UnityEngine.Debug.Log($"??????: Button");
+            UnityEngine.Debug.Log($": Button");
             return button;
         }
 
@@ -1244,38 +1254,38 @@ public class UIManager : MonoBehaviour
             return button;
         }
 
-        UnityEngine.Debug.LogError("?? gameOverPanel ??????????");
+        UnityEngine.Debug.LogError(" gameOverPanel ");
         return null;
     }
 
     private void OnRestartButtonClicked()
     {
-        UnityEngine.Debug.Log("=== ????????? ===");
+        UnityEngine.Debug.Log("===  ===");
         
         if (gameOverPanel != null)
         {
             gameOverPanel.SetActive(false);
-            UnityEngine.Debug.Log("??????????????");
+            UnityEngine.Debug.Log("");
         }
         else
         {
-            UnityEngine.Debug.LogError("gameOverPanel ???");
+            UnityEngine.Debug.LogError("gameOverPanel ");
         }
         
         SwitchToGameUI();
-        UnityEngine.Debug.Log("?????????UI");
+        UnityEngine.Debug.Log("UI");
         
         if (GameManager.Instance != null)
         {
-            UnityEngine.Debug.Log("???? GameManager");
+            UnityEngine.Debug.Log(" GameManager");
             GameManager.Instance.RestartFromGameOver();
         }
         else
         {
-            UnityEngine.Debug.LogError("GameManager.Instance ???");
+            UnityEngine.Debug.LogError("GameManager.Instance ");
         }
         
-        UnityEngine.Debug.Log("=== ??? ===");
+        UnityEngine.Debug.Log("===  ===");
     }
 
     public void SetRollDiceButtonInteractable(bool interactable)
@@ -1302,7 +1312,7 @@ public class UIManager : MonoBehaviour
     {
         if (playerInfoPrefab == null)
         {
-            UnityEngine.Debug.LogWarning("?????????????");
+            UnityEngine.Debug.LogWarning("");
             return;
         }
 
@@ -1336,7 +1346,7 @@ public class UIManager : MonoBehaviour
             infoUI.playerNameText.text = $"{infoUI.player.playerName}";
 
         if (infoUI.cashText != null)
-            infoUI.cashText.text = $"{infoUI.player.cash} ???";
+            infoUI.cashText.text = $"{infoUI.player.cash} ";
 
         if (infoUI.playerColorImage != null)
             infoUI.playerColorImage.color = infoUI.player.playerColor;
@@ -1493,7 +1503,7 @@ public class UIManager : MonoBehaviour
     {
         if (buildingUpgradePanel == null)
         {
-            UnityEngine.Debug.LogWarning("??????????????");
+            UnityEngine.Debug.LogWarning("");
             return;
         }
 
@@ -1535,7 +1545,7 @@ public class UIManager : MonoBehaviour
         if (upgradeCostText != null)
         {
             int upgradeCost = upgradeSelectedTile.GetUpgradeCost();
-            upgradeCostText.text = $"????????: {upgradeCost} ???";
+            upgradeCostText.text = $": {upgradeCost} ";
 
             if (upgradeSelectedPlayer.cash < upgradeCost)
             {
@@ -1549,13 +1559,13 @@ public class UIManager : MonoBehaviour
 
         if (currentLevelText != null)
         {
-            currentLevelText.text = $"??????: {upgradeSelectedTile.buildingLevel}";
+            currentLevelText.text = $": {upgradeSelectedTile.buildingLevel}";
         }
 
         if (nextLevelText != null)
         {
             int nextLevel = upgradeSelectedTile.buildingLevel + 1;
-            nextLevelText.text = $"??????: {nextLevel}";
+            nextLevelText.text = $": {nextLevel}";
         }
 
         if (upgradeSelectedTile.currentBuildingData != null)
@@ -1563,12 +1573,12 @@ public class UIManager : MonoBehaviour
             BuildingData buildingData = upgradeSelectedTile.currentBuildingData;
 
             string functionDesc = GetBuildingFunctionDescription(buildingData, upgradeSelectedTile.buildingLevel, upgradeSelectedTile);
-            ShowToast($"????: {functionDesc}", 3f);
+            ShowToast($": {functionDesc}", 3f);
 
             if (buildingData.nextLevelBuilding != null)
             {
                 string nextFunctionDesc = GetBuildingFunctionDescription(buildingData.nextLevelBuilding, upgradeSelectedTile.buildingLevel + 1, upgradeSelectedTile);
-                UnityEngine.Debug.Log($"????????: {nextFunctionDesc}");
+                UnityEngine.Debug.Log($": {nextFunctionDesc}");
             }
         }
 
@@ -1580,7 +1590,7 @@ public class UIManager : MonoBehaviour
                 if (upgradeButton != null)
                 {
                     upgradeButton.interactable = false;
-                    ShowToast($"????????: {(int)nextBuilding.requiredScale}", 2f);
+                    ShowToast($": {(int)nextBuilding.requiredScale}", 2f);
                 }
             }
             else
@@ -1624,18 +1634,18 @@ public class UIManager : MonoBehaviour
                         multiplierInfo = $" ({multiplier:F1})";
                     }
                 }
-                return $"????: {income} ??? {multiplierInfo}";
+                return $": {income}  {multiplierInfo}";
 
             case BuildingData.BuildingFunctionType.Buff:
                 float buffValue = buildingData.GetBuffValue(level);
                 string buffName = GetBuffEffectName(buildingData.buffEffect);
                 if (buildingData.buffDuration > 0)
                 {
-                    return $"{buffName}: +{buffValue * 100}% ({buildingData.buffDuration}???)";
+                    return $"{buffName}: +{buffValue * 100}% ({buildingData.buffDuration})";
                 }
                 else
                 {
-                    return $"{buffName}: +{buffValue * 100}% (????)";
+                    return $"{buffName}: +{buffValue * 100}% ()";
                 }
 
             case BuildingData.BuildingFunctionType.Mixed:
@@ -1664,16 +1674,16 @@ public class UIManager : MonoBehaviour
                         mixedMultiplierInfo = $" ({mixedMultiplier:F1})";
                     }
                 }
-                return $"???????: {mixedIncome} ??? {mixedMultiplierInfo} + {buffName}: +{buffValue * 100}%";
+                return $": {mixedIncome}  {mixedMultiplierInfo} + {buffName}: +{buffValue * 100}%";
 
             case BuildingData.BuildingFunctionType.DiceEven:
-                return $"???????: {buildingData.GetDiceRuleDescription()}";
+                return $": {buildingData.GetDiceRuleDescription()}";
 
             case BuildingData.BuildingFunctionType.Appreciation:
-                return $"???: ????+{buildingData.appreciationPerRound}???";
+                return $": +{buildingData.appreciationPerRound}";
 
             default:
-                return "???";
+                return "";
         }
     }
 
@@ -1681,13 +1691,13 @@ public class UIManager : MonoBehaviour
     {
         switch (effect)
         {
-            case BuildingData.BuffEffect.MoveSpeedBoost: return "??????";
-            case BuildingData.BuffEffect.DiceBoost: return "??????";
-            case BuildingData.BuffEffect.IncomeMultiplier: return "??????";
-            case BuildingData.BuffEffect.DefenseBoost: return "???????";
-            case BuildingData.BuffEffect.LuckBoost: return "??????";
-            case BuildingData.BuffEffect.AllIncomeBoost: return "???????";
-            default: return "???";
+            case BuildingData.BuffEffect.MoveSpeedBoost: return "";
+            case BuildingData.BuffEffect.DiceBoost: return "";
+            case BuildingData.BuffEffect.IncomeMultiplier: return "";
+            case BuildingData.BuffEffect.DefenseBoost: return "";
+            case BuildingData.BuffEffect.LuckBoost: return "";
+            case BuildingData.BuffEffect.AllIncomeBoost: return "";
+            default: return "";
         }
     }
 
@@ -1698,7 +1708,7 @@ public class UIManager : MonoBehaviour
 
         if (upgradeSelectedTile.UpgradeBuilding(upgradeSelectedPlayer))
         {
-            ShowToast("?????????", 2f);
+            ShowToast("", 2f);
 
             if (SFXManager.Instance != null)
                 SFXManager.Instance.PlaySFX(SFXClip.EventBuildingUpgraded);
@@ -1718,7 +1728,7 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            ShowToast("?????????", 2f);
+            ShowToast("", 2f);
         }
     }
 

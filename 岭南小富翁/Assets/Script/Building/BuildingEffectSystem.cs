@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,33 +6,33 @@ public class BuildingEffectSystem : MonoBehaviour
 {
     public static BuildingEffectSystem Instance;
 
-    [Header("Ð§¹ûÏÔÊ¾ÉèÖÃ")]
+    [Header("Ð§ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½")]
     public float iconOffsetY = 2.0f;
     public float rotateSpeed = 360f;
     public float fadeDuration = 0.3f;
     public float delayBetweenEffects = 0.2f;
 
-    [Header("¶¯»­ËÙ¶È¿ØÖÆ")]
-    [Tooltip("»ù´¡¶¯»­²¥·ÅËÙ¶È")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½ï¿½ï¿½ï¿½ï¿½")]
+    [Tooltip("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½")]
     public float animationSpeed = 1.0f;
 
-    [Header("¶ÓÁÐ¶¯»­¼ÓËÙÉèÖÃ")]
-    [Tooltip("Ç°N¸ö¶¯»­ÒÔÕý³£ËÙ¶È²¥·Å")]
+    [Header("ï¿½ï¿½ï¿½Ù¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")]
+    [Tooltip("Ç°Nï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½")]
     public int normalSpeedCount = 3;
     
-    [Tooltip("Ã¿¸öºóÐø¶¯»­µÄ¼ÓËÙ±¶ÂÊ")]
+    [Tooltip("Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶È±ï¿½ï¿½ï¿½")]
     public float speedMultiplierPerEffect = 1.15f;
     
-    [Tooltip("×î´ó¼ÓËÙ±¶ÂÊÏÞÖÆ")]
+    [Tooltip("ï¿½ï¿½ï¿½ï¿½Ù¶È±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")]
     public float maxSpeedMultiplier = 3.0f;
 
-    [Header("ÒôÐ§ÉèÖÃ")]
-[Tooltip("ÒôÐ§²¥·ÅÒôÁ¿0-1")]
+    [Header("ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½")]
+[Tooltip("ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½0-1")]
 [Range(0f, 1f)]
 public float effectSoundVolume = 0.4f;
 
-    [Header("Debug¿ØÖÆ")]
-    [Tooltip("ÊÇ·ñÊä³öDebugÈÕÖ¾")]
+    [Header("Debugï¿½ï¿½ï¿½ï¿½")]
+    [Tooltip("ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½Debugï¿½ï¿½Ö¾")]
     public bool enableDebugLog = true;
 
     private Queue<EffectRequest> effectQueue = new Queue<EffectRequest>();
@@ -62,7 +62,7 @@ public float effectSoundVolume = 0.4f;
         }
     }
 
-    // DebugÈÕÖ¾¸¨Öú·½·¨
+    // Debugï¿½ï¿½Ö¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     private void DebugLog(string message)
     {
         if (enableDebugLog)
@@ -91,29 +91,29 @@ public float effectSoundVolume = 0.4f;
     {
         if (buildingData == null)
         {
-            DebugLogWarning("QueueBuildingEffect: buildingData Îª¿Õ");
+            DebugLogWarning("QueueBuildingEffect: buildingData Îªï¿½ï¿½");
             return;
         }
 
         if (buildingTransform == null)
         {
-            DebugLogWarning($"QueueBuildingEffect: buildingTransform Îª¿Õ for {buildingData.buildingName}");
+            DebugLogWarning($"QueueBuildingEffect: buildingTransform Îªï¿½ï¿½ for {buildingData.buildingName}");
             return;
         }
 
-        // ³¢ÊÔÕÒµ½ BuildingEffectSystem ÊµÀý
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½ï¿½Úµï¿½ BuildingEffectSystem Êµï¿½ï¿½
         if (Instance == null)
         {
-            DebugLogWarning("BuildingEffectSystem.Instance Îª¿Õ£¬³¢ÊÔ²éÕÒ...");
+            DebugLogWarning("BuildingEffectSystem.Instance Îªï¿½Õ£ï¿½ï¿½ï¿½ï¿½Ô²ï¿½ï¿½ï¿½...");
             BuildingEffectSystem existing = FindObjectOfType<BuildingEffectSystem>();
             if (existing != null)
             {
                 Instance = existing;
-                DebugLog("ÕÒµ½ÏÖÓÐµÄ BuildingEffectSystem");
+                DebugLog("ï¿½Òµï¿½ï¿½Ñ´ï¿½ï¿½Úµï¿½ BuildingEffectSystem");
             }
             else
             {
-                DebugLogError("ÕÒ²»µ½ BuildingEffectSystem£¬ÇëÈ·±£³¡¾°ÖÐÓÐ BuildingEffectSystem ¶ÔÏó");
+                DebugLogError("Î´ï¿½Òµï¿½ BuildingEffectSystemï¿½ï¿½ï¿½ï¿½È·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È·ï¿½ï¿½ï¿½ï¿½ BuildingEffectSystem ï¿½ï¿½ï¿½");
                 return;
             }
         }
@@ -121,11 +121,11 @@ public float effectSoundVolume = 0.4f;
         bool hasEffect = buildingData.effectIconPrefab != null || buildingData.effectSound != null;
         if (!hasEffect)
         {
-            DebugLog($"QueueBuildingEffect: {buildingData.buildingName} Ã»ÓÐÉèÖÃ effectIconPrefab »ò effectSound");
+            DebugLog($"QueueBuildingEffect: {buildingData.buildingName} Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ effectIconPrefab ï¿½ï¿½ effectSound");
             return;
         }
 
-        DebugLog($"QueueBuildingEffect: ½« {buildingData.buildingName} ¼ÓÈëÐ§¹û¶ÓÁÐ");
+        DebugLog($"QueueBuildingEffect: Îª {buildingData.buildingName} ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 
         effectQueue.Enqueue(new EffectRequest
         {
@@ -149,7 +149,7 @@ public float effectSoundVolume = 0.4f;
             effectIndex++;
             
             float currentSpeed = GetCurrentSpeed(effectIndex);
-            DebugLog($"ProcessEffectQueue: ²¥·ÅµÚ{effectIndex}¸öÐ§¹û£¬ËÙ¶È={currentSpeed:F2}x");
+            DebugLog($"ProcessEffectQueue: ï¿½ï¿½ï¿½ï¿½ï¿½{effectIndex}ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½={currentSpeed:F2}x");
 
             EffectRequest request = effectQueue.Dequeue();
             yield return StartCoroutine(PlayBuildingEffect(request.buildingTransform, request.buildingData, currentSpeed));
@@ -194,7 +194,7 @@ public float effectSoundVolume = 0.4f;
 
         if (buildingData.effectSound != null)
         {
-            DebugLog($"BuildingEffectSystem: ²¥·Å½¨ÖþÒôÐ§ {buildingData.buildingName}");
+            DebugLog($"BuildingEffectSystem: ï¿½ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ {buildingData.buildingName}");
             if (SFXManager.Instance != null)
             {
                 SFXManager.Instance.PlayCustomClip(buildingData.effectSound, effectSoundVolume);
@@ -206,7 +206,7 @@ public float effectSoundVolume = 0.4f;
         }
         else if (SFXManager.Instance != null)
         {
-            DebugLog($"BuildingEffectSystem: ²¥·ÅÄ¬ÈÏÒôÐ§ {buildingData.buildingName}");
+            DebugLog($"BuildingEffectSystem: ï¿½ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ {buildingData.buildingName}");
             SFXManager.Instance.PlaySFX(SFXClip.EventBuffActivated, effectSoundVolume);
         }
 
@@ -266,54 +266,54 @@ public float effectSoundVolume = 0.4f;
     public void SetAnimationSpeed(float speed)
     {
         animationSpeed = Mathf.Max(0.1f, speed);
-        DebugLog($"BuildingEffectSystem: ÉèÖÃ¶¯»­ËÙ¶È={animationSpeed}x");
+        DebugLog($"BuildingEffectSystem: ï¿½ï¿½ï¿½Ã¶ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½={animationSpeed}x");
     }
 
     public void SetNormalSpeedCount(int count)
     {
         normalSpeedCount = Mathf.Max(0, count);
-        DebugLog($"BuildingEffectSystem: ÉèÖÃÕý³£ËÙ¶È²¥·ÅÊýÁ¿={normalSpeedCount}");
+        DebugLog($"BuildingEffectSystem: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½={normalSpeedCount}");
     }
 
     public void SetSpeedMultiplierPerEffect(float multiplier)
     {
         speedMultiplierPerEffect = Mathf.Max(1.0f, multiplier);
-        DebugLog($"BuildingEffectSystem: ÉèÖÃËÙ¶È±¶ÂÊ={speedMultiplierPerEffect}");
+        DebugLog($"BuildingEffectSystem: ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶È±ï¿½ï¿½ï¿½={speedMultiplierPerEffect}");
     }
 
     public void SetMaxSpeedMultiplier(float multiplier)
     {
         maxSpeedMultiplier = Mathf.Max(1.0f, multiplier);
-        DebugLog($"BuildingEffectSystem: ÉèÖÃ×î´óËÙ¶È±¶ÂÊ={maxSpeedMultiplier}");
+        DebugLog($"BuildingEffectSystem: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¶È±ï¿½ï¿½ï¿½={maxSpeedMultiplier}");
     }
 
     public void SetDelayBetweenEffects(float delay)
     {
         delayBetweenEffects = Mathf.Max(0f, delay);
-        DebugLog($"BuildingEffectSystem: ÉèÖÃÐ§¹ûÑÓ³Ù={delayBetweenEffects}Ãë");
+        DebugLog($"BuildingEffectSystem: ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½={delayBetweenEffects}ï¿½ï¿½");
     }
 
     public void SetEffectSoundVolume(float volume)
     {
         effectSoundVolume = Mathf.Clamp01(volume);
-        DebugLog($"BuildingEffectSystem: ÉèÖÃÒôÐ§ÒôÁ¿={effectSoundVolume}");
+        DebugLog($"BuildingEffectSystem: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½={effectSoundVolume}");
     }
 
     public void ClearEffectQueue()
     {
         effectQueue.Clear();
-        DebugLog($"BuildingEffectSystem: Çå¿ÕÐ§¹û¶ÓÁÐ");
+        DebugLog($"BuildingEffectSystem: ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
     }
 
-    // DebugÈÕÖ¾¿ØÖÆ½Ó¿Ú
+    // Debugï¿½ï¿½Ö¾ï¿½ï¿½ï¿½Æ½Ó¿ï¿½
     public void SetDebugLogEnabled(bool enabled)
     {
         enableDebugLog = enabled;
-        string status = enabled ? "ÒÑ¿ªÆô" : "ÒÑ¹Ø±Õ";
-        Debug.Log($"BuildingEffectSystem: DebugÈÕÖ¾{status}");
+        string status = enabled ? "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½" : "ï¿½Ñ¹Ø±ï¿½";
+        Debug.Log($"BuildingEffectSystem: Debugï¿½ï¿½Ö¾{status}");
     }
 
-    // »ñÈ¡DebugÈÕÖ¾×´Ì¬
+    // ï¿½ï¿½È¡Debugï¿½ï¿½Ö¾×´Ì¬
     public bool IsDebugLogEnabled()
     {
         return enableDebugLog;

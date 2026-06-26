@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SkyboxController : MonoBehaviour
 {
@@ -180,13 +180,13 @@ public class SkyboxController : MonoBehaviour
     {
         float t = currentTime;
         
-        if (t < 0.25f) return "???";
-        else if (t < 0.35f) return "????";
-        else if (t < 0.45f) return "??}";
-        else if (t < 0.70f) return "????";
-        else if (t < 0.80f) return "????";
-        else if (t < 0.90f) return "???";
-        else return "???";
+        if (t < 0.25f) return "";
+        else if (t < 0.35f) return "";
+        else if (t < 0.45f) return "}";
+        else if (t < 0.70f) return "";
+        else if (t < 0.80f) return "";
+        else if (t < 0.90f) return "";
+        else return "";
     }
     
     void OnValidate()

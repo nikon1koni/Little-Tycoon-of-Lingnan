@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
@@ -14,12 +14,12 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public Vector2 tooltipOffset = new Vector2(50, 50);
     private GameObject activeTooltip;
     
-    [Header("?????????????")]
-    public int roundThreshold = 3;              // ???????
-    public Color buffBelowThresholdColor = Color.red;      // Buff???????????
-    public Color buffAboveThresholdColor = Color.green;     // Buff???????????
-    public Color debuffBelowThresholdColor = Color.green;   // Debuff???????????
-    public Color debuffAboveThresholdColor = Color.red;     // Debuff???????????
+    [Header("")]
+    public int roundThreshold = 3;              // 
+    public Color buffBelowThresholdColor = Color.red;      // Buff
+    public Color buffAboveThresholdColor = Color.green;     // Buff
+    public Color debuffBelowThresholdColor = Color.green;   // Debuff
+    public Color debuffAboveThresholdColor = Color.red;     // Debuff
     
     private BuffSystem.Buff currentBuff;
     
@@ -123,7 +123,7 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         
         resultDescription += $"<b>{BuildingData.GetBuffEffectName(currentBuff.effectType)}</b>\n";
         resultDescription += $"+{currentBuff.value * 100:F1}%\n";
-        resultDescription += $"???: {currentBuff.sourceName}\n";
+        resultDescription += $": {currentBuff.sourceName}\n";
         
         resultDescription += GetRemainingTimeText();
         
@@ -136,18 +136,18 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         
         if (currentBuff.isPermanent)
         {
-            timeText = "?????:<color=green>???</color>";
+            timeText = ":<color=green></color>";
         }
         else if (currentBuff.useRoundTimer)
         {
             bool isDebuff = IsDebuff();
             Color textColor = GetTimeColor(isDebuff, currentBuff.remainingRounds);
             string colorHex = ColorToHex(textColor);
-            timeText = $"?????:<color={colorHex}>{currentBuff.remainingRounds}</color>";
+            timeText = $":<color={colorHex}>{currentBuff.remainingRounds}</color>";
         }
         else
         {
-            timeText = $"??????:{currentBuff.remainingTime:F1}??";
+            timeText = $":{currentBuff.remainingTime:F1}";
         }
         
         return timeText;
@@ -167,12 +167,12 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         if (isDebuff)
         {
-            // Debuff????????????????????
+            // Debuff
             return remainingRounds <= roundThreshold ? debuffBelowThresholdColor : debuffAboveThresholdColor;
         }
         else
         {
-            // Buff????????????????????
+            // Buff
             return remainingRounds <= roundThreshold ? buffBelowThresholdColor : buffAboveThresholdColor;
         }
     }

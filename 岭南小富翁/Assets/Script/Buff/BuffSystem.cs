@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class BuffSystem : MonoBehaviour
@@ -98,7 +98,7 @@ public class BuffSystem : MonoBehaviour
                     buff.remainingRounds--;
                     if (buff.remainingRounds <= 0)
                     {
-                        // ??????Debuff - ???????????
+                        // Debuff - 
                         if (buff.effectType == BuildingData.BuffEffect.Bankrupt)
                         {
                             HandleBankruptBuffExpired(player);
@@ -110,19 +110,19 @@ public class BuffSystem : MonoBehaviour
         }
     }
     
-    // ???????Debuff????
+    // Debuff
     private void HandleBankruptBuffExpired(Player player)
     {
-        Debug.Log($"{player.playerName} ???Debuff????????????");
+        Debug.Log($"{player.playerName} Debuff");
         
         player.isBankrupt = true;
         
         if (UIManager.Instance != null)
         {
-            UIManager.Instance.ShowToast($"{player.playerName} ??????", 3f);
+            UIManager.Instance.ShowToast($"{player.playerName} ", 3f);
         }
         
-        // ??????????
+        // 
         if (GameManager.Instance != null)
         {
             GameManager.Instance.CheckGameOverAfterBankrupt();
@@ -137,14 +137,14 @@ public class BuffSystem : MonoBehaviour
         }
 
         playerBuffs[player].Add(buff);
-        Debug.Log($"{player.playerName} ??? Buff: {BuildingData.GetBuffEffectName(buff.effectType)} +{buff.value * 100}% (???: {buff.sourceName})");
+        Debug.Log($"{player.playerName}  Buff: {BuildingData.GetBuffEffectName(buff.effectType)} +{buff.value * 100}% (: {buff.sourceName})");
 
         if (UIManager.Instance != null)
         {
-            UIManager.Instance.ShowToast($"??? {BuildingData.GetBuffEffectName(buff.effectType)} ????!", 2f);
+            UIManager.Instance.ShowToast($" {BuildingData.GetBuffEffectName(buff.effectType)} !", 2f);
         }
         
-        // ???? Buff ???
+        //  Buff 
         UpdateBuffDisplay();
     }
 
@@ -152,7 +152,7 @@ public class BuffSystem : MonoBehaviour
     {
         if (playerBuffs.ContainsKey(player) && playerBuffs[player].Remove(buff))
         {
-            Debug.Log($"{player.playerName} ??? Buff ????: {BuildingData.GetBuffEffectName(buff.effectType)} (???: {buff.sourceName})");
+            Debug.Log($"{player.playerName}  Buff : {BuildingData.GetBuffEffectName(buff.effectType)} (: {buff.sourceName})");
             
             UpdateBuffDisplay();
         }
@@ -274,7 +274,7 @@ public class BuffSystem : MonoBehaviour
         return buffs;
     }
 
-    // ????????Buff
+    // Buff
     public Buff CreateBuildingBuff(BuildingData data, int level, BoardTile sourceTile)
     {
         string buffId = $"building_{sourceTile.GetInstanceID()}_{data.buildingName}";

@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
@@ -123,20 +123,20 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     {
         if (itemData == null) return;
 
-        // ¸üÐÂÍ¼±ê
+        // ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½
         if (iconImage != null)
         {
             iconImage.sprite = itemData.itemIcon;
             iconImage.color = itemData.itemIcon != null ? Color.white : Color.gray;
         }
 
-        // ¸üÐÂÃû³Æ
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         if (nameText != null)
         {
             nameText.text = itemData.itemName;
         }
 
-        // ¸üÐÂÃèÊö
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         if (descriptionText != null)
         {
             descriptionText.text = itemData.itemDescription;
@@ -258,7 +258,7 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     {
         if (draggedCardInstance == null) 
         {
-            Debug.Log("IsOverValidDropZone: draggedCardInstance Îª¿Õ");
+            Debug.Log("IsOverValidDropZone: draggedCardInstance Îªï¿½ï¿½");
             return false;
         }
 
@@ -272,24 +272,24 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
         if (raycastResults.Count == 0)
         {
-            Debug.Log("IsOverValidDropZone: Ã»ÓÐ¼ì²âµ½ÈÎºÎUIÔªËØ");
+            Debug.Log("IsOverValidDropZone: Î´ï¿½ï¿½âµ½ï¿½Îºï¿½UIÔªï¿½ï¿½");
         }
         else
         {
-            Debug.Log($"IsOverValidDropZone: ¼ì²âµ½ {raycastResults.Count} ¸öUIÔªËØ");
+            Debug.Log($"IsOverValidDropZone: ï¿½ï¿½âµ½ {raycastResults.Count} ï¿½ï¿½UIÔªï¿½ï¿½");
             foreach (var result in raycastResults)
             {
                 Debug.Log($"  - {result.gameObject.name} (Tag: {result.gameObject.tag})");
                 if (result.gameObject.CompareTag(validDropZoneTag) ||
                     result.gameObject.GetComponent<ItemDropZone>() != null)
                 {
-                    Debug.Log("¼ì²âµ½ÓÐÐ§·ÅÖÃÇøÓò: " + result.gameObject.name);
+                    Debug.Log("ï¿½ï¿½âµ½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: " + result.gameObject.name);
                     return true;
                 }
             }
         }
 
-        Debug.Log("IsOverValidDropZone: Î´¼ì²âµ½ÓÐÐ§·ÅÖÃÇøÓò");
+        Debug.Log("IsOverValidDropZone: Î´ï¿½ï¿½âµ½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
         return false;
     }
 
@@ -346,20 +346,20 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     {
         if (itemData == null || ownerPlayer == null) return;
 
-        // ²¥·ÅÒôÐ§
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§
         if (SFXManager.Instance != null)
         {
             SFXManager.Instance.PlaySFX(SFXClip.UIClick);
         }
 
-        // Ê¹ÓÃÎïÆ·
+        // Ê¹ï¿½ï¿½ï¿½ï¿½Æ·
         bool success = ItemManager.Instance.UseItem(ownerPlayer, itemData);
 
         if (success)
         {
-            Debug.Log($"{ownerPlayer.playerName} ³É¹¦Ê¹ÓÃÎïÆ·: {itemData.itemName}");
+            Debug.Log($"{ownerPlayer.playerName} ï¿½É¹ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½Æ·: {itemData.itemName}");
 
-            // ²¥·Å¶¯»­ - ¿¨Æ¬·ÉÏòÄ¿±ê
+            // ï¿½ï¿½ï¿½Å¶ï¿½ï¿½ï¿½ - ï¿½ï¿½ï¿½ï¿½Æ¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä»ï¿½ï¿½ï¿½ï¿½
             StartCoroutine(FlyToTarget());
         }
         else
@@ -459,14 +459,14 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         }
     }
 
-    // ½ûÓÃ¿¨ÅÆ - Ê¹ÆäÎÞ·¨ÍÏ×§²¢±ä°µ
+    // ï¿½ï¿½ï¿½Ã¿ï¿½Æ¬ - Ê¹ï¿½ï¿½ï¿½Þ·ï¿½ï¿½ï¿½ï¿½ï¿½×§Ê¹ï¿½ï¿½
     public void DisableCard()
     {
         canDrag = false;
         canvasGroup.alpha = 0.5f;
     }
 
-    // ÆôÓÃ¿¨ÅÆ
+    // ï¿½ï¿½ï¿½Ã¿ï¿½Æ¬
     public void EnableCard()
     {
         canDrag = true;

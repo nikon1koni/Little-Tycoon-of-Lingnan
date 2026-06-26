@@ -1,28 +1,28 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewEvent", menuName = "Game/Event Data")]
 public class EventData : ScriptableObject
 {
-    [Header("??????")]
+    [Header("")]
     public string eventTitle;
     public Sprite eventImage;
     [TextArea(3, 10)]
     public string eventDescription;
 
-    [Header("???")]
+    [Header("")]
     public EventOption[] options;
 
-    [Header("????????")]
-    [Tooltip("???????0?????????")]
+    [Header("")]
+    [Tooltip("0")]
     public int costAmount = 0;
 
-    [Tooltip("????????0????????")]
+    [Tooltip("0")]
     public int rewardAmount = 0;
 
-    [Tooltip("?????????????0.4???+40%??0?????????")]
+    [Tooltip("0.4+40%0")]
     public float incomeBoost = 0f;
 
-    [Tooltip("Buff???????????0???????")]
+    [Tooltip("Buff0")]
     public int buffDurationRounds = 0;
 
     [System.Serializable]
@@ -31,13 +31,13 @@ public class EventData : ScriptableObject
         public string optionText;
         public UnityEngine.Events.UnityEvent onOptionSelected;
         
-        [Header("?????????????????????????")]
+        [Header("")]
         public int optionCostAmount = 0;
         public int optionRewardAmount = 0;
         public float optionIncomeBoost = 0f;
         public int optionBuffDurationRounds = 0;
 
-        [Header("????????")]
+        [Header("")]
         public EventEffectType effectType = EventEffectType.None;
         
         public int stepsModifier = 0;

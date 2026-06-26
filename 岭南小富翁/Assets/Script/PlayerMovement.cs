@@ -1,37 +1,37 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [Header("???????????")]
-    public float jumpHeight = 1.5f;      // ??????
-    public float jumpDuration = 0.5f;    // ????????????????
-    public float landingDelay = 0.1f;    // ???????
-    public float heightOffset = 0.375f;   // ???????????????????????????Y????+????
+    [Header("")]
+    public float jumpHeight = 1.5f;      // 
+    public float jumpDuration = 0.5f;    // 
+    public float landingDelay = 0.1f;    // 
+    public float heightOffset = 0.375f;   // Y+
 
-    [Header("?????????")]
-    [Tooltip("??????????1????????")]
+    [Header("")]
+    [Tooltip("1")]
     [Range(0.5f, 3f)]
     public float jumpSpeedMultiplier = 1.0f;
 
-    [Header("??")]
+    [Header("")]
     [HideInInspector] public bool isMoving = false;
     [HideInInspector] public BoardTile currentTile;
 
-    private int moveCount = 0;  // ???????????????0???????????
+    private int moveCount = 0;  // 0
 
-    // ??????
+    // 
     private Player player;
     private Vector3 originalScale;
-    private float baseY;  // ????Y????
+    private float baseY;  // Y
 
     void Start()
     {
         player = GetComponent<Player>();
         originalScale = transform.localScale;
 
-        // ?????????Y????????????Y????+????
+        // YY+
         if (BoardManager.Instance != null && BoardManager.Instance.allTiles.Count > 0)
         {
             BoardTile startTile = BoardManager.Instance.GetTileByID(0);
@@ -41,22 +41,22 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                baseY = transform.position.y + heightOffset; // ??????????
+                baseY = transform.position.y + heightOffset; // 
             }
         }
         else
         {
-            baseY = transform.position.y + heightOffset; // ??????????
+            baseY = transform.position.y + heightOffset; // 
         }
 
-        // ????????????
+        // 
         InitializeStartPosition();
 
-        // ???????????????????GameManager????????????????
+        // GameManager
         StartCoroutine(FinalPositionCorrection());
     }
 
-    // ??Start?????????????????????????????????
+    // Start
     IEnumerator FinalPositionCorrection()
     {
         yield return null;
@@ -84,7 +84,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // ???????????????????????
+    // 
     public void MoveSteps(int steps)
     {
         if (isMoving) return;
@@ -93,7 +93,7 @@ public class PlayerMovement : MonoBehaviour
         StartCoroutine(MoveWithJumpAnimation(steps));
     }
 
-    // ??????????????
+    // 
     IEnumerator MoveWithJumpAnimation(int steps)
     {
         isMoving = true;
@@ -142,18 +142,18 @@ public class PlayerMovement : MonoBehaviour
                             yield return new WaitForSeconds(effectDuration);
                         }
 
-                        // ??????????????????
+                        // 
                         while (BuildingEffectSystem.Instance != null && BuildingEffectSystem.Instance.IsPlayingEffects)
                         {
                             yield return new WaitForEndOfFrame();
                         }
 
-                    // ??????????tileID == 0 ?? tileType == Start
+                    // tileID == 0  tileType == Start
                     if (candidateTile.tileID == 0 || candidateTile.tileType == BoardTile.TileType.Start)
                     {
-                        Debug.Log($"???????tileID: {candidateTile.tileID}??????????????");
+                        Debug.Log($"tileID: {candidateTile.tileID}");
 
-                        // ????????????
+                        // 
                         MoveToTileImmediate(candidateTile);
 
                         isMoving = false;
@@ -163,7 +163,7 @@ public class PlayerMovement : MonoBehaviour
                             GameManager.Instance.OnPlayerMoveComplete();
                         }
 
-                        yield break;  // ???????
+                        yield break;  // 
                     }
 
                     yield return new WaitForSeconds(0.05f);
@@ -185,7 +185,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // ????????????????
+    // 
     private BoardTile FindNearestWalkableTile()
     {
         List<BoardTile> allTiles = BoardManager.Instance.allTiles;
@@ -193,7 +193,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (currentIndex < 0) return null;
 
-        // ???????
+        // 
         for (int i = 1; i < allTiles.Count; i++)
         {
             int forwardIndex = (currentIndex + i) % allTiles.Count;
@@ -206,14 +206,14 @@ public class PlayerMovement : MonoBehaviour
         return null;
     }
 
-    [Header("???????")]
-    [Tooltip("??????????????????????????????????????????85???")]
+    [Header("")]
+    [Tooltip("85")]
     [Range(0, 180)]
-    public float rotationThreshold = 85f;  // ????90???????????
+    public float rotationThreshold = 85f;  // 90
 
-    private bool hasLeftStartTile = false;  // ??????????????tile0
+    private bool hasLeftStartTile = false;  // tile0
 
-    // ????1???????????????????????+???????????
+    // 1+
     IEnumerator JumpToTile(BoardTile targetTile)
     {
         if (SFXManager.Instance != null)
@@ -223,22 +223,22 @@ public class PlayerMovement : MonoBehaviour
         Vector3 endPos = targetTile.transform.position;
         endPos.y = baseY;
 
-        // ?????????
+        // 
         Vector3 moveDirection = (endPos - startPos).normalized;
-        moveDirection.y = 0;  // ???????????
+        moveDirection.y = 0;  // 
         
-        // ?????????????
+        // 
         bool needRotation = false;
         Quaternion targetRotation = transform.rotation;
         
-        // ????????tileID 0??5??10??15
+        // tileID 051015
         int targetTileID = targetTile.tileID;
         bool isTurningPoint = targetTileID == 0 || targetTileID == 5 || targetTileID == 10 || targetTileID == 15;
         
-        // ?????tile0?????????????????????
+        // tile0
         if (targetTileID == 0 && !hasLeftStartTile)
         {
-            // ?????????tile0?????????????????
+            // tile0
             isTurningPoint = false;
         }
         
@@ -247,7 +247,7 @@ public class PlayerMovement : MonoBehaviour
             Quaternion desiredRotation = Quaternion.LookRotation(moveDirection);
             float angleDiff = Quaternion.Angle(transform.rotation, desiredRotation);
             
-            // ?????????????????????90???????????
+            // 90
             if (angleDiff > rotationThreshold)
             {
                 needRotation = true;
@@ -255,8 +255,8 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        // ???public??jumpDuration?????????0.5f??
-        float duration = jumpDuration / jumpSpeedMultiplier;  // ?????????????????
+        // publicjumpDuration0.5f
+        float duration = jumpDuration / jumpSpeedMultiplier;  // 
         float elapsed = 0f;
 
         while (elapsed < duration)
@@ -264,20 +264,20 @@ public class PlayerMovement : MonoBehaviour
             elapsed += Time.deltaTime;
             float t = elapsed / duration;
 
-            // ???????????????0????????????????
+            // 0
             float height = Mathf.Sin(t * Mathf.PI) * jumpHeight;
 
-            // ?????
+            // 
             Vector3 horizontalPos = Vector3.Lerp(startPos, endPos, t);
 
-            // ???????? = ?????? + ???
+            //  =  + 
             transform.position = new Vector3(
                 horizontalPos.x,
                 baseY + height,
                 horizontalPos.z
             );
 
-            // ??????????????????????????
+            // 
             if (needRotation)
             {
                 transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, t);
@@ -286,17 +286,17 @@ public class PlayerMovement : MonoBehaviour
             yield return null;
         }
 
-        // ??????????????
+        // 
         transform.position = endPos;
         transform.localScale = originalScale;
         
-        // ?????????????
+        // 
         if (needRotation)
         {
             transform.rotation = targetRotation;
         }
         
-        // ???????????????????tile0?????
+        // tile0
         if (currentTile != null && currentTile.tileID == 0 && targetTileID != 0)
         {
             hasLeftStartTile = true;
@@ -306,17 +306,17 @@ public class PlayerMovement : MonoBehaviour
             SFXManager.Instance.PlaySFX(SFXClip.PlayerLand);
     }
 
-    // ????2??????????????/?????????????????????
+    // 2/
     IEnumerator TeleportJumpToTile(BoardTile targetTile)
     {
-        // ???????????
+        // 
         Vector3 startPos = transform.position;
         Vector3 midPos = (startPos + targetTile.transform.position) / 2;
         midPos.y += jumpHeight;
 
         float halfDuration = jumpDuration / 2;
 
-        // ??????????????
+        // 
         float elapsed = 0f;
         while (elapsed < halfDuration)
         {
@@ -324,13 +324,13 @@ public class PlayerMovement : MonoBehaviour
             float t = elapsed / halfDuration;
             transform.position = Vector3.Lerp(startPos, midPos, t);
 
-            // ???????
+            // 
             transform.Rotate(Vector3.up, 180f * Time.deltaTime);
 
             yield return null;
         }
 
-        // ??????????????
+        // 
         elapsed = 0f;
         while (elapsed < halfDuration)
         {
@@ -338,24 +338,24 @@ public class PlayerMovement : MonoBehaviour
             float t = elapsed / halfDuration;
             transform.position = Vector3.Lerp(midPos, targetTile.transform.position, t);
 
-            // ???????
+            // 
             transform.Rotate(Vector3.up, 180f * Time.deltaTime);
 
             yield return null;
         }
 
-        // ???????
+        // 
         transform.rotation = Quaternion.identity;
     }
 
-    // ????3????????????????????????
+    // 3
     IEnumerator BounceJumpToTile(BoardTile targetTile)
     {
         Vector3 startPos = transform.position;
         Vector3 endPos = targetTile.transform.position;
         endPos.y = baseY;
 
-        int bounceCount = 3;  // ????????
+        int bounceCount = 3;  // 
         float bounceHeight = jumpHeight;
 
         for (int bounce = 0; bounce < bounceCount; bounce++)
@@ -368,10 +368,10 @@ public class PlayerMovement : MonoBehaviour
                 elapsed += Time.deltaTime;
                 float t = elapsed / bounceDuration;
 
-                // ???????????????????????
+                // 
                 float height = Mathf.Sin(t * Mathf.PI) * bounceHeight;
 
-                // ??????????
+                // 
                 float horizontalT = (bounce + t) / bounceCount;
                 Vector3 horizontalPos = Vector3.Lerp(startPos, endPos, horizontalT);
 
@@ -384,14 +384,14 @@ public class PlayerMovement : MonoBehaviour
                 yield return null;
             }
 
-            // ????????????
+            // 
             bounceHeight *= 0.6f;
         }
 
         transform.position = endPos;
     }
 
-    // ????????????????????
+    // 
     public void MoveToTileImmediate(BoardTile tile)
     {
         if (tile == null) return;
@@ -403,7 +403,7 @@ public class PlayerMovement : MonoBehaviour
         currentTile = tile;
     }
 
-    // ????????
+    // 
     public void TeleportToTile(BoardTile targetTile, bool withAnimation = false)
     {
         if (targetTile == null) return;
@@ -424,7 +424,7 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator TeleportWithEffect(BoardTile targetTile)
     {
-        // ??????????????
+        // 
         float disappearTime = 0.3f;
         float elapsed = 0f;
         Vector3 originalScale = transform.localScale;
@@ -437,11 +437,11 @@ public class PlayerMovement : MonoBehaviour
             yield return null;
         }
 
-        // ????????????????
+        // 
         MoveToTileImmediate(targetTile);
         UpdatePlayerTileInfo(targetTile);
 
-        // ?????????????
+        // 
         elapsed = 0f;
         while (elapsed < disappearTime)
         {
@@ -463,14 +463,14 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // ???????????????????????
+    // 
     void PlayJumpSound()
     {
         if (SFXManager.Instance != null)
             SFXManager.Instance.PlaySFX(SFXClip.PlayerJump);
     }
 
-    // ???????????????????????????
+    // 
     void PlayJumpParticle()
     {
         ParticleSystem particles = GetComponent<ParticleSystem>();
@@ -480,14 +480,14 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // ?????????????
+    // 
     public void SetJumpSpeedMultiplier(float multiplier)
     {
         jumpSpeedMultiplier = Mathf.Clamp(multiplier, 0.5f, 3f);
-        Debug.Log($"PlayerMovement: ?????????????={jumpSpeedMultiplier}x");
+        Debug.Log($"PlayerMovement: ={jumpSpeedMultiplier}x");
     }
 
-    // ????????????
+    // 
     public float GetJumpSpeedMultiplier()
     {
         return jumpSpeedMultiplier;

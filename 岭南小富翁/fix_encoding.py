@@ -1,0 +1,333 @@
+# -*- coding: utf-8 -*-
+import re
+import os
+
+base_path = r"d:\GitH\DeskTop\Little-Tycoon-of-Lingnan\114514"
+
+files = [
+    os.path.join(base_path, "岭南小富翁", "Assets", "Script", "GameManager.cs"),
+    os.path.join(base_path, "岭南小富翁", "Assets", "Script", "BoardTile.cs"),
+    os.path.join(base_path, "岭南小富翁", "Assets", "Script", "UIManager.cs"),
+    os.path.join(base_path, "岭南小富翁", "Assets", "Script", "PlayerMovement.cs"),
+    os.path.join(base_path, "岭南小富翁", "Assets", "Script", "Player.cs"),
+    os.path.join(base_path, "岭南小富翁", "Assets", "Script", "Buff", "BuffSystem.cs"),
+    os.path.join(base_path, "岭南小富翁", "Assets", "Script", "Buff", "BuffIcon.cs"),
+    os.path.join(base_path, "岭南小富翁", "Assets", "Script", "Event", "EventEffectHandler.cs"),
+    os.path.join(base_path, "岭南小富翁", "Assets", "Script", "Event", "EventPanel.cs"),
+    os.path.join(base_path, "岭南小富翁", "Assets", "Script", "Data", "EventData.cs"),
+    os.path.join(base_path, "岭南小富翁", "Assets", "Script", "Skybox", "SkyboxController.cs"),
+    os.path.join(base_path, "岭南小富翁", "Assets", "Script", "Skybox", "SimpleDayNight.cs"),
+    os.path.join(base_path, "岭南小富翁", "Assets", "Script", "Item", "ItemDragCard.cs"),
+    os.path.join(base_path, "岭南小富翁", "Assets", "Script", "Building", "BuildingEffectSystem.cs"),
+    os.path.join(base_path, "岭南小富翁", "Assets", "Script", "YAxisRotator.cs")
+]
+
+replacements = [
+    (r'\[Header\("?????"\)', '[Header("游戏状态")]'),
+    (r'\[Header\("???"\)', '[Header("玩家")]'),
+    (r'\[Header\("????"\)', '[Header("骰子")]'),
+    (r'\[Header\("UI???"\)', '[Header("UI设置")]'),
+    (r'\[Header\("??????"\)', '[Header("管理器")]'),
+    (r'\[Header\("???????"\)', '[Header("游戏参数")]'),
+    (r'\[Header\("?????"\)', '[Header("压力系统")]'),
+    (r'\[Header\("???????"\)', '[Header("破产设置")]'),
+    (r'\[Header\("????"\)', '[Header("调试")]'),
+    (r'\[Header\("????"\)', '[Header("音乐")]'),
+    (r'\[Header\("????"\)', '[Header("音效")]'),
+    (r'\[Header\("????????"\)', '[Header("音效音量")]'),
+    (r'\[Header\("???????"\)', '[Header("骰子冷却")]'),
+    (r'\[Header\("UI ????? \\(Prefabs\\)"\)', '[Header("UI预制件 (Prefabs)")]'),
+    (r'\[Header\("UI ????? \\(Text\\)"\)', '[Header("UI文本 (Text)")]'),
+    (r'\[Header\("????????"\)', '[Header("建筑类型")]'),
+    (r'\[Header\("???????"\)', '[Header("地块设置")]'),
+    (r'\[Header\("Buff ???"\)', '[Header("Buff设置")]'),
+    (r'\[Header\("???????"\)', '[Header("事件效果")]'),
+    (r'\[Header\("事件????"\)', '[Header("事件面板")]'),
+    
+    (r'\[Tooltip\("???????????"\)', '[Tooltip("事件音效音量")]'),
+    (r'\[Tooltip\("UI????????"\)', '[Tooltip("UI音效音量")]'),
+    (r'\[Tooltip\("???????????"\)', '[Tooltip("角色音效音量")]'),
+    (r'\[Tooltip\("????????????"\)', '[Tooltip("骰子音效音量")]'),
+    
+    (r'// ?????????????', '// 记录骰子掷出次数'),
+    (r'// ?????????\\(N???', '// 压力触发间隔(每N回合)'),
+    (r'// ????????????????', '// 下次压力触发回合'),
+    (r'// ?????????????', '// 压力系统基础费用'),
+    (r'// ???Debuff????', '// 破产Debuff数据'),
+    (r'// ????????????', '// 破产后宽限回合数'),
+    (r'// ??????????', '// 骰子冷却时间'),
+    (r'// ?????????', '// 上次掷骰子时间'),
+    
+    (r'// ????????', '// 游戏状态'),
+    (r'// ?????', '// 等待中'),
+    (r'// ?????', '// 玩家回合'),
+    (r'// ?????????', '// 掷骰子中'),
+    (r'// ?????', '// 移动中'),
+    (r'// ???????', '// 处理地块'),
+    (r'// ??????', '// 购买地块'),
+    (r'// ?????', '// 建造选择'),
+    (r'// ???????', '// 建造放置'),
+    (r'// ???????', '// 游戏结束'),
+    
+    (r'// ?????????', '// 初始化单例'),
+    (r'Debug.Log\("=== ?????????? ===', 'Debug.Log("=== 游戏启动 ==='),
+    (r'// === ???1: ?????????? ===', '// === 阶段1: 初始建造阶段 ==='),
+    (r'// ?????????', '// 游戏初始化'),
+    (r'// ?????????????', '// 给玩家发放初始物品'),
+    
+    (r'Debug.Log\("????????: \$', 'Debug.Log("玩家数量: $'),
+    (r'Debug.Log\("??????: \$', 'Debug.Log("当前玩家: $'),
+    (r'Debug.Log\("?????????????"\)', 'Debug.Log("背景音乐已禁用")'),
+    (r'Debug.Log\("MusicManager ????"\)', 'Debug.Log("MusicManager 创建")'),
+    (r'Debug.Log\("??????????????"\)', 'Debug.Log("背景音乐开始播放")'),
+    (r'Debug.LogWarning\("MusicManager ??????????"\)', 'Debug.LogWarning("MusicManager 未找到音乐")'),
+    (r'Debug.LogWarning\("ItemManager ???????????????????"\)', 'Debug.LogWarning("ItemManager 未找到，跳过初始物品发放")'),
+    (r'Debug.Log\("?????? \$', 'Debug.Log("给玩家 $'),
+    (r'????????????"\)', '发放初始物品")'),
+    (r'Debug.Log\("???????????"\)', 'Debug.Log("物品栏初始化")'),
+    (r'Debug.Log\("?????????"\)', 'Debug.Log("音效已禁用")'),
+    (r'Debug.LogWarning\("SFXConfig ????Inspector??Resources??????"\)', 'Debug.LogWarning("SFXConfig 未在Inspector或Resources中找到")'),
+    (r'Debug.Log\("SFXManager ????"\)', 'Debug.Log("SFXManager 创建")'),
+    
+    (r'Debug.Log\("=== ???: \$', 'Debug.Log("=== 阶段: $'),
+    (r'?????????????? ===', '初始建造阶段 ==='),
+    (r'// 1. ?????????', '// 1. 设置游戏状态'),
+    (r'// 2. ??????????', '// 2. 禁用掷骰子按钮'),
+    (r'// 3. ??????????UI', '// 3. 显示建造选择UI'),
+    (r'// ????????Tile????UI', '// 创建初始购买Tile并显示UI'),
+    (r'Debug.LogWarning\("UIManager ????"\)', 'Debug.LogWarning("UIManager 为空")'),
+    (r'// ???UI??????', '// 无UI则直接完成'),
+    
+    (r'startPurchaseTileCache.tileName = "??????"', 'startPurchaseTileCache.tileName = "初始店铺"'),
+    
+    (r'Debug.Log\("???????: DiceController', 'Debug.Log("组件检查: DiceController'),
+    (r'Debug.LogWarning\("?????????"\)', 'Debug.LogWarning("未找到玩家")'),
+    (r'Debug.LogWarning\("??????????"\)', 'Debug.LogWarning("棋盘地块为空")'),
+    (r'Debug.Log\("???????: \$', 'Debug.Log("棋盘地块: $'),
+    (r'Debug.LogError\("???????????"\)', 'Debug.LogError("未找到起点地块")'),
+    
+    (r'Debug.LogWarning\("RollDiceButton ??Inspector"\)', 'Debug.LogWarning("RollDiceButton 未在Inspector中设置")'),
+    
+    (r'Debug.Log\("???????????: \$', 'Debug.Log("当前骰子次数: $'),
+    (r'// ???Buff?????', '// 检查Buff回合变化'),
+    (r'// ??????????????', '// 检查骰子偶数建筑'),
+    
+    (r'/// <summary>\r?\n/// ??????????????????\r?\n/// </summary>', '/// <summary>\n/// 检查骰子偶数奖励建筑\n/// </summary>'),
+    (r'Debug.Log\("??????????????: ?????=', 'Debug.Log("检查骰子偶数建筑: 骰子值='),
+    (r'// ???????????????', '// 遍历玩家所有建筑'),
+    (r'// DiceEven ???????', '// DiceEven类型建筑'),
+    (r'// ???????????', '// 跳过无奖励的'),
+    (r'Debug.Log\("???????: \$', 'Debug.Log("骰子奖励: $'),
+    (r'// ????????', '// 播放建筑特效'),
+    (r'// ?????????', '// 显示奖励信息'),
+    (r'uiManager.ShowToast\("??: \$', 'uiManager.ShowToast("收入: $'),
+    
+    (r'Debug.Log\("?????????: ??? \$', 'Debug.Log("压力系统触发: 回合 $'),
+    
+    (r'// ?????????????Debuff?????????????', '// 如果玩家已经有破产Debuff则不再添加'),
+    (r'Debug.Log\("\${player.playerName} ???????Debuff??????????"\)', 'Debug.Log("${player.playerName} 已经有破产Debuff，跳过")'),
+    (r'// ????????BuffData????', '// 使用默认值创建Buff'),
+    (r'string sourceName = "???"', 'string sourceName = "破产"'),
+    (r'string description = "???????\$', 'string description = "资金不足！$'),
+    (r'?????????????????', '宽限回合内无法行动！'),
+    (r'// ???BuffData?????', '// 使用BuffData中的值'),
+    
+    (r'Debug.Log\("\${player.playerName} ???????Debuff?????BuffData??????????? \$', 'Debug.Log("${player.playerName} 添加破产Debuff(使用BuffData配置)，持续 $'),
+    (r'// ??????Buff', '// 创建默认Buff'),
+    (r'Debug.Log\("\${player.playerName} ???????Debuff?????? \$', 'Debug.Log("${player.playerName} 添加破产Debuff(默认)，持续 $'),
+    
+    (r'// ????BuffData??????????', '// 显示破产提示'),
+    (r'toastMessage = "\${player.playerName} ?????????????"', 'toastMessage = "${player.playerName} 资金不足，陷入破产！"'),
+    
+    (r'// ???????????????????', '// 应用下一次骰子翻倍效果'),
+    (r'Debug.Log\("\${currentPlayer.playerName} ???????: \$', 'Debug.Log("${currentPlayer.playerName} 骰子翻倍: $'),
+    (r'// ???????????', '// 应用步数修正'),
+    (r'Debug.Log\("\${currentPlayer.playerName} ????????: \$', 'Debug.Log("${currentPlayer.playerName} 步数修正: $'),
+    (r'// ????????????1', '// 确保步数至少为1'),
+    (r'Debug.Log\("\${currentPlayer.playerName} ??? \$', 'Debug.Log("${currentPlayer.playerName} 移动 $'),
+    (r'Debug.LogError\("\${currentPlayer.playerName} ??? PlayerMovement ???"\)', 'Debug.LogError("${currentPlayer.playerName} 缺少 PlayerMovement 组件")'),
+    
+    (r'Debug.Log\("??????: \$', 'Debug.Log("骰子结果: $'),
+    (r'uiManager.ShowToast\("ESC"', 'uiManager.ShowToast("请先完成建造"'),
+    (r'Debug.LogError\("??"\)', 'Debug.LogError("玩家为空")'),
+    (r'Debug.Log\("\${currentPlayer.playerName} "\)', 'Debug.Log("${currentPlayer.playerName} 掷骰子")'),
+    (r'Debug.Log\("\${currentPlayer.playerName}  \$', 'Debug.Log("${currentPlayer.playerName} 掷出 $'),
+    
+    (r'basePressureCost = 7f;   // ?????????????', 'basePressureCost = 7f;   // 压力系统基础费用'),
+    
+    (r'"\u00b7??????????????????????\${cost}??"', '"路遇乞丐，心生怜悯，施舍了${cost}铜钱"'),
+    (r'"???????????\${cost}??"', '"家中失窃，损失${cost}铜钱"'),
+    (r'"????????????\${cost}??"', '"官府征税，缴纳${cost}铜钱"'),
+    (r'"????????????????\${cost}??"', '"友人借钱，慷慨相助${cost}铜钱"'),
+    (r'"??????????????\${cost}??"', '"赌坊输钱，白白损失${cost}铜钱"'),
+    (r'"????????????\${cost}??"', '"修缮房屋，花费${cost}铜钱"'),
+    
+    (r'"??\${currentRound}??? - \${pressureText}???????????????"', '"第${currentRound}回合 - ${pressureText}，有人无力支付！"'),
+    (r'"??\${currentRound}??? - \${pressureText}"', '"第${currentRound}回合 - ${pressureText}"'),
+    
+    (r'Debug.Log\("\${currentPlayer.playerName} ??????"\)', 'Debug.Log("${currentPlayer.playerName} 移动完成")'),
+    (r'// === 4: ???????? ===', '// === 4: 检查经过起点 ==='),
+    (r'// === 5: ???????? ===', '// === 5: 处理起点事件 ==='),
+    
+    (r'// \\(tileID == 0 \\?\\? tileType == Start\\)', '// (tileID == 0 或 tileType == Start)'),
+    (r'// \\(???????\\)', '// (经过起点)'),
+    (r'Debug.Log\("\${currentPlayer.playerName} ???????"\)', 'Debug.Log("${currentPlayer.playerName} 经过起点")'),
+    (r'// 1. ??????', '// 1. 发放工资'),
+    (r'Debug.Log\("\${currentPlayer.playerName} ??? \${salary} ???"\)', 'Debug.Log("${currentPlayer.playerName} 获得 ${salary} 铜钱")'),
+    (r'uiManager.ShowToast\("?????????: \${salary} ???"', 'uiManager.ShowToast("经过起点获得工资: ${salary} 铜钱"'),
+    (r'// 2. ???????????', '// 2. 设置建造状态'),
+    (r'// 3. ????????????', '// 3. 触发初始建造'),
+    
+    (r'Debug.Log\("\${currentPlayer.playerName} ?????"\)', 'Debug.Log("${currentPlayer.playerName} 停在起点")'),
+    (r'// \\(BoardTile.OnLanded????\\)', '// (BoardTile.OnLanded会处理)'),
+    
+    (r'// === ????????????? ===', '// === 触发起点建造 ==='),
+    (r'// ???UI???', '// 等待UI显示'),
+    (r'Debug.Log\("\${currentPlayer.playerName} ???UIManager"\)', 'Debug.Log("${currentPlayer.playerName} 缺少UIManager")'),
+    (r'// ??????', '// 直接完成'),
+    
+    (r'Debug.Log\("\${currentPlayer.playerName}  \${currentPlayer.currentTile.tileName}"\)', 'Debug.Log("${currentPlayer.playerName} 到达 ${currentPlayer.currentTile.tileName}")'),
+    
+    (r'Debug.Log\("\${currentPlayer.playerName} ??????? \${tile.tileName}"\)', 'Debug.Log("${currentPlayer.playerName} 自动购买 ${tile.tileName}")'),
+    (r'Debug.Log\("\${currentPlayer.playerName} ??????? \${tile.tileName}"\)', 'Debug.Log("${currentPlayer.playerName} 资金不足跳过 ${tile.tileName}")'),
+    
+    (r'Debug.Log\("???????: \\(purchased \\? "???": "???"\\)"\)', 'Debug.Log("购买结果: {(purchased ? "购买": "放弃")}")'),
+    
+    (r'Debug.Log\("\${currentPlayer.playerName} ???????????"\)', 'Debug.Log("${currentPlayer.playerName} 移动结束处理")'),
+    (r'// ?????????Debuff?????????????', '// 如果资金不足则应用破产Debuff'),
+    (r'Debug.Log\("\${currentPlayer.playerName} ????????????Debuff"\)', 'Debug.Log("${currentPlayer.playerName} 资金不足触发破产Debuff")'),
+    
+    (r'Debug.Log\("\${currentPlayer.playerName} ???????"\)', 'Debug.Log("${currentPlayer.playerName} 回合结束")'),
+    
+    (r'Debug.Log\("\${player.playerName} ???????????: \${incomeReduction} \\* 100\\%"\)', 'Debug.Log("${player.playerName} 收入减少: ${incomeReduction * 100}%")'),
+    (r'Debug.Log\("\${player.playerName} ??????????: \${taxReduction} \\* 100\\%"\)', 'Debug.Log("${player.playerName} 税收减免: ${taxReduction * 100}%")'),
+    
+    (r'Debug.Log\("=== \${currentPlayer.playerName} ?????? ==="\)', 'Debug.Log("=== ${currentPlayer.playerName} 回合开始 ===")'),
+    (r'// === ????UI ===', '// === 更新UI ==='),
+    (r'// === ????UI??? ===', '// === 更新UI完毕 ==='),
+    (r'uiManager.UpdateRollDiceButtonText\("??????"\)', 'uiManager.UpdateRollDiceButtonText("掷骰子")'),
+    
+    (r'Debug.Log\("\${currentPlayer.playerName} ????"\)', 'Debug.Log("${currentPlayer.playerName} 出狱")'),
+    (r'Debug.Log\("\${currentPlayer.playerName} ????? \${currentPlayer.jailTurnsRemaining} ???"\)', 'Debug.Log("${currentPlayer.playerName} 还需服刑 ${currentPlayer.jailTurnsRemaining} 回合")'),
+    (r'uiManager.ShowToast\("\${currentPlayer.playerName} ???????\${currentPlayer.jailTurnsRemaining}???"', 'uiManager.ShowToast("${currentPlayer.playerName} 在监狱中，还剩${currentPlayer.jailTurnsRemaining}回合"'),
+    
+    (r'Debug.Log\("=== ??????????: \${player.playerName} ==="\)', 'Debug.Log("=== 玩家破产: ${player.playerName} ===")'),
+    (r'Debug.Log\("?????: \${property.tileName}"\)', 'Debug.Log("没收财产: ${property.tileName}")'),
+    (r'Debug.Log\("\${player.playerName} ?????"\)', 'Debug.Log("${player.playerName} 宣布破产")'),
+    (r'uiManager.ShowToast\("\${player.playerName} ?????!"', 'uiManager.ShowToast("${player.playerName} 破产了!"),
+    
+    (r'Debug.Log\("=== ???????????! \${player.playerName}: \\(isWinner \\? "???": "???"\\) ==="\)', 'Debug.Log("=== 游戏结束! ${player.playerName}: {(isWinner ? "胜利": "失败")} ===")'),
+    (r'Debug.Log\("=== ???????????! ?????: \${winner.playerName} ==="\)', 'Debug.Log("=== 游戏结束! 获胜者: ${winner.playerName} ===")'),
+    (r'Debug.Log\("=== ??????????????? ==="\)', 'Debug.Log("=== 游戏结束，无人获胜 ===")'),
+    
+    (r'// ================= UI ???? =================', '// ================= UI 更新 ================='),
+    
+    (r'currentPlayerText.text = "\???: \${currentPlayer.playerName}"', 'currentPlayerText.text = $"玩家: {currentPlayer.playerName}"'),
+    (r'playerCashText.text = "\???: \${currentPlayer.cash}"', 'playerCashText.text = $"金钱: {currentPlayer.cash}"'),
+    (r'diceResultText.text = "\??????: \${lastDiceValue}"', 'diceResultText.text = $"骰子结果: {lastDiceValue}"'),
+    (r'currentTileText.text = "\???????: \${currentPlayer.currentTile.tileName}"', 'currentTileText.text = $"当前位置: {currentPlayer.currentTile.tileName}"'),
+    
+    (r'// === 6:  ===', '// === 6: 建造完成 ==='),
+    (r'Debug.Log\(""\)', 'Debug.Log("建造完成")'),
+    (r'isMoving = false;//', 'isMoving = false;'),
+    (r'// UI', '// 更新UI'),
+    (r'uiManager.UpdateRollDiceButtonText\(""\)', 'uiManager.UpdateRollDiceButtonText("掷骰子")'),
+    (r'// \\(\\)', ''),
+    (r'Debug.Log\(""\)', ''),
+    (r'Debug.Log\("\${currentPlayer.playerName} "\)', 'Debug.Log("${currentPlayer.playerName} 已破产")'),
+    (r'// \\(\\)', ''),
+    
+    (r'// =================  =================', '// ================= 调试功能 ================='),
+    
+    (r'Debug.Log\(""\)', ''),
+    
+    (r'Debug.Log\("??????????"\)', 'Debug.Log("测试掷骰子")'),
+    (r'Debug.Log\("???????: \${currentPlayer.playerName} ??? \${steps} ??")', 'Debug.Log("测试移动: ${currentPlayer.playerName} 移动 ${steps} 步")'),
+    
+    (r'Debug.Log\("=== ????? ==="\)', 'Debug.Log("=== 游戏状态 ===")'),
+    (r'Debug.Log\("??: \${currentState}"\)', 'Debug.Log("状态: ${currentState}")'),
+    (r'Debug.Log\("???: \${currentPlayer.playerName}"\)', 'Debug.Log("玩家: ${currentPlayer.playerName}")'),
+    (r'Debug.Log\("?????: \${players.Count}"\)', 'Debug.Log("玩家数: ${players.Count}")'),
+    (r'Debug.Log\("??????????: \${currentPlayerIndex}"\)', 'Debug.Log("当前索引: ${currentPlayerIndex}")'),
+    (r'Debug.Log\("??????: \${isGameStarted}"\)', 'Debug.Log("游戏中: ${isGameStarted}")'),
+    (r'Debug.Log\("?????: \${isPlayerTurn}"\)', 'Debug.Log("玩家回合: ${isPlayerTurn}")'),
+    (r'Debug.Log\("???????: \${isMoving}"\)', 'Debug.Log("移动中: ${isMoving}")'),
+    (r'Debug.Log\("?????: \${lastDiceValue}"\)', 'Debug.Log("骰子值: ${lastDiceValue}")'),
+    (r'Debug.Log\("???: \${currentPlayer.cash}"\)', 'Debug.Log("金钱: ${currentPlayer.cash}")'),
+    (r'Debug.Log\("????: \${currentPlayer.currentTile.tileName}"\)', 'Debug.Log("位置: ${currentPlayer.currentTile.tileName}")'),
+    (r'Debug.Log\("?????: \${currentPlayer.isInJail}"\)', 'Debug.Log("在监狱: ${currentPlayer.isInJail}")'),
+    (r'Debug.Log\("???????: \${currentPlayer.jailTurnsRemaining}"\)', 'Debug.Log("剩余刑期: ${currentPlayer.jailTurnsRemaining}")'),
+    
+    (r'Debug.Log\("?????????"\)', 'Debug.Log("重新开始")'),
+    (r'// ???????????', '// 重置骰子冷却'),
+    (r'// ????????', '// 清空所有建筑'),
+    (r'Debug.Log\("???????????: \${p.playerName} ?????"\)', 'Debug.Log("重置玩家位置: ${p.playerName} 回到起点")'),
+    (r'Debug.Log\("??????????"\)', 'Debug.Log("游戏已重置")'),
+    
+    (r'// ?????????????', '// 延迟显示建造面板'),
+    (r'Debug.Log\("\${currentPlayer.playerName} ???????????????"\)', 'Debug.Log("${currentPlayer.playerName} 在起点触发建造")'),
+    
+    (r'// ????????????', '// 清空所有建筑'),
+    (r'Debug.Log\("????????..."\)', 'Debug.Log("清空建筑...")'),
+    (r'Debug.LogWarning\("BoardManager ?? allTiles ???"\)', 'Debug.LogWarning("BoardManager 或 allTiles 为空")'),
+    (r'// ???????????', '// 重置地块数据'),
+    (r'// ???????????', '// 销毁建筑对象'),
+    (r'Debug.Log\("???????????"\)', 'Debug.Log("建筑已清空")'),
+    
+    (r'Debug.Log\("???????"\)', 'Debug.Log("重置游戏")'),
+    
+    (r'Debug.Log\("???????: \${player.playerName}"\)', 'Debug.Log("添加玩家: ${player.playerName}")'),
+    (r'Debug.Log\("??????: \${player.playerName}"\)', 'Debug.Log("移除玩家: ${player.playerName}")'),
+    
+    (r'// ???Debuff???????????????', '// 玩家破产后检查游戏结束'),
+    (r'Debug.Log\("????????????????..."\)', 'Debug.Log("检查游戏结束条件...")'),
+    (r'Debug.Log\("???????????????????: \${winner.playerName}"\)', 'Debug.Log("游戏结束，获胜者: ${winner.playerName}")'),
+    (r'Debug.Log\("?????????????????"\)', 'Debug.Log("游戏结束，无人获胜")'),
+    (r'UIManager.Instance.ShowGameOverPanel\("???????"', 'UIManager.Instance.ShowGameOverPanel("无人获胜"'),
+    
+    (r'Debug.Log\("????????"\)', 'Debug.Log("事件面板关闭")'),
+    (r'// ?????????????????????Debuff', '// 检查是否需要应用破产Debuff'),
+    (r'Debug.Log\("\${currentPlayer.playerName} ???????????"\)', 'Debug.Log("${currentPlayer.playerName} 资金不足")'),
+    (r'// ?????????', '// 启用掷骰子按钮'),
+    (r'// ?????????????????', '// 仍在建造选择状态'),
+    (r'// ???????', '// 结束移动'),
+    
+    (r'Debug.Log\("=== ???????? ==="\)', 'Debug.Log("=== 起点地块检查 ===")'),
+    (r'Debug.Log\("???: \${tile.tileName}, ID: \${tile.tileID}"\)', 'Debug.Log("起点: ${tile.tileName}, ID: ${tile.tileID}")'),
+    (r'// ??????????', '// 检查起点是否可建造'),
+    (r'Debug.LogError\("????: \${tile.tileName} ?????"\)', 'Debug.LogError("错误: ${tile.tileName} 可建造")'),
+    (r'// ????????????', '// 检查起点是否有建筑'),
+    (r'Debug.LogError\("????: \${tile.tileName} ??????"\)', 'Debug.LogError("错误: ${tile.tileName} 有建筑")'),
+    
+    (r'// ???????????', '// 设置骰子滚动速度'),
+    (r'Debug.Log\("GameManager:  \${multiplier}x"\)', 'Debug.Log("GameManager: 骰子速度 ${multiplier}x")'),
+    
+    (r'Debug.Log\("GameManager:  \${diceCooldownTime}"\)', 'Debug.Log("GameManager: 骰子冷却 ${diceCooldownTime}s")'),
+    
+    (r'Debug.Log\("GameManager: "\)', 'Debug.Log("GameManager: 骰子冷却已重置")'),
+    (r'Debug.Log\("GameManager: "\)', 'Debug.Log("GameManager: 骰子冷却已禁用")'),
+]
+
+for filepath in files:
+    if not os.path.exists(filepath):
+        print(f"文件不存在: {filepath}")
+        continue
+    
+    print(f"处理文件: {filepath}")
+    
+    with open(filepath, 'r', encoding='utf-8', errors='replace') as f:
+        content = f.read()
+    
+    replaced_count = 0
+    for old, new in replacements:
+        original = content
+        content = re.sub(old, new, content)
+        if content != original:
+            replaced_count += 1
+    
+    with open(filepath, 'w', encoding='utf-8') as f:
+        f.write(content)
+    
+    print(f"替换完成: {replaced_count} 处")
+
+print("所有文件处理完成！")

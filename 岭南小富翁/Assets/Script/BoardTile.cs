@@ -1,71 +1,71 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
 public class BoardTile : MonoBehaviour
 {
-    [Header("????????")]
+    [Header("")]
     public BoardTile.BuildingType buildingType = BoardTile.BuildingType.None;
 
-    [Header("???????")]
+    [Header("")]
     public string tileName = "";
     public int tileID = 0;
-    public int tileScale = 1; // ?????
-    public int propertyPrice = 100; // ???
-    public int rentPrice = 10; // ???
+    public int tileScale = 1; // 
+    public int propertyPrice = 100; // 
+    public int rentPrice = 10; // 
     public TileType tileType = TileType.Property;
-    public bool isBuildable = false; // ???????
+    public bool isBuildable = false; // 
 
-    [Header("????????")]
-    public BuildingData currentBuildingData; // ???????????
+    [Header("")]
+    public BuildingData currentBuildingData; // 
     public BuildingType currentBuildingType = BuildingType.None;
-    public int buildingLevel = 0; // ???????
-    public int buildingStartRound = 0; // ??????????
-    public GameObject currentBuilding; // ???????????
-    public Player ownerPlayer; // ??????
+    public int buildingLevel = 0; // 
+    public int buildingStartRound = 0; // 
+    public GameObject currentBuilding; // 
+    public Player ownerPlayer; // 
 
-    [Header("????????")]
-    [SerializeField] private List<BoardTile> linkedBuildingTiles; // ???????????????
-    [SerializeField] private float incomeInterval = 5.0f; // ??????
-    private Dictionary<BoardTile, float> lastIncomeTime = new Dictionary<BoardTile, float>(); // ??????????
-    [SerializeField] private bool enableLinkedIncome = true; // ???????????????
+    [Header("")]
+    [SerializeField] private List<BoardTile> linkedBuildingTiles; // 
+    [SerializeField] private float incomeInterval = 5.0f; // 
+    private Dictionary<BoardTile, float> lastIncomeTime = new Dictionary<BoardTile, float>(); // 
+    [SerializeField] private bool enableLinkedIncome = true; // 
 
-    [Header("???????")]
-    [SerializeField] private bool enableAutoIncome = false; // ??????????????
-    [SerializeField] private float autoIncomeInterval = 10.0f; // ?????????
+    [Header("")]
+    [SerializeField] private bool enableAutoIncome = false; // 
+    [SerializeField] private float autoIncomeInterval = 10.0f; // 
     private float lastAutoIncomeTime = 0f;
 
-    [Header("???")]
-    public EventData[] eventDataArray; // ???????????
+    [Header("")]
+    public EventData[] eventDataArray; // 
 
     [Header("UI")]
-    public TextMeshProUGUI tileNameText; // ??????????
-    public MeshRenderer tileRenderer; // ????????
+    public TextMeshProUGUI tileNameText; // 
+    public MeshRenderer tileRenderer; // 
 
 
-    [Header("Buff???")]
-    public List<Player> buffedPlayers = new List<Player>(); // Buff???????
+    [Header("Buff")]
+    public List<Player> buffedPlayers = new List<Player>(); // Buff
 
-    // ??????????
+    // 
     public enum TileType
     {
-        Start,          // ???
-        Property,       // ???
-        Railroad,       // ????
-        Utility,        // ???????
-        Chance,         // ????
-        CommunityChest, // ????????
+        Start,          // 
+        Property,       // 
+        Railroad,       // 
+        Utility,        // 
+        Chance,         // 
+        CommunityChest, // 
         Tax,            // ?
-        Jail,           // ????
-        FreeParking,    // ??????
-        GoToJail,       // ?????
-        Buildable,      // ?????
-        BuildingSite,   // ???????
-        Event,          // ???
+        Jail,           // 
+        FreeParking,    // 
+        GoToJail,       // 
+        Buildable,      // 
+        BuildingSite,   // 
+        Event,          // 
         Normal
     }
 
-    // ???????????
+    // 
     public enum BuildingType
     {
         None,
@@ -78,7 +78,7 @@ public class BoardTile : MonoBehaviour
         Special
     }
 
-    // ??????
+    // 
     public enum TileEvent
     {
         None,
@@ -93,7 +93,7 @@ public class BoardTile : MonoBehaviour
     {
         InitializeTile();
 
-        // ?????????
+        // 
         if (tileRenderer == null)
         {
             tileRenderer = GetComponentInChildren<MeshRenderer>();
@@ -109,7 +109,7 @@ public class BoardTile : MonoBehaviour
 
     void Update()
     {
-        // ???????????
+        // 
         if (enableAutoIncome &&
             currentBuildingData != null &&
             ownerPlayer != null &&
@@ -126,13 +126,13 @@ public class BoardTile : MonoBehaviour
 
     void InitializeTile()
     {
-        // ???????????
+        // 
         if (string.IsNullOrEmpty(tileName))
         {
-            tileName = $"???_{tileID}";
+            tileName = $"_{tileID}";
         }
 
-        // ???????????
+        // 
         if (tileNameText != null)
         {
             tileNameText.text = tileName;
@@ -151,7 +151,7 @@ public class BoardTile : MonoBehaviour
         return maxEffectDuration;
     }
 
-    // ???????????
+    // 
     public virtual void OnLanded(Player player)
     {
         switch (tileType)
@@ -167,7 +167,7 @@ public class BoardTile : MonoBehaviour
 
                     if (UIManager.Instance != null)
                     {
-                        UIManager.Instance.ShowToast($"??????? {salary}", 2f);
+                        UIManager.Instance.ShowToast($" {salary}", 2f);
                     }
                 }
                 break;
@@ -225,13 +225,13 @@ public class BoardTile : MonoBehaviour
         }
     }
 
-    // ??????????
+    // 
     private void HandlePropertyLanding(Player player)
     {
         if (ownerPlayer == null)
         {
-            // ???????
-            Debug.Log($"{tileName} ????? ??? {propertyPrice} ???");
+            // 
+            Debug.Log($"{tileName}   {propertyPrice} ");
 
             if (UIManager.Instance != null)
             {
@@ -240,21 +240,21 @@ public class BoardTile : MonoBehaviour
         }
         else if (ownerPlayer == player)
         {
-            // ???????
-            Debug.Log($"{player.playerName} ????????? {tileName}");
+            // 
+            Debug.Log($"{player.playerName}  {tileName}");
         }
         else
         {
-            // ??????
+            // 
             PayRent(player);
         }
     }
 
-    // ??????
+    // 
     private void PayRent(Player player)
     {
         int rent = CalculateRent();
-        Debug.Log($"{player.playerName} ?? {ownerPlayer.playerName} ??? {rent} ???");
+        Debug.Log($"{player.playerName}  {ownerPlayer.playerName}  {rent} ");
 
         if (player.PayCash(rent))
         {
@@ -265,21 +265,21 @@ public class BoardTile : MonoBehaviour
 
             if (UIManager.Instance != null)
             {
-                UIManager.Instance.ShowToast($"?????? {rent} ?? {ownerPlayer.playerName}", 2f);
+                UIManager.Instance.ShowToast($" {rent}  {ownerPlayer.playerName}", 2f);
             }
         }
         else
         {
-            Debug.LogWarning($"{player.playerName} ???????????????");
+            Debug.LogWarning($"{player.playerName} ");
         }
     }
 
-    // ???????
+    // 
     public int CalculateRent()
     {
         int baseRent = rentPrice;
 
-        // ??????????????????
+        // 
         if (currentBuildingData != null)
         {
             baseRent += currentBuildingData.GetIncomeAmountByTurns(GetBuildingTurnsOwned());
@@ -300,18 +300,18 @@ public class BoardTile : MonoBehaviour
         int totalIncome = 0;
         float maxEffectDuration = 0f;
 
-        Debug.Log($"TriggerLinkedBuildingIncome: ???????????={linkedBuildingTiles.Count}???={incomeInterval}");
+        Debug.Log($"TriggerLinkedBuildingIncome: ={linkedBuildingTiles.Count}={incomeInterval}");
         
-        // ????????????????
+        // 
         for (int i = 0; i < linkedBuildingTiles.Count; i++)
         {
             BoardTile tile = linkedBuildingTiles[i];
             string dataName = tile.currentBuildingData?.buildingName ?? "";
             string ownerName = tile.ownerPlayer?.playerName ?? "";
-            Debug.Log($"  [{i}]: {tile.name ?? "null"} - ??????: {dataName}, ?????: {ownerName}");
+            Debug.Log($"  [{i}]: {tile.name ?? "null"} - : {dataName}, : {ownerName}");
         }
 
-        // ???????? Income ????
+        //  Income 
         bool hasIncomeBuilding = false;
         List<BoardTile> incomeTiles = new List<BoardTile>();
         
@@ -334,14 +334,14 @@ public class BoardTile : MonoBehaviour
             }
         }
 
-        // ??? Buff ??????????????
+        //  Buff 
         if (hasIncomeBuilding)
         {
-            Debug.Log($"TriggerLinkedBuildingIncome: === ???? Buff ???? ===");
+            Debug.Log($"TriggerLinkedBuildingIncome: ===  Buff  ===");
             for (int i = 0; i < linkedBuildingTiles.Count; i++)
             {
                 BoardTile buildingTile = linkedBuildingTiles[i];
-                Debug.Log($"???? {i}: {buildingTile.name ?? "null"}");
+                Debug.Log($" {i}: {buildingTile.name ?? "null"}");
                 if (buildingTile == null) continue;
 
                 bool canGenerate = CanGenerateIncome(buildingTile, currentTime);
@@ -351,20 +351,20 @@ public class BoardTile : MonoBehaviour
 
                 if (buildingTile.ownerPlayer == null || buildingTile.ownerPlayer != player)
                 {
-                    Debug.Log($"  - ??????????");
+                    Debug.Log($"  - ");
                     continue;
                 }
 
                 if (buildingTile.currentBuildingData == null)
                 {
-                    Debug.Log($"  - ???????????");
+                    Debug.Log($"  - ");
                     continue;
                 }
 
-                // Buff??????DiceEven?????
+                // BuffDiceEven
                 if (buildingTile.currentBuildingData.functionType == BuildingData.BuildingFunctionType.Buff)
                 {
-                    Debug.Log($"  - ???? Buff ????");
+                    Debug.Log($"  -  Buff ");
                     PlayBuildingEffect(buildingTile);
                     
                     if (buildingTile.currentBuildingData.effectDuration > maxEffectDuration)
@@ -374,20 +374,20 @@ public class BoardTile : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log($"  - ???? {buildingTile.currentBuildingData.functionType} ????");
+                    Debug.Log($"  -  {buildingTile.currentBuildingData.functionType} ");
                 }
             }
         }
 
-        // ???? Income ?? Mixed ????
-        Debug.Log($"TriggerLinkedBuildingIncome: === ???? Income/Mixed ???? ===\n");
+        //  Income  Mixed 
+        Debug.Log($"TriggerLinkedBuildingIncome: ===  Income/Mixed  ===\n");
         foreach (BoardTile buildingTile in incomeTiles)
         {
-            Debug.Log($"????: {buildingTile.name ?? "null"}");
+            Debug.Log($": {buildingTile.name ?? "null"}");
             
             int baseIncome = buildingTile.currentBuildingData.GetIncomeAmountByTurns(buildingTile.GetBuildingTurnsOwned());
             int incomeAmount = player.GetIncomeWithMultiplier(baseIncome);
-            Debug.Log($"  - ????????: {baseIncome}, ???????: {incomeAmount}");
+            Debug.Log($"  - : {baseIncome}, : {incomeAmount}");
             
             player.ReceiveCash(incomeAmount);
             totalIncome += incomeAmount;
@@ -395,15 +395,15 @@ public class BoardTile : MonoBehaviour
             if (!lastIncomeTime.ContainsKey(buildingTile))
             {
                 lastIncomeTime.Add(buildingTile, currentTime);
-                Debug.Log($"  - ???? lastIncomeTime");
+                Debug.Log($"  -  lastIncomeTime");
             }
             else
             {
                 lastIncomeTime[buildingTile] = currentTime;
-                Debug.Log($"  - ???? lastIncomeTime");
+                Debug.Log($"  -  lastIncomeTime");
             }
 
-            Debug.Log($"  - ????????");
+            Debug.Log($"  - ");
             PlayBuildingEffect(buildingTile);
             
             if (buildingTile.currentBuildingData.effectDuration > maxEffectDuration)
@@ -414,10 +414,10 @@ public class BoardTile : MonoBehaviour
 
         if (totalIncome > 0 && UIManager.Instance != null)
         {
-            UIManager.Instance.ShowToast($"??????? {totalIncome}", 2f);
+            UIManager.Instance.ShowToast($"获得建筑收入 {totalIncome} 铜钱", 2f);
         }
 
-        Debug.Log($"TriggerLinkedBuildingIncome: ??????={totalIncome}");
+        Debug.Log($"TriggerLinkedBuildingIncome: ={totalIncome}");
 
         return maxEffectDuration;
     }
@@ -426,49 +426,49 @@ public class BoardTile : MonoBehaviour
     {
         if (buildingTile == null || buildingTile.currentBuildingData == null)
         {
-            Debug.LogWarning($"PlayBuildingEffect: buildingTile??currentBuildingData???");
+            Debug.LogWarning($"PlayBuildingEffect: buildingTilecurrentBuildingData");
             return;
         }
 
         BuildingData data = buildingTile.currentBuildingData;
         
-        Debug.Log($"PlayBuildingEffect: ???? {data.buildingName} ????");
-        Debug.Log($"  - effectIconPrefab: {(data.effectIconPrefab != null ? "??????" : "null")}");
-        Debug.Log($"  - effectSound: {(data.effectSound != null ? "??????" : "null")}");
+        Debug.Log($"PlayBuildingEffect:  {data.buildingName} ");
+        Debug.Log($"  - effectIconPrefab: {(data.effectIconPrefab != null ? "" : "null")}");
+        Debug.Log($"  - effectSound: {(data.effectSound != null ? "" : "null")}");
         
         if (data.effectIconPrefab != null || data.effectSound != null)
         {
-            // ??? BuildingEffectSystem
+            //  BuildingEffectSystem
             if (BuildingEffectSystem.Instance == null)
             {
-                Debug.LogWarning("BuildingEffectSystem.Instance??????????????...");
+                Debug.LogWarning("BuildingEffectSystem.Instance...");
                 GameObject effectSystemObj = new GameObject("BuildingEffectSystem_AutoCreated");
                 effectSystemObj.AddComponent<BuildingEffectSystem>();
                 
                 if (BuildingEffectSystem.Instance == null)
                 {
-                    Debug.LogError("???? BuildingEffectSystem ???");
+                    Debug.LogError(" BuildingEffectSystem ");
                     return;
                 }
-                Debug.Log("???? BuildingEffectSystem ???");
+                Debug.Log(" BuildingEffectSystem ");
             }
             
             Transform effectTransform = buildingTile.transform;
             if (buildingTile.currentBuilding != null)
             {
                 effectTransform = buildingTile.currentBuilding.transform;
-                Debug.Log($"??? transform: {buildingTile.currentBuilding.name}");
+                Debug.Log($" transform: {buildingTile.currentBuilding.name}");
             }
             else
             {
-                Debug.Log($"??? transform: {buildingTile.name}");
+                Debug.Log($" transform: {buildingTile.name}");
             }
             
             BuildingEffectSystem.Instance.QueueBuildingEffect(effectTransform, data);
         }
     }
 
-    // ????????????????
+    // 
     private bool CanGenerateIncome(BoardTile buildingTile, float currentTime)
     {
         if (!lastIncomeTime.ContainsKey(buildingTile))
@@ -478,7 +478,7 @@ public class BoardTile : MonoBehaviour
         return timeSinceLastIncome >= incomeInterval;
     }
 
-    // === ??????????? ===
+    // ===  ===
     private void GenerateAutoIncome()
     {
         if (currentBuildingData == null || ownerPlayer == null) return;
@@ -488,16 +488,16 @@ public class BoardTile : MonoBehaviour
         if (incomeAmount > 0)
         {
             ownerPlayer.ReceiveCash(incomeAmount);
-            Debug.Log($"???? {currentBuildingData.buildingName} ?????????? {incomeAmount}");
+            Debug.Log($" {currentBuildingData.buildingName}  {incomeAmount}");
 
             if (UIManager.Instance != null)
             {
-                UIManager.Instance.ShowToast($"??????? {incomeAmount}", 2f);
+                UIManager.Instance.ShowToast($" {incomeAmount}", 2f);
             }
         }
     }
 
-    // ???????????????? - ?????? - ?????? + 1
+    //  -  -  + 1
     public int GetBuildingTurnsOwned()
     {
         if (GameManager.Instance == null || currentBuildingData == null)
@@ -505,77 +505,77 @@ public class BoardTile : MonoBehaviour
             return 1;
         }
         int currentRound = GameManager.Instance.CurrentRound;
-        // ???????? = ?????? - ?????? + 1???????1
+        //  =  -  + 11
         return Mathf.Max(1, currentRound - buildingStartRound + 1);
     }
 
-    // ???????????
+    // 
     public void SetBuildingData(BuildingData data, int level = 1)
     {
         currentBuildingData = data;
         buildingLevel = level;
-        // ?????????
+        // 
         buildingStartRound = GameManager.Instance != null ? GameManager.Instance.CurrentRound : 0;
 
         if (data != null)
         {
-            // ???????????????????
+            // 
             currentBuildingType = GetBuildingTypeFromData(data);
 
-            Debug.Log($"???? {tileName}: ???? {data.buildingName}, ????: {currentBuildingType}, ???: {level}");
+            Debug.Log($" {tileName}:  {data.buildingName}, : {currentBuildingType}, : {level}");
 
-            // ????????????????
+            // 
             if (data.functionType != BuildingData.BuildingFunctionType.Income &&
                 data.functionType != BuildingData.BuildingFunctionType.Mixed)
             {
-                Debug.LogWarning($"???? {data.functionType} ???? Income ?? Mixed ????");
+                Debug.LogWarning($" {data.functionType}  Income  Mixed ");
             }
         }
         else
         {
             currentBuildingType = BuildingType.None;
-            Debug.Log($"???? {tileName}: ????????? None");
+            Debug.Log($" {tileName}:  None");
         }
     }
     private BoardTile.BuildingType GetBuildingTypeFromData(BuildingData data)
     {
         if (data == null)
         {
-            Debug.LogWarning("GetBuildingTypeFromData: ????? null");
+            Debug.LogWarning("GetBuildingTypeFromData:  null");
             return BuildingType.None;
         }
 
-        // ?? BuildingData ??? buildingType
+        //  BuildingData  buildingType
         BoardTile.BuildingType type = data.buildingType;
 
         if (type == BuildingType.None)
         {
-            // ??????????
-            Debug.LogWarning($"???? {data.buildingName} ?? buildingType???????????????????");
+            // 
+            Debug.LogWarning($" {data.buildingName}  buildingType");
             return InferBuildingTypeFromName(data.buildingName);
         }
         else
         {
-            Debug.Log("???????????");
-            Debug.Log($"GetBuildingTypeFromData: ???? {data.buildingName} ????: {type}");
+            Debug.Log("");
+            Debug.Log($"GetBuildingTypeFromData:  {data.buildingName} : {type}");
             return type;
         }
     }
     private BuildingType InferBuildingTypeFromName(string buildingName)
     {
         string name = buildingName.ToLower();
-        //?????????????
-        if (name.Contains("small") || name.Contains("????"))
+        //
+        if (name.Contains("small") || name.Contains(""))
             return BuildingType.SmallHouse;
-        else if (name.Contains("medium") || name.Contains("????"))
+        else if (name.Contains("medium") || name.Contains(""))
             return BuildingType.MediumHouse;
-        else if (name.Contains("large") || name.Contains("????"))
+        else if (name.Contains("large") || name.Contains(""))
             return BuildingType.LargeHouse;
         else
             return BuildingType.Special;
     }
 
-    // ???????????
+    // 
     public int GetUpgradeCost()
     {
         if (currentBuildingData == null || currentBuildingData.nextLevelBuilding == null)
@@ -584,7 +584,7 @@ public class BoardTile : MonoBehaviour
         return currentBuildingData.nextLevelBuilding.purchasePrice;
     }
 
-    // ??????????????
+    // 
     public bool CanUpgradeBuilding(Player player)
     {
         if (currentBuildingData == null || currentBuildingData.nextLevelBuilding == null)
@@ -594,27 +594,27 @@ public class BoardTile : MonoBehaviour
 
         if (player.cash < GetUpgradeCost()) return false;
 
-        // ???????
+        // 
         if (!CheckScaleForUpgrade(currentBuildingData.nextLevelBuilding.requiredScale))
             return false;
 
         return true;
     }
 
-    // ????????????????
+    // 
     public bool CheckScaleForUpgrade(BuildingData.Scale requiredScale)
     {
         return tileScale >= (int)requiredScale;
     }
 
-    // ?????????????
+    // 
     public BuildingData GetNextUpgradeBuilding()
     {
         if (currentBuildingData == null) return null;
         return currentBuildingData.nextLevelBuilding;
     }
 
-    // ????????
+    // 
     public bool UpgradeBuilding(Player player)
     {
         if (!CanUpgradeBuilding(player)) return false;
@@ -623,30 +623,30 @@ public class BoardTile : MonoBehaviour
 
         if (player.PayCash(upgradeCost))
         {
-            // ?????????????
+            // 
             BuildingData nextBuildingData = currentBuildingData.nextLevelBuilding;
             
             buildingLevel++;
-            Debug.Log($"{player.playerName} ?? {tileName} ????????? {buildingLevel}");
+            Debug.Log($"{player.playerName}  {tileName}  {buildingLevel}");
 
-            // ???????????
+            // 
             if (nextBuildingData != null)
             {
                 currentBuildingData = nextBuildingData;
-                // ???????????
+                // 
                 currentBuildingType = GetBuildingTypeFromData(nextBuildingData);
             }
 
-            // ???????????
+            // 
             if (nextBuildingData != null && nextBuildingData.buildingPrefab != null)
             {
-                // ????????
+                // 
                 if (currentBuilding != null)
                 {
                     Destroy(currentBuilding);
                 }
 
-                // ?????????
+                // 
                 Vector3 pos = transform.position + nextBuildingData.positionOffset;
                 Quaternion rot = Quaternion.Euler(nextBuildingData.rotationEuler);
                 GameObject newBuilding = Instantiate(
@@ -658,14 +658,14 @@ public class BoardTile : MonoBehaviour
                 currentBuilding = newBuilding;
             }
 
-            // ???Buff
+            // Buff
             ClearBuffs();
             if (player != null)
             {
                 ApplyBuffToPlayer(player);
             }
 
-            // ??????????????????
+            // 
 
             return true;
         }
@@ -673,14 +673,14 @@ public class BoardTile : MonoBehaviour
         return false;
     }
 
-    // ??????
+    // 
     public int GetSellPrice()
     {
         if (currentBuildingData == null) return 0;
 
         float ratio = BuildingDataConfig.Instance != null ? BuildingDataConfig.Instance.GetSellPriceRatio() : 0.5f;
 
-        // ?????????? = ????? + ???
+        //  =  + 
         if (currentBuildingData.functionType == BuildingData.BuildingFunctionType.Appreciation)
         {
             int roundsOwned = GetBuildingTurnsOwned();
@@ -688,13 +688,13 @@ public class BoardTile : MonoBehaviour
             return Mathf.RoundToInt(appreciatedValue * ratio);
         }
 
-        // ?????????? = ????? * ????
+        //  =  * 
         int totalInvested = currentBuildingData.purchasePrice;
         
         BuildingData nextData = currentBuildingData.nextLevelBuilding;
         int tempLevel = buildingLevel;
         
-        // ???????????
+        // 
         while (nextData != null && tempLevel > 1)
         {
             totalInvested += nextData.purchasePrice;
@@ -702,11 +702,11 @@ public class BoardTile : MonoBehaviour
             tempLevel--;
         }
 
-        // ??? = ????? * ????
+        //  =  * 
         return Mathf.RoundToInt(totalInvested * ratio);
     }
 
-    // ????????????
+    // 
     public bool CanSellBuilding(Player player)
     {
         if (currentBuildingData == null) return false;
@@ -714,7 +714,7 @@ public class BoardTile : MonoBehaviour
         return true;
     }
 
-    // ???????
+    // 
     public bool SellBuilding(Player player)
     {
         if (!CanSellBuilding(player)) return false;
@@ -722,16 +722,16 @@ public class BoardTile : MonoBehaviour
         int sellPrice = GetSellPrice();
         player.ReceiveCash(sellPrice);
 
-        Debug.Log($"{player.playerName} ???? {tileName} ??? {sellPrice}");
+        Debug.Log($"{player.playerName}  {tileName}  {sellPrice}");
 
-        // ???????????
+        // 
         if (currentBuilding != null)
         {
             Destroy(currentBuilding);
             currentBuilding = null;
         }
 
-        // ???????????
+        // 
         currentBuildingData = null;
         currentBuildingType = BuildingType.None;
         buildingLevel = 0;
@@ -741,7 +741,7 @@ public class BoardTile : MonoBehaviour
         return true;
     }
 
-    // ???Buff?????
+    // Buff
     public void ApplyBuffToPlayer(Player player)
     {
         if (currentBuildingData == null || BuffSystem.Instance == null) return;
@@ -775,11 +775,11 @@ public class BoardTile : MonoBehaviour
                 }
             }
 
-            // ??????????????????
+            // 
         }
     }
 
-    // ???Buff
+    // Buff
     private void ClearBuffs()
     {
         if (BuffSystem.Instance != null)
@@ -792,10 +792,10 @@ public class BoardTile : MonoBehaviour
         buffedPlayers.Clear();
     }
 
-    // ?????
+    // 
     private void DrawChanceCard(Player player)
     {
-        // ??????
+        // 
         int random = Random.Range(1, 4);
 
         switch (random)
@@ -803,7 +803,7 @@ public class BoardTile : MonoBehaviour
             case 1:
                 int gain = Random.Range(20, 101);
                 player.ReceiveCash(gain);
-                Debug.Log($"{player.playerName} ????? {gain}");
+                Debug.Log($"{player.playerName}  {gain}");
 
                 if (SFXManager.Instance != null)
                     SFXManager.Instance.PlaySFX(SFXClip.EventGainMoney);
@@ -813,7 +813,7 @@ public class BoardTile : MonoBehaviour
                 int lose = Random.Range(20, 101);
                 if (player.PayCash(lose))
                 {
-                    Debug.Log($"{player.playerName} ????? {lose}");
+                    Debug.Log($"{player.playerName}  {lose}");
 
                     if (SFXManager.Instance != null)
                         SFXManager.Instance.PlaySFX(SFXClip.EventLoseMoney);
@@ -821,22 +821,22 @@ public class BoardTile : MonoBehaviour
                 break;
 
             case 3:
-                // ????
+                // 
                 if (BoardManager.Instance != null && BoardManager.Instance.allTiles.Count > 0)
                 {
                     int randomTileIndex = Random.Range(0, BoardManager.Instance.allTiles.Count);
                     BoardTile targetTile = BoardManager.Instance.allTiles[randomTileIndex];
                     player.MoveToTile(targetTile, true);
-                    Debug.Log($"{player.playerName} ?????? {targetTile.tileName}");
+                    Debug.Log($"{player.playerName}  {targetTile.tileName}");
                 }
                 break;
         }
     }
 
-    // ??????
+    // 
     private void DrawCommunityChestCard(Player player)
     {
-        // ??????
+        // 
         int random = Random.Range(1, 4);
 
         switch (random)
@@ -844,7 +844,7 @@ public class BoardTile : MonoBehaviour
             case 1:
                 int gain = Random.Range(50, 201);
                 player.ReceiveCash(gain);
-                Debug.Log($"{player.playerName} ????? {gain}");
+                Debug.Log($"{player.playerName}  {gain}");
 
                 if (SFXManager.Instance != null)
                     SFXManager.Instance.PlaySFX(SFXClip.EventGainMoney);
@@ -854,7 +854,7 @@ public class BoardTile : MonoBehaviour
                 int tax = Random.Range(50, 201);
                 if (player.PayCash(tax))
                 {
-                    Debug.Log($"{player.playerName} ?????? {tax}");
+                    Debug.Log($"{player.playerName}  {tax}");
 
                     if (SFXManager.Instance != null)
                         SFXManager.Instance.PlaySFX(SFXClip.EventTaxPaid);
@@ -862,7 +862,7 @@ public class BoardTile : MonoBehaviour
                 break;
 
             case 3:
-                Debug.Log($"{player.playerName} ???Buff");
+                Debug.Log($"{player.playerName} Buff");
 
                 if (SFXManager.Instance != null)
                 {
@@ -872,54 +872,54 @@ public class BoardTile : MonoBehaviour
         }
     }
 
-    // ??????
+    // 
     private void PayTax(Player player)
     {
         int taxAmount = propertyPrice / 10; // 10%
 
         if (player.PayCash(taxAmount))
         {
-            Debug.Log($"{player.playerName} ?????? {taxAmount}");
+            Debug.Log($"{player.playerName}  {taxAmount}");
 
             if (SFXManager.Instance != null)
                 SFXManager.Instance.PlaySFX(SFXClip.EventTaxPaid);
         }
     }
 
-    // ???????
+    // 
     private void SendToJail(Player player)
     {
         player.isInJail = true;
         player.jailTurnsRemaining = 3;
 
-        Debug.Log($"{player.playerName} ??????? {player.jailTurnsRemaining} ???");
+        Debug.Log($"{player.playerName}  {player.jailTurnsRemaining} ");
 
         if (SFXManager.Instance != null)
             SFXManager.Instance.PlaySFX(SFXClip.EventGoToJail);
 
         if (UIManager.Instance != null)
         {
-            UIManager.Instance.ShowToast($"{player.playerName} ???????", 2f);
+            UIManager.Instance.ShowToast($"{player.playerName} ", 2f);
         }
     }
 
-    // ??????????
+    // 
     private void TriggerRandomEvent(Player player)
     {
         if (eventDataArray != null && eventDataArray.Length > 0)
         {
             int randomIndex = Random.Range(0, eventDataArray.Length);
-            Debug.Log($"[??????] ???: {tileName}, ???????: {eventDataArray.Length}, ???????: {randomIndex}");
+            Debug.Log($"[] : {tileName}, : {eventDataArray.Length}, : {randomIndex}");
             
             for (int i = 0; i < eventDataArray.Length; i++)
             {
                 if (eventDataArray[i] != null)
                 {
-                    Debug.Log($"  - ???{i}: {eventDataArray[i].eventTitle}");
+                    Debug.Log($"  - {i}: {eventDataArray[i].eventTitle}");
                 }
                 else
                 {
-                    Debug.Log($"  - ???{i}: ??");
+                    Debug.Log($"  - {i}: ");
                 }
             }
             
@@ -928,12 +928,12 @@ public class BoardTile : MonoBehaviour
             if (selectedEvent != null && UIManager.Instance != null)
             {
                 UIManager.Instance.ShowEventPanel(selectedEvent, player);
-                Debug.Log($"{player.playerName} ???????: {selectedEvent.eventTitle}");
+                Debug.Log($"{player.playerName} : {selectedEvent.eventTitle}");
                 return;
             }
         }
 
-        // ??????
+        // 
         TileEvent randomEvent = (TileEvent)Random.Range(1, 6);
 
         switch (randomEvent)
@@ -941,7 +941,7 @@ public class BoardTile : MonoBehaviour
             case TileEvent.GainMoney:
                 int gain = Random.Range(50, 151);
                 player.ReceiveCash(gain);
-                Debug.Log($"{player.playerName} ????? {gain}");
+                Debug.Log($"{player.playerName}  {gain}");
 
                 if (SFXManager.Instance != null)
                     SFXManager.Instance.PlaySFX(SFXClip.EventGainMoney);
@@ -951,7 +951,7 @@ public class BoardTile : MonoBehaviour
                 int lose = Random.Range(30, 101);
                 if (player.PayCash(lose))
                 {
-                    Debug.Log($"{player.playerName} ????? {lose}");
+                    Debug.Log($"{player.playerName}  {lose}");
 
                     if (SFXManager.Instance != null)
                         SFXManager.Instance.PlaySFX(SFXClip.EventLoseMoney);
@@ -964,7 +964,7 @@ public class BoardTile : MonoBehaviour
                     int randomIndex = Random.Range(0, BoardManager.Instance.allTiles.Count);
                     BoardTile targetTile = BoardManager.Instance.allTiles[randomIndex];
                     player.MoveToTile(targetTile, true);
-                    Debug.Log($"{player.playerName} ?????? {targetTile.tileName}");
+                    Debug.Log($"{player.playerName}  {targetTile.tileName}");
                 }
                 break;
 
@@ -973,7 +973,7 @@ public class BoardTile : MonoBehaviour
                 {
                     player.isInJail = false;
                     player.jailTurnsRemaining = 0;
-                    Debug.Log($"{player.playerName} ??????");
+                    Debug.Log($"{player.playerName} ");
                 }
                 break;
 
@@ -981,7 +981,7 @@ public class BoardTile : MonoBehaviour
                 int tax = Random.Range(20, 81);
                 if (player.PayCash(tax))
                 {
-                    Debug.Log($"{player.playerName} ?????? {tax}");
+                    Debug.Log($"{player.playerName}  {tax}");
 
                     if (SFXManager.Instance != null)
                         SFXManager.Instance.PlaySFX(SFXClip.EventTaxPaid);
@@ -990,7 +990,7 @@ public class BoardTile : MonoBehaviour
         }
     }
 
-    // ?????????
+    // 
     public void UpdateTileVisual()
     {
         if (tileRenderer == null) return;
@@ -998,7 +998,7 @@ public class BoardTile : MonoBehaviour
        
     }
 
-    // ???????????????
+    // 
     public void AddLinkedBuildingTile(BoardTile buildingTile)
     {
         if (linkedBuildingTiles == null)
@@ -1009,31 +1009,31 @@ public class BoardTile : MonoBehaviour
         if (!linkedBuildingTiles.Contains(buildingTile))
         {
             linkedBuildingTiles.Add(buildingTile);
-            Debug.Log($"?? {tileName} ??????????? {buildingTile.tileName}");
+            Debug.Log($" {tileName}  {buildingTile.tileName}");
         }
     }
 
-    // ??????????????
+    // 
     public void RemoveLinkedBuildingTile(BoardTile buildingTile)
     {
         if (linkedBuildingTiles != null && linkedBuildingTiles.Contains(buildingTile))
         {
             linkedBuildingTiles.Remove(buildingTile);
-            Debug.Log($"?? {tileName} ?????????? {buildingTile.tileName}");
+            Debug.Log($" {tileName}  {buildingTile.tileName}");
         }
     }
 
-    // ??????????????????
+    // 
     public void ClearAllLinkedBuildingTiles()
     {
         if (linkedBuildingTiles != null)
         {
             linkedBuildingTiles.Clear();
-            Debug.Log($"??? {tileName} ????");
+            Debug.Log($" {tileName} ");
         }
     }
 
-    // ??????????????
+    // 
     public List<BoardTile> GetLinkedBuildingTiles()
     {
         if (linkedBuildingTiles == null)
@@ -1043,19 +1043,19 @@ public class BoardTile : MonoBehaviour
         return linkedBuildingTiles;
     }
 
-    // ???????????????????
+    // 
     public void SetLinkedIncomeEnabled(bool enabled)
     {
         enableLinkedIncome = enabled;
     }
 
-    // ??????????
+    // 
     public void SetIncomeInterval(float interval)
     {
-        incomeInterval = Mathf.Max(1.0f, interval); // ?????1??
+        incomeInterval = Mathf.Max(1.0f, interval); // 1
     }
 
-    // ??????????????????
+    // 
     public void SetAutoIncomeEnabled(bool enabled, float interval = 10.0f)
     {
         enableAutoIncome = enabled;
@@ -1085,7 +1085,7 @@ public class BoardTile : MonoBehaviour
         set { incomeInterval = Mathf.Max(1.0f, value); }
     }
 
-    // ?????????????
+    // 
     public float GetLastIncomeTime(BoardTile buildingTile)
     {
         if (buildingTile == null) return 0f;
@@ -1093,7 +1093,7 @@ public class BoardTile : MonoBehaviour
         if (lastIncomeTime.ContainsKey(buildingTile))
             return lastIncomeTime[buildingTile];
 
-        return 0f; // ??????0
+        return 0f; // 0
     }
 
     public void SetLastIncomeTime(BoardTile buildingTile, float time)

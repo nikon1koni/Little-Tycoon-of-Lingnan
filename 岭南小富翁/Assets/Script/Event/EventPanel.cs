@@ -1,10 +1,10 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
 public class EventPanel : MonoBehaviour
 {
-    [Header("UI ???")]
+    [Header("UI ")]
     public TextMeshProUGUI titleText;
     public Image eventImage;
     public TextMeshProUGUI descriptionText;
@@ -44,7 +44,7 @@ public class EventPanel : MonoBehaviour
                 eventImage.sprite = eventData.eventImage;
                 eventImage.enabled = true;
                 eventImage.gameObject.SetActive(true);
-                eventImage.transform.SetAsLastSibling();
+                eventImage.transform.SetAsFirstSibling();
             }
             else
             {
@@ -53,7 +53,7 @@ public class EventPanel : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("EventPanel: eventImage???????");
+            Debug.LogWarning("EventPanel: eventImage");
         }
 
         if (descriptionText != null)
@@ -78,8 +78,8 @@ public class EventPanel : MonoBehaviour
         {
             eventImage.enabled = true;
             eventImage.gameObject.SetActive(true);
-            eventImage.transform.SetAsLastSibling();
-            Debug.Log($"EventPanel: ???????????? - enabled={eventImage.enabled}, active={eventImage.gameObject.activeSelf}");
+            eventImage.transform.SetAsFirstSibling();
+            Debug.Log($"EventPanel:  - enabled={eventImage.enabled}, active={eventImage.gameObject.activeSelf}");
         }
     }
 
@@ -164,32 +164,32 @@ public class EventPanel : MonoBehaviour
             
             button.onClick.AddListener(() =>
             {
-                Debug.Log($"=== ??? [{finalIndex}] ????? ===");
+                Debug.Log($"===  [{finalIndex}]  ===");
                 Debug.Log($"EventEffectHandler.Instance: {EventEffectHandler.Instance != null}");
                 Debug.Log($"currentPlayer: {currentPlayer?.playerName ?? "NULL"}");
                 Debug.Log($"currentEvent: {currentEvent?.eventTitle ?? "NULL"}");
                 
                 if (!finalCanAfford)
                 {
-                    Debug.LogWarning("????????????");
+                    Debug.LogWarning("??????");
                     if (UIManager.Instance != null)
                     {
-                        UIManager.ShowToastStatic("", 2f);
+                        UIManager.ShowToastStatic("??????", 2f);
                     }
                     return;
                 }
 
-                // ??????????????
+                // 
                 if (SFXManager.Instance != null)
                     SFXManager.Instance.PlayEventSelectSound();
                 
                 if (SFXManager.Instance != null)
                     SFXManager.Instance.PlaySFX(SFXClip.UIClick);
 
-                // ????UnityEvent
+                // UnityEvent
                 option.onOptionSelected.Invoke();
                 
-                // ???????????
+                // 
                 if (EventEffectHandler.Instance != null && currentPlayer != null)
                 {
                     Debug.Log($"  ProcessOption: player={currentPlayer.playerName}, event={currentEvent.eventTitle}, option={finalIndex}");

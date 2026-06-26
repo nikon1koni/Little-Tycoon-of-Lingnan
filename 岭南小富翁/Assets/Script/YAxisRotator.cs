@@ -1,22 +1,22 @@
-using UnityEngine;
+锘縰sing UnityEngine;
 
 /// <summary>
-/// 让物体沿着指定轴持续旋转
+/// 
 /// </summary>
 public class YAxisRotator : MonoBehaviour
 {
-    [Header("旋转速度（度/秒）")]
-    [Tooltip("X轴旋转速度")]
+    [Header("/")]
+    [Tooltip("X")]
     public float xRotationSpeed = 0f;
 
-    [Tooltip("Y轴旋转速度")]
+    [Tooltip("Y")]
     public float yRotationSpeed = 30f;
 
-    [Tooltip("Z轴旋转速度")]
+    [Tooltip("Z")]
     public float zRotationSpeed = 0f;
 
-    [Header("设置")]
-    [Tooltip("使用世界坐标系还是局部坐标系")]
+    [Header("")]
+    [Tooltip("")]
     public bool useWorldSpace = false;
 
     void Update()

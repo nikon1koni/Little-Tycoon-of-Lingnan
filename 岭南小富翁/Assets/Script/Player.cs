@@ -1,27 +1,27 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [Header("??????")]
-    public string playerName = "???1";
+    [Header("")]
+    public string playerName = "1";
     public int playerID = 1;
     public Color playerColor = Color.red;
 
-    [Header("???")]
-    public int cash = 1500;  // ??????
-    public List<BoardTile> ownedProperties = new List<BoardTile>();  // ???????
+    [Header("")]
+    public int cash = 1500;  // 
+    public List<BoardTile> ownedProperties = new List<BoardTile>();  // 
 
-    [Header("??")]
+    [Header("")]
     public bool isInJail = false;
     public int jailTurnsRemaining = 0;
     public bool isBankrupt = false;
 
-    [Header("???????")]
-    [HideInInspector] public BoardTile currentTile;  // ??????????
-    [HideInInspector] public int currentTileIndex = 0;  // ???????????
+    [Header("")]
+    [HideInInspector] public BoardTile currentTile;  // 
+    [HideInInspector] public int currentTileIndex = 0;  // 
 
-    [Header("Buff????")]
+    [Header("Buff")]
     public int stepsModifier = 0;
     public float incomeReductionPercent = 0f;
     public int incomeReductionRounds = 0;
@@ -34,7 +34,7 @@ public class Player : MonoBehaviour
     public float loanRepayMultiplier = 1f;
     public int loanRepayRounds = 0;
 
-    // ???????
+    // 
     private PlayerMovement playerMovement;
 
     void Start()
@@ -42,16 +42,16 @@ public class Player : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();
         if (playerMovement == null)
         {
-            Debug.LogWarning($"??? {playerName} ??? PlayerMovement ???");
+            Debug.LogWarning($" {playerName}  PlayerMovement ");
         }
 
-        // ??????????
+        // 
         SetPlayerColor();
     }
 
     void SetPlayerColor()
     {
-        // ?????????????????
+        // 
         MeshRenderer renderer = GetComponentInChildren<MeshRenderer>();
         if (renderer != null)
         {
@@ -64,7 +64,7 @@ public class Player : MonoBehaviour
         int previousCash = cash;
         bool canAfford = cash >= amount;
         cash -= amount;
-        Debug.Log($"{playerName} ??? {amount} ?????: {cash}");
+        Debug.Log($"{playerName}  {amount} : {cash}");
 
         NotifyCashChanged();
         UpdateBankruptState(previousCash);
@@ -76,7 +76,7 @@ public class Player : MonoBehaviour
     {
         int previousCash = cash;
         cash += amount;
-        Debug.Log($"{playerName} ??? {amount} ??????: {cash}");
+        Debug.Log($"{playerName}  {amount} : {cash}");
 
         NotifyCashChanged();
         UpdateBankruptState(previousCash);
@@ -121,13 +121,13 @@ public class Player : MonoBehaviour
             property.tileType != BoardTile.TileType.Railroad &&
             property.tileType != BoardTile.TileType.Utility)
         {
-            Debug.LogWarning($"??? {property.tileName} ???????");
+            Debug.LogWarning($" {property.tileName} ");
             return false;
         }
 
         if (property.ownerPlayer != null)
         {
-            Debug.LogWarning($"{property.tileName} ???????");
+            Debug.LogWarning($"{property.tileName} ");
             return false;
         }
 
@@ -135,7 +135,7 @@ public class Player : MonoBehaviour
         {
             property.ownerPlayer = this;
             ownedProperties.Add(property);
-            Debug.Log($"{playerName} ??????? {property.tileName}");
+            Debug.Log($"{playerName}  {property.tileName}");
 
             if (SFXManager.Instance != null)
                 SFXManager.Instance.PlaySFX(SFXClip.EventPropertyBought);
@@ -210,8 +210,8 @@ public class Player : MonoBehaviour
         {
             int boost = BuffSystem.Instance.GetDiceBoostValue(this);
             int boostedValue = baseValue + boost;
-            Debug.Log($"{playerName} ??????: {baseValue} + {boost} = {boostedValue}");
-            return Mathf.Clamp(boostedValue, 1, 12); // ????12
+            Debug.Log($"{playerName} : {baseValue} + {boost} = {boostedValue}");
+            return Mathf.Clamp(boostedValue, 1, 12); // 12
         }
         return baseValue;
     }
@@ -226,7 +226,7 @@ public class Player : MonoBehaviour
         int finalIncome = Mathf.RoundToInt(baseIncome * multiplier);
         if (multiplier > 1.0f)
         {
-            Debug.Log($"{playerName} ??????: {baseIncome} * {multiplier} = {finalIncome}");
+            Debug.Log($"{playerName} : {baseIncome} * {multiplier} = {finalIncome}");
         }
         return finalIncome;
     }
@@ -263,7 +263,7 @@ public class Player : MonoBehaviour
         if (cash < 0)
         {
             isBankrupt = true;
-            Debug.Log($"{playerName} ?????");
+            Debug.Log($"{playerName} ");
             return true;
         }
         return false;
@@ -296,10 +296,10 @@ public class Player : MonoBehaviour
                 {
                     BuffSystem.Instance.RemoveBuff(this, buff);
                     isBankrupt = false;
-                    Debug.Log($"{playerName} ????????");
+                    Debug.Log($"{playerName} ");
                     if (UIManager.Instance != null)
                     {
-                        UIManager.Instance.ShowToast($"{playerName} ???????", 2f);
+                        UIManager.Instance.ShowToast($"{playerName} ", 2f);
                     }
                     break;
                 }
@@ -402,7 +402,7 @@ public class Player : MonoBehaviour
             {
                 int repayAmount = Mathf.RoundToInt(loanAmount * loanRepayMultiplier);
                 PayCash(repayAmount);
-                Debug.Log($"{playerName} ????????: {repayAmount} ???");
+                Debug.Log($"{playerName} : {repayAmount} ");
                 loanAmount = 0;
                 loanRepayMultiplier = 1f;
                 loanRepayRounds = 0;
