@@ -1,4 +1,4 @@
-Ôªøusing UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
@@ -12,7 +12,7 @@ public class EventPanel : MonoBehaviour
     public Button optionButtonPrefab;
     public Button closeButton;
 
-    [Header("?????")]
+    [Header("—°œÓ∞¥≈•")]
     public Sprite optionShallowSprite;
     public Sprite optionDeepSprite;
 
@@ -75,27 +75,27 @@ public class EventPanel : MonoBehaviour
         if (closeButton != null)
             closeButton.transform.SetAsLastSibling();
 
-        Transform optionShallow = transform.Find("????");
+        Transform optionShallow = transform.Find("—°œÓ«≥");
         if (optionShallow != null)
         {
             optionShallow.gameObject.SetActive(true);
             optionShallow.SetAsLastSibling();
-            Debug.Log($"???????: active={optionShallow.gameObject.activeSelf}");
+            Debug.Log($"—°œÓ«≥±≥æ∞: active={optionShallow.gameObject.activeSelf}");
         }
         else
         {
-            Debug.LogWarning("?????????????");
+            Debug.LogWarning("Œ¥’“µΩ—°œÓ«≥±≥æ∞∂‘œÛ");
         }
-        Transform optionDeep = transform.Find("?????");
+        Transform optionDeep = transform.Find("—°œÓ…Ó");
         if (optionDeep != null)
         {
             optionDeep.gameObject.SetActive(true);
             optionDeep.SetAsLastSibling();
-            Debug.Log($"????????: active={optionDeep.gameObject.activeSelf}");
+            Debug.Log($"—°œÓ…Ó±≥æ∞: active={optionDeep.gameObject.activeSelf}");
         }
         else
         {
-            Debug.LogWarning("?????????????");
+            Debug.LogWarning("Œ¥’“µΩ—°œÓ…Ó±≥æ∞∂‘œÛ");
         }
 
         gameObject.SetActive(true);
@@ -131,31 +131,31 @@ public class EventPanel : MonoBehaviour
 
     void CreateOptions(EventData.EventOption[] options)
     {
-        Debug.Log("=== ??????? ===");
-        Debug.Log($"optionsContainer: {(optionsContainer == null ? "??" : "??????")}");
-        Debug.Log($"optionButtonPrefab: {(optionButtonPrefab == null ? "??" : "??????")}");
-        Debug.Log($"options????: {(options == null ? 0 : options.Length)}");
+        Debug.Log("=== ¥¥Ω®—°œÓ∞¥≈• ===");
+        Debug.Log($"optionsContainer: {(optionsContainer == null ? "ø’" : "“—…Ë÷√")}");
+        Debug.Log($"optionButtonPrefab: {(optionButtonPrefab == null ? "ø’" : "“—…Ë÷√")}");
+        Debug.Log($"options ˝¡ø: {(options == null ? 0 : options.Length)}");
 
         if (optionsContainer == null || optionButtonPrefab == null) 
         {
-            Debug.LogError("optionsContainer ?? optionButtonPrefab ???????");
+            Debug.LogError("optionsContainer ªÚ optionButtonPrefab Œ¥…Ë÷√");
             return;
         }
 
         if (options == null || options.Length == 0)
         {
-            Debug.LogWarning("?????????");
+            Debug.LogWarning("√ª”–—°œÓ ˝æ›");
             return;
         }
 
-        Debug.Log("???????????...");
+        Debug.Log("ø™ º¥¥Ω®—°œÓ...");
         
         for (int i = 0; i < options.Length; i++)
         {
             EventData.EventOption option = options[i];
             int optionIndex = i;  
             
-            Debug.Log($"??????? [{optionIndex}]: {option.optionText}");
+            Debug.Log($"—°œÓ ˝æ› [{optionIndex}]: {option.optionText}");
             
             Button button = Instantiate(optionButtonPrefab, optionsContainer);
             button.gameObject.SetActive(true);
@@ -174,11 +174,11 @@ public class EventPanel : MonoBehaviour
                 buttonText.fontSizeMin = 12;
                 buttonText.fontSizeMax = 24;
                 
-                Debug.Log($"?????????????: {option.optionText}");
+                Debug.Log($"…Ë÷√∞¥≈•Œƒ±æ: {option.optionText}");
             }
             else
             {
-                Debug.LogWarning("?????????? TextMeshPro ???");
+                Debug.LogWarning("Œ¥’“µΩ∞¥≈•…œµƒ TextMeshPro ◊Èº˛");
             }
 
             Image buttonImage = button.GetComponent<Image>();
@@ -189,12 +189,12 @@ public class EventPanel : MonoBehaviour
                 if (i % 2 == 0 && optionShallowSprite != null)
                 {
                     buttonImage.sprite = optionShallowSprite;
-                    Debug.Log($" πÔøΩÔøΩ«≥…´ÔøΩÔøΩÔøΩÔøΩ");
+                    Debug.Log($" π”√«≥…´±≥æ∞");
                 }
                 else if (i % 2 == 1 && optionDeepSprite != null)
                 {
                     buttonImage.sprite = optionDeepSprite;
-                    Debug.Log($" πÔøΩÔøΩÔøΩÔøΩ…´ÔøΩÔøΩÔøΩÔøΩ");
+                    Debug.Log($" π”√…Ó…´±≥æ∞");
                 }
             }
 
@@ -202,7 +202,7 @@ public class EventPanel : MonoBehaviour
             if (buttonRect != null)
             {
                 buttonRect.sizeDelta = new Vector2(500f, buttonRect.sizeDelta.y);
-                Debug.Log($"ÔøΩÔøΩ≈•ÔøΩÔøΩ»µÔøΩÔøΩÔøΩŒ™: {buttonRect.sizeDelta.x}");
+                Debug.Log($"∞¥≈•øÌ∂»…Ë÷√Œ™: {buttonRect.sizeDelta.x}");
             }
 
             int costToPay = option.optionCostAmount > 0 ? option.optionCostAmount : currentEvent.costAmount;
@@ -214,7 +214,7 @@ public class EventPanel : MonoBehaviour
                 
                 if (!canAfford)
                 {
-                    Debug.Log($" [{optionIndex}]  {costToPay}  {currentPlayer.cash} ");
+                    Debug.Log($"—°œÓ [{optionIndex}] ª®∑— {costToPay} Õ≠«Æ£¨ÕÊº“œ÷Ω {currentPlayer.cash}");
                     
                     if (buttonImage != null)
                     {
@@ -244,10 +244,10 @@ public class EventPanel : MonoBehaviour
                 
                 if (!finalCanAfford)
                 {
-                    Debug.LogWarning("??????");
+                    Debug.LogWarning("”‡∂Ó≤ª◊„");
                     if (UIManager.Instance != null)
                     {
-                        UIManager.ShowToastStatic("??????", 2f);
+                        UIManager.ShowToastStatic("”‡∂Ó≤ª◊„", 2f);
                     }
                     return;
                 }

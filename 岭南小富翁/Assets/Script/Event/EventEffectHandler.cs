@@ -1,4 +1,4 @@
-ï»¿using UnityEngine;
+using UnityEngine;
 
 public class EventEffectHandler : MonoBehaviour
 {
@@ -93,7 +93,7 @@ public class EventEffectHandler : MonoBehaviour
                 Debug.LogWarning($"{player.playerName} cannot afford {costToPay}");
                 if (UIManager.Instance != null)
                 {
-                    UIManager.ShowToastStatic("ï¿½ï¿½Ò²ï¿½ï¿½ï¿½", 2f);
+                    UIManager.ShowToastStatic("ÄãÓà¶î²»×ã", 2f);
                 }
                 return;
             }
@@ -130,7 +130,7 @@ public class EventEffectHandler : MonoBehaviour
                     Debug.Log($"{player.playerName} received {option.optionRewardAmount} from event");
                     if (UIManager.Instance != null)
                     {
-                        UIManager.Instance.ShowToast($"ï¿½ï¿½ï¿½ {option.optionRewardAmount} Í­Ç®", 2f);
+                        UIManager.Instance.ShowToast($"»ñµÃ {option.optionRewardAmount} Í­Ç®", 2f);
                     }
                 }
                 break;
@@ -143,7 +143,7 @@ public class EventEffectHandler : MonoBehaviour
                         Debug.Log($"{player.playerName} lost {option.optionCostAmount} from event");
                         if (UIManager.Instance != null)
                         {
-                            UIManager.Instance.ShowToast($"ï¿½ï¿½Ê§ {option.optionCostAmount} Í­Ç®", 2f);
+                            UIManager.Instance.ShowToast($"ËðÊ§ {option.optionCostAmount} Í­Ç®", 2f);
                         }
                     }
                     else
@@ -151,7 +151,7 @@ public class EventEffectHandler : MonoBehaviour
                         Debug.LogWarning($"{player.playerName} cannot afford {option.optionCostAmount}");
                         if (UIManager.Instance != null)
                         {
-                            UIManager.ShowToastStatic("ï¿½ï¿½Ò²ï¿½ï¿½ï¿½", 2f);
+                            UIManager.ShowToastStatic("ÄãÓà¶î²»×ã", 2f);
                         }
                     }
                 }
@@ -164,8 +164,8 @@ public class EventEffectHandler : MonoBehaviour
                     Debug.Log($"{player.playerName} steps modifier changed by {option.stepsModifier}");
                     if (UIManager.Instance != null)
                     {
-                        string directionText = option.stepsModifier > 0 ? "Ç°ï¿½ï¿½" : "ï¿½ï¿½ï¿½ï¿½";
-                        UIManager.Instance.ShowToast($"{directionText} {Mathf.Abs(option.stepsModifier)}ï¿½ï¿½", 2f);
+                        string directionText = option.stepsModifier > 0 ? "Ç°½ø" : "ºóÍË";
+                        UIManager.Instance.ShowToast($"{directionText} {Mathf.Abs(option.stepsModifier)}²½", 2f);
                     }
                 }
                 break;
@@ -185,7 +185,7 @@ public class EventEffectHandler : MonoBehaviour
                     if (UIManager.Instance != null)
                     {
                         float reductionPercent = option.incomeReductionPercent * 100;
-                        UIManager.Instance.ShowToast($"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½{reductionPercent:0}%ï¿½ï¿½ï¿½ï¿½{option.incomeReductionRounds}ï¿½Øºï¿½", 2f);
+                        UIManager.Instance.ShowToast($"ÊÕÈë¼õÉÙ{reductionPercent:0}%£¬³ÖÐø{option.incomeReductionRounds}»ØºÏ", 2f);
                     }
                 }
                 break;
@@ -198,7 +198,7 @@ public class EventEffectHandler : MonoBehaviour
                     if (UIManager.Instance != null)
                     {
                         float reductionPercent = option.taxReductionPercent * 100;
-                        UIManager.Instance.ShowToast($"Ë°ï¿½Õ¼ï¿½ï¿½ï¿½{reductionPercent:0}%ï¿½ï¿½ï¿½ï¿½{option.taxReductionRounds}ï¿½Øºï¿½", 2f);
+                        UIManager.Instance.ShowToast($"Ë°Îñ¼õÉÙ{reductionPercent:0}%£¬³ÖÐø{option.taxReductionRounds}»ØºÏ", 2f);
                     }
                 }
                 break;
@@ -210,7 +210,7 @@ public class EventEffectHandler : MonoBehaviour
                     Debug.Log($"{player.playerName} immune to negative events for {option.roundsImmuneToNegativeEvents} rounds");
                     if (UIManager.Instance != null)
                     {
-                        UIManager.Instance.ShowToast($"ï¿½ï¿½ï¿½ß¸ï¿½ï¿½ï¿½ï¿½Â¼ï¿½{option.roundsImmuneToNegativeEvents}ï¿½Øºï¿½", 2f);
+                        UIManager.Instance.ShowToast($"ÃâÒß¸ºÃæÊÂ¼þ{option.roundsImmuneToNegativeEvents}»ØºÏ", 2f);
                     }
                 }
                 break;
@@ -222,7 +222,7 @@ public class EventEffectHandler : MonoBehaviour
                     Debug.Log($"{player.playerName} next roll multiplier set to {option.nextRollMultiplier}x");
                     if (UIManager.Instance != null)
                     {
-                        string modifierText = option.nextRollMultiplier > 1 ? "ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ó·ï¿½ï¿½ï¿½" : "ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ó¼ï¿½ï¿½ï¿½";
+                        string modifierText = option.nextRollMultiplier > 1 ? "ÏÂÒ»»ØºÏ²½Êý¼Ó±¶" : "ÏÂÒ»»ØºÏ²½Êý¼õ°ë";
                         UIManager.Instance.ShowToast($"{modifierText}", 2f);
                     }
                 }
@@ -285,7 +285,7 @@ public class EventEffectHandler : MonoBehaviour
 
         if (downgradedCount > 0 && UIManager.Instance != null)
         {
-            UIManager.Instance.ShowToast($"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½{downgradedCount}ï¿½ï¿½", 2f);
+            UIManager.Instance.ShowToast($"{downgradedCount}¶°½¨Öþ±»½µ¼¶", 2f);
         }
     }
 
@@ -313,7 +313,7 @@ public class EventEffectHandler : MonoBehaviour
             Debug.Log($"{player.playerName} received {totalCompensation} compensation");
             if (UIManager.Instance != null)
             {
-                UIManager.Instance.ShowToast($"ï¿½ï¿½ï¿½ï¿½â³¥{totalCompensation}", 2f);
+                UIManager.Instance.ShowToast($"»ñµÃ²¹³¥{totalCompensation}Í­Ç®", 2f);
             }
         }
     }
@@ -327,7 +327,7 @@ public class EventEffectHandler : MonoBehaviour
         if (UIManager.Instance != null)
         {
             int repayAmount = Mathf.RoundToInt(amount * repayMultiplier);
-            UIManager.Instance.ShowToast($"ï¿½ï¿½ï¿½ï¿½{amount}Í­Ç®ï¿½ï¿½{repayRounds}ï¿½ØºÏºï¿½ï¿½è»¹{repayAmount}", 2f);
+            UIManager.Instance.ShowToast($"»ñµÃ{amount}Í­Ç®£¬{repayRounds}»ØºÏºóÐè¹é»¹{repayAmount}", 2f);
         }
     }
 
@@ -337,18 +337,18 @@ public class EventEffectHandler : MonoBehaviour
 
         if (eventData.costAmount > 0)
         {
-            message += $"ï¿½ï¿½ï¿½ï¿½ {eventData.costAmount} Í­Ç®\n";
+            message += $"»¨·Ñ {eventData.costAmount} Í­Ç®\n";
         }
 
         if (eventData.rewardAmount > 0)
         {
-            message += $"ï¿½ï¿½ï¿½ {eventData.rewardAmount} Í­Ç®\n";
+            message += $"»ñµÃ {eventData.rewardAmount} Í­Ç®\n";
         }
 
         if (eventData.incomeBoost > 0)
         {
             float boostPercent = eventData.incomeBoost * 100;
-            message += $"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½({eventData.buffDurationRounds}ï¿½Øºï¿½ +{boostPercent:0}%)";
+            message += $"ÊÕÈëÌáÉý({eventData.buffDurationRounds}»ØºÏ +{boostPercent:0}%)";
         }
 
         if (!string.IsNullOrEmpty(message))
