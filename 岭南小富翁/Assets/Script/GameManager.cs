@@ -1003,6 +1003,12 @@ public class GameManager : MonoBehaviour
         {
             currentTile.OnLanded(currentPlayer);
         }
+        else if (currentTile.tileType == BoardTile.TileType.GainMoney ||
+                 currentTile.tileType == BoardTile.TileType.LoseMoney)
+        {
+            currentTile.OnLanded(currentPlayer);
+            StartCoroutine(EndMoveAfterDelay(0.2f));
+        }
         else
         {
             StartCoroutine(EndMoveAfterDelay(0.2f));
@@ -1093,6 +1099,7 @@ public class GameManager : MonoBehaviour
         if (player == null) return;
 
         player.ProcessLoanRepayment();
+        player.ProcessReceivableRepayment();
 
         float incomeReduction = player.GetIncomeReduction();
         if (incomeReduction > 0)

@@ -1,4 +1,4 @@
-锘縰sing System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -33,6 +33,10 @@ public class Player : MonoBehaviour
     public int loanAmount = 0;
     public float loanRepayMultiplier = 1f;
     public int loanRepayRounds = 0;
+
+    public int receivableAmount = 0;
+    public float receivableMultiplier = 1f;
+    public int receivableRounds = 0;
 
     // 
     private PlayerMovement playerMovement;
@@ -402,10 +406,39 @@ public class Player : MonoBehaviour
             {
                 int repayAmount = Mathf.RoundToInt(loanAmount * loanRepayMultiplier);
                 PayCash(repayAmount);
-                Debug.Log($"{playerName} : {repayAmount} ");
+                Debug.Log($"{playerName} 还款: {repayAmount}");
                 loanAmount = 0;
                 loanRepayMultiplier = 1f;
                 loanRepayRounds = 0;
+            }
+        }
+    }
+
+    public void AddReceivableDebt(int amount, float multiplier, int rounds)
+    {
+        receivableAmount = amount;
+        receivableMultiplier = multiplier;
+        receivableRounds = rounds;
+    }
+
+    public void ProcessReceivableRepayment()
+    {
+        if (receivableAmount > 0)
+        {
+            receivableRounds--;
+            if (receivableRounds <= 0)
+            {
+                int receiveAmount = Mathf.RoundToInt(receivableAmount * receivableMultiplier);
+                ReceiveCash(receiveAmount);
+                Debug.Log($"{playerName} 收回借款: {receiveAmount}");
+                receivableAmount = 0;
+                receivableMultiplier = 1f;
+                receivableRounds = 0;
+                
+                if (UIManager.Instance != null)
+                {
+                    UIManager.Instance.ShowToast($"收回借款 {receiveAmount} 铜钱", 2f);
+                }
             }
         }
     }

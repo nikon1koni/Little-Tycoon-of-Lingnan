@@ -62,7 +62,9 @@ public class BoardTile : MonoBehaviour
         Buildable,      // 
         BuildingSite,   // 
         Event,          // 
-        Normal
+        Normal,
+        GainMoney,      // 
+        LoseMoney       // 
     }
 
     // 
@@ -221,6 +223,14 @@ public class BoardTile : MonoBehaviour
 
             case TileType.Event:
                 TriggerRandomEvent(player);
+                break;
+
+            case TileType.GainMoney:
+                HandleGainMoneyTile(player);
+                break;
+
+            case TileType.LoseMoney:
+                HandleLoseMoneyTile(player);
                 break;
         }
     }
@@ -1109,5 +1119,58 @@ public class BoardTile : MonoBehaviour
     public bool ContainsBuildingTile(BoardTile buildingTile)
     {
         return lastIncomeTime.ContainsKey(buildingTile);
+    }
+
+    private void HandleGainMoneyTile(Player player)
+    {
+        int amount = Random.Range(5, 11);
+        player.ReceiveCash(amount);
+        Debug.Log($"{player.playerName} 在 {tileName} 获得 {amount} 铜钱");
+
+        if (SFXManager.Instance != null)
+            SFXManager.Instance.PlaySFX(SFXClip.EventGainMoney);
+
+        if (UIManager.Instance != null)
+        {
+            string[] gainTexts = {
+                $"路遇商人掉落钱袋，获得{amount}铜钱",
+                $"捡到银子，获得{amount}铜钱",
+                $"路上发现遗落的铜钱，获得{amount}铜钱",
+                $"好心帮忙获得酬谢，获得{amount}铜钱",
+                $"运气不错，捡到{amount}铜钱"
+            };
+            int index = Random.Range(0, gainTexts.Length);
+            UIManager.Instance.ShowToast(gainTexts[index], 2f);
+        }
+    }
+
+    private void HandleLoseMoneyTile(Player player)
+    {
+        int amount = Random.Range(5, 9);
+        
+        if (player.PayCash(amount))
+        {
+            Debug.Log($"{player.playerName} 在 {tileName} 损失 {amount} 铜钱");
+
+            if (SFXManager.Instance != null)
+                SFXManager.Instance.PlaySFX(SFXClip.EventLoseMoney);
+
+            if (UIManager.Instance != null)
+            {
+                string[] loseTexts = {
+                    $"遭遇小偷，丢失{amount}铜钱",
+                    $"路遇强盗，损失{amount}铜钱",
+                    $"被恶犬咬伤，医治花费{amount}铜钱",
+                    $"踩到水坑弄脏衣物，清洗花费{amount}铜钱",
+                    $"突发状况，损失{amount}铜钱"
+                };
+                int index = Random.Range(0, loseTexts.Length);
+                UIManager.Instance.ShowToast(loseTexts[index], 2f);
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"{player.playerName} 余额不足，无法支付 {amount} 铜钱");
+        }
     }
 }

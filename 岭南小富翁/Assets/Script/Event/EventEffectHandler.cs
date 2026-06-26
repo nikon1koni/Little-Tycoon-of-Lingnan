@@ -320,14 +320,24 @@ public class EventEffectHandler : MonoBehaviour
 
     private void GiveLoan(Player player, int amount, float repayMultiplier, int repayRounds)
     {
-        player.ReceiveCash(amount);
-        player.AddLoanDebt(amount, repayMultiplier, repayRounds);
-        Debug.Log($"{player.playerName} took a loan of {amount} with {repayMultiplier}x repay in {repayRounds} rounds");
-        
-        if (UIManager.Instance != null)
+        if (player.PayCash(amount))
         {
-            int repayAmount = Mathf.RoundToInt(amount * repayMultiplier);
-            UIManager.Instance.ShowToast($"获得{amount}铜钱，{repayRounds}回合后需归还{repayAmount}", 2f);
+            player.AddReceivableDebt(amount, repayMultiplier, repayRounds);
+            Debug.Log($"{player.playerName} lent {amount} to event, will receive {Mathf.RoundToInt(amount * repayMultiplier)} in {repayRounds} rounds");
+            
+            if (UIManager.Instance != null)
+            {
+                int repayAmount = Mathf.RoundToInt(amount * repayMultiplier);
+                UIManager.Instance.ShowToast($"借出{amount}铜钱，{repayRounds}回合后收回{repayAmount}", 2f);
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"{player.playerName} cannot afford to lend {amount}");
+            if (UIManager.Instance != null)
+            {
+                UIManager.ShowToastStatic("余额不足", 2f);
+            }
         }
     }
 

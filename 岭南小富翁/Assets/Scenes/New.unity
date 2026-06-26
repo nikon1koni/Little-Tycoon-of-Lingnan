@@ -2980,7 +2980,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &212661032
 RectTransform:
   m_ObjectHideFlags: 0
@@ -25826,7 +25826,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
       propertyPath: tileType
-      value: 13
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
       propertyPath: linkedBuildingTiles.Array.size
@@ -26376,7 +26376,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
       propertyPath: tileType
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
       propertyPath: linkedBuildingTiles.Array.size
@@ -27513,7 +27513,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
       propertyPath: tileType
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
       propertyPath: linkedBuildingTiles.Array.size
@@ -28190,7 +28190,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
       propertyPath: tileType
-      value: 10
+      value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
