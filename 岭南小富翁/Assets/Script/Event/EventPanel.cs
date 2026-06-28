@@ -12,7 +12,7 @@ public class EventPanel : MonoBehaviour
     public Button optionButtonPrefab;
     public Button closeButton;
 
-    [Header("选项按钮")]
+    [Header("????")]
     public Sprite optionShallowSprite;
     public Sprite optionDeepSprite;
 
@@ -75,27 +75,27 @@ public class EventPanel : MonoBehaviour
         if (closeButton != null)
             closeButton.transform.SetAsLastSibling();
 
-        Transform optionShallow = transform.Find("选项浅");
+        Transform optionShallow = transform.Find("????");
         if (optionShallow != null)
         {
             optionShallow.gameObject.SetActive(true);
             optionShallow.SetAsLastSibling();
-            Debug.Log($"选项浅背景: active={optionShallow.gameObject.activeSelf}");
+            Debug.Log($"????????: active={optionShallow.gameObject.activeSelf}");
         }
         else
         {
-            Debug.LogWarning("未找到选项浅背景对象");
+            Debug.LogWarning("δ???????????????");
         }
-        Transform optionDeep = transform.Find("选项深");
+        Transform optionDeep = transform.Find("?????");
         if (optionDeep != null)
         {
             optionDeep.gameObject.SetActive(true);
             optionDeep.SetAsLastSibling();
-            Debug.Log($"选项深背景: active={optionDeep.gameObject.activeSelf}");
+            Debug.Log($"???????: active={optionDeep.gameObject.activeSelf}");
         }
         else
         {
-            Debug.LogWarning("未找到选项深背景对象");
+            Debug.LogWarning("δ??????????????");
         }
 
         gameObject.SetActive(true);
@@ -131,31 +131,31 @@ public class EventPanel : MonoBehaviour
 
     void CreateOptions(EventData.EventOption[] options)
     {
-        Debug.Log("=== 创建选项按钮 ===");
-        Debug.Log($"optionsContainer: {(optionsContainer == null ? "空" : "已设置")}");
-        Debug.Log($"optionButtonPrefab: {(optionButtonPrefab == null ? "空" : "已设置")}");
-        Debug.Log($"options数量: {(options == null ? 0 : options.Length)}");
+        Debug.Log("=== ???????? ===");
+        Debug.Log($"optionsContainer: {(optionsContainer == null ? "??" : "??????")}");
+        Debug.Log($"optionButtonPrefab: {(optionButtonPrefab == null ? "??" : "??????")}");
+        Debug.Log($"options????: {(options == null ? 0 : options.Length)}");
 
         if (optionsContainer == null || optionButtonPrefab == null) 
         {
-            Debug.LogError("optionsContainer 或 optionButtonPrefab 未设置");
+            Debug.LogError("optionsContainer ?? optionButtonPrefab δ????");
             return;
         }
 
         if (options == null || options.Length == 0)
         {
-            Debug.LogWarning("没有选项数据");
+            Debug.LogWarning("??????????");
             return;
         }
 
-        Debug.Log("开始创建选项...");
+        Debug.Log("??????????...");
         
         for (int i = 0; i < options.Length; i++)
         {
             EventData.EventOption option = options[i];
             int optionIndex = i;  
             
-            Debug.Log($"选项数据 [{optionIndex}]: {option.optionText}");
+            Debug.Log($"??????? [{optionIndex}]: {option.optionText}");
             
             Button button = Instantiate(optionButtonPrefab, optionsContainer);
             button.gameObject.SetActive(true);
@@ -174,11 +174,11 @@ public class EventPanel : MonoBehaviour
                 buttonText.fontSizeMin = 12;
                 buttonText.fontSizeMax = 24;
                 
-                Debug.Log($"设置按钮文本: {option.optionText}");
+                Debug.Log($"?????????: {option.optionText}");
             }
             else
             {
-                Debug.LogWarning("未找到按钮上的 TextMeshPro 组件");
+                Debug.LogWarning("δ????????? TextMeshPro ???");
             }
 
             Image buttonImage = button.GetComponent<Image>();
@@ -189,12 +189,12 @@ public class EventPanel : MonoBehaviour
                 if (i % 2 == 0 && optionShallowSprite != null)
                 {
                     buttonImage.sprite = optionShallowSprite;
-                    Debug.Log($"使用浅色背景");
+                    Debug.Log($"?????????");
                 }
                 else if (i % 2 == 1 && optionDeepSprite != null)
                 {
                     buttonImage.sprite = optionDeepSprite;
-                    Debug.Log($"使用深色背景");
+                    Debug.Log($"??????????");
                 }
             }
 
@@ -202,7 +202,7 @@ public class EventPanel : MonoBehaviour
             if (buttonRect != null)
             {
                 buttonRect.sizeDelta = new Vector2(500f, buttonRect.sizeDelta.y);
-                Debug.Log($"按钮宽度设置为: {buttonRect.sizeDelta.x}");
+                Debug.Log($"????????????: {buttonRect.sizeDelta.x}");
             }
 
             int costToPay = option.optionCostAmount > 0 ? option.optionCostAmount : currentEvent.costAmount;
@@ -214,7 +214,7 @@ public class EventPanel : MonoBehaviour
                 
                 if (!canAfford)
                 {
-                    Debug.Log($"选项 [{optionIndex}] 花费 {costToPay} 铜钱，玩家现金 {currentPlayer.cash}");
+                    Debug.Log($"??? [{optionIndex}] ???? {costToPay} ?????????? {currentPlayer.cash}");
                     
                     if (buttonImage != null)
                     {
@@ -244,10 +244,10 @@ public class EventPanel : MonoBehaviour
                 
                 if (!finalCanAfford)
                 {
-                    Debug.LogWarning("余额不足");
+                    Debug.LogWarning("?????");
                     if (UIManager.Instance != null)
                     {
-                        UIManager.ShowToastStatic("余额不足", 2f);
+                        UIManager.ShowToastStatic("?????", 2f);
                     }
                     return;
                 }

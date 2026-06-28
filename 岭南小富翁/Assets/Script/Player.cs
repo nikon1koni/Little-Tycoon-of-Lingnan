@@ -406,7 +406,7 @@ public class Player : MonoBehaviour
             {
                 int repayAmount = Mathf.RoundToInt(loanAmount * loanRepayMultiplier);
                 PayCash(repayAmount);
-                Debug.Log($"{playerName} 还款: {repayAmount}");
+                Debug.Log($"{playerName} ????: {repayAmount}");
                 loanAmount = 0;
                 loanRepayMultiplier = 1f;
                 loanRepayRounds = 0;
@@ -430,14 +430,14 @@ public class Player : MonoBehaviour
             {
                 int receiveAmount = Mathf.RoundToInt(receivableAmount * receivableMultiplier);
                 ReceiveCash(receiveAmount);
-                Debug.Log($"{playerName} 收回借款: {receiveAmount}");
+                Debug.Log($"{playerName} ?????: {receiveAmount}");
                 receivableAmount = 0;
                 receivableMultiplier = 1f;
                 receivableRounds = 0;
                 
                 if (UIManager.Instance != null)
                 {
-                    UIManager.Instance.ShowToast($"收回借款 {receiveAmount} 铜钱", 2f);
+                    UIManager.Instance.ShowToast($"????? {receiveAmount} ??", 2f);
                 }
             }
         }
