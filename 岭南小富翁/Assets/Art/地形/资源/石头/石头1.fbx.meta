@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 21478767637ee934ca9b403bd18d2f7d
+guid: 5b9cbb8adda2c6b4b98f98b9085fca42
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,8 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: transform1Mat
-    second: {fileID: 2100000, guid: 5811fa52540eca64b80d9eee7714d7c6, type: 2}
+      name: Moss Stone 1
+    second: {fileID: 2100000, guid: 942a2c94c8b26ac47bd6115e1e245727, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

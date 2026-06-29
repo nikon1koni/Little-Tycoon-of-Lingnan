@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 21478767637ee934ca9b403bd18d2f7d
+guid: 33ca21ffa932efb4db25a37f197a5b78
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,8 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: transform1Mat
-    second: {fileID: 2100000, guid: 5811fa52540eca64b80d9eee7714d7c6, type: 2}
+      name: M_RoughRock01
+    second: {fileID: 2100000, guid: 3ecdfeafef0f150448e17cc97176815b, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

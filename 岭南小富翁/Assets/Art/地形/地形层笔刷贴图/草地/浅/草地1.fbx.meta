@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 21478767637ee934ca9b403bd18d2f7d
+guid: 76215f47d69e36a4bb51d018b0091ff3
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,8 +7,13 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: transform1Mat
-    second: {fileID: 2100000, guid: 5811fa52540eca64b80d9eee7714d7c6, type: 2}
+      name: Foliage001_2K-JPG_Color
+    second: {fileID: 2100000, guid: 3afff1d32c6f6e444b1e9ddcddf9dc26, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: "\u6750\u8D28.002"
+    second: {fileID: 2100000, guid: cff7515bce4b8dc498cdaa0172144e23, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

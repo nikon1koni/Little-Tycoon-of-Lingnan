@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 21478767637ee934ca9b403bd18d2f7d
+guid: 05caaea48f5f40b45ab33e7d12970b71
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,8 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: transform1Mat
-    second: {fileID: 2100000, guid: 5811fa52540eca64b80d9eee7714d7c6, type: 2}
+      name: 3DModel_Custom.002
+    second: {fileID: 2100000, guid: 3673e8caad4d2de4a8b35fe57cf2d7d7, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
