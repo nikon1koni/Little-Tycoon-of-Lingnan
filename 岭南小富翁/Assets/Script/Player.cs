@@ -303,7 +303,7 @@ public class Player : MonoBehaviour
                     Debug.Log($"{playerName} ");
                     if (UIManager.Instance != null)
                     {
-                        UIManager.Instance.ShowToast($"{playerName} ", 2f);
+                        UIManager.Instance.ShowToast($"{playerName} 恢复正常", 2f);
                     }
                     break;
                 }

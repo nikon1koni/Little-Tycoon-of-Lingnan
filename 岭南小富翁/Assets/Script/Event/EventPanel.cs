@@ -247,7 +247,7 @@ public class EventPanel : MonoBehaviour
                     Debug.LogWarning("?????");
                     if (UIManager.Instance != null)
                     {
-                        UIManager.ShowToastStatic("?????", 2f);
+                        UIManager.ShowToastStatic("余额不足", 2f);
                     }
                     return;
                 }

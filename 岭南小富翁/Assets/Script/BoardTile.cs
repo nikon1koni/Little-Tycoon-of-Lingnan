@@ -181,7 +181,7 @@ public class BoardTile : MonoBehaviour
 
                     if (UIManager.Instance != null)
                     {
-                        UIManager.Instance.ShowToast($" {salary}", 2f);
+                        UIManager.Instance.ShowToast($"获得工资 {salary}", 2f);
                     }
                 }
                 break;
@@ -287,7 +287,7 @@ public class BoardTile : MonoBehaviour
 
             if (UIManager.Instance != null)
             {
-                UIManager.Instance.ShowToast($" {rent}  {ownerPlayer.playerName}", 2f);
+                UIManager.Instance.ShowToast($"支付租金 {rent} 给 {ownerPlayer.playerName}", 2f);
             }
         }
         else
@@ -514,7 +514,7 @@ public class BoardTile : MonoBehaviour
 
             if (UIManager.Instance != null)
             {
-                UIManager.Instance.ShowToast($" {incomeAmount}", 2f);
+                UIManager.Instance.ShowToast($"获得收入 {incomeAmount}", 2f);
             }
         }
     }
@@ -921,7 +921,7 @@ public class BoardTile : MonoBehaviour
 
         if (UIManager.Instance != null)
         {
-            UIManager.Instance.ShowToast($"{player.playerName} ", 2f);
+            UIManager.Instance.ShowToast($"{player.playerName} 入狱了", 2f);
         }
     }
 

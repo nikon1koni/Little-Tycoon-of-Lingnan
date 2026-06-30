@@ -119,7 +119,7 @@ public class BuffSystem : MonoBehaviour
         
         if (UIManager.Instance != null)
         {
-            UIManager.Instance.ShowToast($"{player.playerName} ", 3f);
+            UIManager.Instance.ShowToast($"{player.playerName} 破产了！", 3f);
         }
         
         // 
@@ -141,7 +141,7 @@ public class BuffSystem : MonoBehaviour
 
         if (UIManager.Instance != null)
         {
-            UIManager.Instance.ShowToast($" {BuildingData.GetBuffEffectName(buff.effectType)} !", 2f);
+            UIManager.Instance.ShowToast($"获得 {BuildingData.GetBuffEffectName(buff.effectType)} 效果!", 2f);
         }
         
         //  Buff 

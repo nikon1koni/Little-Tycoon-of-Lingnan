@@ -544,7 +544,7 @@ public class GameManager : MonoBehaviour
             {
                 if (uiManager != null)
                 {
-                    uiManager.ShowToast("ESC", 2f);
+                    uiManager.ShowToast("请先完成建筑选择或按ESC跳过", 2f);
                 }
             }
             return;
@@ -812,7 +812,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                toastMessage = $"{player.playerName} ";
+                toastMessage = $"{player.playerName} 陷入破产危机！";
             }
             UIManager.Instance.ShowToast(toastMessage, 3f);
         }
@@ -1186,7 +1186,7 @@ public class GameManager : MonoBehaviour
 
             if (uiManager != null)
             {
-                uiManager.ShowToast($"{currentPlayer.playerName} {currentPlayer.jailTurnsRemaining}", 2f);
+                uiManager.ShowToast($"{currentPlayer.playerName} 在监狱里，还剩{currentPlayer.jailTurnsRemaining}回合", 2f);
             }
 
             EndTurn();
@@ -1210,7 +1210,7 @@ public class GameManager : MonoBehaviour
 
         if (uiManager != null)
         {
-            uiManager.ShowToast($"{player.playerName} !", 3f);
+            uiManager.ShowToast($"{player.playerName} 破产了!", 3f);
         }
     }
 
@@ -1255,16 +1255,16 @@ public class GameManager : MonoBehaviour
         if (currentPlayer == null) return;
 
         if (currentPlayerText != null)
-            currentPlayerText.text = $": {currentPlayer.playerName}";
+            currentPlayerText.text = $"玩家: {currentPlayer.playerName}";
 
         if (playerCashText != null)
-            playerCashText.text = $": {currentPlayer.cash}";
+            playerCashText.text = $"现金: {currentPlayer.cash}";
 
         if (diceResultText != null)
-            diceResultText.text = $": {lastDiceValue}";
+            diceResultText.text = $"骰子: {lastDiceValue}";
 
         if (currentTileText != null && currentPlayer.currentTile != null)
-            currentTileText.text = $": {currentPlayer.currentTile.tileName}";
+            currentTileText.text = $"位置: {currentPlayer.currentTile.tileName}";
 
         if (uiManager != null)
         {

@@ -950,7 +950,7 @@ public class UIManager : MonoBehaviour
 
         if (highlightCount == 0)
         {
-            ShowToast("", 2f);
+            ShowToast("没有可放置的地块", 2f);
         }
     }
 
@@ -990,13 +990,13 @@ public class UIManager : MonoBehaviour
 
         if (currentBuildingPlayer.cash < selectedBuildingData.purchasePrice)
         {
-            ShowToast("", 2f);
+            ShowToast("金币不足", 2f);
             return;
         }
 
         if (!IsTilePlaceable(tile, currentBuildingPlayer, (int)selectedBuildingData.requiredScale))
         {
-            ShowToast("", 2f);
+            ShowToast("该位置无法放置", 2f);
             return;
         }
 
@@ -1031,7 +1031,7 @@ public class UIManager : MonoBehaviour
                 }
             }
             
-            ShowToast("", 2f);
+            ShowToast("建造成功", 2f);
         }
     }
 
@@ -1201,17 +1201,17 @@ public class UIManager : MonoBehaviour
 
         if (currentPlayerText != null)
         {
-            currentPlayerText.text = $": {player.playerName}";
+            currentPlayerText.text = $"玩家: {player.playerName}";
         }
 
         if (playerCashText != null)
         {
-            playerCashText.text = $": {player.cash}";
+            playerCashText.text = $"金币: {player.cash}";
         }
 
         if (currentTileText != null && player.currentTile != null)
         {
-            currentTileText.text = $": {player.currentTile.tileName}";
+            currentTileText.text = $"当前位置: {player.currentTile.tileName}";
         }
 
         // 
@@ -1283,7 +1283,7 @@ public class UIManager : MonoBehaviour
             propertyNameText.text = property.tileName;
 
         if (priceText != null)
-            priceText.text = $": {property.propertyPrice} ";
+            priceText.text = $"价格: {property.propertyPrice} 金币";
 
         if (buyButton != null)
         {
@@ -1338,10 +1338,10 @@ public class UIManager : MonoBehaviour
 
         UnityEngine.Debug.Log($"={playerName}, ={isWinner}, ={roundCount}, ={diceCount}, ={score}");
 
-        SetText("ResultText", isWinner ? $"{playerName} !" : $"{playerName} ");
-        SetText("RoundText", $": {roundCount}");
-        SetText("DiceText", $": {diceCount}");
-        SetText("ScoreText", $": {score}");
+        SetText("ResultText", isWinner ? $"{playerName} 获胜!" : $"{playerName} 失败");
+        SetText("RoundText", $"回合数: {roundCount}");
+        SetText("DiceText", $"骰子投掷次数: {diceCount}");
+        SetText("ScoreText", $"最终得分: {score}");
 
         Button restartButton = FindRestartButton();
         if (restartButton != null)
@@ -1704,7 +1704,7 @@ public class UIManager : MonoBehaviour
         if (upgradeCostText != null)
         {
             int upgradeCost = upgradeSelectedTile.GetUpgradeCost();
-            upgradeCostText.text = $": {upgradeCost} ";
+            upgradeCostText.text = $"升级费用: {upgradeCost} 金币";
 
             if (upgradeSelectedPlayer.cash < upgradeCost)
             {
@@ -1718,13 +1718,13 @@ public class UIManager : MonoBehaviour
 
         if (currentLevelText != null)
         {
-            currentLevelText.text = $": {upgradeSelectedTile.buildingLevel}";
+            currentLevelText.text = $"当前等级: {upgradeSelectedTile.buildingLevel}";
         }
 
         if (nextLevelText != null)
         {
             int nextLevel = upgradeSelectedTile.buildingLevel + 1;
-            nextLevelText.text = $": {nextLevel}";
+            nextLevelText.text = $"下一等级: {nextLevel}";
         }
 
         if (upgradeSelectedTile.currentBuildingData != null)
@@ -1732,7 +1732,7 @@ public class UIManager : MonoBehaviour
             BuildingData buildingData = upgradeSelectedTile.currentBuildingData;
 
             string functionDesc = GetBuildingFunctionDescription(buildingData, upgradeSelectedTile.buildingLevel, upgradeSelectedTile);
-            ShowToast($": {functionDesc}", 3f);
+            ShowToast($"功能: {functionDesc}", 3f);
 
             if (buildingData.nextLevelBuilding != null)
             {
@@ -1749,7 +1749,7 @@ public class UIManager : MonoBehaviour
                 if (upgradeButton != null)
                 {
                     upgradeButton.interactable = false;
-                    ShowToast($": {(int)nextBuilding.requiredScale}", 2f);
+                    ShowToast($"需要地块等级: {(int)nextBuilding.requiredScale}", 2f);
                 }
             }
             else
@@ -1867,7 +1867,7 @@ public class UIManager : MonoBehaviour
 
         if (upgradeSelectedTile.UpgradeBuilding(upgradeSelectedPlayer))
         {
-            ShowToast("", 2f);
+            ShowToast("升级成功！", 2f);
 
             if (SFXManager.Instance != null)
                 SFXManager.Instance.PlaySFX(SFXClip.EventBuildingUpgraded);
@@ -1887,7 +1887,7 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            ShowToast("", 2f);
+            ShowToast("升级失败!", 2f);
         }
     }
 
