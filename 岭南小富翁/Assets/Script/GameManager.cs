@@ -663,7 +663,7 @@ public class GameManager : MonoBehaviour
         // 
         if (totalReward > 0 && uiManager != null)
         {
-            string message = $" {buildingCount}  {totalReward} ";
+            string message = $"共 {buildingCount} 座建筑触发，获得 {totalReward} 现金";
             uiManager.ShowToast(message, 3f);
             Debug.Log(message);
         }
