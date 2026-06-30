@@ -843,13 +843,16 @@ public class GameManager : MonoBehaviour
     {
         if (currentPlayer == null) return;
 
+        // 骰子加成 buff（移动加成等）：在原始点数上叠加额外步数
+        int boostedDiceValue = currentPlayer.GetDiceValueWithBoost(lastDiceValue);
+
         // 
         float multiplier = currentPlayer.GetNextRollMultiplier();
-        int finalDiceValue = Mathf.RoundToInt(lastDiceValue * multiplier);
+        int finalDiceValue = Mathf.RoundToInt(boostedDiceValue * multiplier);
         
         if (multiplier != 1f)
         {
-            Debug.Log($"{currentPlayer.playerName} : {lastDiceValue} * {multiplier} = {finalDiceValue}");
+            Debug.Log($"{currentPlayer.playerName} : {boostedDiceValue} * {multiplier} = {finalDiceValue}");
         }
 
         // 
