@@ -179,14 +179,10 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         {
             outline = draggedCardInstance.AddComponent<Outline>();
         }
-        outline.enabled = true;
-        
-        bool canUse = CanUseCard();
-        Color targetColor = canUse ? dragOutlineColor : invalidOutlineColor;
-        outline.effectColor = targetColor;
+        // 开始拖动时不显示描边，只有拖到有效投放区且可使用时才显示
+        outline.effectColor = dragOutlineColor;
         outline.effectDistance = new Vector2(outlineWidth, outlineWidth);
-        
-        Debug.Log($"OnBeginDrag: canUse={canUse}, outlineColor={targetColor}, GameManager.isMoving={GameManager.Instance?.isMoving ?? false}");
+        outline.enabled = false;
 
         canvasGroup.blocksRaycasts = false;
 
@@ -322,24 +318,44 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     {
         if (draggedCardInstance == null) return;
 
-        bool canUse = CanUseCard();
         Outline outline = draggedCardInstance.GetComponent<Outline>();
+        if (outline == null) return;
 
-        if (outline != null)
+        // 只有当卡牌拖到有效投放区上方时才显示描边
+        if (!IsPointerOverValidDropZone())
         {
-            outline.enabled = true;
-            
-            if (!canUse)
-            {
-                outline.effectColor = invalidOutlineColor;
-            }
-            else
-            {
-                outline.effectColor = dragOutlineColor;
-            }
-            
-            outline.effectDistance = new Vector2(outlineWidth, outlineWidth);
+            outline.enabled = false;
+            return;
         }
+
+        // 在投放区上方：可使用显示绿色，不可使用显示红色
+        bool canUse = CanUseCard();
+        outline.enabled = true;
+        outline.effectColor = canUse ? dragOutlineColor : invalidOutlineColor;
+        outline.effectDistance = new Vector2(outlineWidth, outlineWidth);
+    }
+
+    private bool IsPointerOverValidDropZone()
+    {
+        if (EventSystem.current == null) return false;
+
+        PointerEventData pointerData = new PointerEventData(EventSystem.current)
+        {
+            position = Input.mousePosition
+        };
+
+        var raycastResults = new System.Collections.Generic.List<RaycastResult>();
+        EventSystem.current.RaycastAll(pointerData, raycastResults);
+
+        foreach (var result in raycastResults)
+        {
+            if (result.gameObject.CompareTag(validDropZoneTag) ||
+                result.gameObject.GetComponent<ItemDropZone>() != null)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void UseItem()
