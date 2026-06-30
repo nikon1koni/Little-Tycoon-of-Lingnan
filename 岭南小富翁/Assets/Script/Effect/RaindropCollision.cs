@@ -1,14 +1,14 @@
-
+ï»¿
 using UnityEngine;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(ParticleSystem))]
 public class RaindropCollision : MonoBehaviour
 {
-    [Header("Á°äôÉèÖÃ")]
+    [Header("æ¶Ÿæ¼ªè®¾ç½®")]
     public float maxRipplesPerSecond = 20f;
     
-    [Header("µØÃæLayer")]
+    [Header("åœ°é¢Layer")]
     public LayerMask groundLayer;
     
     private ParticleSystem rainParticleSystem;

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,14 +6,14 @@ public class ItemHandManager : MonoBehaviour
 {
     public static ItemHandManager Instance { get; private set; }
 
-    [Header("ÊÖÅÆUI")]
+    [Header("æ‰‹ç‰ŒUI")]
     public Button toggleButton;
     public Transform handContainer;
 
-    [Header("Ä¬ÈÏ¿¨ÅÆÔ¤ÖÆÌå")]
+    [Header("é»˜è®¤å¡ç‰Œé¢„åˆ¶ä½“")]
     public GameObject defaultCardPrefab;
     
-    [Header("Ï¡ÓĞ¶È¿¨ÅÆÔ¤ÖÆÌå")]
+    [Header("ç¨€æœ‰åº¦å¡ç‰Œé¢„åˆ¶ä½“")]
     public RarityCardPrefab[] rarityPrefabs;
     
     [System.Serializable]
@@ -23,17 +23,17 @@ public class ItemHandManager : MonoBehaviour
         public GameObject cardPrefab;
     }
 
-    [Header("²¼¾ÖÉèÖÃ")]
+    [Header("å¸ƒå±€è®¾ç½®")]
     public float cardWidth = 120f;
     public float cardSpacing = 10f;
     public float centerOffsetY = 100f;
     public float fanAngle = 15f;
 
-    [Header("ĞüÍ£Ğ§¹û")]
+    [Header("æ‚¬åœæ•ˆæœ")]
     public float hoverScale = 1.1f;
     public float hoverYOffset = 50f;
 
-    [Header("³õÊ¼¿É¼ûĞÔ")]
+    [Header("åˆå§‹å¯è§æ€§")]
     public bool startVisible = true;
 
     private List<ItemDragCard> handCards = new List<ItemDragCard>();
@@ -77,7 +77,7 @@ public class ItemHandManager : MonoBehaviour
             if (canvas != null)
                 {
                     transform.SetParent(canvas.transform);
-                    Debug.Log("ItemHandManager: ÒÑÕÒµ½²¢ÉèÖÃÎª Canvas ×Ó¶ÔÏó");
+                    Debug.Log("ItemHandManager: å·²æ‰¾åˆ°å¹¶è®¾ç½®ä¸º Canvas å­å¯¹è±¡");
                 }
                 else
                 {
@@ -87,7 +87,7 @@ public class ItemHandManager : MonoBehaviour
                     canvasObj.AddComponent<CanvasScaler>();
                     canvasObj.AddComponent<GraphicRaycaster>();
                     transform.SetParent(canvas.transform);
-                    Debug.Log("ItemHandManager: ´´½¨²¢ÉèÖÃÎªĞÂ Canvas ×Ó¶ÔÏó");
+                    Debug.Log("ItemHandManager: åˆ›å»ºå¹¶è®¾ç½®ä¸ºæ–° Canvas å­å¯¹è±¡");
                 }
         }
     }
@@ -114,12 +114,12 @@ public class ItemHandManager : MonoBehaviour
     {
         if (GameManager.Instance != null && GameManager.Instance.currentPlayer != null)
         {
-            Debug.Log("ItemHandManager: ×Ô¶¯³õÊ¼»¯ÊÖÅÆ");
+            Debug.Log("ItemHandManager: è‡ªåŠ¨åˆå§‹åŒ–æ‰‹ç‰Œ");
             SetupHand(GameManager.Instance.currentPlayer);
         }
         else
         {
-            Debug.Log("ItemHandManager: GameManager Î´¾ÍĞ÷...");
+            Debug.Log("ItemHandManager: GameManager æœªå°±ç»ª...");
         }
     }
 
@@ -130,7 +130,7 @@ public class ItemHandManager : MonoBehaviour
 
         if (ItemManager.Instance == null)
         {
-            Debug.LogWarning("ItemHandManager: ItemManager Î´ÕÒµ½");
+            Debug.LogWarning("ItemHandManager: ItemManager æœªæ‰¾åˆ°");
             return;
         }
 
@@ -138,7 +138,7 @@ public class ItemHandManager : MonoBehaviour
         
         if (items.Count == 0)
         {
-            Debug.Log("ItemHandManager: ¸ÃÍæ¼ÒÃ»ÓĞÎïÆ·");
+            Debug.Log("ItemHandManager: è¯¥ç©å®¶æ²¡æœ‰ç‰©å“");
             return;
         }
 
@@ -148,21 +148,21 @@ public class ItemHandManager : MonoBehaviour
         }
 
         LayoutHand();
-        Debug.Log($"ItemHandManager: ÒÑ¼ÓÔØ {items.Count} ÕÅ¿¨ÅÆ");
+        Debug.Log($"ItemHandManager: å·²åŠ è½½ {items.Count} å¼ å¡ç‰Œ");
     }
 
     public void AddCardToHand(ItemData item, Player player)
     {
         if (handContainer == null)
         {
-            Debug.LogWarning("ItemHandManager: ÊÖÅÆÈİÆ÷Î´ÉèÖÃ");
+            Debug.LogWarning("ItemHandManager: æ‰‹ç‰Œå®¹å™¨æœªè®¾ç½®");
             return;
         }
 
         GameObject prefabToUse = GetCardPrefabByRarity(item.rarity);
         if (prefabToUse == null)
         {
-            Debug.LogWarning($"ItemHandManager: Î´ÕÒµ½ {item.rarity} Ï¡ÓĞ¶ÈµÄÔ¤ÖÆÌå");
+            Debug.LogWarning($"ItemHandManager: æœªæ‰¾åˆ° {item.rarity} ç¨€æœ‰åº¦çš„é¢„åˆ¶ä½“");
             return;
         }
 
@@ -233,7 +233,7 @@ public class ItemHandManager : MonoBehaviour
             Text buttonText = toggleButton.GetComponentInChildren<Text>();
             if (buttonText != null)
             {
-                buttonText.text = isVisible ? "Òş²ØÊÖÅÆ" : "ÏÔÊ¾ÊÖÅÆ";
+                buttonText.text = isVisible ? "éšè—æ‰‹ç‰Œ" : "æ˜¾ç¤ºæ‰‹ç‰Œ";
             }
         }
     }

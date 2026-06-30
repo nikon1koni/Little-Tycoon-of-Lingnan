@@ -1,10 +1,10 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
 public class ItemCardUI : MonoBehaviour
 {
-    [Header("UI×é¼þ")]
+    [Header("UIç»„ä»¶")]
     public Image iconImage;
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI descriptionText;

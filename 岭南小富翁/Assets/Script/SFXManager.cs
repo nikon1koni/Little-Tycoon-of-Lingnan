@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
 public enum SFXCategory
@@ -32,50 +32,50 @@ public enum SFXClip
     DiceRoll,
     DiceStop,
 
-    DiceClick,       // ÷»×Óµã»÷ÒôĞ§
-    TileSelect,      // µØ¿éÑ¡ÔñÒôĞ§
-    BuildingSold,    // ³öÊÛ½¨ÖşÒôĞ§
-    EventSelect     // ÊÂ¼şÑ¡ÔñÒôĞ§
+    DiceClick,       // éª°å­ç‚¹å‡»éŸ³æ•ˆ
+    TileSelect,      // åœ°å—é€‰æ‹©éŸ³æ•ˆ
+    BuildingSold,    // å‡ºå”®å»ºç­‘éŸ³æ•ˆ
+    EventSelect     // äº‹ä»¶é€‰æ‹©éŸ³æ•ˆ
 }
 
 public class SFXManager : MonoBehaviour
 {
     public static SFXManager Instance;
 
-    [Header("ÒôĞ§ÅäÖÃ")]
+    [Header("éŸ³æ•ˆé…ç½®")]
     public SFXConfig config;
 
-    [Header("ÒôÁ¿ÉèÖÃ")]
+    [Header("éŸ³é‡è®¾ç½®")]
     [Range(0f, 1f)]
-    [Tooltip("Ö÷ÒôÁ¿")]
+    [Tooltip("ä¸»éŸ³é‡")]
     public float masterVolume = 1f;
     [Range(0f, 1f)]
-    [Tooltip("UIÒôĞ§ÒôÁ¿")]
+    [Tooltip("UIéŸ³æ•ˆéŸ³é‡")]
     public float uiVolume = 0.8f;
     [Range(0f, 1f)]
-    [Tooltip("½ÇÉ«ÒôĞ§ÒôÁ¿")]
+    [Tooltip("è§’è‰²éŸ³æ•ˆéŸ³é‡")]
     public float characterVolume = 0.7f;
     [Range(0f, 1f)]
-[Tooltip("ÊÂ¼şÒôĞ§ÒôÁ¿")]
+[Tooltip("äº‹ä»¶éŸ³æ•ˆéŸ³é‡")]
 public float eventVolume = 0.4f;
     [Range(0f, 1f)]
-    [Tooltip("÷»×ÓÒôĞ§ÒôÁ¿")]
+    [Tooltip("éª°å­éŸ³æ•ˆéŸ³é‡")]
     public float diceVolume = 0.8f;
     [Range(0f, 1f)]
-    [Tooltip("÷»×Óµã»÷ÒôĞ§ÒôÁ¿")]
+    [Tooltip("éª°å­ç‚¹å‡»éŸ³æ•ˆéŸ³é‡")]
     public float diceClickVolume = 0.8f;
     [Range(0f, 1f)]
-    [Tooltip("µØ¿éÑ¡ÔñÒôĞ§ÒôÁ¿")]
+    [Tooltip("åœ°å—é€‰æ‹©éŸ³æ•ˆéŸ³é‡")]
     public float tileSelectVolume = 1f;
     [Range(0f, 1f)]
-    [Tooltip("³öÊÛ½¨ÖşÒôĞ§ÒôÁ¿")]
+    [Tooltip("å‡ºå”®å»ºç­‘éŸ³æ•ˆéŸ³é‡")]
     public float buildingSoldVolume = 1f;
     [Range(0f, 1f)]
-    [Tooltip("ÊÂ¼şÑ¡ÔñÒôĞ§ÒôÁ¿")]
+    [Tooltip("äº‹ä»¶é€‰æ‹©éŸ³æ•ˆéŸ³é‡")]
     public float eventSelectVolume = 1f;
 
-    [Header("ÒôĞ§³Ø")]
-    [Tooltip("AudioSource³ØµÄ´óĞ¡")]
+    [Header("éŸ³æ•ˆæ± ")]
+    [Tooltip("AudioSourceæ± çš„å¤§å°")]
     public int poolSize = 16;
 
     private Dictionary<SFXClip, AudioClip> clipCache = new Dictionary<SFXClip, AudioClip>();
@@ -149,7 +149,7 @@ public float eventVolume = 0.4f;
     {
         if (config == null)
         {
-            Debug.LogWarning("SFXManager: Î´ÕÒµ½SFXConfigÅäÖÃ£¬ÒôĞ§ÎŞ·¨¼ÓÔØ");
+            Debug.LogWarning("SFXManager: æœªæ‰¾åˆ°SFXConfigé…ç½®ï¼ŒéŸ³æ•ˆæ— æ³•åŠ è½½");
             return;
         }
 
@@ -164,7 +164,7 @@ public float eventVolume = 0.4f;
             }
         }
 
-        Debug.Log($"SFXManager: ³É¹¦¼ÓÔØ {clipCache.Count} ¸öÒôĞ§");
+        Debug.Log($"SFXManager: æˆåŠŸåŠ è½½ {clipCache.Count} ä¸ªéŸ³æ•ˆ");
     }
 
     AudioSource GetAvailableSource()
@@ -246,12 +246,12 @@ public float eventVolume = 0.4f;
             source.clip = clip;
             source.volume = finalVolume;
             source.Play();
-            Debug.Log($"SFXManager: ²¥·Å×Ô¶¨ÒåÒôĞ§");
+            Debug.Log($"SFXManager: æ’­æ”¾è‡ªå®šä¹‰éŸ³æ•ˆ");
         }
     }
 
     /// <summary>
-    /// ²¥·Å÷»×Óµã»÷ÒôĞ§£¨ÒôÁ¿ÉèÖÃÎªÏµÍ³Ä¬ÈÏµÄ80%£©
+    /// æ’­æ”¾éª°å­ç‚¹å‡»éŸ³æ•ˆï¼ˆéŸ³é‡è®¾ç½®ä¸ºç³»ç»Ÿé»˜è®¤çš„80%ï¼‰
     /// </summary>
     public void PlayDiceClickSound()
     {
@@ -262,19 +262,19 @@ public float eventVolume = 0.4f;
             source.clip = audioClip;
             source.volume = finalVolume;
             source.Play();
-            Debug.Log("SFXManager: ²¥·Å÷»×Óµã»÷ÒôĞ§");
+            Debug.Log("SFXManager: æ’­æ”¾éª°å­ç‚¹å‡»éŸ³æ•ˆ");
         }
     }
 
     /// <summary>
-    /// ²¥·ÅµØ¿éÑ¡ÔñÒôĞ§£¨ĞèÒªÑéÖ¤½¨ÖşÑ¡Ôñ×´Ì¬£©
+    /// æ’­æ”¾åœ°å—é€‰æ‹©éŸ³æ•ˆï¼ˆéœ€è¦éªŒè¯å»ºç­‘é€‰æ‹©çŠ¶æ€ï¼‰
     /// </summary>
-    /// <param name="hasBuildingSelected">ÊÇ·ñÒÑÑ¡Ôñ½¨Öş</param>
+    /// <param name="hasBuildingSelected">æ˜¯å¦å·²é€‰æ‹©å»ºç­‘</param>
     public void PlayTileSelectSound(bool hasBuildingSelected = true)
     {
         if (!hasBuildingSelected)
         {
-            Debug.Log("µØ¿éÑ¡ÔñÒôĞ§Î´²¥·Å£ºÎ´Ñ¡Ôñ½¨Öş");
+            Debug.Log("åœ°å—é€‰æ‹©éŸ³æ•ˆæœªæ’­æ”¾ï¼šæœªé€‰æ‹©å»ºç­‘");
             return;
         }
 
@@ -285,19 +285,19 @@ public float eventVolume = 0.4f;
             source.clip = audioClip;
             source.volume = finalVolume;
             source.Play();
-            Debug.Log("SFXManager: ²¥·ÅµØ¿éÑ¡ÔñÒôĞ§");
+            Debug.Log("SFXManager: æ’­æ”¾åœ°å—é€‰æ‹©éŸ³æ•ˆ");
         }
     }
 
     /// <summary>
-    /// ²¥·Å³öÊÛ½¨ÖşÒôĞ§£¨ĞèÒªÑéÖ¤½»Ò×³É¹¦£©
+    /// æ’­æ”¾å‡ºå”®å»ºç­‘éŸ³æ•ˆï¼ˆéœ€è¦éªŒè¯äº¤æ˜“æˆåŠŸï¼‰
     /// </summary>
-    /// <param name="transactionSuccess">½»Ò×ÊÇ·ñ³É¹¦</param>
+    /// <param name="transactionSuccess">äº¤æ˜“æ˜¯å¦æˆåŠŸ</param>
     public void PlayBuildingSoldSound(bool transactionSuccess)
     {
         if (!transactionSuccess)
         {
-            Debug.Log("³öÊÛ½¨ÖşÒôĞ§Î´²¥·Å£º½»Ò×Ê§°Ü");
+            Debug.Log("å‡ºå”®å»ºç­‘éŸ³æ•ˆæœªæ’­æ”¾ï¼šäº¤æ˜“å¤±è´¥");
             return;
         }
 
@@ -308,12 +308,12 @@ public float eventVolume = 0.4f;
             source.clip = audioClip;
             source.volume = finalVolume;
             source.Play();
-            Debug.Log("SFXManager: ²¥·Å³öÊÛ½¨ÖşÒôĞ§");
+            Debug.Log("SFXManager: æ’­æ”¾å‡ºå”®å»ºç­‘éŸ³æ•ˆ");
         }
     }
 
     /// <summary>
-    /// ²¥·ÅÊÂ¼şÑ¡ÔñÒôĞ§
+    /// æ’­æ”¾äº‹ä»¶é€‰æ‹©éŸ³æ•ˆ
     /// </summary>
     public void PlayEventSelectSound()
     {
@@ -324,7 +324,7 @@ public float eventVolume = 0.4f;
             source.clip = audioClip;
             source.volume = finalVolume;
             source.Play();
-            Debug.Log("SFXManager: ²¥·ÅÊÂ¼şÑ¡ÔñÒôĞ§");
+            Debug.Log("SFXManager: æ’­æ”¾äº‹ä»¶é€‰æ‹©éŸ³æ•ˆ");
         }
     }
 

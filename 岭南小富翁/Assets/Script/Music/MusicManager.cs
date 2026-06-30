@@ -1,14 +1,14 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
 public class MusicManager : MonoBehaviour
 {
     public static MusicManager Instance;
 
-    [Header("ÒôÀÖÁĞ±í")]
+    [Header("éŸ³ä¹åˆ—è¡¨")]
     public List<AudioClip> musicTracks = new List<AudioClip>();
 
-    [Header("²¥·ÅÉèÖÃ")]
+    [Header("æ’­æ”¾è®¾ç½®")]
     [Range(0f, 1f)]
     public float volume = 0.5f;
     public bool playOnAwake = true;
@@ -60,7 +60,7 @@ public class MusicManager : MonoBehaviour
     {
         if (musicTracks.Count == 0)
         {
-            Debug.LogWarning("MusicManager: Ã»ÓĞÌí¼ÓÈÎºÎÒôÀÖÎÄ¼ş£¡");
+            Debug.LogWarning("MusicManager: æ²¡æœ‰æ·»åŠ ä»»ä½•éŸ³ä¹æ–‡ä»¶ï¼");
             return;
         }
 
@@ -77,7 +77,7 @@ public class MusicManager : MonoBehaviour
         {
             audioSource.Pause();
             isPlaying = false;
-            Debug.Log($"MusicManager: ÔİÍ£²¥·Å - {GetCurrentTrackName()}");
+            Debug.Log($"MusicManager: æš‚åœæ’­æ”¾ - {GetCurrentTrackName()}");
         }
     }
 
@@ -93,7 +93,7 @@ public class MusicManager : MonoBehaviour
             {
                 audioSource.UnPause();
                 isPlaying = true;
-                Debug.Log($"MusicManager: ¼ÌĞø²¥·Å - {GetCurrentTrackName()}");
+                Debug.Log($"MusicManager: ç»§ç»­æ’­æ”¾ - {GetCurrentTrackName()}");
             }
         }
     }
@@ -104,7 +104,7 @@ public class MusicManager : MonoBehaviour
         {
             audioSource.Stop();
             isPlaying = false;
-            Debug.Log("MusicManager: Í£Ö¹²¥·Å");
+            Debug.Log("MusicManager: åœæ­¢æ’­æ”¾");
         }
     }
 
@@ -151,7 +151,7 @@ public class MusicManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"MusicManager: ÎŞĞ§µÄÒôÀÖË÷Òı {index}£¬ÓĞĞ§·¶Î§: 0-{musicTracks.Count - 1}");
+            Debug.LogWarning($"MusicManager: æ— æ•ˆçš„éŸ³ä¹ç´¢å¼• {index}ï¼Œæœ‰æ•ˆèŒƒå›´: 0-{musicTracks.Count - 1}");
         }
     }
 
@@ -162,7 +162,7 @@ public class MusicManager : MonoBehaviour
         AudioClip track = musicTracks[currentTrackIndex];
         if (track == null)
         {
-            Debug.LogWarning($"MusicManager: Ë÷Òı {currentTrackIndex} µÄÒôÀÖÎÄ¼şÎª¿Õ£¬Ìø¹ı");
+            Debug.LogWarning($"MusicManager: ç´¢å¼• {currentTrackIndex} çš„éŸ³ä¹æ–‡ä»¶ä¸ºç©ºï¼Œè·³è¿‡");
             PlayNextTrack();
             return;
         }
@@ -170,7 +170,7 @@ public class MusicManager : MonoBehaviour
         audioSource.clip = track;
         audioSource.Play();
         isPlaying = true;
-        Debug.Log($"MusicManager: ²¥·Å [{currentTrackIndex + 1}/{musicTracks.Count}] - {track.name}");
+        Debug.Log($"MusicManager: æ’­æ”¾ [{currentTrackIndex + 1}/{musicTracks.Count}] - {track.name}");
     }
 
     public void SetVolume(float newVolume)
@@ -207,9 +207,9 @@ public class MusicManager : MonoBehaviour
         if (musicTracks.Count > 0 && currentTrackIndex >= 0 && currentTrackIndex < musicTracks.Count)
         {
             AudioClip track = musicTracks[currentTrackIndex];
-            return track != null ? track.name : "¿Õ";
+            return track != null ? track.name : "ç©º";
         }
-        return "ÎŞÒôÀÖ";
+        return "æ— éŸ³ä¹";
     }
 
     public int GetCurrentTrackIndex()
@@ -227,7 +227,7 @@ public class MusicManager : MonoBehaviour
         if (track != null && !musicTracks.Contains(track))
         {
             musicTracks.Add(track);
-            Debug.Log($"MusicManager: Ìí¼ÓÒôÀÖ - {track.name}");
+            Debug.Log($"MusicManager: æ·»åŠ éŸ³ä¹ - {track.name}");
         }
     }
 
@@ -236,7 +236,7 @@ public class MusicManager : MonoBehaviour
         if (track != null && musicTracks.Contains(track))
         {
             musicTracks.Remove(track);
-            Debug.Log($"MusicManager: ÒÆ³ıÒôÀÖ - {track.name}");
+            Debug.Log($"MusicManager: ç§»é™¤éŸ³ä¹ - {track.name}");
         }
     }
 
@@ -245,13 +245,13 @@ public class MusicManager : MonoBehaviour
         Stop();
         musicTracks.Clear();
         currentTrackIndex = 0;
-        Debug.Log("MusicManager: Çå¿ÕËùÓĞÒôÀÖ");
+        Debug.Log("MusicManager: æ¸…ç©ºæ‰€æœ‰éŸ³ä¹");
     }
 
     public void ToggleShuffle()
     {
         shufflePlaylist = !shufflePlaylist;
-        Debug.Log($"MusicManager: Ëæ»ú²¥·Å = {shufflePlaylist}");
+        Debug.Log($"MusicManager: éšæœºæ’­æ”¾ = {shufflePlaylist}");
     }
 
     public void TogglePlayPause()

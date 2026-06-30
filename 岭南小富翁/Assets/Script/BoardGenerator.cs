@@ -1,17 +1,17 @@
-// BoardGenerator.cs - ÆåÅÌÉú³ÉÆ÷
+ï»¿// BoardGenerator.cs - æ£‹ç›˜ç”Ÿæˆå™¨
 using UnityEngine;
 using System.Collections.Generic;
 
 public class BoardGenerator : MonoBehaviour
 {
-    [Header("ÅäÖÃ")]
-    public GameObject gridTilePrefab; // Íø¸ñÍßÆ¬Ô¤ÖÆÌå
+    [Header("é…ç½®")]
+    public GameObject gridTilePrefab; // ç½‘æ ¼ç“¦ç‰‡é¢„åˆ¶ä½“
 
-    public int rows = 3; // ÆåÅÌĞĞÊı£¨½ğ×ÖËş½á¹¹£©
+    public int rows = 3; // æ£‹ç›˜è¡Œæ•°ï¼ˆé‡‘å­—å¡”ç»“æ„ï¼‰
 
-    public float tileSize = 1f; // ÍßÆ¬³ß´ç
+    public float tileSize = 1f; // ç“¦ç‰‡å°ºå¯¸
 
-    public Vector2 offset = new Vector2(0, 0); // Æ«ÒÆÁ¿
+    public Vector2 offset = new Vector2(0, 0); // åç§»é‡
 
     private List<GameObject> generatedTiles = new List<GameObject>();
 
@@ -24,12 +24,12 @@ public class BoardGenerator : MonoBehaviour
     {
         for (int row = 0; row < rows; row++)
         {
-            // µÚnĞĞÓĞn+1¸öÍßÆ¬£¨½ğ×ÖËş½á¹¹£©
-            int tileCount = row + 1; // µÚ0ĞĞ1¸ö,µÚ1ĞĞ2¸ö...ÒÔ´ËÀàÍÆ
+            // ç¬¬nè¡Œæœ‰n+1ä¸ªç“¦ç‰‡ï¼ˆé‡‘å­—å¡”ç»“æ„ï¼‰
+            int tileCount = row + 1; // ç¬¬0è¡Œ1ä¸ª,ç¬¬1è¡Œ2ä¸ª...ä»¥æ­¤ç±»æ¨
 
             for (int col = 0; col < tileCount; col++)
             {
-                // ÊµÀı»¯ÍßÆ¬
+                // å®ä¾‹åŒ–ç“¦ç‰‡
                 var tileObj = Instantiate(gridTilePrefab, transform);
                 var boardTile = tileObj.GetComponent<BoardTile>();
                 if (boardTile != null)
@@ -38,19 +38,19 @@ public class BoardGenerator : MonoBehaviour
                     boardTile.tileName = $"Tile_{row}_{col}";
                 }
 
-                // ¼ÆËãÁù±ßĞÎ²¼¾ÖµÄx,z×ø±ê
+                // è®¡ç®—å…­è¾¹å½¢å¸ƒå±€çš„x,zåæ ‡
                 float x = (col - tileCount * 0.5f) * tileSize + offset.x;
                 float z = -row * tileSize * 0.866f + offset.y;
 
                 tileObj.transform.localPosition = new Vector3(x, 0, z);
 
-                // Ğı×ª45¶ÈÒÔÆ¥ÅäÁù±ßĞÎ²¼¾Ö
+                // æ—‹è½¬45åº¦ä»¥åŒ¹é…å…­è¾¹å½¢å¸ƒå±€
                 tileObj.transform.localRotation = Quaternion.Euler(0, 45, 0);
 
                 generatedTiles.Add(tileObj);
             }
         }
 
-        Debug.Log($"Éú³ÉÍßÆ¬ÊıÁ¿: {generatedTiles.Count} ¸ö");
+        Debug.Log($"ç”Ÿæˆç“¦ç‰‡æ•°é‡: {generatedTiles.Count} ä¸ª");
     }
 }

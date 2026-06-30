@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEditor;
 
 public class SkyboxHelper : MonoBehaviour
@@ -6,7 +6,7 @@ public class SkyboxHelper : MonoBehaviour
     [MenuItem("Tools/Create Procedural SkyDome")]
     public static void CreateSkyDome()
     {
-        // ²éÕÒ»ò´´½¨SkyDome¶ÔÏó
+        // æŸ¥æ‰¾æˆ–åˆ›å»ºSkyDomeå¯¹è±¡
         GameObject skyDome = GameObject.Find("SkyDome");
         if (skyDome == null)
         {
@@ -14,25 +14,25 @@ public class SkyboxHelper : MonoBehaviour
             Undo.RegisterCreatedObjectUndo(skyDome, "Create SkyDome");
         }
         
-        // Ìí¼ÓSkyDome½Å±¾£¨×Ô¶¯Ìí¼ÓMeshFilterºÍMeshRenderer£©
+        // æ·»åŠ SkyDomeè„šæœ¬ï¼ˆè‡ªåŠ¨æ·»åŠ MeshFilterå’ŒMeshRendererï¼‰
         SkyDome dome = skyDome.GetComponent<SkyDome>();
         if (dome == null)
         {
             dome = skyDome.AddComponent<SkyDome>();
         }
         
-        // ²éÕÒÌì¿ÕºĞ²ÄÖÊ
+        // æŸ¥æ‰¾å¤©ç©ºç›’æè´¨
         Material skyMat = FindSkyboxMaterial();
         if (skyMat != null)
         {
             dome.skyboxMaterial = skyMat;
         }
         
-        // ÉèÖÃÄ¬ÈÏ²ÎÊı
+        // è®¾ç½®é»˜è®¤å‚æ•°
         dome.domeRadius = 500;
         dome.subdivisions = 64;
         
-        // Ñ¡ÖĞ¶ÔÏó
+        // é€‰ä¸­å¯¹è±¡
         Selection.activeGameObject = skyDome;
         
         Debug.Log("SkyDome created! Don't forget to:");
@@ -49,7 +49,7 @@ public class SkyboxHelper : MonoBehaviour
             return AssetDatabase.LoadAssetAtPath<Material>(path);
         }
         
-        // ³¢ÊÔÕÒÃû×Ö°üº¬"Procedural"µÄ²ÄÖÊ
+        // å°è¯•æ‰¾åå­—åŒ…å«"Procedural"çš„æè´¨
         guids = AssetDatabase.FindAssets("Procedural t:Material");
         foreach (string guid in guids)
         {

@@ -1,54 +1,54 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
 public class UpgradeUIController : MonoBehaviour
 {
-    [Header("UIÃæ°åÒıÓÃ")]
+    [Header("UIé¢æ¿å¼•ç”¨")]
     public GameObject upgradePanel;
     public TextMeshProUGUI titleText;
     
-    [Header("¶Ô±ÈÇøÓò")]
+    [Header("å¯¹æ¯”åŒºåŸŸ")]
     public GameObject comparisonArea;
     
-    [Header("ÌáÊ¾Ãæ°å")]
+    [Header("æç¤ºé¢æ¿")]
     public GameObject clickHintPanel;
     public TextMeshProUGUI clickHintText;
     
-    [Header("µ±Ç°½¨ÖşĞÅÏ¢")]
+    [Header("å½“å‰å»ºç­‘ä¿¡æ¯")]
     public TextMeshProUGUI currentNameText;
     public TextMeshProUGUI currentDescriptionText;
     public TextMeshProUGUI currentLevelText;
     public TextMeshProUGUI currentIncomeText;
     public TextMeshProUGUI currentBuffText;
     
-    [Header("¼ıÍ·/·ÑÓÃÇøÓò")]
+    [Header("ç®­å¤´/è´¹ç”¨åŒºåŸŸ")]
     public GameObject arrowPanel;
     public TextMeshProUGUI arrowCostText;
     public TextMeshProUGUI arrowText;
     
-    [Header("ÏÂÒ»¼¶½¨ÖşĞÅÏ¢")]
+    [Header("ä¸‹ä¸€çº§å»ºç­‘ä¿¡æ¯")]
     public TextMeshProUGUI nextNameText;
     public TextMeshProUGUI nextDescriptionText;
     public TextMeshProUGUI nextLevelText;
     public TextMeshProUGUI nextIncomeText;
     public TextMeshProUGUI nextBuffText;
     
-    [Header("²Ù×÷°´Å¥")]
+    [Header("æ“ä½œæŒ‰é’®")]
     public Button confirmButton;
     public Button cancelButton;
     public Button exitButton;
     
-    [Header("·ÑÓÃÑÕÉ«")]
+    [Header("è´¹ç”¨é¢œè‰²")]
     public Color costColorSufficient = Color.green;
     public Color costColorInsufficient = Color.red;
     
-    [Header("·ÑÓÃÃè±ßÑÕÉ«")]
+    [Header("è´¹ç”¨æè¾¹é¢œè‰²")]
     public Color costOutlineColorSufficient = Color.white;
     public Color costOutlineColorInsufficient = new Color(1f, 0.84f, 0f);
     public float costOutlineThickness = 2f;
     
-    [Header("ÒıÓÃ - ½¨ÖşÑ¡ÔñÃæ°å¿ØÖÆÆ÷")]
+    [Header("å¼•ç”¨ - å»ºç­‘é€‰æ‹©é¢æ¿æ§åˆ¶å™¨")]
     public BuildingSelectionPanelController buildingSelectionPanelController;
 
     private BoardTile selectedTile;
@@ -59,46 +59,46 @@ public class UpgradeUIController : MonoBehaviour
     void Start()
     {
         Debug.Log("=== UpgradeUIController Start ===");
-        Debug.Log($"ÓÎÏ·¶ÔÏóÃû³Æ: {gameObject.name}");
-        Debug.Log($"ÓÎÏ·¶ÔÏó¼¤»î×´Ì¬: {gameObject.activeSelf}");
-        Debug.Log($"upgradePanel: {(upgradePanel != null ? $"´æÔÚ - {upgradePanel.name}" : "²»´æÔÚ")}");
-        Debug.Log($"clickHintPanel: {(clickHintPanel != null ? $"´æÔÚ - {clickHintPanel.name}" : "²»´æÔÚ")}");
-        Debug.Log($"comparisonArea: {(comparisonArea != null ? $"´æÔÚ - {comparisonArea.name}" : "²»´æÔÚ")}");
+        Debug.Log($"æ¸¸æˆå¯¹è±¡åç§°: {gameObject.name}");
+        Debug.Log($"æ¸¸æˆå¯¹è±¡æ¿€æ´»çŠ¶æ€: {gameObject.activeSelf}");
+        Debug.Log($"upgradePanel: {(upgradePanel != null ? $"å­˜åœ¨ - {upgradePanel.name}" : "ä¸å­˜åœ¨")}");
+        Debug.Log($"clickHintPanel: {(clickHintPanel != null ? $"å­˜åœ¨ - {clickHintPanel.name}" : "ä¸å­˜åœ¨")}");
+        Debug.Log($"comparisonArea: {(comparisonArea != null ? $"å­˜åœ¨ - {comparisonArea.name}" : "ä¸å­˜åœ¨")}");
         
         if (upgradePanel != null)
         {
             upgradePanel.SetActive(false);
-            Debug.Log("upgradePanel ÒÑÒş²Ø");
+            Debug.Log("upgradePanel å·²éšè—");
         }
         else
         {
-            Debug.LogWarning("upgradePanel Î´ÉèÖÃ");
+            Debug.LogWarning("upgradePanel æœªè®¾ç½®");
         }
         
         if (clickHintPanel != null)
         {
             clickHintPanel.SetActive(false);
-            Debug.Log("clickHintPanel ÒÑÒş²Ø");
+            Debug.Log("clickHintPanel å·²éšè—");
         }
         else
         {
-            Debug.LogWarning("clickHintPanel Î´ÉèÖÃ");
+            Debug.LogWarning("clickHintPanel æœªè®¾ç½®");
         }
         
         if (comparisonArea != null)
         {
             comparisonArea.SetActive(false);
-            Debug.Log("comparisonArea ÒÑÒş²Ø");
+            Debug.Log("comparisonArea å·²éšè—");
         }
         else
         {
-            Debug.LogWarning("comparisonArea Î´ÉèÖÃ£¬ÇëÔÚInspectorÖĞÉèÖÃÒıÓÃ");
+            Debug.LogWarning("comparisonArea æœªè®¾ç½®ï¼Œè¯·åœ¨Inspectorä¸­è®¾ç½®å¼•ç”¨");
         }
         
         SetupButtons();
     }
 
-    // Update·½·¨ÒÑÔİÊ±×¢ÊÍ - ESC¼ü¹¦ÄÜÓÉUIManager´¦Àí£¬ÒÔ±ÜÃâÖØ¸´´¦Àí
+    // Updateæ–¹æ³•å·²æš‚æ—¶æ³¨é‡Š - ESCé”®åŠŸèƒ½ç”±UIManagerå¤„ç†ï¼Œä»¥é¿å…é‡å¤å¤„ç†
     // void Update()
     // {
     //     if (isUpgradeMode && Input.GetKeyDown(KeyCode.Escape))
@@ -144,12 +144,12 @@ public class UpgradeUIController : MonoBehaviour
         
         if (titleText != null)
         {
-            titleText.text = "½¨ÖşÉı¼¶";
+            titleText.text = "å»ºç­‘å‡çº§";
         }
         
         ShowClickHint();
         
-        Debug.Log("½øÈëÉı¼¶Ä£Ê½");
+        Debug.Log("è¿›å…¥å‡çº§æ¨¡å¼");
     }
 
     private void ShowClickHint()
@@ -168,32 +168,32 @@ public class UpgradeUIController : MonoBehaviour
         
         if (clickHintText != null)
         {
-            clickHintText.text = $"Çëµã»÷ÒªÉı¼¶µÄ½¨Öş\nÄãÓµÓĞ {GetPlayerBuildingCount()} ¸ö½¨Öş\n°´ESCÈ¡Ïû";
+            clickHintText.text = $"è¯·ç‚¹å‡»è¦å‡çº§çš„å»ºç­‘\nä½ æ‹¥æœ‰ {GetPlayerBuildingCount()} ä¸ªå»ºç­‘\næŒ‰ESCå–æ¶ˆ";
         }
     }
 
     private void HideClickHint()
     {
-        Debug.Log("HideClickHint: Òş²ØÌáÊ¾²¢ÏÔÊ¾¶Ô±ÈÇøÓò");
+        Debug.Log("HideClickHint: éšè—æç¤ºå¹¶æ˜¾ç¤ºå¯¹æ¯”åŒºåŸŸ");
         
         if (clickHintPanel != null)
         {
             clickHintPanel.SetActive(false);
-            Debug.Log("clickHintPanel ÒÑÒş²Ø");
+            Debug.Log("clickHintPanel å·²éšè—");
         }
         else
         {
-            Debug.LogWarning("clickHintPanel Î´ÉèÖÃ");
+            Debug.LogWarning("clickHintPanel æœªè®¾ç½®");
         }
         
         if (comparisonArea != null)
         {
             comparisonArea.SetActive(true);
-            Debug.Log("comparisonArea ÒÑÏÔÊ¾");
+            Debug.Log("comparisonArea å·²æ˜¾ç¤º");
         }
         else
         {
-            Debug.LogWarning("comparisonArea Î´ÉèÖÃ£¬ÇëÔÚInspectorÖĞÉèÖÃÒıÓÃ");
+            Debug.LogWarning("comparisonArea æœªè®¾ç½®ï¼Œè¯·åœ¨Inspectorä¸­è®¾ç½®å¼•ç”¨");
         }
     }
 
@@ -209,7 +209,7 @@ public class UpgradeUIController : MonoBehaviour
             upgradePanel.SetActive(false);
         }
         
-        // È·±£ËùÓĞ×ÓÃæ°åÒ²±»Òş²Ø
+        // ç¡®ä¿æ‰€æœ‰å­é¢æ¿ä¹Ÿè¢«éšè—
         if (clickHintPanel != null)
         {
             clickHintPanel.SetActive(false);
@@ -220,7 +220,7 @@ public class UpgradeUIController : MonoBehaviour
             comparisonArea.SetActive(false);
         }
         
-        Debug.Log("ÍË³öÉı¼¶Ä£Ê½");
+        Debug.Log("é€€å‡ºå‡çº§æ¨¡å¼");
     }
 
     public void OnTileClicked(BoardTile tile)
@@ -229,19 +229,19 @@ public class UpgradeUIController : MonoBehaviour
         
         if (tile == null)
         {
-            Debug.Log("µã»÷µÄ¸ñ×ÓÎª¿Õ");
+            Debug.Log("ç‚¹å‡»çš„æ ¼å­ä¸ºç©º");
             return;
         }
         
         if (tile.currentBuildingData == null)
         {
-            ShowStatus("¸Ã¸ñ×ÓÉÏÃ»ÓĞ½¨Öş");
+            ShowStatus("è¯¥æ ¼å­ä¸Šæ²¡æœ‰å»ºç­‘");
             return;
         }
         
         if (tile.ownerPlayer != currentPlayer)
         {
-            ShowStatus("Õâ²»ÊÇÄãµÄ½¨Öş");
+            ShowStatus("è¿™ä¸æ˜¯ä½ çš„å»ºç­‘");
             return;
         }
         
@@ -249,7 +249,7 @@ public class UpgradeUIController : MonoBehaviour
         selectedTile = tile;
         HideClickHint();
         
-        // Òş²ØUIManagerµÄinfoToastPanel
+        // éšè—UIManagerçš„infoToastPanel
         if (UIManager.Instance != null)
         {
             UIManager.Instance.HideInfoToast();
@@ -257,7 +257,7 @@ public class UpgradeUIController : MonoBehaviour
         
         DisplayUpgradeInfo(tile);
         
-        Debug.Log($"Ñ¡ÖĞ½¨Öş: {tile.currentBuildingData.buildingName}");
+        Debug.Log($"é€‰ä¸­å»ºç­‘: {tile.currentBuildingData.buildingName}");
     }
 
     private void DisplayUpgradeInfo(BoardTile tile)
@@ -274,14 +274,14 @@ public class UpgradeUIController : MonoBehaviour
             currentDescriptionText.text = currentData.description;
         
         if (currentLevelText != null)
-            currentLevelText.text = $"µÈ¼¶ {tile.buildingLevel}";
+            currentLevelText.text = $"ç­‰çº§ {tile.buildingLevel}";
         
         if (currentData.functionType == BuildingData.BuildingFunctionType.Income ||
             currentData.functionType == BuildingData.BuildingFunctionType.Mixed)
         {
             int income = currentData.GetIncomeAmountByTurns(tile.GetBuildingTurnsOwned());
             if (currentIncomeText != null)
-                currentIncomeText.text = $"ÊÕÈë: {income} ½ğ±Ò/»ØºÏ";
+                currentIncomeText.text = $"æ”¶å…¥: {income} é‡‘å¸/å›åˆ";
         }
         else
         {
@@ -311,7 +311,7 @@ public class UpgradeUIController : MonoBehaviour
             int cost = tile.GetUpgradeCost();
             if (arrowCostText != null)
             {
-                arrowCostText.text = $"{cost} ½ğ±Ò";
+                arrowCostText.text = $"{cost} é‡‘å¸";
                 if (currentPlayer != null && currentPlayer.cash < cost)
                 {
                     arrowCostText.color = costColorInsufficient;
@@ -327,7 +327,7 @@ public class UpgradeUIController : MonoBehaviour
             }
             
             if (arrowText != null)
-                arrowText.text = "Éı¼¶µ½ >";
+                arrowText.text = "å‡çº§åˆ° >";
             
             if (nextNameText != null)
                 nextNameText.text = nextData.buildingName;
@@ -336,14 +336,14 @@ public class UpgradeUIController : MonoBehaviour
                 nextDescriptionText.text = nextData.description;
             
             if (nextLevelText != null)
-                nextLevelText.text = $"µÈ¼¶ {tile.buildingLevel + 1}";
+                nextLevelText.text = $"ç­‰çº§ {tile.buildingLevel + 1}";
             
             if (nextData.functionType == BuildingData.BuildingFunctionType.Income ||
                 nextData.functionType == BuildingData.BuildingFunctionType.Mixed)
             {
                 int income = nextData.GetIncomeAmountByTurns(tile.GetBuildingTurnsOwned());
                 if (nextIncomeText != null)
-                    nextIncomeText.text = $"ÊÕÈë: {income} ½ğ±Ò/»ØºÏ";
+                    nextIncomeText.text = $"æ”¶å…¥: {income} é‡‘å¸/å›åˆ";
             }
             else
             {
@@ -376,19 +376,19 @@ public class UpgradeUIController : MonoBehaviour
             {
                 arrowPanel.SetActive(true);
                 if (arrowText != null)
-                    arrowText.text = "ÒÑÂú¼¶";
+                    arrowText.text = "å·²æ»¡çº§";
                 if (arrowCostText != null)
                 {
-                    arrowCostText.text = "ÎŞ·¨Éı¼¶";
+                    arrowCostText.text = "æ— æ³•å‡çº§";
                     arrowCostText.color = Color.gray;
                 }
             }
             
             if (nextNameText != null)
-                nextNameText.text = "ÒÑÂú¼¶";
+                nextNameText.text = "å·²æ»¡çº§";
             
             if (nextDescriptionText != null)
-                nextDescriptionText.text = "¸Ã½¨ÖşÒÑ´ï×î¸ßµÈ¼¶";
+                nextDescriptionText.text = "è¯¥å»ºç­‘å·²è¾¾æœ€é«˜ç­‰çº§";
             
             if (nextLevelText != null)
                 nextLevelText.text = "";
@@ -435,7 +435,7 @@ public class UpgradeUIController : MonoBehaviour
         {
             if (!hasSelectedBuilding)
             {
-                ShowStatus("ÇëÏÈµã»÷ÒªÉı¼¶µÄ½¨Öş");
+                ShowStatus("è¯·å…ˆç‚¹å‡»è¦å‡çº§çš„å»ºç­‘");
             }
             return;
         }
@@ -452,25 +452,25 @@ public class UpgradeUIController : MonoBehaviour
                 UIManager.Instance.UpdateCashDisplay(currentPlayer.cash);
             }
             
-            Debug.Log("Éı¼¶³É¹¦");
+            Debug.Log("å‡çº§æˆåŠŸ");
         }
         else
         {
-            ShowStatus("Éı¼¶Ê§°Ü£¬Çë¼ì²é½ğ±Ò»ò½¨ÖşµÈ¼¶");
-            Debug.Log("Éı¼¶Ê§°Ü");
+            ShowStatus("å‡çº§å¤±è´¥ï¼Œè¯·æ£€æŸ¥é‡‘å¸æˆ–å»ºç­‘ç­‰çº§");
+            Debug.Log("å‡çº§å¤±è´¥");
         }
     }
 
     private void OnCancel()
     {
-        // ÓÅÏÈÊ¹ÓÃBuildingDataConfigÀ´´¦ÀíÉı¼¶Ä£Ê½ÍË³ö
+        // ä¼˜å…ˆä½¿ç”¨BuildingDataConfigæ¥å¤„ç†å‡çº§æ¨¡å¼é€€å‡º
         if (BuildingDataConfig.Instance != null)
         {
             BuildingDataConfig.Instance.ExitUpgradeMode();
         }
         else
         {
-            // ±¸ÓÃ·½°¸
+            // å¤‡ç”¨æ–¹æ¡ˆ
             ExitUpgradeMode();
             if (buildingSelectionPanelController != null)
             {

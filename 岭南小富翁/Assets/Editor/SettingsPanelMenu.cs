@@ -1,10 +1,10 @@
-using UnityEditor;
+ï»¿using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SettingsPanelMenu : EditorWindow
 {
-    [MenuItem("Tools/ÁëÄÏĞ¡¸»ÎÌ/ÅäÖÃÉèÖÃÃæ°å")]
+    [MenuItem("Tools/å²­å—å°å¯Œç¿/é…ç½®è®¾ç½®é¢æ¿")]
     public static void ConfigureSettingsPanel()
     {
         GameObject settingsPanel = GameObject.Find("SettingsPanel");
@@ -12,7 +12,7 @@ public class SettingsPanelMenu : EditorWindow
         
         if (settingsPanel == null)
         {
-            EditorUtility.DisplayDialog("´íÎó", "Î´ÕÒµ½ÉèÖÃÃæ°å¶ÔÏó", "È·¶¨");
+            EditorUtility.DisplayDialog("é”™è¯¯", "æœªæ‰¾åˆ°è®¾ç½®é¢æ¿å¯¹è±¡", "ç¡®å®š");
             return;
         }
         
@@ -24,13 +24,13 @@ public class SettingsPanelMenu : EditorWindow
         
         controller.settingsPanel = settingsPanel;
         
-        controller.brightnessSlider = FindSliderInChildren(settingsPanel.transform, "ÁÁ¶È");
-        controller.musicSlider = FindSliderInChildren(settingsPanel.transform, "ÒôÀÖ");
-        controller.sfxSlider = FindSliderInChildren(settingsPanel.transform, "ÒôĞ§");
-        controller.closeButton = FindButtonInChildren(settingsPanel.transform, "¹Ø±Õ");
+        controller.brightnessSlider = FindSliderInChildren(settingsPanel.transform, "äº®åº¦");
+        controller.musicSlider = FindSliderInChildren(settingsPanel.transform, "éŸ³ä¹");
+        controller.sfxSlider = FindSliderInChildren(settingsPanel.transform, "éŸ³æ•ˆ");
+        controller.closeButton = FindButtonInChildren(settingsPanel.transform, "å…³é—­");
         
         EditorUtility.SetDirty(controller);
-        EditorUtility.DisplayDialog("Íê³É", "ÉèÖÃÃæ°åÅäÖÃÍê³É£¡\n\nÁÁ¶È»¬¶¯Ìõ: " + (controller.brightnessSlider != null ? "ÒÑ°ó¶¨" : "Î´ÕÒµ½") + "\nÒôÀÖ»¬¶¯Ìõ: " + (controller.musicSlider != null ? "ÒÑ°ó¶¨" : "Î´ÕÒµ½") + "\nÒôĞ§»¬¶¯Ìõ: " + (controller.sfxSlider != null ? "ÒÑ°ó¶¨" : "Î´ÕÒµ½") + "\n¹Ø±Õ°´Å¥: " + (controller.closeButton != null ? "ÒÑ°ó¶¨" : "Î´ÕÒµ½"), "È·¶¨");
+        EditorUtility.DisplayDialog("å®Œæˆ", "è®¾ç½®é¢æ¿é…ç½®å®Œæˆï¼\n\näº®åº¦æ»‘åŠ¨æ¡: " + (controller.brightnessSlider != null ? "å·²ç»‘å®š" : "æœªæ‰¾åˆ°") + "\néŸ³ä¹æ»‘åŠ¨æ¡: " + (controller.musicSlider != null ? "å·²ç»‘å®š" : "æœªæ‰¾åˆ°") + "\néŸ³æ•ˆæ»‘åŠ¨æ¡: " + (controller.sfxSlider != null ? "å·²ç»‘å®š" : "æœªæ‰¾åˆ°") + "\nå…³é—­æŒ‰é’®: " + (controller.closeButton != null ? "å·²ç»‘å®š" : "æœªæ‰¾åˆ°"), "ç¡®å®š");
     }
     
     static Slider FindSliderInChildren(Transform parent, string name)

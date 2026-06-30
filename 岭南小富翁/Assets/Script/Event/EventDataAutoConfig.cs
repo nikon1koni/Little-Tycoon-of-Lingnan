@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEditor;
 
 public static class EventDataAutoConfig
@@ -6,7 +6,7 @@ public static class EventDataAutoConfig
     [MenuItem("Tools/Configure All Event Data NOW")]
     public static void ConfigureAllEvents()
     {
-        Debug.Log("¿ªÊ¼ÅäÖÃËùÓĞÊÂ¼şÊı¾İ...");
+        Debug.Log("å¼€å§‹é…ç½®æ‰€æœ‰äº‹ä»¶æ•°æ®...");
 
         ConfigureDanJiaFishermanEvent();
         ConfigureHerbalTeaEvent();
@@ -18,27 +18,27 @@ public static class EventDataAutoConfig
         ConfigureOldBrandGuildEvent();
 
         AssetDatabase.SaveAssets();
-        Debug.Log("=== ËùÓĞ8¸öÊÂ¼şÅäÖÃÍê³É ===");
-        EditorUtility.DisplayDialog("ÅäÖÃÍê³É", "ÒÑ³É¹¦ÅäÖÃËùÓĞ8¸öÊÂ¼ş", "È·¶¨");
+        Debug.Log("=== æ‰€æœ‰8ä¸ªäº‹ä»¶é…ç½®å®Œæˆ ===");
+        EditorUtility.DisplayDialog("é…ç½®å®Œæˆ", "å·²æˆåŠŸé…ç½®æ‰€æœ‰8ä¸ªäº‹ä»¶", "ç¡®å®š");
     }
 
     private static void ConfigureDanJiaFishermanEvent()
     {
-        EventData eventData = AssetDatabase.LoadAssetAtPath<EventData>("Assets/Building/Event Data/µ°¼ÒÓæÃñ.asset");
+        EventData eventData = AssetDatabase.LoadAssetAtPath<EventData>("Assets/Building/Event Data/è›‹å®¶æ¸”æ°‘.asset");
         if (eventData == null)
         {
-            Debug.LogError("ÕÒ²»µ½ÊÂ¼şÊı¾İ: µ°¼ÒÓæÃñ.asset");
+            Debug.LogError("æ‰¾ä¸åˆ°äº‹ä»¶æ•°æ®: è›‹å®¶æ¸”æ°‘.asset");
             return;
         }
 
-        eventData.eventTitle = "[µ°¼ÒÓæÃñ]½èÓã³öº£";
-        eventData.eventDescription = "µ°¼ÒÈËÊÀ´úÒÔ²¶ÓãÎªÉú£¬Èç½ñÓöµ½·çÀË¼±ĞèÖÜ×ª¡£ËûÃÇÔ¸ÒâÓÃÎ´À´µÄÓæ»ñ×÷ÎªµÖÑºÏòÄã½èÇ®¡£";
+        eventData.eventTitle = "[è›‹å®¶æ¸”æ°‘]å€Ÿé±¼å‡ºæµ·";
+        eventData.eventDescription = "è›‹å®¶äººä¸–ä»£ä»¥æ•é±¼ä¸ºç”Ÿï¼Œå¦‚ä»Šé‡åˆ°é£æµªæ€¥éœ€å‘¨è½¬ã€‚ä»–ä»¬æ„¿æ„ç”¨æœªæ¥çš„æ¸”è·ä½œä¸ºæŠµæŠ¼å‘ä½ å€Ÿé’±ã€‚";
 
         eventData.options = new EventData.EventOption[]
         {
             new EventData.EventOption()
             {
-                optionText = "½è20Í­Ç® -> 2»ØºÏºó»¹50Í­Ç®",
+                optionText = "å€Ÿ20é“œé’± -> 2å›åˆåè¿˜50é“œé’±",
                 optionCostAmount = 20,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.Loan,
@@ -48,7 +48,7 @@ public static class EventDataAutoConfig
             },
             new EventData.EventOption()
             {
-                optionText = "½è30Í­Ç® -> 2»ØºÏºó»¹80Í­Ç®",
+                optionText = "å€Ÿ30é“œé’± -> 2å›åˆåè¿˜80é“œé’±",
                 optionCostAmount = 30,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.Loan,
@@ -58,7 +58,7 @@ public static class EventDataAutoConfig
             },
             new EventData.EventOption()
             {
-                optionText = "ÍñÑÔ¾Ü¾ø -> ÏÂÒ»´Î÷»×Ó²½Êı¼õ°ë",
+                optionText = "å©‰è¨€æ‹’ç» -> ä¸‹ä¸€æ¬¡éª°å­æ­¥æ•°å‡åŠ",
                 optionCostAmount = 0,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.NextRollMultiplier,
@@ -67,40 +67,40 @@ public static class EventDataAutoConfig
         };
 
         EditorUtility.SetDirty(eventData);
-        Debug.Log("ÒÑÅäÖÃÊÂ¼ş: µ°¼ÒÓæÃñ");
+        Debug.Log("å·²é…ç½®äº‹ä»¶: è›‹å®¶æ¸”æ°‘");
     }
 
     private static void ConfigureHerbalTeaEvent()
     {
-        EventData eventData = AssetDatabase.LoadAssetAtPath<EventData>("Assets/Building/Event Data/¹¦·ò²è.asset");
+        EventData eventData = AssetDatabase.LoadAssetAtPath<EventData>("Assets/Building/Event Data/åŠŸå¤«èŒ¶.asset");
         if (eventData == null)
         {
-            Debug.LogError("ÕÒ²»µ½ÊÂ¼şÊı¾İ: ¹¦·ò²è.asset");
+            Debug.LogError("æ‰¾ä¸åˆ°äº‹ä»¶æ•°æ®: åŠŸå¤«èŒ¶.asset");
             return;
         }
 
-        eventData.eventTitle = "[¹¦·ò²è]Æ·²èÂÛµÀ";
-        eventData.eventDescription = "Ò»Î»ÀÏ²èÊ¦ÑûÇëÄãÆ·³¢¹¦·ò²è£¬¾İËµÄÜÔö½ø²ÆÔË¡£";
+        eventData.eventTitle = "[åŠŸå¤«èŒ¶]å“èŒ¶è®ºé“";
+        eventData.eventDescription = "ä¸€ä½è€èŒ¶å¸ˆé‚€è¯·ä½ å“å°åŠŸå¤«èŒ¶ï¼Œæ®è¯´èƒ½å¢è¿›è´¢è¿ã€‚";
 
         eventData.options = new EventData.EventOption[]
         {
             new EventData.EventOption()
             {
-                optionText = "»¨·Ñ5Í­Ç®Æ·²è -> ÊÕÈëÌáÉı10%³ÖĞø50»ØºÏ",
+                optionText = "èŠ±è´¹5é“œé’±å“èŒ¶ -> æ”¶å…¥æå‡10%æŒç»­50å›åˆ",
                 optionCostAmount = 5,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.None
             },
             new EventData.EventOption()
             {
-                optionText = "»¨·Ñ10Í­Ç®Æ·²è -> ÊÕÈëÌáÉı20%³ÖĞø100»ØºÏ",
+                optionText = "èŠ±è´¹10é“œé’±å“èŒ¶ -> æ”¶å…¥æå‡20%æŒç»­100å›åˆ",
                 optionCostAmount = 10,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.None
             },
             new EventData.EventOption()
             {
-                optionText = "¾Ü¾øÑûÇë -> ÎŞĞ§¹û",
+                optionText = "æ‹’ç»é‚€è¯· -> æ— æ•ˆæœ",
                 optionCostAmount = 0,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.None
@@ -108,26 +108,26 @@ public static class EventDataAutoConfig
         };
 
         EditorUtility.SetDirty(eventData);
-        Debug.Log("ÒÑÅäÖÃÊÂ¼ş: ¹¦·ò²è");
+        Debug.Log("å·²é…ç½®äº‹ä»¶: åŠŸå¤«èŒ¶");
     }
 
     private static void ConfigureCompetitorEvent()
     {
-        EventData eventData = AssetDatabase.LoadAssetAtPath<EventData>("Assets/Building/Event Data/¾ºÕù¶ÔÊÖ.asset");
+        EventData eventData = AssetDatabase.LoadAssetAtPath<EventData>("Assets/Building/Event Data/ç«äº‰å¯¹æ‰‹.asset");
         if (eventData == null)
         {
-            Debug.LogError("ÕÒ²»µ½ÊÂ¼şÊı¾İ: ¾ºÕù¶ÔÊÖ.asset");
+            Debug.LogError("æ‰¾ä¸åˆ°äº‹ä»¶æ•°æ®: ç«äº‰å¯¹æ‰‹.asset");
             return;
         }
 
-        eventData.eventTitle = "[¾ºÕù¶ÔÊÖ]ÉÌÒµ¾ºÕù";
-        eventData.eventDescription = "¸½½ü³öÏÖÁË¾ºÕù¶ÔÊÖ£¬ÕıÔÚÇÀ¶áÄãµÄ¿ÍÔ´¡£";
+        eventData.eventTitle = "[ç«äº‰å¯¹æ‰‹]å•†ä¸šç«äº‰";
+        eventData.eventDescription = "é™„è¿‘å‡ºç°äº†ç«äº‰å¯¹æ‰‹ï¼Œæ­£åœ¨æŠ¢å¤ºä½ çš„å®¢æºã€‚";
 
         eventData.options = new EventData.EventOption[]
         {
             new EventData.EventOption()
             {
-                optionText = "Ó²¿¸¾ºÕù£ºÊÕÈë¼õÉÙ50%³ÖĞø1»ØºÏ",
+                optionText = "ç¡¬æ‰›ç«äº‰ï¼šæ”¶å…¥å‡å°‘50%æŒç»­1å›åˆ",
                 optionCostAmount = 0,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.IncomeReduction,
@@ -136,7 +136,7 @@ public static class EventDataAutoConfig
             },
             new EventData.EventOption()
             {
-                optionText = "»¨·Ñ20Í­Ç®ËÍÀñÊèÍ¨ -> »¯½â¾ºÕù",
+                optionText = "èŠ±è´¹20é“œé’±é€ç¤¼ç–é€š -> åŒ–è§£ç«äº‰",
                 optionCostAmount = 20,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.None
@@ -144,26 +144,26 @@ public static class EventDataAutoConfig
         };
 
         EditorUtility.SetDirty(eventData);
-        Debug.Log("ÒÑÅäÖÃÊÂ¼ş: ¾ºÕù¶ÔÊÖ");
+        Debug.Log("å·²é…ç½®äº‹ä»¶: ç«äº‰å¯¹æ‰‹");
     }
 
     private static void ConfigureGovernmentEvent()
     {
-        EventData eventData = AssetDatabase.LoadAssetAtPath<EventData>("Assets/Building/Event Data/¹Ù¸®ĞÂÕş.asset");
+        EventData eventData = AssetDatabase.LoadAssetAtPath<EventData>("Assets/Building/Event Data/å®˜åºœæ–°æ”¿.asset");
         if (eventData == null)
         {
-            Debug.LogError("ÕÒ²»µ½ÊÂ¼şÊı¾İ: ¹Ù¸®ĞÂÕş.asset");
+            Debug.LogError("æ‰¾ä¸åˆ°äº‹ä»¶æ•°æ®: å®˜åºœæ–°æ”¿.asset");
             return;
         }
 
-        eventData.eventTitle = "[¹Ù¸®ĞÂÕş]ĞÂË°Õş²ß";
-        eventData.eventDescription = "¹Ù¸®°ä²¼ÁËĞÂµÄË°ÊÕÕş²ß£¬¿ÉÄÜÓ°ÏìÄãµÄ×Ê²ú¡£";
+        eventData.eventTitle = "[å®˜åºœæ–°æ”¿]æ–°ç¨æ”¿ç­–";
+        eventData.eventDescription = "å®˜åºœé¢å¸ƒäº†æ–°çš„ç¨æ”¶æ”¿ç­–ï¼Œå¯èƒ½å½±å“ä½ çš„èµ„äº§ã€‚";
 
         eventData.options = new EventData.EventOption[]
         {
             new EventData.EventOption()
             {
-                optionText = "ÅäºÏĞÂÕş -> »ñµÃ·¿²ú¼ÛÖµ120%µÄ²¹³¥",
+                optionText = "é…åˆæ–°æ”¿ -> è·å¾—æˆ¿äº§ä»·å€¼120%çš„è¡¥å¿",
                 optionCostAmount = 0,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.PropertyCompensation,
@@ -171,7 +171,7 @@ public static class EventDataAutoConfig
             },
             new EventData.EventOption()
             {
-                optionText = "»¨·Ñ30Í­Ç®´òµã -> Ãâ³ıÓ°Ïì",
+                optionText = "èŠ±è´¹30é“œé’±æ‰“ç‚¹ -> å…é™¤å½±å“",
                 optionCostAmount = 30,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.None
@@ -179,26 +179,26 @@ public static class EventDataAutoConfig
         };
 
         EditorUtility.SetDirty(eventData);
-        Debug.Log("ÒÑÅäÖÃÊÂ¼ş: ¹Ù¸®ĞÂÕş");
+        Debug.Log("å·²é…ç½®äº‹ä»¶: å®˜åºœæ–°æ”¿");
     }
 
     private static void ConfigureAncestralHallEvent()
     {
-        EventData eventData = AssetDatabase.LoadAssetAtPath<EventData>("Assets/Building/Event Data/ìôÌÃÆí¸£.asset");
+        EventData eventData = AssetDatabase.LoadAssetAtPath<EventData>("Assets/Building/Event Data/ç¥ å ‚ç¥ˆç¦.asset");
         if (eventData == null)
         {
-            Debug.LogError("ÕÒ²»µ½ÊÂ¼şÊı¾İ: ìôÌÃÆí¸£.asset");
+            Debug.LogError("æ‰¾ä¸åˆ°äº‹ä»¶æ•°æ®: ç¥ å ‚ç¥ˆç¦.asset");
             return;
         }
 
-        eventData.eventTitle = "[ìôÌÃÆí¸£]×æÏÈ±ÓÓÓ";
-        eventData.eventDescription = "×Ú×åìôÌÃ¾Ù°ìÆí¸£ÒÇÊ½£¬Äã¿ÉÒÔÑ¡Ôñ²Î¼Ó¡£";
+        eventData.eventTitle = "[ç¥ å ‚ç¥ˆç¦]ç¥–å…ˆåº‡ä½‘";
+        eventData.eventDescription = "å®—æ—ç¥ å ‚ä¸¾åŠç¥ˆç¦ä»ªå¼ï¼Œä½ å¯ä»¥é€‰æ‹©å‚åŠ ã€‚";
 
         eventData.options = new EventData.EventOption[]
         {
             new EventData.EventOption()
             {
-                optionText = "»¨·Ñ30Í­Ç®¼À°İ -> Ë°Îñ¼õÉÙ50%³ÖĞø2»ØºÏ",
+                optionText = "èŠ±è´¹30é“œé’±ç¥­æ‹œ -> ç¨åŠ¡å‡å°‘50%æŒç»­2å›åˆ",
                 optionCostAmount = 30,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.TaxReduction,
@@ -207,7 +207,7 @@ public static class EventDataAutoConfig
             },
             new EventData.EventOption()
             {
-                optionText = "¼òµ¥¼À°İ -> ÃâÒß¸ºÃæÊÂ¼ş1»ØºÏ",
+                optionText = "ç®€å•ç¥­æ‹œ -> å…ç–«è´Ÿé¢äº‹ä»¶1å›åˆ",
                 optionCostAmount = 0,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.ImmuneToNegativeEvents,
@@ -216,26 +216,26 @@ public static class EventDataAutoConfig
         };
 
         EditorUtility.SetDirty(eventData);
-        Debug.Log("ÒÑÅäÖÃÊÂ¼ş: ìôÌÃÆí¸£");
+        Debug.Log("å·²é…ç½®äº‹ä»¶: ç¥ å ‚ç¥ˆç¦");
     }
 
     private static void ConfigureTeaStandEvent()
     {
-        EventData eventData = AssetDatabase.LoadAssetAtPath<EventData>("Assets/Building/Event Data/²èÌ¯¾­Óª.asset");
+        EventData eventData = AssetDatabase.LoadAssetAtPath<EventData>("Assets/Building/Event Data/èŒ¶æ‘Šç»è¥.asset");
         if (eventData == null)
         {
-            Debug.LogError("ÕÒ²»µ½ÊÂ¼şÊı¾İ: ²èÌ¯¾­Óª.asset");
+            Debug.LogError("æ‰¾ä¸åˆ°äº‹ä»¶æ•°æ®: èŒ¶æ‘Šç»è¥.asset");
             return;
         }
 
-        eventData.eventTitle = "[²èÌ¯¾­Óª]²èÌ¯ÆæÓö";
-        eventData.eventDescription = "Â·±ß²èÌ¯À´ÁËÒ»Î»ÉñÃØ¿ÍÈË£¬¿ÉÄÜ´øÀ´ºÃÔË¡£";
+        eventData.eventTitle = "[èŒ¶æ‘Šç»è¥]èŒ¶æ‘Šå¥‡é‡";
+        eventData.eventDescription = "è·¯è¾¹èŒ¶æ‘Šæ¥äº†ä¸€ä½ç¥ç§˜å®¢äººï¼Œå¯èƒ½å¸¦æ¥å¥½è¿ã€‚";
 
         eventData.options = new EventData.EventOption[]
         {
             new EventData.EventOption()
             {
-                optionText = "»¨·Ñ5Í­Ç®ÕĞ´ı -> ÏÂÒ»´Î÷»×Ó²½Êı·­±¶",
+                optionText = "èŠ±è´¹5é“œé’±æ‹›å¾… -> ä¸‹ä¸€æ¬¡éª°å­æ­¥æ•°ç¿»å€",
                 optionCostAmount = 5,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.NextRollMultiplier,
@@ -243,7 +243,7 @@ public static class EventDataAutoConfig
             },
             new EventData.EventOption()
             {
-                optionText = "²»ÓèÀí»á -> ÎŞĞ§¹û",
+                optionText = "ä¸äºˆç†ä¼š -> æ— æ•ˆæœ",
                 optionCostAmount = 0,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.None
@@ -251,26 +251,26 @@ public static class EventDataAutoConfig
         };
 
         EditorUtility.SetDirty(eventData);
-        Debug.Log("ÒÑÅäÖÃÊÂ¼ş: ²èÌ¯¾­Óª");
+        Debug.Log("å·²é…ç½®äº‹ä»¶: èŒ¶æ‘Šç»è¥");
     }
 
     private static void ConfigureTyphoonEvent()
     {
-        EventData eventData = AssetDatabase.LoadAssetAtPath<EventData>("Assets/Building/Event Data/Ì¨·çÔÖº¦.asset");
+        EventData eventData = AssetDatabase.LoadAssetAtPath<EventData>("Assets/Building/Event Data/å°é£ç¾å®³.asset");
         if (eventData == null)
         {
-            Debug.LogError("ÕÒ²»µ½ÊÂ¼şÊı¾İ: Ì¨·çÔÖº¦.asset");
+            Debug.LogError("æ‰¾ä¸åˆ°äº‹ä»¶æ•°æ®: å°é£ç¾å®³.asset");
             return;
         }
 
-        eventData.eventTitle = "[Ì¨·çÔÖº¦]¿ñ·çÀ´Ï®";
-        eventData.eventDescription = "Ì¨·ç¼´½«À´Ï®£¬ÄãµÄ½¨ÖşÃæÁÙËğ»Ù·çÏÕ¡£";
+        eventData.eventTitle = "[å°é£ç¾å®³]ç‹‚é£æ¥è¢­";
+        eventData.eventDescription = "å°é£å³å°†æ¥è¢­ï¼Œä½ çš„å»ºç­‘é¢ä¸´æŸæ¯é£é™©ã€‚";
 
         eventData.options = new EventData.EventOption[]
         {
             new EventData.EventOption()
             {
-                optionText = "»¨·Ñ20Í­Ç®¼Ó¹Ì -> 1¶°½¨Öş½µ¼¶",
+                optionText = "èŠ±è´¹20é“œé’±åŠ å›º -> 1æ ‹å»ºç­‘é™çº§",
                 optionCostAmount = 20,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.BuildingDowngrade,
@@ -278,7 +278,7 @@ public static class EventDataAutoConfig
             },
             new EventData.EventOption()
             {
-                optionText = "²»×ö×¼±¸ -> 2¶°½¨Öş½µ¼¶",
+                optionText = "ä¸åšå‡†å¤‡ -> 2æ ‹å»ºç­‘é™çº§",
                 optionCostAmount = 0,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.BuildingDowngrade,
@@ -287,26 +287,26 @@ public static class EventDataAutoConfig
         };
 
         EditorUtility.SetDirty(eventData);
-        Debug.Log("ÒÑÅäÖÃÊÂ¼ş: Ì¨·çÔÖº¦");
+        Debug.Log("å·²é…ç½®äº‹ä»¶: å°é£ç¾å®³");
     }
 
     private static void ConfigureOldBrandGuildEvent()
     {
-        EventData eventData = AssetDatabase.LoadAssetAtPath<EventData>("Assets/Building/Event Data/ÀÏ×ÖºÅÉÌ»á.asset");
+        EventData eventData = AssetDatabase.LoadAssetAtPath<EventData>("Assets/Building/Event Data/è€å­—å·å•†ä¼š.asset");
         if (eventData == null)
         {
-            Debug.LogError("ÕÒ²»µ½ÊÂ¼şÊı¾İ: ÀÏ×ÖºÅÉÌ»á.asset");
+            Debug.LogError("æ‰¾ä¸åˆ°äº‹ä»¶æ•°æ®: è€å­—å·å•†ä¼š.asset");
             return;
         }
 
-        eventData.eventTitle = "[ÀÏ×ÖºÅÉÌ»á]ÉÌ»áÑûÇë";
-        eventData.eventDescription = "³ÇÖĞÀÏ×ÖºÅÉÌ»áÑûÇëÄã¼ÓÈë£¬¿É»ñµÃ·áºñ»Ø±¨¡£";
+        eventData.eventTitle = "[è€å­—å·å•†ä¼š]å•†ä¼šé‚€è¯·";
+        eventData.eventDescription = "åŸä¸­è€å­—å·å•†ä¼šé‚€è¯·ä½ åŠ å…¥ï¼Œå¯è·å¾—ä¸°åšå›æŠ¥ã€‚";
 
         eventData.options = new EventData.EventOption[]
         {
             new EventData.EventOption()
             {
-                optionText = "»¨·Ñ30Í­Ç®Èë»á -> ÊÕÈëÌáÉı(3»ØºÏ+40%)",
+                optionText = "èŠ±è´¹30é“œé’±å…¥ä¼š -> æ”¶å…¥æå‡(3å›åˆ+40%)",
                 optionCostAmount = 30,
                 optionRewardAmount = 0,
                 optionIncomeBoost = 0.4f,
@@ -315,7 +315,7 @@ public static class EventDataAutoConfig
             },
             new EventData.EventOption()
             {
-                optionText = "Íñ¾ÜÑûÇë -> »ñµÃ15Í­Ç®²¹³¥",
+                optionText = "å©‰æ‹’é‚€è¯· -> è·å¾—15é“œé’±è¡¥å¿",
                 optionCostAmount = 0,
                 optionRewardAmount = 15,
                 effectType = EventData.EventEffectType.None
@@ -323,6 +323,6 @@ public static class EventDataAutoConfig
         };
 
         EditorUtility.SetDirty(eventData);
-        Debug.Log("ÒÑÅäÖÃÊÂ¼ş: ÀÏ×ÖºÅÉÌ»á");
+        Debug.Log("å·²é…ç½®äº‹ä»¶: è€å­—å·å•†ä¼š");
     }
 }

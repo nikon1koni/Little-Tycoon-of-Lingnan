@@ -1,21 +1,21 @@
-using System.Collections.Generic;
+锘縰sing System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "SFXConfig", menuName = "Game/SFX Config")]
 public class SFXConfig : ScriptableObject
 {
-    [Header("UI音效")]
+    [Header("UI闊虫晥")]
     public AudioClip uiClick;
     public AudioClip uiHover;
     public AudioClip uiOpen;
     public AudioClip uiClose;
 
-    [Header("角色音效")]
+    [Header("瑙掕壊闊虫晥")]
     public AudioClip playerJump;
     public AudioClip playerLand;
     public AudioClip playerMove;
 
-    [Header("事件音效")]
+    [Header("浜嬩欢闊虫晥")]
     public AudioClip eventGainMoney;
     public AudioClip eventLoseMoney;
     public AudioClip eventPropertyBought;
@@ -25,15 +25,15 @@ public class SFXConfig : ScriptableObject
     public AudioClip eventTaxPaid;
     public AudioClip eventBuffActivated;
 
-    [Header("骰子音效")]
+    [Header("楠板瓙闊虫晥")]
     public AudioClip diceRoll;
     public AudioClip diceStop;
 
-    [Header("交互音效")]
-    public AudioClip diceClick;        // 骰子点击音效
-    public AudioClip tileSelect;       // 地块选择音效
-    public AudioClip buildingSold;      // 出售建筑音效
-    public AudioClip eventSelect;      // 事件选择音效
+    [Header("浜や簰闊虫晥")]
+    public AudioClip diceClick;        // 楠板瓙鐐瑰嚮闊虫晥
+    public AudioClip tileSelect;       // 鍦板潡閫夋嫨闊虫晥
+    public AudioClip buildingSold;      // 鍑哄敭寤虹瓚闊虫晥
+    public AudioClip eventSelect;      // 浜嬩欢閫夋嫨闊虫晥
 
     public List<SFXEntry> GetAllEntries()
     {

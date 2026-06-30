@@ -1,16 +1,16 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
 public class ItemManager : MonoBehaviour
 {
     public static ItemManager Instance { get; private set; }
 
-    [Header("³õÊ¼ÎïÆ·")]
-    [Tooltip("ÓÎÏ·¿ªÊ¼Ê±¸øÃ¿¸öÍæ¼ÒµÄÎïÆ·")]
+    [Header("åˆå§‹ç‰©å“")]
+    [Tooltip("æ¸¸æˆå¼€å§‹æ—¶ç»™æ¯ä¸ªç©å®¶çš„ç‰©å“")]
     public List<ItemData> startingItems = new List<ItemData>();
 
-    [Header("µ÷ÊÔµ±Ç°ÎïÆ·")]
-    [Tooltip("ÔÚ±à¼­Æ÷ÖĞÏÔÊ¾µ±Ç°Íæ¼ÒµÄÎïÆ·ÁĞ±í")]
+    [Header("è°ƒè¯•å½“å‰ç‰©å“")]
+    [Tooltip("åœ¨ç¼–è¾‘å™¨ä¸­æ˜¾ç¤ºå½“å‰ç©å®¶çš„ç‰©å“åˆ—è¡¨")]
     public List<ItemData> debugCurrentItems = new List<ItemData>();
 
     private Dictionary<Player, List<ItemData>> playerInventories = new Dictionary<Player, List<ItemData>>();
@@ -29,7 +29,7 @@ public class ItemManager : MonoBehaviour
     }
 
     /// <summary>
-    /// ¸øÍæ¼Ò·¢·Å³õÊ¼ÎïÆ·
+    /// ç»™ç©å®¶å‘æ”¾åˆå§‹ç‰©å“
     /// </summary>
     public void GiveStartingItemsToPlayer(Player player)
     {
@@ -43,23 +43,23 @@ public class ItemManager : MonoBehaviour
             }
         }
 
-        Debug.Log($"ÒÑ¸ø {player.playerName} ·¢·Å {startingItems.Count} ¸ö³õÊ¼ÎïÆ·");
+        Debug.Log($"å·²ç»™ {player.playerName} å‘æ”¾ {startingItems.Count} ä¸ªåˆå§‹ç‰©å“");
     }
 
     /// <summary>
-    /// ¸øËùÓĞÍæ¼Ò·¢·Å³õÊ¼ÎïÆ·
+    /// ç»™æ‰€æœ‰ç©å®¶å‘æ”¾åˆå§‹ç‰©å“
     /// </summary>
     public void GiveStartingItemsToAllPlayers()
     {
         if (GameManager.Instance == null) return;
 
-        // Í¨¹ıGameManagerµÄÍæ¼ÒÁĞ±íÑ­»·µ÷ÓÃGiveStartingItemsToPlayer
-        // ÕâÀïÔİÊ±Áô¿Õ£¬¸ù¾İÊµ¼ÊĞèÇóÌí¼Ó
-        Debug.Log("Çëµ÷ÓÃ GiveStartingItemsToPlayer(player) ¸øÃ¿¸öÍæ¼Ò·¢·ÅÎïÆ·");
+        // é€šè¿‡GameManagerçš„ç©å®¶åˆ—è¡¨å¾ªç¯è°ƒç”¨GiveStartingItemsToPlayer
+        // è¿™é‡Œæš‚æ—¶ç•™ç©ºï¼Œæ ¹æ®å®é™…éœ€æ±‚æ·»åŠ 
+        Debug.Log("è¯·è°ƒç”¨ GiveStartingItemsToPlayer(player) ç»™æ¯ä¸ªç©å®¶å‘æ”¾ç‰©å“");
     }
     
     /// <summary>
-    /// Çå¿ÕÖ¸¶¨Íæ¼ÒµÄÎïÆ·À¸£¨ÖØÖÃÓÃ£©
+    /// æ¸…ç©ºæŒ‡å®šç©å®¶çš„ç‰©å“æ ï¼ˆé‡ç½®ç”¨ï¼‰
     /// </summary>
     public void ResetPlayerInventory(Player player)
     {
@@ -68,7 +68,7 @@ public class ItemManager : MonoBehaviour
             playerInventories[player].Clear();
             UpdateItemDisplay();
             UpdateDebugList(player);
-            Debug.Log($"ÒÑÇå¿Õ {player.playerName} µÄÎïÆ·");
+            Debug.Log($"å·²æ¸…ç©º {player.playerName} çš„ç‰©å“");
         }
     }
 
@@ -80,11 +80,11 @@ public class ItemManager : MonoBehaviour
         }
 
         playerInventories[player].Add(item);
-        Debug.Log($"{player.playerName} »ñµÃÎïÆ·: {item.itemName}");
+        Debug.Log($"{player.playerName} è·å¾—ç‰©å“: {item.itemName}");
 
         if (UIManager.Instance != null)
         {
-            UIManager.Instance.ShowToast($"»ñµÃ¿¨ÅÆ: {item.itemName}!", 2f);
+            UIManager.Instance.ShowToast($"è·å¾—å¡ç‰Œ: {item.itemName}!", 2f);
         }
 
         UpdateItemDisplay();
@@ -95,13 +95,13 @@ public class ItemManager : MonoBehaviour
     {
         if (!HasItem(player, item))
         {
-            Debug.LogWarning($"{player.playerName} Ã»ÓĞ¸ÃÎïÆ·: {item.itemName}");
+            Debug.LogWarning($"{player.playerName} æ²¡æœ‰è¯¥ç‰©å“: {item.itemName}");
             return false;
         }
 
         if (!CanUseItem(player, item))
         {
-            Debug.LogWarning($"{player.playerName} µ±Ç°ÎŞ·¨Ê¹ÓÃ¸ÃÎïÆ·: {item.itemName}");
+            Debug.LogWarning($"{player.playerName} å½“å‰æ— æ³•ä½¿ç”¨è¯¥ç‰©å“: {item.itemName}");
             return false;
         }
 
@@ -130,7 +130,7 @@ public class ItemManager : MonoBehaviour
         if (playerInventories.ContainsKey(player))
         {
             playerInventories[player].Remove(item);
-            Debug.Log($"{player.playerName} Ê§È¥/Ê¹ÓÃÎïÆ·: {item.itemName}");
+            Debug.Log($"{player.playerName} å¤±å»/ä½¿ç”¨ç‰©å“: {item.itemName}");
             UpdateItemDisplay();
             UpdateDebugList(player);
         }
@@ -141,7 +141,7 @@ public class ItemManager : MonoBehaviour
         if (playerInventories.ContainsKey(player))
         {
             playerInventories[player].Clear();
-            Debug.Log($"{player.playerName} ÎïÆ·ÒÑÇå¿Õ");
+            Debug.Log($"{player.playerName} ç‰©å“å·²æ¸…ç©º");
             UpdateItemDisplay();
             UpdateDebugList(player);
         }
@@ -152,7 +152,7 @@ public class ItemManager : MonoBehaviour
         playerInventories.Clear();
         debugCurrentItems.Clear();
         UpdateItemDisplay();
-        Debug.Log("ÒÑÇå¿ÕËùÓĞÍæ¼ÒµÄÎïÆ·");
+        Debug.Log("å·²æ¸…ç©ºæ‰€æœ‰ç©å®¶çš„ç‰©å“");
     }
 
     public bool CanUseItem(Player player, ItemData item)
@@ -169,9 +169,9 @@ public class ItemManager : MonoBehaviour
 
     private void ApplyItemEffect(Player player, ItemData item)
     {
-        Debug.Log($"{player.playerName} Ê¹ÓÃÎïÆ·: {item.itemName}");
+        Debug.Log($"{player.playerName} ä½¿ç”¨ç‰©å“: {item.itemName}");
 
-        // ±éÀúËùÓĞĞ§¹û²¢Öğ¸öÓ¦ÓÃ
+        // éå†æ‰€æœ‰æ•ˆæœå¹¶é€ä¸ªåº”ç”¨
         foreach (var effect in item.effects)
         {
             ApplySingleEffect(player, item, effect);
@@ -189,12 +189,12 @@ public class ItemManager : MonoBehaviour
         {
             case ItemData.ItemEffectType.GainMoney:
                 player.ReceiveCash(effect.effectValue);
-                UIManager.Instance?.ShowToast($"»ñµÃ {effect.effectValue} ½ğ±Ò!", 2f);
+                UIManager.Instance?.ShowToast($"è·å¾— {effect.effectValue} é‡‘å¸!", 2f);
                 break;
 
             case ItemData.ItemEffectType.LoseMoney:
                 player.PayCash(effect.effectValue);
-                UIManager.Instance?.ShowToast($"Ê§È¥ {effect.effectValue} ½ğ±Ò!", 2f);
+                UIManager.Instance?.ShowToast($"å¤±å» {effect.effectValue} é‡‘å¸!", 2f);
                 break;
 
             case ItemData.ItemEffectType.IncomeBoost:
@@ -261,27 +261,27 @@ public class ItemManager : MonoBehaviour
                 break;
 
             case ItemData.ItemEffectType.SkipTurn:
-                // Ìø¹ı»ØºÏÂß¼­
-                Debug.Log($"{player.playerName} Ìø¹ıÏÂ»ØºÏ");
+                // è·³è¿‡å›åˆé€»è¾‘
+                Debug.Log($"{player.playerName} è·³è¿‡ä¸‹å›åˆ");
                 break;
 
             case ItemData.ItemEffectType.StealMoney:
-                // ÍµÈ¡½ğÇ®Âß¼­£¨ĞèÒªÄ¿±êÍæ¼Ò£©
-                Debug.Log($"ÍµÈ¡½ğÇ®Ğ§¹û: {effect.effectValue}");
+                // å·å–é‡‘é’±é€»è¾‘ï¼ˆéœ€è¦ç›®æ ‡ç©å®¶ï¼‰
+                Debug.Log($"å·å–é‡‘é’±æ•ˆæœ: {effect.effectValue}");
                 break;
 
             case ItemData.ItemEffectType.DestroyBuilding:
-                // ´İ»Ù½¨ÖşÂß¼­
-                Debug.Log($"´İ»Ù½¨ÖşĞ§¹û");
+                // æ‘§æ¯å»ºç­‘é€»è¾‘
+                Debug.Log($"æ‘§æ¯å»ºç­‘æ•ˆæœ");
                 break;
 
             case ItemData.ItemEffectType.GiveBuff:
-                // ¸øÓèBuffÂß¼­
-                Debug.Log($"¸øÓèBuffĞ§¹û");
+                // ç»™äºˆBuffé€»è¾‘
+                Debug.Log($"ç»™äºˆBuffæ•ˆæœ");
                 break;
 
             case ItemData.ItemEffectType.TeleportToTile:
-                // ´«ËÍµ½Ö¸¶¨¸ñ×Ó
+                // ä¼ é€åˆ°æŒ‡å®šæ ¼å­
                 if (BoardManager.Instance != null && effect.effectValue >= 0 && effect.effectValue < BoardManager.Instance.allTiles.Count)
                 {
                     player.MoveToTile(BoardManager.Instance.allTiles[effect.effectValue], true);
@@ -289,12 +289,12 @@ public class ItemManager : MonoBehaviour
                 break;
 
             case ItemData.ItemEffectType.Custom:
-                // ×Ô¶¨ÒåĞ§¹û
-                Debug.Log($"×Ô¶¨ÒåĞ§¹û: {effect.effectValue}");
+                // è‡ªå®šä¹‰æ•ˆæœ
+                Debug.Log($"è‡ªå®šä¹‰æ•ˆæœ: {effect.effectValue}");
                 break;
 
             default:
-                Debug.LogWarning($"Î´´¦ÀíµÄÎïÆ·Ğ§¹ûÀàĞÍ: {effect.effectType}");
+                Debug.LogWarning($"æœªå¤„ç†çš„ç‰©å“æ•ˆæœç±»å‹: {effect.effectType}");
                 break;
         }
     }

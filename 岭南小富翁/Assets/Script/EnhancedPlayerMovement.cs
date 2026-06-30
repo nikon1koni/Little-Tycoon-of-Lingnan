@@ -1,31 +1,31 @@
-// EnhancedPlayerMovement.cs
+ï»¿// EnhancedPlayerMovement.cs
 using System.Collections;
 using UnityEngine;
 
 public class EnhancedPlayerMovement : MonoBehaviour
 {
-    [Header("ÌøÔ¾²ÎÊı")]
+    [Header("è·³è·ƒå‚æ•°")]
     public float jumpPower = 2f;
     public float jumpSpeed = 5f;
     public AnimationCurve jumpCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
-    [Header("Ğı×ªĞ§¹û")]
+    [Header("æ—‹è½¬æ•ˆæœ")]
     public float rotationSpeed = 360f;
     public bool rotateDuringJump = true;
 
-    [Header("¼·Ñ¹À­ÉìĞ§¹û")]
+    [Header("æŒ¤å‹æ‹‰ä¼¸æ•ˆæœ")]
     public float squashAmount = 0.2f;
     public float stretchAmount = 0.3f;
 
-    [Header("Î²¼£Ğ§¹û")]
+    [Header("å°¾è¿¹æ•ˆæœ")]
     public bool enableTrail = true;
     public float trailTime = 0.2f;
 
-    [Header("ÒõÓ°Ğ§¹û")]
+    [Header("é˜´å½±æ•ˆæœ")]
     public GameObject shadowPrefab;
     private GameObject shadow;
 
-    [Header("ÒôĞ§")]
+    [Header("éŸ³æ•ˆ")]
     public AudioClip jumpSound;
     public AudioClip landSound;
 

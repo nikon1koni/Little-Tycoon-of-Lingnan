@@ -1,32 +1,32 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
 public class Dice3DController : MonoBehaviour
 {
-    [Header("3D÷»×ÓÄ£ĞÍ")]
-    public GameObject dice3D; // pCube1ÎïÌå
+    [Header("3Déª°å­æ¨¡å‹")]
+    public GameObject dice3D; // pCube1ç‰©ä½“
 
-    [Header("UIÔªËØ")]
+    [Header("UIå…ƒç´ ")]
     public Button rollDiceButton;
     public Text diceResultText;
 
-    [Header("¹ö¶¯²ÎÊı")]
-    public float rotationSpeed = 1200f; // Ğı×ªËÙ¶È (¶È/Ãë)
-    public float rollDuration = 2f;     // ¹ö¶¯Ê±³¤ (Ãë)
+    [Header("æ»šåŠ¨å‚æ•°")]
+    public float rotationSpeed = 1200f; // æ—‹è½¬é€Ÿåº¦ (åº¦/ç§’)
+    public float rollDuration = 2f;     // æ»šåŠ¨æ—¶é•¿ (ç§’)
 
-    [Header("ËÙ¶È¿ØÖÆ")]
+    [Header("é€Ÿåº¦æ§åˆ¶")]
     [Range(0.5f, 3f)]
-    public float rollSpeedMultiplier = 1f; // ÕûÌå¹ö¶¯ËÙ¶È±¶ÂÊ
+    public float rollSpeedMultiplier = 1f; // æ•´ä½“æ»šåŠ¨é€Ÿåº¦å€ç‡
 
-    [Header("ÒôĞ§")]
+    [Header("éŸ³æ•ˆ")]
     public AudioClip rollSound;
     public AudioClip stopSound;
 
-    [Header("ÒıÓÃ")]
+    [Header("å¼•ç”¨")]
     public GameManager gameManager;
 
-    [Header("¸÷¸öÃæµÄĞı×ª½Ç (¿ÉÒÔÓÃDiceFaceCalibratorÉèÖÃ)")]
+    [Header("å„ä¸ªé¢çš„æ—‹è½¬è§’ (å¯ä»¥ç”¨DiceFaceCalibratorè®¾ç½®)")]
     public Vector3 face1Rotation = Vector3.zero;
     public Vector3 face2Rotation = new Vector3(90, 0, 0);
     public Vector3 face3Rotation = new Vector3(0, 0, 90);
@@ -34,7 +34,7 @@ public class Dice3DController : MonoBehaviour
     public Vector3 face5Rotation = new Vector3(-90, 0, 0);
     public Vector3 face6Rotation = new Vector3(0, 180, 0);
 
-    [Header("±à¼­Æ÷Ô¤ÀÀ")]
+    [Header("ç¼–è¾‘å™¨é¢„è§ˆ")]
     [Range(1, 6)]
     public int previewFace = 1;
 
@@ -89,7 +89,7 @@ public class Dice3DController : MonoBehaviour
     {
         if (!isRolling)
         {
-            // ²¥·Å÷»×Óµã»÷ÒôĞ§
+            // æ’­æ”¾éª°å­ç‚¹å‡»éŸ³æ•ˆ
             if (SFXManager.Instance != null)
                 SFXManager.Instance.PlayDiceClickSound();
             
@@ -97,7 +97,7 @@ public class Dice3DController : MonoBehaviour
         }
         else
         {
-            Debug.Log("÷»×ÓÕıÔÚ¹ö¶¯ÖĞ£¬ÇëÉÔµÈ...");
+            Debug.Log("éª°å­æ­£åœ¨æ»šåŠ¨ä¸­ï¼Œè¯·ç¨ç­‰...");
         }
     }
 
@@ -115,39 +115,39 @@ public class Dice3DController : MonoBehaviour
             SFXManager.Instance.PlaySFX(SFXClip.DiceRoll);
 
         currentDiceValue = Random.Range(1, 7);
-        Debug.Log($"÷»×Ó½á¹û: {currentDiceValue}µã");
+        Debug.Log($"éª°å­ç»“æœ: {currentDiceValue}ç‚¹");
 
         Quaternion targetRotation = faceRotations[currentDiceValue];
         
-        // Éú³ÉËæ»úĞı×ªÖá£¬ÈÃÃ¿´Î¹ö¶¯¿´ÆğÀ´²»Í¬
+        // ç”Ÿæˆéšæœºæ—‹è½¬è½´ï¼Œè®©æ¯æ¬¡æ»šåŠ¨çœ‹èµ·æ¥ä¸åŒ
         Vector3 rotationAxis = Random.onUnitSphere.normalized;
         
         float elapsed = 0f;
         Quaternion startRotation = dice3D.transform.localRotation;
-        float adjustedDuration = rollDuration / rollSpeedMultiplier; // µ÷ÕûÊ±³¤
+        float adjustedDuration = rollDuration / rollSpeedMultiplier; // è°ƒæ•´æ—¶é•¿
 
         while (elapsed < adjustedDuration)
         {
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / adjustedDuration);
             
-            // Ê¹ÓÃÖ¸ÊıË¥¼õÇúÏßÈÃĞı×ªËÙ¶ÈÏÈ¿ìºóÂı
-            // ¹«Ê½ speed = initialSpeed * e^(-k * t^2) ÆäÖĞ k ¿ØÖÆË¥¼õËÙ¶È
+            // ä½¿ç”¨æŒ‡æ•°è¡°å‡æ›²çº¿è®©æ—‹è½¬é€Ÿåº¦å…ˆå¿«åæ…¢
+            // å…¬å¼ speed = initialSpeed * e^(-k * t^2) å…¶ä¸­ k æ§åˆ¶è¡°å‡é€Ÿåº¦
             float speedCurve = Mathf.Exp(-2.5f * t * t);
             float currentSpeed = rotationSpeed * speedCurve * rollSpeedMultiplier;
             
-            // ¼ÆËã±¾Ö¡Ğı×ª½Ç¶È
+            // è®¡ç®—æœ¬å¸§æ—‹è½¬è§’åº¦
             float rotationThisFrame = currentSpeed * Time.deltaTime;
             
-            // Ó¦ÓÃĞı×ª£¬Ê¹÷»×Ó¿´ÆğÀ´ÔÚËæ»ú¹ö¶¯
+            // åº”ç”¨æ—‹è½¬ï¼Œä½¿éª°å­çœ‹èµ·æ¥åœ¨éšæœºæ»šåŠ¨
             dice3D.transform.localRotation *= 
                 Quaternion.AngleAxis(rotationThisFrame, rotationAxis);
             
             yield return null;
         }
         
-        // ÏÖÔÚÈÃ÷»×ÓÆ½»¬µØ×ªµ½Ä¿±êÎ»ÖÃ
-        float smoothTime = 0.4f / rollSpeedMultiplier; // µ÷ÕûÊ±³¤
+        // ç°åœ¨è®©éª°å­å¹³æ»‘åœ°è½¬åˆ°ç›®æ ‡ä½ç½®
+        float smoothTime = 0.4f / rollSpeedMultiplier; // è°ƒæ•´æ—¶é•¿
         float smoothElapsed = 0f;
         Quaternion rotationBeforeSmooth = dice3D.transform.localRotation;
         
@@ -156,17 +156,17 @@ public class Dice3DController : MonoBehaviour
             smoothElapsed += Time.deltaTime;
             float t = Mathf.Clamp01(smoothElapsed / smoothTime);
             
-            // ÓÃ SmoothStep º¯ÊıÈÃ²åÖµ¸üÈáºÍ
+            // ç”¨ SmoothStep å‡½æ•°è®©æ’å€¼æ›´æŸ”å’Œ
             float smoothT = SmoothStep(t);
             
-            // ´Óµ±Ç°Î»ÖÃ Slerp µ½Ä¿±êÎ»ÖÃ
+            // ä»å½“å‰ä½ç½® Slerp åˆ°ç›®æ ‡ä½ç½®
             dice3D.transform.localRotation = 
                 Quaternion.Slerp(rotationBeforeSmooth, targetRotation, smoothT);
             
             yield return null;
         }
 
-        // È·±£×îÖÕÎ»ÖÃÕıÈ·
+        // ç¡®ä¿æœ€ç»ˆä½ç½®æ­£ç¡®
         dice3D.transform.localRotation = targetRotation;
 
         if (SFXManager.Instance != null)
@@ -180,12 +180,12 @@ public class Dice3DController : MonoBehaviour
             gameManager.OnDiceRolled(currentDiceValue);
         }
 
-        Debug.Log($"÷»×Ó×îÖÕÍ£Ö¹: {currentDiceValue}µã");
+        Debug.Log($"éª°å­æœ€ç»ˆåœæ­¢: {currentDiceValue}ç‚¹");
 
         isRolling = false;
     }
 
-    // SmoothStep º¯ÊıÈÃĞı×ªÔÚ¿ªÊ¼ºÍ½áÊøÊ±¸üÂı£¬ÖĞ¼ä¸ü¿ì
+    // SmoothStep å‡½æ•°è®©æ—‹è½¬åœ¨å¼€å§‹å’Œç»“æŸæ—¶æ›´æ…¢ï¼Œä¸­é—´æ›´å¿«
     float SmoothStep(float t)
     {
         return t * t * (3f - 2f * t);
@@ -209,14 +209,14 @@ public class Dice3DController : MonoBehaviour
             diceResultText.text = "";
     }
 
-    // ÉèÖÃ÷»×Ó¹ö¶¯ËÙ¶È±¶ÂÊ
+    // è®¾ç½®éª°å­æ»šåŠ¨é€Ÿåº¦å€ç‡
     public void SetRollSpeedMultiplier(float multiplier)
     {
         rollSpeedMultiplier = Mathf.Clamp(multiplier, 0.5f, 3f);
-        Debug.Log($"Dice3DController: ÉèÖÃ÷»×Ó¹ö¶¯ËÙ¶ÈÎª {rollSpeedMultiplier}x");
+        Debug.Log($"Dice3DController: è®¾ç½®éª°å­æ»šåŠ¨é€Ÿåº¦ä¸º {rollSpeedMultiplier}x");
     }
 
-    // »ñÈ¡÷»×Ó¹ö¶¯ËÙ¶È±¶ÂÊ
+    // è·å–éª°å­æ»šåŠ¨é€Ÿåº¦å€ç‡
     public float GetRollSpeedMultiplier()
     {
         return rollSpeedMultiplier;

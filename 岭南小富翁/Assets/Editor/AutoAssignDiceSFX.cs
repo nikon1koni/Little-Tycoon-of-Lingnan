@@ -1,4 +1,4 @@
-using UnityEditor;
+ï»¿using UnityEditor;
 using UnityEngine;
 
 public static class AutoAssignDiceSFX
@@ -13,18 +13,18 @@ public static class AutoAssignDiceSFX
 
         if (config == null)
         {
-            Debug.LogError("Î´ÕÒµ½ SFXConfig ×Ê²ú£¬ÇëÏÈ´´½¨");
+            Debug.LogError("æœªæ‰¾åˆ° SFXConfig èµ„äº§ï¼Œè¯·å…ˆåˆ›å»º");
             return;
         }
 
-        string[] diceGuids = AssetDatabase.FindAssets("÷»×Ó¹ö¶¯ÒôĞ§", new[] { "Assets/Music" });
+        string[] diceGuids = AssetDatabase.FindAssets("éª°å­æ»šåŠ¨éŸ³æ•ˆ", new[] { "Assets/Music" });
         AudioClip diceClip = diceGuids.Length > 0
             ? AssetDatabase.LoadAssetAtPath<AudioClip>(AssetDatabase.GUIDToAssetPath(diceGuids[0]))
             : null;
 
         if (diceClip == null)
         {
-            Debug.LogError("ÔÚ Assets/Music ÎÄ¼ş¼ĞÖĞÎ´ÕÒµ½÷»×Ó¹ö¶¯ÒôĞ§ÎÄ¼ş");
+            Debug.LogError("åœ¨ Assets/Music æ–‡ä»¶å¤¹ä¸­æœªæ‰¾åˆ°éª°å­æ»šåŠ¨éŸ³æ•ˆæ–‡ä»¶");
             return;
         }
 
@@ -33,6 +33,6 @@ public static class AutoAssignDiceSFX
         EditorUtility.SetDirty(config);
         AssetDatabase.SaveAssets();
 
-        Debug.Log($"ÒÑ½«¡¸{diceClip.name}¡¹·ÖÅäµ½ SFXConfig.diceRoll");
+        Debug.Log($"å·²å°†ã€Œ{diceClip.name}ã€åˆ†é…åˆ° SFXConfig.diceRoll");
     }
 }

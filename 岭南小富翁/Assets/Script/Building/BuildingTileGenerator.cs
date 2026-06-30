@@ -1,20 +1,20 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
 public class BuildingTileGenerator : MonoBehaviour
 {
-    [Header("Éú³É²ÎÊı")]
+    [Header("ç”Ÿæˆå‚æ•°")]
     public int buildingTileCount = 5;
     public List<Vector2> spawnPositions = new List<Vector2>();
     public GameObject buildingTilePrefab;
 
-    [Header("µØ¿é²ÎÊı")]
+    [Header("åœ°å—å‚æ•°")]
     [Range(1, 4)] public int minTileScale = 1;
     [Range(1, 4)] public int maxTileScale = 4;
     [Range(50, 1000)] public int minPrice = 100;
     [Range(50, 1000)] public int maxPrice = 500;
 
-    [Header("Á´½ÓÏµÍ³")]
+    [Header("é“¾æ¥ç³»ç»Ÿ")]
     public bool enableTileLinking = true;
     [Range(1, 5)] public int maxLinkedTilesPerProperty = 3;
 
@@ -33,11 +33,11 @@ public class BuildingTileGenerator : MonoBehaviour
 
     void GenerateBuildingTiles()
     {
-        Debug.Log($"¿ªÊ¼Éú³É {buildingTileCount} ¸ö½¨ÖşµØ¿é");
+        Debug.Log($"å¼€å§‹ç”Ÿæˆ {buildingTileCount} ä¸ªå»ºç­‘åœ°å—");
 
         if (buildingTilePrefab == null)
         {
-            Debug.LogError("½¨ÖşµØ¿éÔ¤ÖÆÌåÎ´ÉèÖÃ");
+            Debug.LogError("å»ºç­‘åœ°å—é¢„åˆ¶ä½“æœªè®¾ç½®");
             return;
         }
 
@@ -58,7 +58,7 @@ public class BuildingTileGenerator : MonoBehaviour
             }
         }
 
-        Debug.Log($"³É¹¦Éú³É {generatedBuildingTiles.Count} ¸ö½¨ÖşµØ¿é");
+        Debug.Log($"æˆåŠŸç”Ÿæˆ {generatedBuildingTiles.Count} ä¸ªå»ºç­‘åœ°å—");
     }
 
     Vector3 GetSpawnPosition(int index)
@@ -78,7 +78,7 @@ public class BuildingTileGenerator : MonoBehaviour
 
     void SetupBuildingTile(BoardTile tile, int index)
     {
-        tile.tileName = $"½¨ÖşµØ¿é_{index}";
+        tile.tileName = $"å»ºç­‘åœ°å—_{index}";
         tile.tileID = 1000 + index;
         tile.tileScale = Random.Range(minTileScale, maxTileScale + 1);
         tile.propertyPrice = Random.Range(minPrice, maxPrice + 1);
@@ -100,14 +100,14 @@ public class BuildingTileGenerator : MonoBehaviour
             }
         }
 
-        Debug.Log($"ÕÒµ½ {allPropertyTiles.Count} ¸öµØ²úµØ¿é");
+        Debug.Log($"æ‰¾åˆ° {allPropertyTiles.Count} ä¸ªåœ°äº§åœ°å—");
     }
 
     void LinkTilesToProperties()
     {
         if (allPropertyTiles.Count == 0 || generatedBuildingTiles.Count == 0)
         {
-            Debug.LogWarning("Ã»ÓĞ×ã¹»µÄµØ²ú»ò½¨ÖşµØ¿é½øĞĞÁ´½Ó");
+            Debug.LogWarning("æ²¡æœ‰è¶³å¤Ÿçš„åœ°äº§æˆ–å»ºç­‘åœ°å—è¿›è¡Œé“¾æ¥");
             return;
         }
 
@@ -127,26 +127,26 @@ public class BuildingTileGenerator : MonoBehaviour
                 BoardTile buildingTile = availableBuildingTiles[randomIndex];
 
                 propertyTile.AddLinkedBuildingTile(buildingTile);
-                Debug.Log($"Á´½Ó: µØ²úµØ¿é {propertyTile.tileName} -> ½¨ÖşµØ¿é {buildingTile.tileName}");
+                Debug.Log($"é“¾æ¥: åœ°äº§åœ°å— {propertyTile.tileName} -> å»ºç­‘åœ°å— {buildingTile.tileName}");
 
                 availableBuildingTiles.RemoveAt(randomIndex);
                 linksCreated++;
             }
         }
 
-        Debug.Log($"³É¹¦´´½¨ {linksCreated} ¸öµØ¿éÁ´½Ó");
+        Debug.Log($"æˆåŠŸåˆ›å»º {linksCreated} ä¸ªåœ°å—é“¾æ¥");
     }
 
     public void LinkTilesManually(BoardTile propertyTile, BoardTile buildingTile)
     {
         if (propertyTile == null || buildingTile == null)
         {
-            Debug.LogError("ÎŞ·¨Á´½Ó¿ÕµØ¿é");
+            Debug.LogError("æ— æ³•é“¾æ¥ç©ºåœ°å—");
             return;
         }
 
         propertyTile.AddLinkedBuildingTile(buildingTile);
-        Debug.Log($"ÊÖ¶¯Á´½Ó: {propertyTile.tileName} -> {buildingTile.tileName}");
+        Debug.Log($"æ‰‹åŠ¨é“¾æ¥: {propertyTile.tileName} -> {buildingTile.tileName}");
     }
 
     public List<BoardTile> GetGeneratedBuildingTiles()

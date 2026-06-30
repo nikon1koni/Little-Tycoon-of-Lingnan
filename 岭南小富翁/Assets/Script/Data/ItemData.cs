@@ -1,19 +1,19 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
 public class ItemEffect
 {
-    [Tooltip("Ğ§¹ûÀàĞÍ")]
+    [Tooltip("æ•ˆæœç±»å‹")]
     public ItemData.ItemEffectType effectType;
 
-    [Tooltip("Ğ§¹ûÊıÖµ")]
+    [Tooltip("æ•ˆæœæ•°å€¼")]
     public int effectValue = 0;
 
-    [Tooltip("Ğ§¹û°Ù·Ö±È")]
+    [Tooltip("æ•ˆæœç™¾åˆ†æ¯”")]
     public float effectPercent = 0f;
 
-    [Tooltip("³ÖĞø»ØºÏÊı")]
+    [Tooltip("æŒç»­å›åˆæ•°")]
     public int durationRounds = 0;
 }
 
@@ -43,7 +43,7 @@ public class ItemData : ScriptableObject
     }
 
     [Header("Item Effects")]
-    [Tooltip("ÎïÆ·µÄËùÓĞĞ§¹û£¨Ö§³Ö¸´ºÏĞ§¹û£©")]
+    [Tooltip("ç‰©å“çš„æ‰€æœ‰æ•ˆæœï¼ˆæ”¯æŒå¤åˆæ•ˆæœï¼‰")]
     public List<ItemEffect> effects = new List<ItemEffect>();
 
     [Header("Usage Limits")]

@@ -1,36 +1,36 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class StreetLightController : MonoBehaviour
 {
     [Header("Light Reference")]
-    [Tooltip("ÍÏ×§µã¹âÔ´×Ó¶ÔÏóµ½ÕâÀï")]
+    [Tooltip("æ‹–æ‹½ç‚¹å…‰æºå­å¯¹è±¡åˆ°è¿™é‡Œ")]
     public Light pointLight;
     
     [Header("Light Settings")]
-    [Tooltip("Ò¹ÍíÊ±µÄÄ¿±êÁÁ¶È")]
+    [Tooltip("å¤œæ™šæ—¶çš„ç›®æ ‡äº®åº¦")]
     public float targetIntensity = 2.0f;
     
-    [Tooltip("½¥±ä¹ı¶ÉÊ±¼ä£¨Ãë£©")]
+    [Tooltip("æ¸å˜è¿‡æ¸¡æ—¶é—´ï¼ˆç§’ï¼‰")]
     public float fadeDuration = 2.0f;
     
-    [Tooltip("Ò¹Íí¿ªÊ¼Ê±¼ä (0-1, 0=ÎçÒ¹)")]
+    [Tooltip("å¤œæ™šå¼€å§‹æ—¶é—´ (0-1, 0=åˆå¤œ)")]
     [Range(0f, 1f)] public float nightStart = 0.85f;
     
-    [Tooltip("Ò¹Íí½áÊøÊ±¼ä (0-1, 0=ÎçÒ¹)")]
+    [Tooltip("å¤œæ™šç»“æŸæ—¶é—´ (0-1, 0=åˆå¤œ)")]
     [Range(0f, 1f)] public float nightEnd = 0.35f;
     
-    [Header("Position Offset (±ÜÃâÕÚµ²)")]
-    [Tooltip("ÊÇ·ñÆôÓÃÎ»ÖÃÆ«ÒÆ")]
+    [Header("Position Offset (é¿å…é®æŒ¡)")]
+    [Tooltip("æ˜¯å¦å¯ç”¨ä½ç½®åç§»")]
     public bool usePositionOffset = true;
     
-    [Tooltip("µã¹âÔ´Ïà¶Ô¸¸¶ÔÏóµÄÆ«ÒÆÎ»ÖÃ")]
+    [Tooltip("ç‚¹å…‰æºç›¸å¯¹çˆ¶å¯¹è±¡çš„åç§»ä½ç½®")]
     public Vector3 lightOffset = new Vector3(0, 0.5f, 0);
     
     [Header("Light Render Settings")]
-    [Tooltip("ÊÇ·ñºöÂÔ×ÔÉíÄ£ĞÍÕÚµ²")]
+    [Tooltip("æ˜¯å¦å¿½ç•¥è‡ªèº«æ¨¡å‹é®æŒ¡")]
     public bool ignoreSelfShadow = true;
     
-    [Tooltip("ÊÇ·ñÊ¹ÓÃÒõÓ°")]
+    [Tooltip("æ˜¯å¦ä½¿ç”¨é˜´å½±")]
     public bool useShadows = true;
     
     private float currentIntensity;
@@ -46,7 +46,7 @@ public class StreetLightController : MonoBehaviour
             pointLight = GetComponentInChildren<Light>();
             if (pointLight != null)
             {
-                Debug.Log($"×Ô¶¯ÕÒµ½×Ó¶ÔÏóµã¹âÔ´: {pointLight.name}");
+                Debug.Log($"è‡ªåŠ¨æ‰¾åˆ°å­å¯¹è±¡ç‚¹å…‰æº: {pointLight.name}");
             }
         }
         
@@ -63,12 +63,12 @@ public class StreetLightController : MonoBehaviour
         dayNightSystem = FindObjectOfType<SimpleDayNight>();
         if (dayNightSystem == null)
         {
-            Debug.LogWarning("Î´ÕÒµ½ SimpleDayNight ×é¼ş£¬Â·µÆ½«Ê¹ÓÃÄ£ÄâÊ±¼ä");
+            Debug.LogWarning("æœªæ‰¾åˆ° SimpleDayNight ç»„ä»¶ï¼Œè·¯ç¯å°†ä½¿ç”¨æ¨¡æ‹Ÿæ—¶é—´");
         }
         
         if (pointLight == null)
         {
-            Debug.LogError("Î´ÉèÖÃµã¹âÔ´£¡ÇëÔÚ Inspector ÖĞÍÏ×§µã¹âÔ´×Ó¶ÔÏóµ½ Point Light ×Ö¶Î");
+            Debug.LogError("æœªè®¾ç½®ç‚¹å…‰æºï¼è¯·åœ¨ Inspector ä¸­æ‹–æ‹½ç‚¹å…‰æºå­å¯¹è±¡åˆ° Point Light å­—æ®µ");
             enabled = false;
             return;
         }

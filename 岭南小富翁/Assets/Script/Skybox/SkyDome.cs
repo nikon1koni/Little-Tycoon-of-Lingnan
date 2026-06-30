@@ -1,17 +1,17 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class SkyDome : MonoBehaviour
 {
     [Header("Dome Settings")]
-    [Tooltip("Ìì¿Õñ·¶¥µÄ°ë¾¶£¬½¨ÒéÉèÖÃºÜ´óµÄÖµ")]
+    [Tooltip("å¤©ç©ºç©¹é¡¶çš„åŠå¾„ï¼Œå»ºè®®è®¾ç½®å¾ˆå¤§çš„å€¼")]
     public float domeRadius = 2000f;
     
-    [Tooltip("Ìì¿Õñ·¶¥µÄÏ¸·Ö³Ì¶È")]
+    [Tooltip("å¤©ç©ºç©¹é¡¶çš„ç»†åˆ†ç¨‹åº¦")]
     public int subdivisions = 32;
     
     [Header("Material Settings")]
-    [Tooltip("Ìì¿ÕºĞ²ÄÖÊ")]
+    [Tooltip("å¤©ç©ºç›’æè´¨")]
     public Material skyboxMaterial;
     
     private MeshFilter meshFilter;
@@ -39,12 +39,12 @@ public class SkyDome : MonoBehaviour
         
         meshRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         meshRenderer.receiveShadows = false;
-        meshRenderer.sortingOrder = -1000;  // È·±£ÏÈäÖÈ¾
+        meshRenderer.sortingOrder = -1000;  // ç¡®ä¿å…ˆæ¸²æŸ“
         
-        // ÉèÖÃäÖÈ¾Ë³ĞòÎª×î±³¾°
+        // è®¾ç½®æ¸²æŸ“é¡ºåºä¸ºæœ€èƒŒæ™¯
         meshRenderer.material.renderQueue = 1000;
         
-        transform.localScale = Vector3.one;  // Ëõ·Å½«ÔÚÍø¸ñÖĞ´¦Àí
+        transform.localScale = Vector3.one;  // ç¼©æ”¾å°†åœ¨ç½‘æ ¼ä¸­å¤„ç†
     }
     
     void CreateDomeMesh()
@@ -109,7 +109,7 @@ public class SkyDome : MonoBehaviour
         mesh.uv = uvs;
         mesh.triangles = indices;
         
-        // ¼ÆËãÕıÈ·µÄ·¨Ïß
+        // è®¡ç®—æ­£ç¡®çš„æ³•çº¿
         Vector3[] normals = new Vector3[vertices.Length];
         for (int i = 0; i < normals.Length; i++)
         {
@@ -117,7 +117,7 @@ public class SkyDome : MonoBehaviour
         }
         mesh.normals = normals;
         
-        // ÓÅ»¯
+        // ä¼˜åŒ–
         mesh.Optimize();
         mesh.RecalculateBounds();
         
@@ -128,7 +128,7 @@ public class SkyDome : MonoBehaviour
     {
         if (Camera.main != null)
         {
-            // ÑÏ¸ñ¸úËæÏà»ú
+            // ä¸¥æ ¼è·Ÿéšç›¸æœº
             transform.position = Camera.main.transform.position;
         }
     }
@@ -148,7 +148,7 @@ public class SkyDome : MonoBehaviour
         domeRadius = Mathf.Max(500f, domeRadius);
         subdivisions = Mathf.Max(16, subdivisions);
         
-        // Èç¹ûÔÚ±à¼­Æ÷ÖĞ£¬ÖØĞÂ´´½¨Íø¸ñ
+        // å¦‚æœåœ¨ç¼–è¾‘å™¨ä¸­ï¼Œé‡æ–°åˆ›å»ºç½‘æ ¼
         if (Application.isEditor && !Application.isPlaying)
         {
             if (meshFilter != null)

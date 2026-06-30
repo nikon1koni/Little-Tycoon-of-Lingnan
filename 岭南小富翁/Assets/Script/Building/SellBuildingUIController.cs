@@ -1,18 +1,18 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
 public class SellBuildingUIController : MonoBehaviour
 {
-    [Header("UIÃæ°åÒıÓÃ")]
+    [Header("UIé¢æ¿å¼•ç”¨")]
     public GameObject sellPanel;
     public TextMeshProUGUI titleText;
     
-    [Header("ÌáÊ¾Ãæ°å")]
+    [Header("æç¤ºé¢æ¿")]
     public GameObject clickHintPanel;
     public TextMeshProUGUI clickHintText;
     
-    [Header("½¨ÖşĞÅÏ¢ÏÔÊ¾ÇøÓò")]
+    [Header("å»ºç­‘ä¿¡æ¯æ˜¾ç¤ºåŒºåŸŸ")]
     public GameObject buildingInfoArea;
     public TextMeshProUGUI buildingNameText;
     public TextMeshProUGUI buildingDescriptionText;
@@ -20,15 +20,15 @@ public class SellBuildingUIController : MonoBehaviour
     public TextMeshProUGUI buildingIncomeText;
     public TextMeshProUGUI sellPriceText;
     
-    [Header("²Ù×÷°´Å¥")]
+    [Header("æ“ä½œæŒ‰é’®")]
     public Button confirmButton;
     public Button cancelButton;
     public Button exitButton;
     
-    [Header("Âô³ö¼Û¸ñÑÕÉ«")]
+    [Header("å–å‡ºä»·æ ¼é¢œè‰²")]
     public Color sellPriceColor = Color.green;
     
-    [Header("ÒıÓÃ - ½¨ÖşÑ¡ÔñÃæ°å¿ØÖÆÆ÷")]
+    [Header("å¼•ç”¨ - å»ºç­‘é€‰æ‹©é¢æ¿æ§åˆ¶å™¨")]
     public BuildingSelectionPanelController buildingSelectionPanelController;
 
     private BoardTile selectedTile;
@@ -88,7 +88,7 @@ public class SellBuildingUIController : MonoBehaviour
         selectedTile = null;
         hasSelectedBuilding = false;
         
-        // Òş²ØinfoToastPanel£¬±ÜÃâ¸ÉÈÅÂô³öÄ£Ê½µÄUI
+        // éšè—infoToastPanelï¼Œé¿å…å¹²æ‰°å–å‡ºæ¨¡å¼çš„UI
         if (UIManager.Instance != null)
         {
             UIManager.Instance.HideInfoToast();
@@ -101,12 +101,12 @@ public class SellBuildingUIController : MonoBehaviour
         
         if (titleText != null)
         {
-            titleText.text = "Âô³ö½¨Öş";
+            titleText.text = "å–å‡ºå»ºç­‘";
         }
         
         ShowClickHint();
         
-        Debug.Log("½øÈëÂô³öÄ£Ê½");
+        Debug.Log("è¿›å…¥å–å‡ºæ¨¡å¼");
     }
 
     private void ShowClickHint()
@@ -125,13 +125,13 @@ public class SellBuildingUIController : MonoBehaviour
         
         if (clickHintText != null)
         {
-            clickHintText.text = $"Çëµã»÷ÒªÂô³öµÄ½¨Öş\nÄãÓµÓĞ {GetPlayerBuildingCount()} ¸ö½¨Öş\n°´ESCÈ¡Ïû";
+            clickHintText.text = $"è¯·ç‚¹å‡»è¦å–å‡ºçš„å»ºç­‘\nä½ æ‹¥æœ‰ {GetPlayerBuildingCount()} ä¸ªå»ºç­‘\næŒ‰ESCå–æ¶ˆ";
         }
     }
 
     private void HideClickHint()
     {
-        Debug.Log("HideClickHint: Òş²ØÌáÊ¾²¢ÏÔÊ¾½¨ÖşĞÅÏ¢");
+        Debug.Log("HideClickHint: éšè—æç¤ºå¹¶æ˜¾ç¤ºå»ºç­‘ä¿¡æ¯");
         
         if (clickHintPanel != null)
         {
@@ -166,7 +166,7 @@ public class SellBuildingUIController : MonoBehaviour
             buildingInfoArea.SetActive(false);
         }
         
-        Debug.Log("ÍË³öÂô³öÄ£Ê½");
+        Debug.Log("é€€å‡ºå–å‡ºæ¨¡å¼");
     }
 
     public void OnTileClicked(BoardTile tile)
@@ -175,19 +175,19 @@ public class SellBuildingUIController : MonoBehaviour
         
         if (tile == null)
         {
-            ShowStatus("µã»÷µÄ¸ñ×ÓÎª¿Õ");
+            ShowStatus("ç‚¹å‡»çš„æ ¼å­ä¸ºç©º");
             return;
         }
         
         if (tile.currentBuildingData == null)
         {
-            ShowStatus("¸Ã¸ñ×ÓÉÏÃ»ÓĞ½¨Öş");
+            ShowStatus("è¯¥æ ¼å­ä¸Šæ²¡æœ‰å»ºç­‘");
             return;
         }
         
         if (tile.ownerPlayer != currentPlayer)
         {
-            ShowStatus("Õâ²»ÊÇÄãµÄ½¨Öş");
+            ShowStatus("è¿™ä¸æ˜¯ä½ çš„å»ºç­‘");
             return;
         }
         
@@ -197,7 +197,7 @@ public class SellBuildingUIController : MonoBehaviour
         
         DisplaySellInfo(tile);
         
-        Debug.Log($"Ñ¡ÖĞ½¨Öş: {tile.currentBuildingData.buildingName}");
+        Debug.Log($"é€‰ä¸­å»ºç­‘: {tile.currentBuildingData.buildingName}");
     }
 
     private void DisplaySellInfo(BoardTile tile)
@@ -213,14 +213,14 @@ public class SellBuildingUIController : MonoBehaviour
             buildingDescriptionText.text = currentData.description;
         
         if (buildingLevelText != null)
-            buildingLevelText.text = $"µÈ¼¶ {tile.buildingLevel}";
+            buildingLevelText.text = $"ç­‰çº§ {tile.buildingLevel}";
         
         if (currentData.functionType == BuildingData.BuildingFunctionType.Income ||
             currentData.functionType == BuildingData.BuildingFunctionType.Mixed)
         {
             int income = currentData.GetIncomeAmountByTurns(tile.GetBuildingTurnsOwned());
             if (buildingIncomeText != null)
-                buildingIncomeText.text = $"ÊÕÈë: {income} ½ğ±Ò/»ØºÏ";
+                buildingIncomeText.text = $"æ”¶å…¥: {income} é‡‘å¸/å›åˆ";
         }
         else
         {
@@ -231,7 +231,7 @@ public class SellBuildingUIController : MonoBehaviour
         int sellPrice = tile.GetSellPrice();
         if (sellPriceText != null)
         {
-            sellPriceText.text = $"Âô³ö¼Û¸ñ: {sellPrice} ½ğ±Ò";
+            sellPriceText.text = $"å–å‡ºä»·æ ¼: {sellPrice} é‡‘å¸";
             sellPriceText.color = sellPriceColor;
         }
         
@@ -270,7 +270,7 @@ public class SellBuildingUIController : MonoBehaviour
         {
             if (!hasSelectedBuilding)
             {
-                ShowStatus("ÇëÏÈµã»÷ÒªÂô³öµÄ½¨Öş");
+                ShowStatus("è¯·å…ˆç‚¹å‡»è¦å–å‡ºçš„å»ºç­‘");
             }
             return;
         }
@@ -279,7 +279,7 @@ public class SellBuildingUIController : MonoBehaviour
         
         if (selectedTile.SellBuilding(currentPlayer))
         {
-            // ²¥·Å³öÊÛ½¨ÖşÒôĞ§£¨½»Ò×³É¹¦£©
+            // æ’­æ”¾å‡ºå”®å»ºç­‘éŸ³æ•ˆï¼ˆäº¤æ˜“æˆåŠŸï¼‰
             if (SFXManager.Instance != null)
                 SFXManager.Instance.PlayBuildingSoldSound(true);
             
@@ -295,12 +295,12 @@ public class SellBuildingUIController : MonoBehaviour
             selectedTile = null;
             hasSelectedBuilding = false;
             
-            Debug.Log("Âô³ö³É¹¦");
+            Debug.Log("å–å‡ºæˆåŠŸ");
         }
         else
         {
-            ShowStatus("Âô³öÊ§°Ü");
-            Debug.Log("Âô³öÊ§°Ü");
+            ShowStatus("å–å‡ºå¤±è´¥");
+            Debug.Log("å–å‡ºå¤±è´¥");
         }
     }
 

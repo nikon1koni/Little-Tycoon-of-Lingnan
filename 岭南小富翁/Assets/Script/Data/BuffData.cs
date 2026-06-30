@@ -1,30 +1,30 @@
-using UnityEngine;
+锘縰sing UnityEngine;
 
 [CreateAssetMenu(fileName = "NewBuffData", menuName = "Game/Buff Data")]
 public class BuffData : ScriptableObject
 {
-    [Header("基本信息")]
+    [Header("鍩烘湰淇℃伅")]
     public string buffName = "New Buff";
     public Sprite buffIcon;
     public bool isDebuff = false;
     
-    [Header("Buff效果")]
+    [Header("Buff鏁堟灉")]
     public BuildingData.BuffEffect effectType = BuildingData.BuffEffect.IncomeMultiplier;
     public float value = 0.1f;
     
-    [Header("持续时间")]
+    [Header("鎸佺画鏃堕棿")]
     public bool isPermanent = true;
     public float durationSeconds = 0f;
     public int durationRounds = 0;
     
-    [Header("描述")]
+    [Header("鎻忚堪")]
     [TextArea(2, 4)]
     public string description = "";
     
-    [Header("通知消息")]
-    public string notificationMessage = "";  // 获得Buff时显示的消息
+    [Header("閫氱煡娑堟伅")]
+    public string notificationMessage = "";  // 鑾峰緱Buff鏃舵樉绀虹殑娑堟伅
     
-    [Header("来源信息")]
+    [Header("鏉ユ簮淇℃伅")]
     public string sourceName = "Unknown";
     
     public bool UseRoundTimer()

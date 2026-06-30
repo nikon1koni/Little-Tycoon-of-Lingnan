@@ -1,14 +1,14 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
 public class BuildingPanelUpgradeButton : MonoBehaviour
 {
-    [Header("°´Å¥ÒıÓÃ")]
+    [Header("æŒ‰é’®å¼•ç”¨")]
     public Button upgradeButton;
     public TextMeshProUGUI buttonText;
     
-    [Header("Ãæ°åÒıÓÃ")]
+    [Header("é¢æ¿å¼•ç”¨")]
     public GameObject buildingSelectionPanel;
     
     private void Start()
@@ -21,13 +21,13 @@ public class BuildingPanelUpgradeButton : MonoBehaviour
         
         if (buttonText != null)
         {
-            buttonText.text = "Éı¼¶½¨Öş";
+            buttonText.text = "å‡çº§å»ºç­‘";
         }
     }
     
     private void OnUpgradeButtonClicked()
     {
-        Debug.Log("Éı¼¶°´Å¥±»µã»÷");
+        Debug.Log("å‡çº§æŒ‰é’®è¢«ç‚¹å‡»");
         
         if (GameManager.Instance != null && GameManager.Instance.currentPlayer != null)
         {
@@ -37,15 +37,15 @@ public class BuildingPanelUpgradeButton : MonoBehaviour
             
             if (upgradeableBuildings.Count == 0)
             {
-                Debug.Log("Ã»ÓĞ¿ÉÉı¼¶µÄ½¨Öş");
+                Debug.Log("æ²¡æœ‰å¯å‡çº§çš„å»ºç­‘");
                 if (UIManager.Instance != null)
                 {
-                    UIManager.Instance.ShowToast("Ã»ÓĞ¿ÉÉı¼¶µÄ½¨Öş", 2f);
+                    UIManager.Instance.ShowToast("æ²¡æœ‰å¯å‡çº§çš„å»ºç­‘", 2f);
                 }
                 return;
             }
             
-            Debug.Log($"ÕÒµ½ {upgradeableBuildings.Count} ¸ö¿ÉÉı¼¶µÄ½¨Öş");
+            Debug.Log($"æ‰¾åˆ° {upgradeableBuildings.Count} ä¸ªå¯å‡çº§çš„å»ºç­‘");
             
             BuildingDataConfig.Instance.EnterUpgradeMode(currentPlayer);
             
@@ -56,12 +56,12 @@ public class BuildingPanelUpgradeButton : MonoBehaviour
             
             if (UIManager.Instance != null)
             {
-                UIManager.Instance.ShowToast("½øÈëÉı¼¶Ä£Ê½", 3f);
+                UIManager.Instance.ShowToast("è¿›å…¥å‡çº§æ¨¡å¼", 3f);
             }
         }
         else
         {
-            Debug.LogWarning("GameManager.Instance »ò currentPlayer Îª¿Õ");
+            Debug.LogWarning("GameManager.Instance æˆ– currentPlayer ä¸ºç©º");
         }
     }
     

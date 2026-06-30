@@ -1,20 +1,20 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 
 public class SettingsPanelController : MonoBehaviour
 {
-    [Header("ÉèÖÃÃæ°å")]
+    [Header("è®¾ç½®é¢æ¿")]
     public GameObject settingsPanel;
     
-    [Header("»¬¶¯Ìõ")]
+    [Header("æ»‘åŠ¨æ¡")]
     public Slider brightnessSlider;
     public Slider musicSlider;
     public Slider sfxSlider;
     
-    [Header("°´Å¥")]
+    [Header("æŒ‰é’®")]
     public Button closeButton;
     
-    [Header("ÁÁ¶Èµ÷½Ú")]
+    [Header("äº®åº¦è°ƒèŠ‚")]
     public float minBrightness = 0.2f;
     public float maxBrightness = 5f;
     
@@ -46,10 +46,10 @@ public class SettingsPanelController : MonoBehaviour
         
         if (settingsPanel != null)
         {
-            if (brightnessSlider == null) brightnessSlider = FindSliderInChildren(settingsPanel.transform, "ÁÁ¶È");
-            if (musicSlider == null) musicSlider = FindSliderInChildren(settingsPanel.transform, "ÒôÀÖ");
-            if (sfxSlider == null) sfxSlider = FindSliderInChildren(settingsPanel.transform, "ÒôĞ§");
-            if (closeButton == null) closeButton = FindButtonInChildren(settingsPanel.transform, "¹Ø±Õ");
+            if (brightnessSlider == null) brightnessSlider = FindSliderInChildren(settingsPanel.transform, "äº®åº¦");
+            if (musicSlider == null) musicSlider = FindSliderInChildren(settingsPanel.transform, "éŸ³ä¹");
+            if (sfxSlider == null) sfxSlider = FindSliderInChildren(settingsPanel.transform, "éŸ³æ•ˆ");
+            if (closeButton == null) closeButton = FindButtonInChildren(settingsPanel.transform, "å…³é—­");
         }
     }
     

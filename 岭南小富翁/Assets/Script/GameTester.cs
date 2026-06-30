@@ -1,4 +1,4 @@
-// GameTester.cs - ÓÎÏ·²âÊÔ¹¤¾ß
+ï»¿// GameTester.cs - æ¸¸æˆæµ‹è¯•å·¥å…·
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -6,7 +6,7 @@ public class GameTester : MonoBehaviour
 {
     void Update()
     {
-        // µ÷ÊÔ¿ì½İ¼ü
+        // è°ƒè¯•å¿«æ·é”®
         if (Input.GetKeyDown(KeyCode.R))
         {
             RestartGame();
@@ -20,23 +20,23 @@ public class GameTester : MonoBehaviour
 
     void RestartGame()
     {
-        // ÖØĞÂ¼ÓÔØ³¡¾°
+        // é‡æ–°åŠ è½½åœºæ™¯
         SceneManager.LoadScene("New");
-        Debug.Log("ÓÎÏ·ÒÑÖØÆô");
+        Debug.Log("æ¸¸æˆå·²é‡å¯");
     }
 
     void GoToTile(int tileIndex)
     {
-        // Ìø×ªµ½Ö¸¶¨¸ñ×Ó
+        // è·³è½¬åˆ°æŒ‡å®šæ ¼å­
         var tiles = FindObjectsOfType<BoardTile>();
         if (tiles.Length > tileIndex)
         {
             var tile = tiles[tileIndex];
-            Debug.Log($"¸ñ×Ó: {tile.tileName}");
+            Debug.Log($"æ ¼å­: {tile.tileName}");
         }
         else
         {
-            Debug.LogWarning($"Ë÷Òı{tileIndex}µÄ¸ñ×Ó²»´æÔÚ");
+            Debug.LogWarning($"ç´¢å¼•{tileIndex}çš„æ ¼å­ä¸å­˜åœ¨");
         }
     }
 }

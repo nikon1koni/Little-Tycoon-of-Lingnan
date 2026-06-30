@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
@@ -84,7 +84,7 @@ public class EventPanel : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("¦Ä???????????????");
+            Debug.LogWarning("Î´???????????????");
         }
         Transform optionDeep = transform.Find("?????");
         if (optionDeep != null)
@@ -95,7 +95,7 @@ public class EventPanel : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("¦Ä??????????????");
+            Debug.LogWarning("Î´??????????????");
         }
 
         gameObject.SetActive(true);
@@ -138,7 +138,7 @@ public class EventPanel : MonoBehaviour
 
         if (optionsContainer == null || optionButtonPrefab == null) 
         {
-            Debug.LogError("optionsContainer ?? optionButtonPrefab ¦Ä????");
+            Debug.LogError("optionsContainer ?? optionButtonPrefab Î´????");
             return;
         }
 
@@ -178,7 +178,7 @@ public class EventPanel : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("¦Ä????????? TextMeshPro ???");
+                Debug.LogWarning("Î´????????? TextMeshPro ???");
             }
 
             Image buttonImage = button.GetComponent<Image>();

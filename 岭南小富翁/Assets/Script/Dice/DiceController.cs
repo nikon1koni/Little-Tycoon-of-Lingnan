@@ -1,24 +1,24 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
 public class DiceController : MonoBehaviour
 {
-    [Header("UIÒıÓÃ")]
+    [Header("UIå¼•ç”¨")]
     public Button rollDiceButton;
     public Text diceResultText;
     public Text diceAnimationText;
 
-    [Header("÷»×Ó²ÎÊı")]
+    [Header("éª°å­å‚æ•°")]
     public int minDiceValue = 1;
     public int maxDiceValue = 6;
     public float animationDuration = 0.3f;
 
-    [Header("ÒôĞ§")]
+    [Header("éŸ³æ•ˆ")]
     public AudioClip rollSound;
     public AudioClip stopSound;
 
-    [Header("ÒıÓÃ")]
+    [Header("å¼•ç”¨")]
     public GameManager gameManager;
 
     private AudioSource audioSource;
@@ -44,7 +44,7 @@ public class DiceController : MonoBehaviour
     {
         if (!isRolling)
         {
-            // ²¥·Å÷»×Óµã»÷ÒôĞ§
+            // æ’­æ”¾éª°å­ç‚¹å‡»éŸ³æ•ˆ
             if (SFXManager.Instance != null)
                 SFXManager.Instance.PlayDiceClickSound();
             
@@ -52,7 +52,7 @@ public class DiceController : MonoBehaviour
         }
         else
         {
-            Debug.Log("÷»×ÓÕıÔÚ¹ö¶¯ÖĞ£¬ÇëÉÔºò...");
+            Debug.Log("éª°å­æ­£åœ¨æ»šåŠ¨ä¸­ï¼Œè¯·ç¨å€™...");
         }
     }
 
@@ -116,7 +116,7 @@ public class DiceController : MonoBehaviour
     {
         currentDiceValue = 0;
         if (diceResultText != null)
-            diceResultText.text = "×¼±¸";
+            diceResultText.text = "å‡†å¤‡";
     }
 
     public bool CanRoll()

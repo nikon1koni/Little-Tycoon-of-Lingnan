@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class EventEffectHandler : MonoBehaviour
 {
@@ -313,7 +313,7 @@ public class EventEffectHandler : MonoBehaviour
             Debug.Log($"{player.playerName} received {totalCompensation} compensation");
             if (UIManager.Instance != null)
             {
-                UIManager.Instance.ShowToast($"??¨°???{totalCompensation}??", 2f);
+                UIManager.Instance.ShowToast($"??Ã²???{totalCompensation}??", 2f);
             }
         }
     }

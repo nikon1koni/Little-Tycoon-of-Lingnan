@@ -1,29 +1,29 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
 public class BuildingSelectionPanelController : MonoBehaviour
 {
-    [Header("Ãæ°åÒıÓÃ")]
+    [Header("é¢æ¿å¼•ç”¨")]
     public GameObject buildingSelectionPanel;
     public GameObject upgradePanel;
     
-    [Header("Éı¼¶°´Å¥ÒıÓÃ")]
+    [Header("å‡çº§æŒ‰é’®å¼•ç”¨")]
     public Button upgradeButton;
     public TextMeshProUGUI upgradeButtonText;
     
-    [Header("Âô³ö°´Å¥ÒıÓÃ")]
+    [Header("å–å‡ºæŒ‰é’®å¼•ç”¨")]
     public Button sellButton;
     public TextMeshProUGUI sellButtonText;
     
-    [Header("ÉèÖÃ")]
+    [Header("è®¾ç½®")]
     public bool showUpgradeButton = true;
     public bool showSellButton = true;
     
     private bool isUpgradeMode = false;
     private bool isSellMode = false;
     
-    [Header("¿ØÖÆÆ÷ÒıÓÃ")]
+    [Header("æ§åˆ¶å™¨å¼•ç”¨")]
     public UpgradeUIController upgradeUIController;
     public SellBuildingUIController sellBuildingUIController;
 
@@ -42,7 +42,7 @@ public class BuildingSelectionPanelController : MonoBehaviour
             
             if (upgradeButtonText != null)
             {
-                upgradeButtonText.text = "Éı¼¶½¨Öş";
+                upgradeButtonText.text = "å‡çº§å»ºç­‘";
             }
             
             UpdateUpgradeButtonVisibility();
@@ -58,7 +58,7 @@ public class BuildingSelectionPanelController : MonoBehaviour
             
             if (sellButtonText != null)
             {
-                sellButtonText.text = "Âô³ö½¨Öş";
+                sellButtonText.text = "å–å‡ºå»ºç­‘";
             }
             
             UpdateSellButtonVisibility();
@@ -83,7 +83,7 @@ public class BuildingSelectionPanelController : MonoBehaviour
 
     public void OnUpgradeButtonClicked()
     {
-        Debug.Log("Éı¼¶°´Å¥±»µã»÷");
+        Debug.Log("å‡çº§æŒ‰é’®è¢«ç‚¹å‡»");
         
         if (GameManager.Instance != null && GameManager.Instance.currentPlayer != null)
         {
@@ -95,15 +95,15 @@ public class BuildingSelectionPanelController : MonoBehaviour
                 
                 if (upgradeableBuildings.Count == 0)
                 {
-                    Debug.Log("Ã»ÓĞ¿ÉÉı¼¶µÄ½¨Öş");
+                    Debug.Log("æ²¡æœ‰å¯å‡çº§çš„å»ºç­‘");
                     if (UIManager.Instance != null)
                     {
-                        UIManager.Instance.ShowToast("Ã»ÓĞ¿ÉÉı¼¶µÄ½¨Öş", 2f);
+                        UIManager.Instance.ShowToast("æ²¡æœ‰å¯å‡çº§çš„å»ºç­‘", 2f);
                     }
                     return;
                 }
                 
-                Debug.Log($"ÕÒµ½ {upgradeableBuildings.Count} ¸ö¿ÉÉı¼¶µÄ½¨Öş");
+                Debug.Log($"æ‰¾åˆ° {upgradeableBuildings.Count} ä¸ªå¯å‡çº§çš„å»ºç­‘");
                 
                 isUpgradeMode = true;
                 
@@ -116,13 +116,13 @@ public class BuildingSelectionPanelController : MonoBehaviour
                 
                 if (UIManager.Instance != null)
                 {
-                    UIManager.Instance.ShowToast("½øÈëÉı¼¶Ä£Ê½£¬µã»÷ÒªÉı¼¶µÄ½¨Öş", 3f);
+                    UIManager.Instance.ShowToast("è¿›å…¥å‡çº§æ¨¡å¼ï¼Œç‚¹å‡»è¦å‡çº§çš„å»ºç­‘", 3f);
                 }
             }
         }
         else
         {
-            Debug.LogWarning("GameManager.Instance »ò currentPlayer Îª¿Õ");
+            Debug.LogWarning("GameManager.Instance æˆ– currentPlayer ä¸ºç©º");
         }
     }
 
@@ -143,7 +143,7 @@ public class BuildingSelectionPanelController : MonoBehaviour
     
     public void OnSellButtonClicked()
     {
-        Debug.Log("Âô³ö°´Å¥±»µã»÷");
+        Debug.Log("å–å‡ºæŒ‰é’®è¢«ç‚¹å‡»");
         
         if (GameManager.Instance != null && GameManager.Instance.currentPlayer != null)
         {
@@ -155,15 +155,15 @@ public class BuildingSelectionPanelController : MonoBehaviour
                 
                 if (sellableBuildings.Count == 0)
                 {
-                    Debug.Log("Ã»ÓĞ¿ÉÂô³öµÄ½¨Öş");
+                    Debug.Log("æ²¡æœ‰å¯å–å‡ºçš„å»ºç­‘");
                     if (UIManager.Instance != null)
                     {
-                        UIManager.Instance.ShowToast("Ã»ÓĞ¿ÉÂô³öµÄ½¨Öş", 2f);
+                        UIManager.Instance.ShowToast("æ²¡æœ‰å¯å–å‡ºçš„å»ºç­‘", 2f);
                     }
                     return;
                 }
                 
-                Debug.Log($"ÕÒµ½ {sellableBuildings.Count} ¸ö¿ÉÂô³öµÄ½¨Öş");
+                Debug.Log($"æ‰¾åˆ° {sellableBuildings.Count} ä¸ªå¯å–å‡ºçš„å»ºç­‘");
                 
                 isSellMode = true;
                 
@@ -174,16 +174,16 @@ public class BuildingSelectionPanelController : MonoBehaviour
                     buildingSelectionPanel.SetActive(false);
                 }
                 
-                // ²»ÏÔÊ¾ToastÌáÊ¾£¬±ÜÃâinfoToastPanel±»µ÷ÓÃ
+                // ä¸æ˜¾ç¤ºToastæç¤ºï¼Œé¿å…infoToastPanelè¢«è°ƒç”¨
                 // if (UIManager.Instance != null)
                 // {
-                //     UIManager.Instance.ShowToast("½øÈëÂô³öÄ£Ê½£¬µã»÷ÒªÂô³öµÄ½¨Öş", 3f);
+                //     UIManager.Instance.ShowToast("è¿›å…¥å–å‡ºæ¨¡å¼ï¼Œç‚¹å‡»è¦å–å‡ºçš„å»ºç­‘", 3f);
                 // }
             }
         }
         else
         {
-            Debug.LogWarning("GameManager.Instance »ò currentPlayer Îª¿Õ");
+            Debug.LogWarning("GameManager.Instance æˆ– currentPlayer ä¸ºç©º");
         }
     }
     
@@ -191,7 +191,7 @@ public class BuildingSelectionPanelController : MonoBehaviour
     {
         isSellMode = false;
         
-        // ÑÓ³ÙÒ»Ö¡ÏÔÊ¾½¨ÖşÃæ°å£¬±ÜÃâUIManager.Update()ÔÚÍ¬Ò»Ö¡ÖĞÔÙ´ÎÒş²ØËü
+        // å»¶è¿Ÿä¸€å¸§æ˜¾ç¤ºå»ºç­‘é¢æ¿ï¼Œé¿å…UIManager.Update()åœ¨åŒä¸€å¸§ä¸­å†æ¬¡éšè—å®ƒ
         Invoke(nameof(ShowBuildingPanelDelayed), 0.01f);
     }
     
@@ -202,11 +202,11 @@ public class BuildingSelectionPanelController : MonoBehaviour
         if (buildingSelectionPanel != null)
         {
             buildingSelectionPanel.SetActive(true);
-            Debug.Log("½¨ÖşÃæ°åÒÑÏÔÊ¾");
+            Debug.Log("å»ºç­‘é¢æ¿å·²æ˜¾ç¤º");
         }
         else
         {
-            Debug.LogError("buildingSelectionPanel ÒıÓÃÎ´ÅäÖÃ£¡");
+            Debug.LogError("buildingSelectionPanel å¼•ç”¨æœªé…ç½®ï¼");
         }
     }
 

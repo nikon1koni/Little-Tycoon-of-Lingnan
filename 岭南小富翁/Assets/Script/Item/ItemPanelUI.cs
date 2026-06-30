@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+锘縰sing System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -7,13 +7,13 @@ public class ItemPanelUI : MonoBehaviour
 {
     public static ItemPanelUI Instance { get; private set; }
 
-    [Header("物品面板UI组件")]
+    [Header("鐗╁搧闈㈡澘UI缁勪欢")]
     public GameObject itemPanel;
     public Button toggleButton;
     public Transform itemCardsContainer;
     public GameObject itemCardPrefab;
 
-    [Header("初始设置")]
+    [Header("鍒濆璁剧疆")]
     public bool startHidden = true;
 
     private bool isPanelVisible = false;
@@ -198,7 +198,7 @@ public class ItemPanelUI : MonoBehaviour
         buttonTextRect.anchorMax = Vector2.one;
         buttonTextRect.offsetMin = Vector2.zero;
         buttonTextRect.offsetMax = Vector2.zero;
-        buttonText.text = "使用";
+        buttonText.text = "浣跨敤";
         buttonText.alignment = TextAlignmentOptions.Center;
         buttonText.fontSize = 12;
         buttonText.color = Color.white;

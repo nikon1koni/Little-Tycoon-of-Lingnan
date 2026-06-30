@@ -1,24 +1,24 @@
-// BuildingDataConfig.cs - ½¨ÖşÊı¾İÅäÖÃ
+ï»¿// BuildingDataConfig.cs - å»ºç­‘æ•°æ®é…ç½®
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
 public class BuildingDataConfig : MonoBehaviour
 {
-    [Header("ËùÓĞ½¨ÖşÊı¾İ")]
+    [Header("æ‰€æœ‰å»ºç­‘æ•°æ®")]
     public List<BuildingData> allBuildingData = new List<BuildingData>();
 
-    [Header("Éı¼¶UI¿ØÖÆÆ÷")]
+    [Header("å‡çº§UIæ§åˆ¶å™¨")]
     public UpgradeUIController upgradeUIController;
     
-    [Header("Âô³öUI¿ØÖÆÆ÷")]
+    [Header("å–å‡ºUIæ§åˆ¶å™¨")]
     public SellBuildingUIController sellBuildingUIController;
     
-    [Header("½¨ÖşÑ¡ÔñÃæ°å¿ØÖÆÆ÷")]
+    [Header("å»ºç­‘é€‰æ‹©é¢æ¿æ§åˆ¶å™¨")]
     public BuildingSelectionPanelController buildingSelectionPanelController;
     
-    [Header("Âô³ö½¨ÖşÅäÖÃ")]
-    [Tooltip("Âô³ö½¨Öş·µ»¹½ğ¶îµÄ±ÈÀı (0.0-1.0£¬Ä¬ÈÏ0.5¼´50%)")]
+    [Header("å–å‡ºå»ºç­‘é…ç½®")]
+    [Tooltip("å–å‡ºå»ºç­‘è¿”è¿˜é‡‘é¢çš„æ¯”ä¾‹ (0.0-1.0ï¼Œé»˜è®¤0.5å³50%)")]
     [Range(0.0f, 1.0f)]
     public float sellPriceRatio = 0.5f;
 
@@ -108,7 +108,7 @@ public class BuildingDataConfig : MonoBehaviour
         upgradeModePlayer = player;
         upgradeModeTiles.Clear();
         
-        // ÎªÍæ¼ÒµÄËùÓĞ½¨ÖşÌí¼Óµã»÷ÊÂ¼ş
+        // ä¸ºç©å®¶çš„æ‰€æœ‰å»ºç­‘æ·»åŠ ç‚¹å‡»äº‹ä»¶
         if (BoardManager.Instance != null)
         {
             foreach (BoardTile tile in BoardManager.Instance.allTiles)
@@ -126,12 +126,12 @@ public class BuildingDataConfig : MonoBehaviour
             upgradeUIController.EnterUpgradeMode(player);
         }
         
-        Debug.Log($"½øÈëÉı¼¶Ä£Ê½: {player.playerName}");
+        Debug.Log($"è¿›å…¥å‡çº§æ¨¡å¼: {player.playerName}");
     }
 
     private void AddUpgradeTileClickHandler(BoardTile tile)
     {
-        // ÒÆ³ı¾ÉµÄEventTrigger
+        // ç§»é™¤æ—§çš„EventTrigger
         EventTrigger oldTrigger = tile.GetComponent<EventTrigger>();
         if (oldTrigger != null)
         {
@@ -165,12 +165,12 @@ public class BuildingDataConfig : MonoBehaviour
 
     public void ExitUpgradeMode()
     {
-        if (!isUpgradeMode) return; // ·ÀÖ¹ÖØ¸´µ÷ÓÃ
+        if (!isUpgradeMode) return; // é˜²æ­¢é‡å¤è°ƒç”¨
         
         isUpgradeMode = false;
         upgradeModePlayer = null;
         
-        // ÒÆ³ıµã»÷ÊÂ¼ş
+        // ç§»é™¤ç‚¹å‡»äº‹ä»¶
         RemoveUpgradeTileClickHandlers();
         
         if (upgradeUIController != null)
@@ -178,20 +178,20 @@ public class BuildingDataConfig : MonoBehaviour
             upgradeUIController.ExitUpgradeMode();
         }
         
-        // Í¨Öª½¨ÖşÑ¡ÔñÃæ°å¿ØÖÆÆ÷·µ»Ø½¨ÖşÑ¡ÔñÃæ°å
+        // é€šçŸ¥å»ºç­‘é€‰æ‹©é¢æ¿æ§åˆ¶å™¨è¿”å›å»ºç­‘é€‰æ‹©é¢æ¿
         if (buildingSelectionPanelController != null)
         {
             buildingSelectionPanelController.OnExitUpgradeMode();
         }
         
-        Debug.Log("ÍË³öÉı¼¶Ä£Ê½");
+        Debug.Log("é€€å‡ºå‡çº§æ¨¡å¼");
     }
 
     public void OnTileClickedInUpgradeMode(BoardTile tile)
     {
         if (!isUpgradeMode || upgradeUIController == null) return;
         
-        Debug.Log($"Éı¼¶Ä£Ê½ÏÂµã»÷ÁËµØ¿é: {tile.tileName}");
+        Debug.Log($"å‡çº§æ¨¡å¼ä¸‹ç‚¹å‡»äº†åœ°å—: {tile.tileName}");
         upgradeUIController.OnTileClicked(tile);
     }
 
@@ -241,7 +241,7 @@ public class BuildingDataConfig : MonoBehaviour
             sellBuildingUIController.EnterSellMode(player);
         }
         
-        Debug.Log($"½øÈëÂô³öÄ£Ê½: {player.playerName}");
+        Debug.Log($"è¿›å…¥å–å‡ºæ¨¡å¼: {player.playerName}");
     }
     
     private void AddSellTileClickHandler(BoardTile tile)
@@ -296,14 +296,14 @@ public class BuildingDataConfig : MonoBehaviour
             buildingSelectionPanelController.OnExitSellMode();
         }
         
-        Debug.Log("ÍË³öÂô³öÄ£Ê½");
+        Debug.Log("é€€å‡ºå–å‡ºæ¨¡å¼");
     }
     
     public void OnTileClickedInSellMode(BoardTile tile)
     {
         if (!isSellMode || sellBuildingUIController == null) return;
         
-        Debug.Log($"Âô³öÄ£Ê½ÏÂµã»÷ÁËµØ¿é: {tile.tileName}");
+        Debug.Log($"å–å‡ºæ¨¡å¼ä¸‹ç‚¹å‡»äº†åœ°å—: {tile.tileName}");
         sellBuildingUIController.OnTileClicked(tile);
     }
     
@@ -328,17 +328,17 @@ public class BuildingDataConfig : MonoBehaviour
     }
     
     /// <summary>
-    /// ÉèÖÃÂô³ö½¨Öş·µ»¹½ğ¶îµÄ±ÈÀı
+    /// è®¾ç½®å–å‡ºå»ºç­‘è¿”è¿˜é‡‘é¢çš„æ¯”ä¾‹
     /// </summary>
-    /// <param name="ratio">±ÈÀıÖµ (0.0-1.0)</param>
+    /// <param name="ratio">æ¯”ä¾‹å€¼ (0.0-1.0)</param>
     public void SetSellPriceRatio(float ratio)
     {
         sellPriceRatio = Mathf.Clamp01(ratio);
-        Debug.Log($"Âô³ö½¨Öş±ÈÀıÒÑÉèÖÃÎª: {sellPriceRatio * 100f}%");
+        Debug.Log($"å–å‡ºå»ºç­‘æ¯”ä¾‹å·²è®¾ç½®ä¸º: {sellPriceRatio * 100f}%");
     }
     
     /// <summary>
-    /// »ñÈ¡µ±Ç°Âô³ö½¨Öş·µ»¹½ğ¶îµÄ±ÈÀı
+    /// è·å–å½“å‰å–å‡ºå»ºç­‘è¿”è¿˜é‡‘é¢çš„æ¯”ä¾‹
     /// </summary>
     public float GetSellPriceRatio()
     {
