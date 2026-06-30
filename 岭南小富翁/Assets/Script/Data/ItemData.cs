@@ -67,6 +67,7 @@ public class ItemData : ScriptableObject
         GiveBuff,
         ImmuneToNegative,
         TeleportToTile,
-        Custom
+        Custom,
+        MoveForward
     }
 }

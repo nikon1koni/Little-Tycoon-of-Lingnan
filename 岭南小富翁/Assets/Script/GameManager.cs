@@ -1431,6 +1431,34 @@ public class GameManager : MonoBehaviour
         OnRollDiceButtonClicked();
     }
 
+    // 道具驱动：让当前玩家额外向前移动 steps 步，复用掷骰的移动与落地结算（不叠加掷骰倍率/步数修正）
+    public void MovePlayerExtraSteps(int steps)
+    {
+        if (currentPlayer == null || isMoving)
+        {
+            Debug.LogWarning("MovePlayerExtraSteps: 无当前玩家或正在移动中，忽略");
+            return;
+        }
+        if (steps <= 0) return;
+
+        Debug.Log($"{currentPlayer.playerName} 使用道具向前移动 {steps} 步");
+
+        lastDiceValue = steps; // 供过起点结算使用
+        currentState = GameState.Moving;
+        isMoving = true;
+
+        PlayerMovement movement = currentPlayer.GetComponent<PlayerMovement>();
+        if (movement == null)
+        {
+            Debug.LogError($"{currentPlayer.playerName} 缺少 PlayerMovement，无法移动");
+            EndMove();
+            return;
+        }
+
+        movement.MoveSteps(steps);
+        StartCoroutine(WaitForMoveComplete(movement));
+    }
+
     public void TestMovePlayer(int steps)
     {
         if (currentPlayer == null || isMoving) return;

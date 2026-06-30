@@ -286,8 +286,8 @@ public class ItemManager : MonoBehaviour
                         $"item_{item.GetInstanceID()}_{effect.effectType}",
                         item.itemName,
                         BuildingData.BuffEffect.DiceBoost,
-                        0f,
                         effect.effectValue,
+                        0f,
                         effect.durationRounds,
                         item
                     );
@@ -320,6 +320,14 @@ public class ItemManager : MonoBehaviour
                 if (BoardManager.Instance != null && effect.effectValue >= 0 && effect.effectValue < BoardManager.Instance.allTiles.Count)
                 {
                     player.MoveToTile(BoardManager.Instance.allTiles[effect.effectValue], true);
+                }
+                break;
+
+            case ItemData.ItemEffectType.MoveForward:
+                if (GameManager.Instance != null)
+                {
+                    GameManager.Instance.MovePlayerExtraSteps(effect.effectValue);
+                    UIManager.Instance?.ShowToast($"向前移动 {effect.effectValue} 步！", 2f);
                 }
                 break;
 

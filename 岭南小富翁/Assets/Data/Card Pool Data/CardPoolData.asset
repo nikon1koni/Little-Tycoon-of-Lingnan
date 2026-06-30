@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4404edfab9b351047bb3a495ff5da6fa, type: 3}
   m_Name: CardPoolData
   m_EditorClassIdentifier: 
-  cards: []
+  cards:
+  - {fileID: 11400000, guid: 38b2d1ba5e9941f4f940011429b66881, type: 2}
+  - {fileID: 11400000, guid: 0d8cd9af924c1f34b983fba14ba610d3, type: 2}
+  - {fileID: 11400000, guid: fb4887be90acba84d97da359f3122129, type: 2}
   rarityWeights:
   - rarity: 3
     weight: 10

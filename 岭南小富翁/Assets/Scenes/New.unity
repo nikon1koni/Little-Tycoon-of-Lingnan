@@ -835,6 +835,11 @@ MonoBehaviour:
   rentPrice: 10
   tileType: 10
   isBuildable: 1
+  harvestBaseMoneyMin: 5
+  harvestBaseMoneyMax: 10
+  harvestCardChance: 0.5
+  harvestExtraMoneyMin: 5
+  harvestExtraMoneyMax: 10
   currentBuildingData: {fileID: 0}
   currentBuildingType: 0
   buildingLevel: 0
@@ -2616,6 +2621,11 @@ MonoBehaviour:
   rentPrice: 10
   tileType: 10
   isBuildable: 1
+  harvestBaseMoneyMin: 5
+  harvestBaseMoneyMax: 10
+  harvestCardChance: 0.5
+  harvestExtraMoneyMin: 5
+  harvestExtraMoneyMax: 10
   currentBuildingData: {fileID: 0}
   currentBuildingType: 0
   buildingLevel: 0
@@ -3387,6 +3397,11 @@ MonoBehaviour:
   rentPrice: 10
   tileType: 10
   isBuildable: 1
+  harvestBaseMoneyMin: 5
+  harvestBaseMoneyMax: 10
+  harvestCardChance: 0.5
+  harvestExtraMoneyMin: 5
+  harvestExtraMoneyMax: 10
   currentBuildingData: {fileID: 0}
   currentBuildingType: 0
   buildingLevel: 0
@@ -7237,6 +7252,11 @@ MonoBehaviour:
   rentPrice: 10
   tileType: 10
   isBuildable: 1
+  harvestBaseMoneyMin: 5
+  harvestBaseMoneyMax: 10
+  harvestCardChance: 0.5
+  harvestExtraMoneyMin: 5
+  harvestExtraMoneyMax: 10
   currentBuildingData: {fileID: 0}
   currentBuildingType: 0
   buildingLevel: 0
@@ -8252,6 +8272,11 @@ MonoBehaviour:
   rentPrice: 10
   tileType: 10
   isBuildable: 1
+  harvestBaseMoneyMin: 5
+  harvestBaseMoneyMax: 10
+  harvestCardChance: 0.5
+  harvestExtraMoneyMin: 5
+  harvestExtraMoneyMax: 10
   currentBuildingData: {fileID: 0}
   currentBuildingType: 0
   buildingLevel: 0
@@ -8461,6 +8486,11 @@ MonoBehaviour:
   rentPrice: 10
   tileType: 10
   isBuildable: 1
+  harvestBaseMoneyMin: 5
+  harvestBaseMoneyMax: 10
+  harvestCardChance: 0.5
+  harvestExtraMoneyMin: 5
+  harvestExtraMoneyMax: 10
   currentBuildingData: {fileID: 0}
   currentBuildingType: 0
   buildingLevel: 0
@@ -9613,6 +9643,11 @@ MonoBehaviour:
   rentPrice: 10
   tileType: 10
   isBuildable: 1
+  harvestBaseMoneyMin: 5
+  harvestBaseMoneyMax: 10
+  harvestCardChance: 0.5
+  harvestExtraMoneyMin: 5
+  harvestExtraMoneyMax: 10
   currentBuildingData: {fileID: 0}
   currentBuildingType: 0
   buildingLevel: 0
@@ -10012,6 +10047,11 @@ MonoBehaviour:
   rentPrice: 10
   tileType: 10
   isBuildable: 1
+  harvestBaseMoneyMin: 5
+  harvestBaseMoneyMax: 10
+  harvestCardChance: 0.5
+  harvestExtraMoneyMin: 5
+  harvestExtraMoneyMax: 10
   currentBuildingData: {fileID: 0}
   currentBuildingType: 0
   buildingLevel: 0
@@ -16948,6 +16988,11 @@ MonoBehaviour:
   rentPrice: 10
   tileType: 10
   isBuildable: 1
+  harvestBaseMoneyMin: 5
+  harvestBaseMoneyMax: 10
+  harvestCardChance: 0.5
+  harvestExtraMoneyMin: 5
+  harvestExtraMoneyMax: 10
   currentBuildingData: {fileID: 0}
   currentBuildingType: 0
   buildingLevel: 0
@@ -24738,6 +24783,11 @@ MonoBehaviour:
   rentPrice: 10
   tileType: 10
   isBuildable: 1
+  harvestBaseMoneyMin: 5
+  harvestBaseMoneyMax: 10
+  harvestCardChance: 0.5
+  harvestExtraMoneyMin: 5
+  harvestExtraMoneyMax: 10
   currentBuildingData: {fileID: 0}
   currentBuildingType: 0
   buildingLevel: 0
@@ -26066,6 +26116,11 @@ MonoBehaviour:
   rentPrice: 10
   tileType: 10
   isBuildable: 1
+  harvestBaseMoneyMin: 5
+  harvestBaseMoneyMax: 10
+  harvestCardChance: 0.5
+  harvestExtraMoneyMin: 5
+  harvestExtraMoneyMax: 10
   currentBuildingData: {fileID: 0}
   currentBuildingType: 0
   buildingLevel: 0
@@ -26387,6 +26442,11 @@ MonoBehaviour:
   rentPrice: 10
   tileType: 10
   isBuildable: 1
+  harvestBaseMoneyMin: 5
+  harvestBaseMoneyMax: 10
+  harvestCardChance: 0.5
+  harvestExtraMoneyMin: 5
+  harvestExtraMoneyMax: 10
   currentBuildingData: {fileID: 0}
   currentBuildingType: 0
   buildingLevel: 0
@@ -27309,6 +27369,11 @@ MonoBehaviour:
   rentPrice: 10
   tileType: 10
   isBuildable: 1
+  harvestBaseMoneyMin: 5
+  harvestBaseMoneyMax: 10
+  harvestCardChance: 0.5
+  harvestExtraMoneyMin: 5
+  harvestExtraMoneyMax: 10
   currentBuildingData: {fileID: 0}
   currentBuildingType: 0
   buildingLevel: 0
@@ -28861,6 +28926,11 @@ MonoBehaviour:
   rentPrice: 10
   tileType: 10
   isBuildable: 1
+  harvestBaseMoneyMin: 5
+  harvestBaseMoneyMax: 10
+  harvestCardChance: 0.5
+  harvestExtraMoneyMin: 5
+  harvestExtraMoneyMax: 10
   currentBuildingData: {fileID: 0}
   currentBuildingType: 0
   buildingLevel: 0
@@ -30677,6 +30747,11 @@ MonoBehaviour:
   rentPrice: 10
   tileType: 10
   isBuildable: 1
+  harvestBaseMoneyMin: 5
+  harvestBaseMoneyMax: 10
+  harvestCardChance: 0.5
+  harvestExtraMoneyMin: 5
+  harvestExtraMoneyMax: 10
   currentBuildingData: {fileID: 0}
   currentBuildingType: 0
   buildingLevel: 0
@@ -32990,6 +33065,11 @@ MonoBehaviour:
   rentPrice: 10
   tileType: 10
   isBuildable: 1
+  harvestBaseMoneyMin: 5
+  harvestBaseMoneyMax: 10
+  harvestCardChance: 0.5
+  harvestExtraMoneyMin: 5
+  harvestExtraMoneyMax: 10
   currentBuildingData: {fileID: 0}
   currentBuildingType: 0
   buildingLevel: 0
@@ -33392,6 +33472,7 @@ MonoBehaviour:
   startingItems:
   - {fileID: 11400000, guid: 870cc7f523bdbaa4f929eefcaee4ece8, type: 2}
   debugCurrentItems: []
+  cardPool: {fileID: 11400000, guid: 1bbf0b27823095f49bf321a3f28f7181, type: 2}
 --- !u!4 &2053796372
 Transform:
   m_ObjectHideFlags: 0
@@ -33684,6 +33765,11 @@ MonoBehaviour:
   rentPrice: 10
   tileType: 10
   isBuildable: 1
+  harvestBaseMoneyMin: 5
+  harvestBaseMoneyMax: 10
+  harvestCardChance: 0.5
+  harvestExtraMoneyMin: 5
+  harvestExtraMoneyMax: 10
   currentBuildingData: {fileID: 0}
   currentBuildingType: 0
   buildingLevel: 0
@@ -34145,6 +34231,11 @@ MonoBehaviour:
   rentPrice: 10
   tileType: 10
   isBuildable: 1
+  harvestBaseMoneyMin: 5
+  harvestBaseMoneyMax: 10
+  harvestCardChance: 0.5
+  harvestExtraMoneyMin: 5
+  harvestExtraMoneyMax: 10
   currentBuildingData: {fileID: 0}
   currentBuildingType: 0
   buildingLevel: 0
