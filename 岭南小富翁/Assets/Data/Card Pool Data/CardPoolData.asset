@@ -15,6 +15,8 @@ MonoBehaviour:
   cards:
   - {fileID: 11400000, guid: 38b2d1ba5e9941f4f940011429b66881, type: 2}
   - {fileID: 11400000, guid: 0d8cd9af924c1f34b983fba14ba610d3, type: 2}
+  - {fileID: 11400000, guid: 0cd4ba4c80090d349a5b56310e42d756, type: 2}
+  - {fileID: 11400000, guid: 53fb13aa77b808445822c10f5a9952db, type: 2}
   - {fileID: 11400000, guid: fb4887be90acba84d97da359f3122129, type: 2}
   rarityWeights:
   - rarity: 3

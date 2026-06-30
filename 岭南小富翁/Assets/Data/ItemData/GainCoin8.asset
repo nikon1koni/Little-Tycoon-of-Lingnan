@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 486435897247d9b41a67e28dcdbad85e, type: 3}
-  m_Name: One-MoveAddEffect
+  m_Name: GainCoin8
   m_EditorClassIdentifier: 
-  itemName: "\u79FB\u52A8\u52A0\u6210"
+  itemName: "\u94DC\u94B1\u4E32"
   itemIcon: {fileID: 0}
-  itemDescription: "\u6BCF\u6B21\u6295\u9AB0\u5B50\u83B7\u5F97\u989D\u59161\u6B65\u7684\u52A0\u6210\uFF0C\u6301\u7EED\u4E09\u56DE\u5408"
-  rarity: 1
+  itemDescription: "\u83B7\u5F978\u91D1\u5E01\u3002"
+  rarity: 0
   effects:
-  - effectType: 2
-    effectValue: 1
+  - effectType: 0
+    effectValue: 8
     effectPercent: 0
-    durationRounds: 3
+    durationRounds: 0
   canUseAnytime: 1
   canUseOnTurn: 1
