@@ -837,7 +837,7 @@ public class UIManager : MonoBehaviour
         }
 
         // 3. 
-        ShowPersistentToast($": {building.buildingName}");
+        ShowPersistentToast($"当前建筑：{building.buildingName}(按ESC退出)");
 
         // 4. 
         HighlightPlaceableTiles(currentBuildingPlayer, (int)building.requiredScale);
