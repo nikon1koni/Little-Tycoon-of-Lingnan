@@ -25,3 +25,12 @@ MonoBehaviour:
     weight: 30
   - rarity: 0
     weight: 60
+  fullHandCompensation:
+  - rarity: 3
+    gold: 30
+  - rarity: 1
+    gold: 25
+  - rarity: 1
+    gold: 15
+  - rarity: 0
+    gold: 8

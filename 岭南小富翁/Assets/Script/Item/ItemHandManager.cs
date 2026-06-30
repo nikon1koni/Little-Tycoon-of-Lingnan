@@ -277,11 +277,12 @@ public class ItemHandManager : MonoBehaviour
             float angle = 0f;
             float yOffset = 0f;
 
-            if (cardCount > 1)
+            // 1~2 张保持竖直平铺；3 张及以上才展开扇形（中间最高、向两侧外倾）
+            if (cardCount >= 3)
             {
                 float normalizedPos = (float)i / (cardCount - 1) - 0.5f;
-                angle = normalizedPos * fanAngle;
-                yOffset = Mathf.Abs(normalizedPos) * 20f;
+                angle = -normalizedPos * fanAngle;
+                yOffset = -Mathf.Abs(normalizedPos) * 20f;
             }
 
             rect.anchorMin = new Vector2(0.5f, 0.5f);

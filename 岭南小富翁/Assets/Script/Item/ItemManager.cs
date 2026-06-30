@@ -17,6 +17,10 @@ public class ItemManager : MonoBehaviour
     [Tooltip("收获(Harvest)格子随机发卡使用的卡池")]
     public CardPool cardPool;
 
+    [Header("手牌上限")]
+    [Tooltip("玩家手牌（物品）数量上限，达到后从卡池抽到的卡将无法获得，改为按稀有度补偿金币")]
+    public int maxHandSize = 12;
+
     private Dictionary<Player, List<ItemData>> playerInventories = new Dictionary<Player, List<ItemData>>();
 
     void Awake()
@@ -96,23 +100,45 @@ public class ItemManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 从卡池随机抽一张卡发给玩家（用于 Harvest 格子）。返回抽到的卡，未抽到返回 null
+    /// 从卡池发卡的结果：成功获得 / 手牌已满（折算金币） / 无卡池或未抽到
     /// </summary>
-    public ItemData GiveRandomCardFromPool(Player player)
+    public enum HarvestCardResult { GotCard, HandFull, NoPool }
+
+    /// <summary>
+    /// 从卡池随机抽一张卡发给玩家（用于 Harvest 格子）。
+    /// 手牌已满时不发卡，按卡稀有度补偿金币，并通过 out 参数返回补偿数额。
+    /// </summary>
+    public HarvestCardResult TryGiveRandomCardFromPool(Player player, out ItemData drawnCard, out int compensationGold)
     {
-        if (player == null) return null;
+        drawnCard = null;
+        compensationGold = 0;
+
+        if (player == null) return HarvestCardResult.NoPool;
 
         if (cardPool == null)
         {
             Debug.LogWarning("ItemManager: 未配置 cardPool，无法发卡");
-            return null;
+            return HarvestCardResult.NoPool;
         }
 
         ItemData card = cardPool.DrawCard();
         if (card == null)
         {
             Debug.LogWarning("ItemManager: 卡池为空或未抽到卡");
-            return null;
+            return HarvestCardResult.NoPool;
+        }
+
+        // 手牌已满：不发卡，按稀有度补偿金币
+        int current = GetPlayerItems(player).Count;
+        if (current >= maxHandSize)
+        {
+            compensationGold = cardPool.GetCompensationGold(card.rarity);
+            if (compensationGold > 0)
+            {
+                player.ReceiveCash(compensationGold);
+            }
+            Debug.Log($"{player.playerName} 手牌已满（{current}/{maxHandSize}），卡牌 {card.itemName}({card.rarity}) 折算 {compensationGold} 金币");
+            return HarvestCardResult.HandFull;
         }
 
         GiveItem(player, card);
@@ -123,7 +149,8 @@ public class ItemManager : MonoBehaviour
             ItemHandManager.Instance.RefreshHand();
         }
 
-        return card;
+        drawnCard = card;
+        return HarvestCardResult.GotCard;
     }
 
     public bool UseItem(Player player, ItemData item)

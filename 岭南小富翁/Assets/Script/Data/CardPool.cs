@@ -11,6 +11,13 @@ public class CardPool : ScriptableObject
         [Min(0f)] public float weight = 1f;
     }
 
+    [System.Serializable]
+    public class RarityGold
+    {
+        public ItemData.ItemRarity rarity;
+        [Min(0)] public int gold = 0;
+    }
+
     [Header("可获得的卡牌")]
     [Tooltip("卡池里所有可能抽到的卡牌，稀有度取自每张卡自身的 rarity 字段")]
     public List<ItemData> cards = new List<ItemData>();
@@ -18,6 +25,23 @@ public class CardPool : ScriptableObject
     [Header("稀有度权重")]
     [Tooltip("先按权重滚定稀有度，再在该稀有度的卡里等概率抽一张")]
     public List<RarityWeight> rarityWeights = new List<RarityWeight>();
+
+    [Header("手牌已满补偿金币")]
+    [Tooltip("手牌已满无法获得卡牌时，按该卡稀有度补偿的金币数量")]
+    public List<RarityGold> fullHandCompensation = new List<RarityGold>();
+
+    /// <summary> 查询某稀有度在手牌已满时的金币补偿；未配置返回 0 </summary>
+    public int GetCompensationGold(ItemData.ItemRarity rarity)
+    {
+        if (fullHandCompensation != null)
+        {
+            foreach (var rg in fullHandCompensation)
+            {
+                if (rg.rarity == rarity) return Mathf.Max(0, rg.gold);
+            }
+        }
+        return 0;
+    }
 
     /// <summary> 抽一张卡：先按权重滚稀有度，该稀有度无卡则顺延到最近有卡稀有度，再等概率抽一张；卡池为空返回 null </summary>
     public ItemData DrawCard()

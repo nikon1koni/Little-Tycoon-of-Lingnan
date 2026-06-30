@@ -1145,24 +1145,40 @@ public class BoardTile : MonoBehaviour
 
         // 在基础奖励之上，按概率额外给“卡牌”或“额外铜钱”
         bool tryCard = Random.value < harvestCardChance;
-        ItemData drawnCard = null;
         if (tryCard && ItemManager.Instance != null)
         {
-            drawnCard = ItemManager.Instance.GiveRandomCardFromPool(player);
+            ItemManager.HarvestCardResult result =
+                ItemManager.Instance.TryGiveRandomCardFromPool(player, out ItemData drawnCard, out int compensationGold);
+
+            if (result == ItemManager.HarvestCardResult.GotCard)
+            {
+                // 抽到卡：发卡时内部已弹“获得卡牌”提示，这里只补基础铜钱提示
+                Debug.Log($"{player.playerName} 额外获得卡牌 {drawnCard.itemName}");
+                if (UIManager.Instance != null)
+                {
+                    UIManager.Instance.ShowToast($"收获 {baseAmount} 铜钱，还获得卡牌：{drawnCard.itemName}！", 2f);
+                }
+                return;
+            }
+
+            if (result == ItemManager.HarvestCardResult.HandFull)
+            {
+                // 手牌已满：不再发卡，按稀有度折算金币（折算已在 ItemManager 内发放）
+                Debug.Log($"{player.playerName} 手牌已满，卡牌折算 {compensationGold} 金币");
+                if (UIManager.Instance != null)
+                {
+                    string msg = compensationGold > 0
+                        ? $"收获 {baseAmount} 铜钱；手牌已满，卡牌折算 {compensationGold} 金币！"
+                        : $"收获 {baseAmount} 铜钱；手牌已满，无法获得卡牌！";
+                    UIManager.Instance.ShowToast(msg, 2f);
+                }
+                return;
+            }
+            // result == NoPool：未配置卡池/未抽到卡，落到下方额外铜钱分支
         }
 
-        if (drawnCard != null)
+        // 未抽卡或卡池不可用：给额外铜钱
         {
-            // 抽到卡：GiveRandomCardFromPool 内部已弹“获得卡牌”提示，这里只补基础铜钱提示
-            Debug.Log($"{player.playerName} 额外获得卡牌 {drawnCard.itemName}");
-            if (UIManager.Instance != null)
-            {
-                UIManager.Instance.ShowToast($"收获 {baseAmount} 铜钱，还获得卡牌：{drawnCard.itemName}！", 2f);
-            }
-        }
-        else
-        {
-            // 未抽卡或抽卡失败：给额外铜钱
             int extraAmount = Random.Range(harvestExtraMoneyMin, harvestExtraMoneyMax + 1);
             player.ReceiveCash(extraAmount);
             int total = baseAmount + extraAmount;
