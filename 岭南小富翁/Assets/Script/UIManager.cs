@@ -48,6 +48,12 @@ public class UIManager : MonoBehaviour
     public Image selectedBuildingImage;
     public Text buildingPriceText;
 
+    // 建筑悬停提示（运行时自动生成，跟随鼠标）
+    private GameObject buildingTooltipObj;
+    private RectTransform buildingTooltipRect;
+    private TextMeshProUGUI buildingTooltipText;
+    private bool buildingTooltipVisible = false;
+
     [Header("")]
     public List<BuildingData> availableBuildings = new List<BuildingData>();
 
@@ -153,6 +159,11 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
+        if (buildingTooltipVisible)
+        {
+            UpdateBuildingTooltipPosition();
+        }
+
         // ESC
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -435,6 +446,8 @@ public class UIManager : MonoBehaviour
     {
         UnityEngine.Debug.Log($"UI: {keepButtons}");
 
+        HideBuildingTooltip();
+
         // UI
         ClearTileHighlights();
         HidePersistentToast();
@@ -539,12 +552,20 @@ public class UIManager : MonoBehaviour
     // 
     private void ClearBuildingButtons()
     {
+        HideBuildingTooltip();
+
         for (int i = 0; i < buildingButtons.Length; i++)
         {
             if (buildingButtons[i] != null)
             {
                 buildingButtons[i].onClick.RemoveAllListeners();
                 buildingButtons[i].gameObject.SetActive(false);
+
+                EventTrigger hoverTrigger = buildingButtons[i].GetComponent<EventTrigger>();
+                if (hoverTrigger != null)
+                {
+                    hoverTrigger.triggers.Clear();
+                }
 
                 Transform iconTransform = buildingButtons[i].transform.Find("Icon");
                 if (iconTransform != null)
@@ -644,6 +665,8 @@ public class UIManager : MonoBehaviour
                 BuildingData currentBuilding = building;
                 buildingButtons[i].onClick.AddListener(() => OnBuildingSelected(currentBuilding));
 
+                AddBuildingHoverEvents(buildingButtons[i], currentBuilding);
+
                 activeBuildingButtonIndices.Add(i);
             }
             else
@@ -651,6 +674,140 @@ public class UIManager : MonoBehaviour
                 buildingButtons[i].gameObject.SetActive(false);
             }
         }
+    }
+
+    // 给建筑按钮挂上鼠标进入/离开事件，用于显示悬停提示
+    private void AddBuildingHoverEvents(Button button, BuildingData building)
+    {
+        if (button == null) return;
+
+        EventTrigger trigger = button.GetComponent<EventTrigger>();
+        if (trigger == null)
+        {
+            trigger = button.gameObject.AddComponent<EventTrigger>();
+        }
+        trigger.triggers.Clear();
+
+        EventTrigger.Entry enter = new EventTrigger.Entry { eventID = EventTriggerType.PointerEnter };
+        enter.callback.AddListener((data) => ShowBuildingTooltip(building));
+        trigger.triggers.Add(enter);
+
+        EventTrigger.Entry exit = new EventTrigger.Entry { eventID = EventTriggerType.PointerExit };
+        exit.callback.AddListener((data) => HideBuildingTooltip());
+        trigger.triggers.Add(exit);
+    }
+
+    // 从建筑名称文本上取一个支持中文的字体，避免运行时生成的提示框出现方块
+    private TMP_FontAsset GetBuildingTooltipFont()
+    {
+        for (int i = 0; i < buildingButtons.Length; i++)
+        {
+            if (buildingButtons[i] == null) continue;
+            Transform nameTransform = buildingButtons[i].transform.Find("BuildingName");
+            if (nameTransform != null)
+            {
+                TextMeshProUGUI tmp = nameTransform.GetComponent<TextMeshProUGUI>();
+                if (tmp != null && tmp.font != null) return tmp.font;
+            }
+        }
+        return null;
+    }
+
+    // 懒加载创建提示框（背景 + 文本）
+    private void EnsureBuildingTooltip()
+    {
+        if (buildingTooltipObj != null) return;
+        if (mainCanvas == null) return;
+
+        buildingTooltipObj = new GameObject("BuildingTooltip");
+        buildingTooltipObj.transform.SetParent(mainCanvas.transform, false);
+
+        buildingTooltipRect = buildingTooltipObj.AddComponent<RectTransform>();
+        buildingTooltipRect.anchorMin = new Vector2(0.5f, 0.5f);
+        buildingTooltipRect.anchorMax = new Vector2(0.5f, 0.5f);
+        buildingTooltipRect.pivot = new Vector2(0f, 1f);
+        buildingTooltipRect.sizeDelta = new Vector2(260f, 80f);
+
+        Image bg = buildingTooltipObj.AddComponent<Image>();
+        bg.color = new Color(0f, 0f, 0f, 0.85f);
+        bg.raycastTarget = false;
+
+        GameObject textObj = new GameObject("Text");
+        textObj.transform.SetParent(buildingTooltipObj.transform, false);
+
+        buildingTooltipText = textObj.AddComponent<TextMeshProUGUI>();
+        TMP_FontAsset font = GetBuildingTooltipFont();
+        if (font != null) buildingTooltipText.font = font;
+        buildingTooltipText.fontSize = 22;
+        buildingTooltipText.color = Color.white;
+        buildingTooltipText.alignment = TextAlignmentOptions.TopLeft;
+        buildingTooltipText.enableWordWrapping = true;
+        buildingTooltipText.raycastTarget = false;
+
+        RectTransform textRect = buildingTooltipText.rectTransform;
+        textRect.anchorMin = Vector2.zero;
+        textRect.anchorMax = Vector2.one;
+        textRect.offsetMin = new Vector2(10f, 8f);
+        textRect.offsetMax = new Vector2(-10f, -8f);
+
+        buildingTooltipObj.SetActive(false);
+    }
+
+    // 显示某个建筑的悬停提示
+    private void ShowBuildingTooltip(BuildingData building)
+    {
+        if (building == null) return;
+
+        EnsureBuildingTooltip();
+        if (buildingTooltipText == null) return;
+
+        buildingTooltipText.text = building.GetTooltipDescription();
+        buildingTooltipObj.SetActive(true);
+        buildingTooltipObj.transform.SetAsLastSibling();
+
+        buildingTooltipText.ForceMeshUpdate();
+        float height = buildingTooltipText.preferredHeight + 16f;
+        buildingTooltipRect.sizeDelta = new Vector2(260f, Mathf.Max(50f, height));
+
+        buildingTooltipVisible = true;
+        UpdateBuildingTooltipPosition();
+    }
+
+    private void HideBuildingTooltip()
+    {
+        buildingTooltipVisible = false;
+        if (buildingTooltipObj != null)
+        {
+            buildingTooltipObj.SetActive(false);
+        }
+    }
+
+    // 让提示框跟随鼠标，并限制在画布范围内
+    private void UpdateBuildingTooltipPosition()
+    {
+        if (buildingTooltipRect == null || mainCanvas == null) return;
+
+        RectTransform canvasRect = mainCanvas.transform as RectTransform;
+        if (canvasRect == null) return;
+
+        Camera cam = mainCanvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : mainCanvas.worldCamera;
+
+        Vector2 localPoint;
+        if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, Input.mousePosition, cam, out localPoint))
+            return;
+
+        Vector2 size = buildingTooltipRect.sizeDelta;
+        Vector2 pos = localPoint + new Vector2(16f, -8f);
+
+        float halfW = canvasRect.rect.width * 0.5f;
+        float halfH = canvasRect.rect.height * 0.5f;
+
+        if (pos.x + size.x > halfW) pos.x = localPoint.x - 16f - size.x;
+        if (pos.x < -halfW) pos.x = -halfW;
+        if (pos.y - size.y < -halfH) pos.y = -halfH + size.y;
+        if (pos.y > halfH) pos.y = halfH;
+
+        buildingTooltipRect.anchoredPosition = pos;
     }
 
     // 
@@ -663,6 +820,8 @@ public class UIManager : MonoBehaviour
 
         selectedBuildingData = building;
         isBuildingSelected = true;
+
+        HideBuildingTooltip();
 
         if (buildingSelectionPanel != null)
         {

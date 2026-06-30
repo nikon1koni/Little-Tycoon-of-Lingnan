@@ -350,6 +350,57 @@ public class BuildingData : ScriptableObject
         return desc;
     }
 
+    /// <summary> 悬停提示用：只含规模与功能信息（名称、价格已显示在面板上） </summary>
+    public string GetTooltipDescription(int level = 1)
+    {
+        string desc = $"规模: {minTileScale}-{maxTileScale}\n";
+
+        switch (functionType)
+        {
+            case BuildingFunctionType.Income:
+                desc += $"功能: 每回合收入 {GetIncomeAmount(1)}";
+                if (level > 1)
+                {
+                    desc += $"\n当前{level}级: {GetIncomeAmount(level)}";
+                }
+                break;
+
+            case BuildingFunctionType.Buff:
+                desc += "功能: 提供 Buff";
+                foreach (var config in GetBuffConfigs())
+                {
+                    float value = GetBuffValue(level, config);
+                    desc += $"\n- {GetBuffEffectName(config.effectType)}: +{value * 100:F1}%";
+                    if (config.isPermanent)
+                        desc += " (永久)";
+                    else if (config.durationRounds > 0)
+                        desc += $" 持续{config.durationRounds}回合";
+                    else if (config.duration > 0)
+                        desc += $" 持续{config.duration:F1}秒";
+                }
+                break;
+
+            case BuildingFunctionType.Mixed:
+                desc += $"功能: 收入+Buff\n收入: {GetIncomeAmount(1)}";
+                foreach (var config in GetBuffConfigs())
+                {
+                    float value = GetBuffValue(level, config);
+                    desc += $"\n- {GetBuffEffectName(config.effectType)}: +{value * 100:F1}%";
+                }
+                break;
+
+            case BuildingFunctionType.DiceEven:
+                desc += $"功能: 骰子点数奖励\n{GetDiceRuleDescription()}";
+                break;
+
+            case BuildingFunctionType.Appreciation:
+                desc += $"功能: 房产增值\n每持有1回合，出售时+{appreciationPerRound}";
+                break;
+        }
+
+        return desc;
+    }
+
     // 获取Buff效果名称
     public static string GetBuffEffectName(BuffEffect effect)
     {
