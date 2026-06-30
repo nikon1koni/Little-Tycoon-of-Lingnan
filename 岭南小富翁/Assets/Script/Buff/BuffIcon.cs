@@ -123,7 +123,7 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         
         resultDescription += $"<b>{BuildingData.GetBuffEffectName(currentBuff.effectType)}</b>\n";
         resultDescription += $"+{currentBuff.value * 100:F1}%\n";
-        resultDescription += $": {currentBuff.sourceName}\n";
+        resultDescription += $"来源：{currentBuff.sourceName}\n";
         
         resultDescription += GetRemainingTimeText();
         
@@ -136,18 +136,18 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         
         if (currentBuff.isPermanent)
         {
-            timeText = ":<color=green></color>";
+            timeText = "剩余：<color=green>永久</color>";
         }
         else if (currentBuff.useRoundTimer)
         {
             bool isDebuff = IsDebuff();
             Color textColor = GetTimeColor(isDebuff, currentBuff.remainingRounds);
             string colorHex = ColorToHex(textColor);
-            timeText = $":<color={colorHex}>{currentBuff.remainingRounds}</color>";
+            timeText = $"剩余回合：<color={colorHex}>{currentBuff.remainingRounds}</color>";
         }
         else
         {
-            timeText = $":{currentBuff.remainingTime:F1}";
+            timeText = $"剩余时间：{currentBuff.remainingTime:F1}秒";
         }
         
         return timeText;
