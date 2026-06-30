@@ -354,7 +354,7 @@ public class UIManager : MonoBehaviour
         selectedBoardTile = buildableTile;
         currentBuildingPlayer = player;
 
-        UnityEngine.Debug.Log($"UIManager: UI: {buildableTile.tileScale}");
+        UnityEngine.Debug.Log($"UIManager: 显示建筑选择UI，地块规模: {buildableTile.tileScale}");
 
         // 
         HidePropertyPurchasePanel();
@@ -415,11 +415,11 @@ public class UIManager : MonoBehaviour
             
             closeBtnToUse.onClick.RemoveAllListeners();
             closeBtnToUse.onClick.AddListener(() => {
-                UnityEngine.Debug.Log("UIManager: ");
+                UnityEngine.Debug.Log("UIManager: 点击关闭按钮，关闭建筑选择面板");
                 HideBuildingSelectionUI();
             });
 
-            UnityEngine.Debug.Log("UIManager: ");
+            UnityEngine.Debug.Log("UIManager: 关闭按钮配置完成");
         }
         else
         {

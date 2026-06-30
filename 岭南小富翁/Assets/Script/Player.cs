@@ -68,7 +68,7 @@ public class Player : MonoBehaviour
         int previousCash = cash;
         bool canAfford = cash >= amount;
         cash -= amount;
-        Debug.Log($"{playerName}  {amount} : {cash}");
+        Debug.Log($"{playerName} 支出现金 {amount}，当前现金: {cash}");
 
         NotifyCashChanged();
         UpdateBankruptState(previousCash);
@@ -80,7 +80,7 @@ public class Player : MonoBehaviour
     {
         int previousCash = cash;
         cash += amount;
-        Debug.Log($"{playerName}  {amount} : {cash}");
+        Debug.Log($"{playerName} 获得现金 {amount}，当前现金: {cash}");
 
         NotifyCashChanged();
         UpdateBankruptState(previousCash);
@@ -430,14 +430,13 @@ public class Player : MonoBehaviour
             {
                 int receiveAmount = Mathf.RoundToInt(receivableAmount * receivableMultiplier);
                 ReceiveCash(receiveAmount);
-                Debug.Log($"{playerName} ?????: {receiveAmount}");
-                receivableAmount = 0;
+                Debug.Log($"{playerName} 收到应收账款: {receiveAmount}"); receivableAmount = 0;
                 receivableMultiplier = 1f;
                 receivableRounds = 0;
                 
                 if (UIManager.Instance != null)
                 {
-                    UIManager.Instance.ShowToast($"????? {receiveAmount} ??", 2f);
+                    UIManager.Instance.ShowToast($"收到应收账款 {receiveAmount} 现金", 2f);
                 }
             }
         }
