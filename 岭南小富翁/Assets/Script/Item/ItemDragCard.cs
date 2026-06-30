@@ -254,7 +254,7 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     {
         if (draggedCardInstance == null) 
         {
-            Debug.Log("IsOverValidDropZone: draggedCardInstance ???");
+            Debug.Log("IsOverValidDropZone: draggedCardInstance 为空");
             return false;
         }
 
@@ -272,7 +272,7 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         }
         else
         {
-            Debug.Log($"IsOverValidDropZone: ??? {raycastResults.Count} ??UI???");
+            Debug.Log($"IsOverValidDropZone: 检测到 {raycastResults.Count} 个UI元素");
             foreach (var result in raycastResults)
             {
                 Debug.Log($"  - {result.gameObject.name} (Tag: {result.gameObject.tag})");
@@ -373,7 +373,7 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
         if (success)
         {
-            Debug.Log($"{ownerPlayer.playerName} ?????????: {itemData.itemName}");
+            Debug.Log($"{ownerPlayer.playerName} 成功使用物品: {itemData.itemName}");
 
             // ??????? - ????????????????
             StartCoroutine(FlyToTarget());

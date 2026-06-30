@@ -253,7 +253,7 @@ public class BoardTile : MonoBehaviour
         if (ownerPlayer == null)
         {
             // 
-            Debug.Log($"{tileName}   {propertyPrice} ");
+            Debug.Log($"{tileName} 可购买 价格 {propertyPrice} 金币");
 
             if (UIManager.Instance != null)
             {
@@ -263,7 +263,7 @@ public class BoardTile : MonoBehaviour
         else if (ownerPlayer == player)
         {
             // 
-            Debug.Log($"{player.playerName}  {tileName}");
+            Debug.Log($"{player.playerName} 到达自己的 {tileName}");
         }
         else
         {
@@ -276,7 +276,7 @@ public class BoardTile : MonoBehaviour
     private void PayRent(Player player)
     {
         int rent = CalculateRent();
-        Debug.Log($"{player.playerName}  {ownerPlayer.playerName}  {rent} ");
+        Debug.Log($"{player.playerName} 向 {ownerPlayer.playerName} 支付 {rent} 金币");
 
         if (player.PayCash(rent))
         {
@@ -292,7 +292,7 @@ public class BoardTile : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"{player.playerName} ");
+            Debug.LogWarning($"{player.playerName} 金币不足无法支付租金");
         }
     }
 
@@ -322,7 +322,7 @@ public class BoardTile : MonoBehaviour
         int totalIncome = 0;
         float maxEffectDuration = 0f;
 
-        Debug.Log($"TriggerLinkedBuildingIncome: ={linkedBuildingTiles.Count}={incomeInterval}");
+        Debug.Log($"TriggerLinkedBuildingIncome: 连接建筑数量={linkedBuildingTiles.Count}间隔={incomeInterval}");
         
         // 
         for (int i = 0; i < linkedBuildingTiles.Count; i++)
@@ -330,7 +330,7 @@ public class BoardTile : MonoBehaviour
             BoardTile tile = linkedBuildingTiles[i];
             string dataName = tile.currentBuildingData?.buildingName ?? "";
             string ownerName = tile.ownerPlayer?.playerName ?? "";
-            Debug.Log($"  [{i}]: {tile.name ?? "null"} - : {dataName}, : {ownerName}");
+            Debug.Log($"  [{i}]: {tile.name ?? "null"} - 建筑名: {dataName}, 拥有者: {ownerName}");
         }
 
         //  Income 
@@ -359,11 +359,11 @@ public class BoardTile : MonoBehaviour
         //  Buff 
         if (hasIncomeBuilding)
         {
-            Debug.Log($"TriggerLinkedBuildingIncome: ===  Buff  ===");
+            Debug.Log($"TriggerLinkedBuildingIncome: === 处理 Buff 建筑 ===");
             for (int i = 0; i < linkedBuildingTiles.Count; i++)
             {
                 BoardTile buildingTile = linkedBuildingTiles[i];
-                Debug.Log($" {i}: {buildingTile.name ?? "null"}");
+                Debug.Log($"建筑 {i}: {buildingTile.name ?? "null"}");
                 if (buildingTile == null) continue;
 
                 bool canGenerate = CanGenerateIncome(buildingTile, currentTime);
@@ -373,20 +373,20 @@ public class BoardTile : MonoBehaviour
 
                 if (buildingTile.ownerPlayer == null || buildingTile.ownerPlayer != player)
                 {
-                    Debug.Log($"  - ");
+                    Debug.Log($"  - 非当前玩家拥有");
                     continue;
                 }
 
                 if (buildingTile.currentBuildingData == null)
                 {
-                    Debug.Log($"  - ");
+                    Debug.Log($"  - ??н???????");
                     continue;
                 }
 
                 // BuffDiceEven
                 if (buildingTile.currentBuildingData.functionType == BuildingData.BuildingFunctionType.Buff)
                 {
-                    Debug.Log($"  -  Buff ");
+                    Debug.Log($"  - ???? Buff Ч??");
                     PlayBuildingEffect(buildingTile);
                     
                     if (buildingTile.currentBuildingData.effectDuration > maxEffectDuration)
@@ -396,20 +396,20 @@ public class BoardTile : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log($"  -  {buildingTile.currentBuildingData.functionType} ");
+                    Debug.Log($"  - ???? {buildingTile.currentBuildingData.functionType} Ч??");
                 }
             }
         }
 
         //  Income  Mixed 
-        Debug.Log($"TriggerLinkedBuildingIncome: ===  Income/Mixed  ===\n");
+        Debug.Log($"TriggerLinkedBuildingIncome: === 处理 Income/Mixed 建筑 ===\n");
         foreach (BoardTile buildingTile in incomeTiles)
         {
-            Debug.Log($": {buildingTile.name ?? "null"}");
+            Debug.Log($"建筑: {buildingTile.name ?? "null"}");
             
             int baseIncome = buildingTile.currentBuildingData.GetIncomeAmountByTurns(buildingTile.GetBuildingTurnsOwned());
             int incomeAmount = player.GetIncomeWithMultiplier(baseIncome);
-            Debug.Log($"  - : {baseIncome}, : {incomeAmount}");
+            Debug.Log($"  - 基础收入: {baseIncome}, 实际收入: {incomeAmount}");
             
             player.ReceiveCash(incomeAmount);
             totalIncome += incomeAmount;
@@ -417,15 +417,15 @@ public class BoardTile : MonoBehaviour
             if (!lastIncomeTime.ContainsKey(buildingTile))
             {
                 lastIncomeTime.Add(buildingTile, currentTime);
-                Debug.Log($"  -  lastIncomeTime");
+                Debug.Log($"  - 添加 lastIncomeTime");
             }
             else
             {
                 lastIncomeTime[buildingTile] = currentTime;
-                Debug.Log($"  -  lastIncomeTime");
+                Debug.Log($"  - 更新 lastIncomeTime");
             }
 
-            Debug.Log($"  - ");
+            Debug.Log($"  - ????Ч??");
             PlayBuildingEffect(buildingTile);
             
             if (buildingTile.currentBuildingData.effectDuration > maxEffectDuration)
@@ -439,7 +439,7 @@ public class BoardTile : MonoBehaviour
             UIManager.Instance.ShowToast($"获得建筑收入 {totalIncome} 铜钱", 2f);
         }
 
-        Debug.Log($"TriggerLinkedBuildingIncome: ={totalIncome}");
+        Debug.Log($"TriggerLinkedBuildingIncome: 总收入={totalIncome}");
 
         return maxEffectDuration;
     }
@@ -448,42 +448,42 @@ public class BoardTile : MonoBehaviour
     {
         if (buildingTile == null || buildingTile.currentBuildingData == null)
         {
-            Debug.LogWarning($"PlayBuildingEffect: buildingTilecurrentBuildingData");
+            Debug.LogWarning($"PlayBuildingEffect: buildingTile或currentBuildingData为空");
             return;
         }
 
         BuildingData data = buildingTile.currentBuildingData;
         
-        Debug.Log($"PlayBuildingEffect:  {data.buildingName} ");
-        Debug.Log($"  - effectIconPrefab: {(data.effectIconPrefab != null ? "" : "null")}");
-        Debug.Log($"  - effectSound: {(data.effectSound != null ? "" : "null")}");
+        Debug.Log($"PlayBuildingEffect: ???? {data.buildingName} Ч??");
+        Debug.Log($"  - effectIconPrefab: {(data.effectIconPrefab != null ? "已设置" : "null")}");
+        Debug.Log($"  - effectSound: {(data.effectSound != null ? "已设置" : "null")}");
         
         if (data.effectIconPrefab != null || data.effectSound != null)
         {
             //  BuildingEffectSystem
             if (BuildingEffectSystem.Instance == null)
             {
-                Debug.LogWarning("BuildingEffectSystem.Instance...");
+                Debug.LogWarning("BuildingEffectSystem.Instance不存在，正在创建...");
                 GameObject effectSystemObj = new GameObject("BuildingEffectSystem_AutoCreated");
                 effectSystemObj.AddComponent<BuildingEffectSystem>();
                 
                 if (BuildingEffectSystem.Instance == null)
                 {
-                    Debug.LogError(" BuildingEffectSystem ");
+                    Debug.LogError("创建 BuildingEffectSystem 失败");
                     return;
                 }
-                Debug.Log(" BuildingEffectSystem ");
+                Debug.Log("创建 BuildingEffectSystem 成功");
             }
             
             Transform effectTransform = buildingTile.transform;
             if (buildingTile.currentBuilding != null)
             {
                 effectTransform = buildingTile.currentBuilding.transform;
-                Debug.Log($" transform: {buildingTile.currentBuilding.name}");
+                Debug.Log($"使用 transform: {buildingTile.currentBuilding.name}");
             }
             else
             {
-                Debug.Log($" transform: {buildingTile.name}");
+                Debug.Log($"使用 transform: {buildingTile.name}");
             }
             
             BuildingEffectSystem.Instance.QueueBuildingEffect(effectTransform, data);
@@ -510,7 +510,7 @@ public class BoardTile : MonoBehaviour
         if (incomeAmount > 0)
         {
             ownerPlayer.ReceiveCash(incomeAmount);
-            Debug.Log($" {currentBuildingData.buildingName}  {incomeAmount}");
+            Debug.Log($"建筑 {currentBuildingData.buildingName} 自动获得收入 {incomeAmount}");
 
             if (UIManager.Instance != null)
             {
@@ -544,26 +544,26 @@ public class BoardTile : MonoBehaviour
             // 
             currentBuildingType = GetBuildingTypeFromData(data);
 
-            Debug.Log($" {tileName}:  {data.buildingName}, : {currentBuildingType}, : {level}");
+            Debug.Log($"设置 {tileName}: 建筑 {data.buildingName}, 类型: {currentBuildingType}, 等级: {level}");
 
             // 
             if (data.functionType != BuildingData.BuildingFunctionType.Income &&
                 data.functionType != BuildingData.BuildingFunctionType.Mixed)
             {
-                Debug.LogWarning($" {data.functionType}  Income  Mixed ");
+                Debug.LogWarning($"建筑 {data.functionType} 不是 Income 或 Mixed 类型");
             }
         }
         else
         {
             currentBuildingType = BuildingType.None;
-            Debug.Log($" {tileName}:  None");
+            Debug.Log($"设置 {tileName}: 建筑类型为 None");
         }
     }
     private BoardTile.BuildingType GetBuildingTypeFromData(BuildingData data)
     {
         if (data == null)
         {
-            Debug.LogWarning("GetBuildingTypeFromData:  null");
+            Debug.LogWarning("GetBuildingTypeFromData: 数据为 null");
             return BuildingType.None;
         }
 
@@ -573,13 +573,13 @@ public class BoardTile : MonoBehaviour
         if (type == BuildingType.None)
         {
             // 
-            Debug.LogWarning($" {data.buildingName}  buildingType");
+            Debug.LogWarning($"???? {data.buildingName} ?? buildingTypeδ?????????????????");
             return InferBuildingTypeFromName(data.buildingName);
         }
         else
         {
-            Debug.Log("");
-            Debug.Log($"GetBuildingTypeFromData:  {data.buildingName} : {type}");
+            Debug.Log("使用已有类型");
+            Debug.Log($"GetBuildingTypeFromData: 建筑 {data.buildingName} 类型: {type}");
             return type;
         }
     }
@@ -649,7 +649,7 @@ public class BoardTile : MonoBehaviour
             BuildingData nextBuildingData = currentBuildingData.nextLevelBuilding;
             
             buildingLevel++;
-            Debug.Log($"{player.playerName}  {tileName}  {buildingLevel}");
+            Debug.Log($"{player.playerName} 在 {tileName} 升级到等级 {buildingLevel}");
 
             // 
             if (nextBuildingData != null)
@@ -744,7 +744,7 @@ public class BoardTile : MonoBehaviour
         int sellPrice = GetSellPrice();
         player.ReceiveCash(sellPrice);
 
-        Debug.Log($"{player.playerName}  {tileName}  {sellPrice}");
+        Debug.Log($"{player.playerName} 出售 {tileName} 获得 {sellPrice}");
 
         // 
         if (currentBuilding != null)
@@ -825,7 +825,7 @@ public class BoardTile : MonoBehaviour
             case 1:
                 int gain = Random.Range(20, 101);
                 player.ReceiveCash(gain);
-                Debug.Log($"{player.playerName}  {gain}");
+                Debug.Log($"{player.playerName} 抽中 {gain} 元");
 
                 if (SFXManager.Instance != null)
                     SFXManager.Instance.PlaySFX(SFXClip.EventGainMoney);
@@ -835,7 +835,7 @@ public class BoardTile : MonoBehaviour
                 int lose = Random.Range(20, 101);
                 if (player.PayCash(lose))
                 {
-                    Debug.Log($"{player.playerName}  {lose}");
+                    Debug.Log($"{player.playerName} 支付 {lose} 元");
 
                     if (SFXManager.Instance != null)
                         SFXManager.Instance.PlaySFX(SFXClip.EventLoseMoney);
@@ -849,7 +849,7 @@ public class BoardTile : MonoBehaviour
                     int randomTileIndex = Random.Range(0, BoardManager.Instance.allTiles.Count);
                     BoardTile targetTile = BoardManager.Instance.allTiles[randomTileIndex];
                     player.MoveToTile(targetTile, true);
-                    Debug.Log($"{player.playerName}  {targetTile.tileName}");
+                    Debug.Log($"{player.playerName} 移动到 {targetTile.tileName}");
                 }
                 break;
         }
@@ -866,7 +866,7 @@ public class BoardTile : MonoBehaviour
             case 1:
                 int gain = Random.Range(50, 201);
                 player.ReceiveCash(gain);
-                Debug.Log($"{player.playerName}  {gain}");
+                Debug.Log($"{player.playerName} 获得 {gain} 元");
 
                 if (SFXManager.Instance != null)
                     SFXManager.Instance.PlaySFX(SFXClip.EventGainMoney);
@@ -876,7 +876,7 @@ public class BoardTile : MonoBehaviour
                 int tax = Random.Range(50, 201);
                 if (player.PayCash(tax))
                 {
-                    Debug.Log($"{player.playerName}  {tax}");
+                    Debug.Log($"{player.playerName} 支付 {tax} 元");
 
                     if (SFXManager.Instance != null)
                         SFXManager.Instance.PlaySFX(SFXClip.EventTaxPaid);
@@ -884,7 +884,7 @@ public class BoardTile : MonoBehaviour
                 break;
 
             case 3:
-                Debug.Log($"{player.playerName} Buff");
+                Debug.Log($"{player.playerName} 获得Buff");
 
                 if (SFXManager.Instance != null)
                 {
@@ -901,7 +901,7 @@ public class BoardTile : MonoBehaviour
 
         if (player.PayCash(taxAmount))
         {
-            Debug.Log($"{player.playerName}  {taxAmount}");
+            Debug.Log($"{player.playerName} 支付税款 {taxAmount}");
 
             if (SFXManager.Instance != null)
                 SFXManager.Instance.PlaySFX(SFXClip.EventTaxPaid);
@@ -914,7 +914,7 @@ public class BoardTile : MonoBehaviour
         player.isInJail = true;
         player.jailTurnsRemaining = 3;
 
-        Debug.Log($"{player.playerName}  {player.jailTurnsRemaining} ");
+        Debug.Log($"{player.playerName} 入狱 {player.jailTurnsRemaining} 回合");
 
         if (SFXManager.Instance != null)
             SFXManager.Instance.PlaySFX(SFXClip.EventGoToJail);
@@ -931,17 +931,17 @@ public class BoardTile : MonoBehaviour
         if (eventDataArray != null && eventDataArray.Length > 0)
         {
             int randomIndex = Random.Range(0, eventDataArray.Length);
-            Debug.Log($"[] : {tileName}, : {eventDataArray.Length}, : {randomIndex}");
+            Debug.Log($"[随机事件] 地块: {tileName}, 事件数量: {eventDataArray.Length}, 随机索引: {randomIndex}");
             
             for (int i = 0; i < eventDataArray.Length; i++)
             {
                 if (eventDataArray[i] != null)
                 {
-                    Debug.Log($"  - {i}: {eventDataArray[i].eventTitle}");
+                    Debug.Log($"  - 事件{i}: {eventDataArray[i].eventTitle}");
                 }
                 else
                 {
-                    Debug.Log($"  - {i}: ");
+                    Debug.Log($"  - 事件{i}: 空");
                 }
             }
             
@@ -950,7 +950,7 @@ public class BoardTile : MonoBehaviour
             if (selectedEvent != null && UIManager.Instance != null)
             {
                 UIManager.Instance.ShowEventPanel(selectedEvent, player);
-                Debug.Log($"{player.playerName} : {selectedEvent.eventTitle}");
+                Debug.Log($"{player.playerName} 触发事件: {selectedEvent.eventTitle}");
                 return;
             }
         }
@@ -963,7 +963,7 @@ public class BoardTile : MonoBehaviour
             case TileEvent.GainMoney:
                 int gain = Random.Range(50, 151);
                 player.ReceiveCash(gain);
-                Debug.Log($"{player.playerName}  {gain}");
+                Debug.Log($"{player.playerName} 获得 {gain} 元");
 
                 if (SFXManager.Instance != null)
                     SFXManager.Instance.PlaySFX(SFXClip.EventGainMoney);
@@ -973,7 +973,7 @@ public class BoardTile : MonoBehaviour
                 int lose = Random.Range(30, 101);
                 if (player.PayCash(lose))
                 {
-                    Debug.Log($"{player.playerName}  {lose}");
+                    Debug.Log($"{player.playerName} 损失 {lose} 元");
 
                     if (SFXManager.Instance != null)
                         SFXManager.Instance.PlaySFX(SFXClip.EventLoseMoney);
@@ -986,7 +986,7 @@ public class BoardTile : MonoBehaviour
                     int randomIndex = Random.Range(0, BoardManager.Instance.allTiles.Count);
                     BoardTile targetTile = BoardManager.Instance.allTiles[randomIndex];
                     player.MoveToTile(targetTile, true);
-                    Debug.Log($"{player.playerName}  {targetTile.tileName}");
+                    Debug.Log($"{player.playerName} 移动到 {targetTile.tileName}");
                 }
                 break;
 
@@ -995,7 +995,7 @@ public class BoardTile : MonoBehaviour
                 {
                     player.isInJail = false;
                     player.jailTurnsRemaining = 0;
-                    Debug.Log($"{player.playerName} ");
+                    Debug.Log($"{player.playerName} 出狱了");
                 }
                 break;
 
@@ -1003,7 +1003,7 @@ public class BoardTile : MonoBehaviour
                 int tax = Random.Range(20, 81);
                 if (player.PayCash(tax))
                 {
-                    Debug.Log($"{player.playerName}  {tax}");
+                    Debug.Log($"{player.playerName} 支付税 {tax} 元");
 
                     if (SFXManager.Instance != null)
                         SFXManager.Instance.PlaySFX(SFXClip.EventTaxPaid);
@@ -1031,7 +1031,7 @@ public class BoardTile : MonoBehaviour
         if (!linkedBuildingTiles.Contains(buildingTile))
         {
             linkedBuildingTiles.Add(buildingTile);
-            Debug.Log($" {tileName}  {buildingTile.tileName}");
+            Debug.Log($"为 {tileName} 添加联动 {buildingTile.tileName}");
         }
     }
 
@@ -1041,7 +1041,7 @@ public class BoardTile : MonoBehaviour
         if (linkedBuildingTiles != null && linkedBuildingTiles.Contains(buildingTile))
         {
             linkedBuildingTiles.Remove(buildingTile);
-            Debug.Log($" {tileName}  {buildingTile.tileName}");
+            Debug.Log($"从 {tileName} 移除联动 {buildingTile.tileName}");
         }
     }
 
@@ -1051,7 +1051,7 @@ public class BoardTile : MonoBehaviour
         if (linkedBuildingTiles != null)
         {
             linkedBuildingTiles.Clear();
-            Debug.Log($" {tileName} ");
+            Debug.Log($"清空 {tileName} 联动");
         }
     }
 

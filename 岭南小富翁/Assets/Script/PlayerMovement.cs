@@ -151,7 +151,7 @@ public class PlayerMovement : MonoBehaviour
                     // tileID == 0  tileType == Start
                     if (candidateTile.tileID == 0 || candidateTile.tileType == BoardTile.TileType.Start)
                     {
-                        Debug.Log($"tileID: {candidateTile.tileID}");
+                        Debug.Log($"玩家经过起点tileID: {candidateTile.tileID}，发放工资奖励");
 
                         // 
                         MoveToTileImmediate(candidateTile);
@@ -484,7 +484,7 @@ public class PlayerMovement : MonoBehaviour
     public void SetJumpSpeedMultiplier(float multiplier)
     {
         jumpSpeedMultiplier = Mathf.Clamp(multiplier, 0.5f, 3f);
-        Debug.Log($"PlayerMovement: ={jumpSpeedMultiplier}x");
+        Debug.Log($"PlayerMovement: 设置跳跃速度倍率={jumpSpeedMultiplier}x");
     }
 
     // 

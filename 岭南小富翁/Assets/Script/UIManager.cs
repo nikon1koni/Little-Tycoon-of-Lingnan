@@ -209,18 +209,18 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
-        UnityEngine.Debug.Log("=== UI ===");
+        UnityEngine.Debug.Log("=== UI初始化 ===");
         InitializeUI();
 
         // 
         if (buildingSelectionPanel != null)
         {
             buildingSelectionPanel.SetActive(false);
-            UnityEngine.Debug.Log("UIManager: ");
+            UnityEngine.Debug.Log("UIManager: 建筑选择面板已初始化隐藏");
         }
         else
         {
-            UnityEngine.Debug.LogWarning("UIManager: Inspector");
+            UnityEngine.Debug.LogWarning("UIManager: 建筑选择面板未在Inspector中赋值");
         }
     }
 
@@ -244,7 +244,7 @@ public class UIManager : MonoBehaviour
         }
         // ===  ===
 
-        UnityEngine.Debug.Log("UI");
+        UnityEngine.Debug.Log("UI初始化完成");
     }
 
     // ===  ===
@@ -256,7 +256,7 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            UnityEngine.Debug.LogWarning("UIManager: Inspector'Cash Text'");
+            UnityEngine.Debug.LogWarning("UIManager: 请在Inspector中设置'Cash Text'");
         }
     }
 
@@ -311,7 +311,7 @@ public class UIManager : MonoBehaviour
             if (panel != null)
             {
                 pressureSystemPanel = panel;
-                UnityEngine.Debug.Log("UIManager: ");
+                UnityEngine.Debug.Log("UIManager: 自动找到压力系统面板");
             }
         }
 
@@ -321,7 +321,7 @@ public class UIManager : MonoBehaviour
             if (diceTrans != null)
             {
                 diceRollCountText = diceTrans.GetComponent<TextMeshProUGUI>();
-                UnityEngine.Debug.Log("UIManager: ");
+                UnityEngine.Debug.Log("UIManager: 自动找到骰子计数文本");
             }
         }
 
@@ -331,7 +331,7 @@ public class UIManager : MonoBehaviour
             if (roundTrans != null)
             {
                 currentRoundText = roundTrans.GetComponent<TextMeshProUGUI>();
-                UnityEngine.Debug.Log("UIManager: ");
+                UnityEngine.Debug.Log("UIManager: 自动找到回合文本");
             }
         }
 
@@ -349,11 +349,11 @@ public class UIManager : MonoBehaviour
             if (panel != null)
             {
                 gameOverPanel = panel;
-                UnityEngine.Debug.Log("UIManager: ");
+                UnityEngine.Debug.Log("UIManager: 自动找到游戏结束面板");
             }
             else
             {
-                UnityEngine.Debug.LogWarning("UIManager: GameOverPanelInspector");
+                UnityEngine.Debug.LogWarning("UIManager: 未找到GameOverPanel，请在Inspector中设置");
             }
         }
     }
@@ -373,7 +373,7 @@ public class UIManager : MonoBehaviour
         // 
         if (buildingSelectionPanel == null)
         {
-            UnityEngine.Debug.LogError("UIManager: ");
+            UnityEngine.Debug.LogError("UIManager: 建筑选择面板为空");
             return;
         }
 
@@ -434,7 +434,7 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            UnityEngine.Debug.LogError("UIManager: ");
+            UnityEngine.Debug.LogError("UIManager: 未找到关闭按钮");
         }
 
         // 
@@ -444,7 +444,7 @@ public class UIManager : MonoBehaviour
     // === UI ===
     public void HideBuildingSelectionUI(bool keepButtons = false)
     {
-        UnityEngine.Debug.Log($"UI: {keepButtons}");
+        UnityEngine.Debug.Log($"隐藏建筑选择UI: {keepButtons}");
 
         HideBuildingTooltip();
 
@@ -503,7 +503,7 @@ public class UIManager : MonoBehaviour
 
         if (closeBtnTrans != null)
         {
-            UnityEngine.Debug.Log($"UIManager: : '{closeBtnTrans.name}'");
+            UnityEngine.Debug.Log($"UIManager: 找到关闭按钮对象: '{closeBtnTrans.name}'");
             return closeBtnTrans.GetComponent<Button>();
         }
 
@@ -594,7 +594,7 @@ public class UIManager : MonoBehaviour
     // 
     private void OnCancelBuildingSelection()
     {
-        UnityEngine.Debug.Log("ESC");
+        UnityEngine.Debug.Log("按ESC取消建筑选择");
 
         HidePersistentToast();
         ClearTileHighlights();
@@ -615,7 +615,7 @@ public class UIManager : MonoBehaviour
 
         selectedBuildingData = null;
         isBuildingSelected = false;
-        UnityEngine.Debug.Log("");
+        UnityEngine.Debug.Log("已回到建筑选择界面");
     }
 
     // 
@@ -813,7 +813,7 @@ public class UIManager : MonoBehaviour
     // 
     private void OnBuildingSelected(BuildingData building)
     {
-        UnityEngine.Debug.Log($": {building.buildingName}, : {building.purchasePrice}");
+        UnityEngine.Debug.Log($"选择建筑: {building.buildingName}, 价格: {building.purchasePrice}");
 
         if (SFXManager.Instance != null)
             SFXManager.Instance.PlaySFX(SFXClip.UIClick);
@@ -842,7 +842,7 @@ public class UIManager : MonoBehaviour
         // 4. 
         HighlightPlaceableTiles(currentBuildingPlayer, (int)building.requiredScale);
 
-        UnityEngine.Debug.Log("");
+        UnityEngine.Debug.Log("建筑已选中");
     }
 
     private void ShowPersistentToast(string message)
@@ -1053,7 +1053,7 @@ public class UIManager : MonoBehaviour
         if (!player.ownedProperties.Contains(tile))
         {
             player.ownedProperties.Add(tile);
-            Debug.Log($" {tile.tileName}  {player.playerName}");
+            Debug.Log($"地块 {tile.tileName} 已归属 {player.playerName}");
         }
 
         if (buildingData.buildingPrefab != null)
@@ -1084,7 +1084,7 @@ public class UIManager : MonoBehaviour
                 {
                     // 
                     renderer.material.color = originalTileColors[tile];
-                    UnityEngine.Debug.Log($" {tile.tileName} ");
+                    UnityEngine.Debug.Log($"恢复 {tile.tileName} 的原始颜色");
                 }
                 else
                 {
@@ -1125,7 +1125,7 @@ public class UIManager : MonoBehaviour
             mainCanvas = FindObjectOfType<Canvas>();
             if (mainCanvas == null)
             {
-                UnityEngine.Debug.LogWarning("Canvas...");
+                UnityEngine.Debug.LogWarning("场景中没有找到Canvas，自动创建一个...");
                 CreateCanvas();
             }
         }
@@ -1143,14 +1143,14 @@ public class UIManager : MonoBehaviour
 
         canvasObj.AddComponent<GraphicRaycaster>();
 
-        UnityEngine.Debug.Log("Canvas");
+        UnityEngine.Debug.Log("已创建Canvas");
     }
 
     void CreateRollDiceButton()
     {
         if (rollDiceButtonPrefab == null)
         {
-            UnityEngine.Debug.LogWarning("");
+            UnityEngine.Debug.LogWarning("骰子按钮预制件为空");
             return;
         }
 
@@ -1163,14 +1163,14 @@ public class UIManager : MonoBehaviour
         rollDiceButton = buttonObj.GetComponent<Button>();
         if (rollDiceButton != null)
         {
-            UnityEngine.Debug.Log("");
+            UnityEngine.Debug.Log("掷骰子按钮已创建");
         }
     }
 
     // 
     public void OnRollDiceButtonClicked()
     {
-        UnityEngine.Debug.Log("UIManager: ");
+        UnityEngine.Debug.Log("UIManager: 掷骰子按钮被点击");
 
         if (GameManager.Instance != null)
         {
@@ -1178,7 +1178,7 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            UnityEngine.Debug.LogError("GameManager.Instance ");
+            UnityEngine.Debug.LogError("GameManager.Instance 为空");
         }
     }
 
@@ -1250,7 +1250,7 @@ public class UIManager : MonoBehaviour
                 break;
         }
 
-        UnityEngine.Debug.Log($"UI: {uiType}");
+        UnityEngine.Debug.Log($"切换UI: {uiType}");
     }
 
     public void SwitchToMenuUI() => SwitchUI(UIType.Menu);
@@ -1262,7 +1262,7 @@ public class UIManager : MonoBehaviour
     {
         if (propertyPurchasePanel == null)
         {
-            UnityEngine.Debug.LogWarning("");
+            UnityEngine.Debug.LogWarning("地产购买面板为空");
             return;
         }
 
@@ -1319,7 +1319,7 @@ public class UIManager : MonoBehaviour
     {
         if (gameOverPanel == null)
         {
-            UnityEngine.Debug.LogError("UIManager: InspectorGameOverPanel");
+            UnityEngine.Debug.LogError("UIManager: 请在Inspector中设置GameOverPanel");
             return;
         }
 
@@ -1336,7 +1336,7 @@ public class UIManager : MonoBehaviour
         
         int score = roundCount * 100 + diceCount + 10;
 
-        UnityEngine.Debug.Log($"={playerName}, ={isWinner}, ={roundCount}, ={diceCount}, ={score}");
+        UnityEngine.Debug.Log($"玩家={playerName}, 是否获胜={isWinner}, 回合数={roundCount}, 骰子次数={diceCount}, 分数={score}");
 
         SetText("ResultText", isWinner ? $"{playerName} 获胜!" : $"{playerName} 失败");
         SetText("RoundText", $"回合数: {roundCount}");
@@ -1346,13 +1346,13 @@ public class UIManager : MonoBehaviour
         Button restartButton = FindRestartButton();
         if (restartButton != null)
         {
-            UnityEngine.Debug.Log("");
+            UnityEngine.Debug.Log("找到重新开始按钮");
             restartButton.onClick.RemoveAllListeners();
             restartButton.onClick.AddListener(OnRestartButtonClicked);
         }
         else
         {
-            UnityEngine.Debug.LogError("");
+            UnityEngine.Debug.LogError("未找到重新开始按钮");
         }
     }
 
@@ -1361,7 +1361,7 @@ public class UIManager : MonoBehaviour
         Transform trans = gameOverPanel.transform.Find(objectName);
         if (trans == null)
         {
-            UnityEngine.Debug.LogError($": {objectName}");
+            UnityEngine.Debug.LogError($"未找到对象: {objectName}");
             return;
         }
 
@@ -1369,7 +1369,7 @@ public class UIManager : MonoBehaviour
         if (textComp != null)
         {
             textComp.text = text;
-            UnityEngine.Debug.Log($" {objectName} = {text} (Text)");
+            UnityEngine.Debug.Log($"设置 {objectName} = {text} (Text)");
             return;
         }
 
@@ -1377,74 +1377,74 @@ public class UIManager : MonoBehaviour
         if (tmpComp != null)
         {
             tmpComp.text = text;
-            UnityEngine.Debug.Log($" {objectName} = {text} (TextMeshProUGUI)");
+            UnityEngine.Debug.Log($"设置 {objectName} = {text} (TextMeshProUGUI)");
             return;
         }
 
-        UnityEngine.Debug.LogError($"{objectName}  Text  TextMeshProUGUI ");
+        UnityEngine.Debug.LogError($"{objectName} 没有附加 Text 或 TextMeshProUGUI 组件");
     }
 
     private Button FindRestartButton()
     {
         if (gameOverPanel == null)
         {
-            UnityEngine.Debug.LogError("gameOverPanel ");
+            UnityEngine.Debug.LogError("gameOverPanel 为空");
             return null;
         }
 
         Button button = gameOverPanel.transform.Find("RestartButton").GetComponent<Button>();
         if (button != null)
         {
-            UnityEngine.Debug.Log($": RestartButton");
+            UnityEngine.Debug.Log($"找到按钮: RestartButton");
             return button;
         }
 
         button = gameOverPanel.transform.Find("Button").GetComponent<Button>();
         if (button != null)
         {
-            UnityEngine.Debug.Log($": Button");
+            UnityEngine.Debug.Log($"找到按钮: Button");
             return button;
         }
 
         button = gameOverPanel.GetComponentInChildren<Button>();
         if (button != null)
         {
-            UnityEngine.Debug.Log($"GetComponentInChildren: {button.name}");
+            UnityEngine.Debug.Log($"通过GetComponentInChildren找到按钮: {button.name}");
             return button;
         }
 
-        UnityEngine.Debug.LogError(" gameOverPanel ");
+        UnityEngine.Debug.LogError("在 gameOverPanel 中未找到按钮");
         return null;
     }
 
     private void OnRestartButtonClicked()
     {
-        UnityEngine.Debug.Log("===  ===");
+        UnityEngine.Debug.Log("=== 重新开始游戏 ===");
         
         if (gameOverPanel != null)
         {
             gameOverPanel.SetActive(false);
-            UnityEngine.Debug.Log("");
+            UnityEngine.Debug.Log("隐藏游戏结束面板");
         }
         else
         {
-            UnityEngine.Debug.LogError("gameOverPanel ");
+            UnityEngine.Debug.LogError("gameOverPanel 为空");
         }
         
         SwitchToGameUI();
-        UnityEngine.Debug.Log("UI");
+        UnityEngine.Debug.Log("切换到游戏UI");
         
         if (GameManager.Instance != null)
         {
-            UnityEngine.Debug.Log(" GameManager");
+            UnityEngine.Debug.Log("调用 GameManager");
             GameManager.Instance.RestartFromGameOver();
         }
         else
         {
-            UnityEngine.Debug.LogError("GameManager.Instance ");
+            UnityEngine.Debug.LogError("GameManager.Instance 为空");
         }
         
-        UnityEngine.Debug.Log("===  ===");
+        UnityEngine.Debug.Log("=== 完成 ===");
     }
 
     public void SetRollDiceButtonInteractable(bool interactable)
@@ -1471,7 +1471,7 @@ public class UIManager : MonoBehaviour
     {
         if (playerInfoPrefab == null)
         {
-            UnityEngine.Debug.LogWarning("");
+            UnityEngine.Debug.LogWarning("玩家信息预制件为空");
             return;
         }
 
@@ -1662,7 +1662,7 @@ public class UIManager : MonoBehaviour
     {
         if (buildingUpgradePanel == null)
         {
-            UnityEngine.Debug.LogWarning("");
+            UnityEngine.Debug.LogWarning("建筑升级面板为空");
             return;
         }
 
@@ -1737,7 +1737,7 @@ public class UIManager : MonoBehaviour
             if (buildingData.nextLevelBuilding != null)
             {
                 string nextFunctionDesc = GetBuildingFunctionDescription(buildingData.nextLevelBuilding, upgradeSelectedTile.buildingLevel + 1, upgradeSelectedTile);
-                UnityEngine.Debug.Log($": {nextFunctionDesc}");
+                UnityEngine.Debug.Log($"升级后功能: {nextFunctionDesc}");
             }
         }
 

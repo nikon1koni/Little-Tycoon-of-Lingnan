@@ -46,7 +46,7 @@ public class Player : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();
         if (playerMovement == null)
         {
-            Debug.LogWarning($" {playerName}  PlayerMovement ");
+            Debug.LogWarning($"玩家 {playerName} 缺少 PlayerMovement 组件");
         }
 
         // 
@@ -125,13 +125,13 @@ public class Player : MonoBehaviour
             property.tileType != BoardTile.TileType.Railroad &&
             property.tileType != BoardTile.TileType.Utility)
         {
-            Debug.LogWarning($" {property.tileName} ");
+            Debug.LogWarning($"地块 {property.tileName} 不能购买");
             return false;
         }
 
         if (property.ownerPlayer != null)
         {
-            Debug.LogWarning($"{property.tileName} ");
+            Debug.LogWarning($"{property.tileName} 已被购买");
             return false;
         }
 
@@ -139,7 +139,7 @@ public class Player : MonoBehaviour
         {
             property.ownerPlayer = this;
             ownedProperties.Add(property);
-            Debug.Log($"{playerName}  {property.tileName}");
+            Debug.Log($"{playerName} 成功购买 {property.tileName}");
 
             if (SFXManager.Instance != null)
                 SFXManager.Instance.PlaySFX(SFXClip.EventPropertyBought);
@@ -214,7 +214,7 @@ public class Player : MonoBehaviour
         {
             int boost = BuffSystem.Instance.GetDiceBoostValue(this);
             int boostedValue = baseValue + boost;
-            Debug.Log($"{playerName} : {baseValue} + {boost} = {boostedValue}");
+            Debug.Log($"{playerName} 骰子加成: {baseValue} + {boost} = {boostedValue}");
             return Mathf.Clamp(boostedValue, 1, 12); // 12
         }
         return baseValue;
@@ -230,7 +230,7 @@ public class Player : MonoBehaviour
         int finalIncome = Mathf.RoundToInt(baseIncome * multiplier);
         if (multiplier > 1.0f)
         {
-            Debug.Log($"{playerName} : {baseIncome} * {multiplier} = {finalIncome}");
+            Debug.Log($"{playerName} 收入加成: {baseIncome} * {multiplier} = {finalIncome}");
         }
         return finalIncome;
     }
@@ -267,7 +267,7 @@ public class Player : MonoBehaviour
         if (cash < 0)
         {
             isBankrupt = true;
-            Debug.Log($"{playerName} ");
+            Debug.Log($"{playerName} 破产了");
             return true;
         }
         return false;
@@ -300,7 +300,7 @@ public class Player : MonoBehaviour
                 {
                     BuffSystem.Instance.RemoveBuff(this, buff);
                     isBankrupt = false;
-                    Debug.Log($"{playerName} ");
+                    Debug.Log($"{playerName} 恢复破产状态");
                     if (UIManager.Instance != null)
                     {
                         UIManager.Instance.ShowToast($"{playerName} 恢复正常", 2f);
@@ -406,7 +406,7 @@ public class Player : MonoBehaviour
             {
                 int repayAmount = Mathf.RoundToInt(loanAmount * loanRepayMultiplier);
                 PayCash(repayAmount);
-                Debug.Log($"{playerName} ????: {repayAmount}");
+                Debug.Log($"{playerName} 还款: {repayAmount}");
                 loanAmount = 0;
                 loanRepayMultiplier = 1f;
                 loanRepayRounds = 0;

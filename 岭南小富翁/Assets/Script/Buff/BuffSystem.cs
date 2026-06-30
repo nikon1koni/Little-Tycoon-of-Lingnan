@@ -113,7 +113,7 @@ public class BuffSystem : MonoBehaviour
     // Debuff
     private void HandleBankruptBuffExpired(Player player)
     {
-        Debug.Log($"{player.playerName} Debuff");
+        Debug.Log($"{player.playerName} 破产Debuff到期，游戏结束");
         
         player.isBankrupt = true;
         
@@ -137,7 +137,7 @@ public class BuffSystem : MonoBehaviour
         }
 
         playerBuffs[player].Add(buff);
-        Debug.Log($"{player.playerName}  Buff: {BuildingData.GetBuffEffectName(buff.effectType)} +{buff.value * 100}% (: {buff.sourceName})");
+        Debug.Log($"{player.playerName} 获得 Buff: {BuildingData.GetBuffEffectName(buff.effectType)} +{buff.value * 100}% (来源: {buff.sourceName})");
 
         if (UIManager.Instance != null)
         {
@@ -152,7 +152,7 @@ public class BuffSystem : MonoBehaviour
     {
         if (playerBuffs.ContainsKey(player) && playerBuffs[player].Remove(buff))
         {
-            Debug.Log($"{player.playerName}  Buff : {BuildingData.GetBuffEffectName(buff.effectType)} (: {buff.sourceName})");
+            Debug.Log($"{player.playerName} 移除 Buff 效果: {BuildingData.GetBuffEffectName(buff.effectType)} (来源: {buff.sourceName})");
             
             UpdateBuffDisplay();
         }
