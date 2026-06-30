@@ -13,6 +13,10 @@ public class ItemManager : MonoBehaviour
     [Tooltip("在编辑器中显示当前玩家的物品列表")]
     public List<ItemData> debugCurrentItems = new List<ItemData>();
 
+    [Header("卡池")]
+    [Tooltip("收获(Harvest)格子随机发卡使用的卡池")]
+    public CardPool cardPool;
+
     private Dictionary<Player, List<ItemData>> playerInventories = new Dictionary<Player, List<ItemData>>();
 
     void Awake()
@@ -89,6 +93,37 @@ public class ItemManager : MonoBehaviour
 
         UpdateItemDisplay();
         UpdateDebugList(player);
+    }
+
+    /// <summary>
+    /// 从卡池随机抽一张卡发给玩家（用于 Harvest 格子）。返回抽到的卡，未抽到返回 null
+    /// </summary>
+    public ItemData GiveRandomCardFromPool(Player player)
+    {
+        if (player == null) return null;
+
+        if (cardPool == null)
+        {
+            Debug.LogWarning("ItemManager: 未配置 cardPool，无法发卡");
+            return null;
+        }
+
+        ItemData card = cardPool.DrawCard();
+        if (card == null)
+        {
+            Debug.LogWarning("ItemManager: 卡池为空或未抽到卡");
+            return null;
+        }
+
+        GiveItem(player, card);
+
+        // 刷新当前玩家手牌显示
+        if (ItemHandManager.Instance != null)
+        {
+            ItemHandManager.Instance.RefreshHand();
+        }
+
+        return card;
     }
 
     public bool UseItem(Player player, ItemData item)

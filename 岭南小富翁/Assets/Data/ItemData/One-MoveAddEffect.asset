@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 486435897247d9b41a67e28dcdbad85e, type: 3}
+  m_Name: One-MoveAddEffect
+  m_EditorClassIdentifier: 
+  itemName: "\u542F\u52A8\u8D44\u91D1"
+  itemIcon: {fileID: 0}
+  itemDescription: "\u83B7\u5F9750\u91D1\u5E01"
+  rarity: 3
+  effects:
+  - effectType: 0
+    effectValue: 50
+    effectPercent: 0
+    durationRounds: 0
+  canUseAnytime: 1
+  canUseOnTurn: 1

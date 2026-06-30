@@ -1,4 +1,4 @@
-﻿﻿using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
@@ -15,6 +15,18 @@ public class BoardTile : MonoBehaviour
     public int rentPrice = 10; // 
     public TileType tileType = TileType.Property;
     public bool isBuildable = false; // 
+
+    [Header("Harvest 收获格设置")]
+    [Tooltip("每次踩到必得的基础铜钱下限（含）")]
+    public int harvestBaseMoneyMin = 5;
+    [Tooltip("每次踩到必得的基础铜钱上限（含）")]
+    public int harvestBaseMoneyMax = 10;
+    [Tooltip("额外奖励抽到“卡牌”的概率(0~1)，其余概率改为给额外铜钱；默认0.5即55开")]
+    [Range(0f, 1f)] public float harvestCardChance = 0.5f;
+    [Tooltip("额外铜钱的随机下限（含）")]
+    public int harvestExtraMoneyMin = 5;
+    [Tooltip("额外铜钱的随机上限（含）")]
+    public int harvestExtraMoneyMax = 10;
 
     [Header("")]
     public BuildingData currentBuildingData; // 
@@ -63,7 +75,7 @@ public class BoardTile : MonoBehaviour
         BuildingSite,   // 
         Event,          // 
         Normal,
-        GainMoney,      // 
+        Harvest,      // 
         LoseMoney       // 
     }
 
@@ -225,8 +237,8 @@ public class BoardTile : MonoBehaviour
                 TriggerRandomEvent(player);
                 break;
 
-            case TileType.GainMoney:
-                HandleGainMoneyTile(player);
+            case TileType.Harvest:
+                HandleHarvestTile(player);
                 break;
 
             case TileType.LoseMoney:
@@ -1121,26 +1133,53 @@ public class BoardTile : MonoBehaviour
         return lastIncomeTime.ContainsKey(buildingTile);
     }
 
-    private void HandleGainMoneyTile(Player player)
+    private void HandleHarvestTile(Player player)
     {
-        int amount = Random.Range(5, 11);
-        player.ReceiveCash(amount);
-        Debug.Log($"{player.playerName} 在 {tileName} 获得 {amount} 铜钱");
+        // 每次踩到必得的基础铜钱
+        int baseAmount = Random.Range(harvestBaseMoneyMin, harvestBaseMoneyMax + 1);
+        player.ReceiveCash(baseAmount);
+        Debug.Log($"{player.playerName} 在 {tileName} 收获基础 {baseAmount} 铜钱");
 
         if (SFXManager.Instance != null)
             SFXManager.Instance.PlaySFX(SFXClip.EventGainMoney);
 
-        if (UIManager.Instance != null)
+        // 在基础奖励之上，按概率额外给“卡牌”或“额外铜钱”
+        bool tryCard = Random.value < harvestCardChance;
+        ItemData drawnCard = null;
+        if (tryCard && ItemManager.Instance != null)
         {
-            string[] gainTexts = {
-                $"路遇商人掉落钱袋，获得{amount}铜钱",
-                $"捡到银子，获得{amount}铜钱",
-                $"路上发现遗落的铜钱，获得{amount}铜钱",
-                $"好心帮忙获得酬谢，获得{amount}铜钱",
-                $"运气不错，捡到{amount}铜钱"
-            };
-            int index = Random.Range(0, gainTexts.Length);
-            UIManager.Instance.ShowToast(gainTexts[index], 2f);
+            drawnCard = ItemManager.Instance.GiveRandomCardFromPool(player);
+        }
+
+        if (drawnCard != null)
+        {
+            // 抽到卡：GiveRandomCardFromPool 内部已弹“获得卡牌”提示，这里只补基础铜钱提示
+            Debug.Log($"{player.playerName} 额外获得卡牌 {drawnCard.itemName}");
+            if (UIManager.Instance != null)
+            {
+                UIManager.Instance.ShowToast($"收获 {baseAmount} 铜钱，还获得卡牌：{drawnCard.itemName}！", 2f);
+            }
+        }
+        else
+        {
+            // 未抽卡或抽卡失败：给额外铜钱
+            int extraAmount = Random.Range(harvestExtraMoneyMin, harvestExtraMoneyMax + 1);
+            player.ReceiveCash(extraAmount);
+            int total = baseAmount + extraAmount;
+            Debug.Log($"{player.playerName} 在 {tileName} 额外获得 {extraAmount} 铜钱，共 {total}");
+
+            if (UIManager.Instance != null)
+            {
+                string[] gainTexts = {
+                    $"路遇商人掉落钱袋，共获得{total}铜钱",
+                    $"捡到银子，共获得{total}铜钱",
+                    $"路上发现遗落的铜钱，共获得{total}铜钱",
+                    $"好心帮忙获得酬谢，共获得{total}铜钱",
+                    $"运气不错，共捡到{total}铜钱"
+                };
+                int index = Random.Range(0, gainTexts.Length);
+                UIManager.Instance.ShowToast(gainTexts[index], 2f);
+            }
         }
     }
 

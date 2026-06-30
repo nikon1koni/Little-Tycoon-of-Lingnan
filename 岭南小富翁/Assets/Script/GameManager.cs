@@ -1,4 +1,4 @@
-﻿﻿using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
@@ -1003,7 +1003,7 @@ public class GameManager : MonoBehaviour
         {
             currentTile.OnLanded(currentPlayer);
         }
-        else if (currentTile.tileType == BoardTile.TileType.GainMoney ||
+        else if (currentTile.tileType == BoardTile.TileType.Harvest ||
                  currentTile.tileType == BoardTile.TileType.LoseMoney)
         {
             currentTile.OnLanded(currentPlayer);
