@@ -33473,6 +33473,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 870cc7f523bdbaa4f929eefcaee4ece8, type: 2}
   debugCurrentItems: []
   cardPool: {fileID: 11400000, guid: 1bbf0b27823095f49bf321a3f28f7181, type: 2}
+  maxHandSize: 8
 --- !u!4 &2053796372
 Transform:
   m_ObjectHideFlags: 0

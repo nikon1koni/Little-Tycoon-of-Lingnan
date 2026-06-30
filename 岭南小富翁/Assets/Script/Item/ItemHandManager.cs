@@ -190,6 +190,16 @@ public class ItemHandManager : MonoBehaviour
         }
     }
 
+    // 按具体卡牌实例移除（打出卡时使用，避免同名卡误删错误的那张）
+    public void RemoveCard(ItemDragCard card)
+    {
+        if (card == null) return;
+
+        handCards.Remove(card);
+        Destroy(card.gameObject);
+        LayoutHand();
+    }
+
     public void ClearHand()
     {
         foreach (ItemDragCard card in handCards)

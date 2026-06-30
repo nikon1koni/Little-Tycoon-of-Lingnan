@@ -123,20 +123,20 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     {
         if (itemData == null) return;
 
-        // ����ͼ��
+        // ???????
         if (iconImage != null)
         {
             iconImage.sprite = itemData.itemIcon;
             iconImage.color = itemData.itemIcon != null ? Color.white : Color.gray;
         }
 
-        // ��������
+        // ????????
         if (nameText != null)
         {
             nameText.text = itemData.itemName;
         }
 
-        // ��������
+        // ????????
         if (descriptionText != null)
         {
             descriptionText.text = itemData.itemDescription;
@@ -258,7 +258,7 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     {
         if (draggedCardInstance == null) 
         {
-            Debug.Log("IsOverValidDropZone: draggedCardInstance Ϊ��");
+            Debug.Log("IsOverValidDropZone: draggedCardInstance ???");
             return false;
         }
 
@@ -272,24 +272,24 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
         if (raycastResults.Count == 0)
         {
-            Debug.Log("IsOverValidDropZone: δ��⵽�κ�UIԪ��");
+            Debug.Log("IsOverValidDropZone: δ????κ?UI???");
         }
         else
         {
-            Debug.Log($"IsOverValidDropZone: ��⵽ {raycastResults.Count} ��UIԪ��");
+            Debug.Log($"IsOverValidDropZone: ??? {raycastResults.Count} ??UI???");
             foreach (var result in raycastResults)
             {
                 Debug.Log($"  - {result.gameObject.name} (Tag: {result.gameObject.tag})");
                 if (result.gameObject.CompareTag(validDropZoneTag) ||
                     result.gameObject.GetComponent<ItemDropZone>() != null)
                 {
-                    Debug.Log("��⵽��Ч��������: " + result.gameObject.name);
+                    Debug.Log("?????Ч????????: " + result.gameObject.name);
                     return true;
                 }
             }
         }
 
-        Debug.Log("IsOverValidDropZone: δ��⵽��Ч��������");
+        Debug.Log("IsOverValidDropZone: δ?????Ч????????");
         return false;
     }
 
@@ -346,20 +346,20 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     {
         if (itemData == null || ownerPlayer == null) return;
 
-        // ������Ч
+        // ??????Ч
         if (SFXManager.Instance != null)
         {
             SFXManager.Instance.PlaySFX(SFXClip.UIClick);
         }
 
-        // ʹ����Ʒ
+        // ??????
         bool success = ItemManager.Instance.UseItem(ownerPlayer, itemData);
 
         if (success)
         {
-            Debug.Log($"{ownerPlayer.playerName} �ɹ�ʹ����Ʒ: {itemData.itemName}");
+            Debug.Log($"{ownerPlayer.playerName} ?????????: {itemData.itemName}");
 
-            // ���Ŷ��� - ����Ƭ������Ļ����
+            // ??????? - ????????????????
             StartCoroutine(FlyToTarget());
         }
         else
@@ -401,8 +401,7 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         Destroy(draggedCardInstance);
         draggedCardInstance = null;
 
-        ItemHandManager.Instance.RemoveCardFromHand(itemData);
-        Destroy(gameObject);
+        ItemHandManager.Instance.RemoveCard(this);
     }
 
     private void ReturnToOriginalPosition()
@@ -459,14 +458,14 @@ public class ItemDragCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         }
     }
 
-    // ���ÿ�Ƭ - ʹ���޷�����קʹ��
+    // ?????? - ??????????????
     public void DisableCard()
     {
         canDrag = false;
         canvasGroup.alpha = 0.5f;
     }
 
-    // ���ÿ�Ƭ
+    // ??????
     public void EnableCard()
     {
         canDrag = true;

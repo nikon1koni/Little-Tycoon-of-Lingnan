@@ -1348,6 +1348,11 @@ public class GameManager : MonoBehaviour
             TestRollDice();
         }
 
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            DebugDrawCardFromPool();
+        }
+
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             TestMovePlayer(1);
@@ -1398,6 +1403,36 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Period))
         {
             NextMusic();
+        }
+    }
+
+    // Debug：按 0 从卡池随机抽一张卡给当前玩家（仅 enableDebugKeys 开启时可用）
+    private void DebugDrawCardFromPool()
+    {
+        if (ItemManager.Instance == null)
+        {
+            Debug.LogWarning("DebugDrawCardFromPool: ItemManager 未就绪");
+            return;
+        }
+        if (currentPlayer == null)
+        {
+            Debug.LogWarning("DebugDrawCardFromPool: 无当前玩家");
+            return;
+        }
+
+        var result = ItemManager.Instance.TryGiveRandomCardFromPool(currentPlayer, out ItemData drawnCard, out int compensationGold);
+        switch (result)
+        {
+            case ItemManager.HarvestCardResult.GotCard:
+                Debug.Log($"[Debug] {currentPlayer.playerName} 从卡池获得卡牌：{drawnCard.itemName}({drawnCard.rarity})");
+                break;
+            case ItemManager.HarvestCardResult.HandFull:
+                Debug.Log($"[Debug] {currentPlayer.playerName} 手牌已满，卡牌折算 {compensationGold} 金币");
+                UIManager.Instance?.ShowToast($"手牌已满，卡牌折算 {compensationGold} 金币！", 2f);
+                break;
+            case ItemManager.HarvestCardResult.NoPool:
+                Debug.LogWarning("[Debug] 卡池未配置或为空，无法抽卡");
+                break;
         }
     }
 
