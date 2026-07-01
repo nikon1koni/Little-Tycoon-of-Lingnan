@@ -1,4 +1,4 @@
-﻿# Lessons
+﻿﻿# Lessons
 
 ## 编码：Edit/Write 会破坏含中文 .cs 文件的 UTF-8 BOM
 - 本环境 Edit/Write 工具写文件时按系统默认 GBK 编码、且不保留 BOM。

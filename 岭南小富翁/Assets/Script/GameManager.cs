@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
@@ -55,6 +55,9 @@ public class GameManager : MonoBehaviour
 
     public int DiceRollCount => diceRollCount;
     public int CurrentRound => diceRollCount / 6;
+
+    // 距离下一次压力（恶性事件）触发还需的掷骰次数；系统关闭时返回 -1
+    public int RollsUntilNextPressure => enablePressureSystem ? Mathf.Max(nextPressureAt * 6 - diceRollCount, 0) : -1;
 
     [Header("")]
     public bool enableDebugKeys = true;
