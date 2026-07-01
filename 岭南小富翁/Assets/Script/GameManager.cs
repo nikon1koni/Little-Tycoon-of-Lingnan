@@ -1,4 +1,4 @@
-﻿﻿using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
@@ -676,6 +676,7 @@ public class GameManager : MonoBehaviour
 
         int totalReward = 0;
         int buildingCount = 0;
+        List<UIManager.IncomeEntry> incomeEntries = new List<UIManager.IncomeEntry>();
 
         // 
         foreach (BoardTile property in currentPlayer.ownedProperties)
@@ -691,6 +692,7 @@ public class GameManager : MonoBehaviour
                 currentPlayer.ReceiveCash(reward);
                 totalReward += reward;
                 buildingCount++;
+                incomeEntries.Add(new UIManager.IncomeEntry(property.currentBuildingData.buildingName, reward));
 
                 Debug.Log($"骰子触发: {property.tileName} ({property.currentBuildingData.buildingName}) 获得 {reward} 铜板");
 
@@ -710,9 +712,8 @@ public class GameManager : MonoBehaviour
         // 
         if (totalReward > 0 && uiManager != null)
         {
-            string message = $"共 {buildingCount} 座建筑触发，获得 {totalReward} 现金";
-            uiManager.ShowToast(message, 3f);
-            Debug.Log(message);
+            uiManager.ShowBuildingIncomeReport(incomeEntries);
+            Debug.Log($"共 {buildingCount} 座建筑触发，获得 {totalReward} 现金");
         }
     }
 
