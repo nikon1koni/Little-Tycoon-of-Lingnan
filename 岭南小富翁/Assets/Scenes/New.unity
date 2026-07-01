@@ -27107,7 +27107,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
       propertyPath: harvestBaseMoneyMin
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
       propertyPath: harvestExtraMoneyMax
@@ -29704,7 +29704,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
       propertyPath: harvestBaseMoneyMin
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
       propertyPath: harvestExtraMoneyMax

@@ -1,4 +1,4 @@
-﻿﻿using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
@@ -181,7 +181,7 @@ public class BoardTile : MonoBehaviour
 
                     if (UIManager.Instance != null)
                     {
-                        UIManager.Instance.ShowToast($"获得工资 {salary}", 2f);
+                        UIManager.Instance.ShowToast($"完成一圈获得收益：{salary}", 2f);
                     }
                 }
                 break;
@@ -1152,7 +1152,7 @@ public class BoardTile : MonoBehaviour
 
             if (result == ItemManager.HarvestCardResult.GotCard)
             {
-                // 抽到卡：发卡时内部已弹“获得卡牌”提示，这里只补基础铜钱提示
+                // 抽到卡：统一用一条“收获铜钱 + 获得卡牌”的合并提示
                 Debug.Log($"{player.playerName} 额外获得卡牌 {drawnCard.itemName}");
                 if (UIManager.Instance != null)
                 {

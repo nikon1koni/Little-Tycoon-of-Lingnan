@@ -1,4 +1,4 @@
-﻿﻿using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class ItemManager : MonoBehaviour
@@ -89,11 +89,6 @@ public class ItemManager : MonoBehaviour
 
         playerInventories[player].Add(item);
         Debug.Log($"{player.playerName} 获得物品: {item.itemName}");
-
-        if (UIManager.Instance != null)
-        {
-            UIManager.Instance.ShowToast($"获得卡牌: {item.itemName}!", 2f);
-        }
 
         UpdateItemDisplay();
         UpdateDebugList(player);

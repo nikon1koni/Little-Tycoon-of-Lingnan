@@ -1,4 +1,4 @@
-﻿﻿using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
@@ -101,6 +101,7 @@ public class UIManager : MonoBehaviour
     public float toastInterval = 0.5f;
     private Queue<ToastMessage> toastQueue = new Queue<ToastMessage>();
     private bool isToastPlaying = false;
+    private string currentToastMessage = null;
     
     public struct ToastMessage
     {
@@ -1558,6 +1559,19 @@ public class UIManager : MonoBehaviour
 
     private void EnqueueToast(string message, float duration)
     {
+        // 避免同一条提示重复入队堆叠，导致面板迟迟不按时消失（如反复点击买不起的地块）
+        if (message == currentToastMessage)
+        {
+            return;
+        }
+        foreach (ToastMessage queued in toastQueue)
+        {
+            if (queued.message == message)
+            {
+                return;
+            }
+        }
+
         toastQueue.Enqueue(new ToastMessage(message, duration));
         
         if (!isToastPlaying)
@@ -1590,12 +1604,14 @@ public class UIManager : MonoBehaviour
         infoToastText.text = message;
         infoToastPanel.SetActive(true);
         infoToastPanel.transform.SetAsLastSibling();
+        currentToastMessage = message;
 
         yield return new WaitForSeconds(duration);
         
         if (infoToastPanel != null && toastQueue.Count == 0)
         {
             infoToastPanel.SetActive(false);
+            currentToastMessage = null;
         }
         
         hideInfoToastCoroutine = null;
@@ -1628,6 +1644,7 @@ public class UIManager : MonoBehaviour
         {
             infoToastPanel.SetActive(false);
         }
+        currentToastMessage = null;
     }
 
     private System.Collections.IEnumerator HideInfoToastAfterDelay(float delay)
@@ -1637,6 +1654,7 @@ public class UIManager : MonoBehaviour
         {
             infoToastPanel.SetActive(false);
         }
+        currentToastMessage = null;
         hideInfoToastCoroutine = null;
     }
 

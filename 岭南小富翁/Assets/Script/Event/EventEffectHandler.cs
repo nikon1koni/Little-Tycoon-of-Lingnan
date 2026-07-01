@@ -114,6 +114,10 @@ public class EventEffectHandler : MonoBehaviour
         {
             player.ReceiveCash(rewardToGive);
             Debug.Log($"Received {rewardToGive} cash. Player cash: {player.cash}");
+            if (UIManager.Instance != null)
+            {
+                UIManager.Instance.ShowToast($"获得 {rewardToGive} 铜钱", 2f);
+            }
         }
 
         if (incomeBoostToApply > 0 && BuffSystem.Instance != null)
