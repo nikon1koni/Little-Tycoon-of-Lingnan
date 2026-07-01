@@ -3126,6 +3126,13 @@ MonoBehaviour:
   closeButton: {fileID: 0}
   optionShallowSprite: {fileID: 21300000, guid: f85173de7bd574445baf8f211427c2d0, type: 3}
   optionDeepSprite: {fileID: 21300000, guid: 1a867cbde3c87e141b297e84d33e380c, type: 3}
+  overrideOptionTextStyle: 1
+  optionButtonWidth: 600
+  optionFontSizeMin: 12
+  optionFontSizeMax: 22
+  optionTextLeftInset: 100
+  optionTextRightInset: 160
+  optionButtonHorizontalOffset: 40
 --- !u!114 &212661034
 MonoBehaviour:
   m_ObjectHideFlags: 0

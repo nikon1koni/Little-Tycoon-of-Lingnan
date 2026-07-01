@@ -16,8 +16,26 @@ public class EventPanel : MonoBehaviour
     public Sprite optionShallowSprite;
     public Sprite optionDeepSprite;
 
+    [Header("选项按钮文字样式（运行时覆盖预制体）")]
+    [Tooltip("开启后由代码统一控制选项按钮文字的自动大小/字号/内边距/按钮宽度，会覆盖预制体设置；关闭则完全使用预制体的设置")]
+    public bool overrideOptionTextStyle = true;
+    [Tooltip("选项按钮宽度（像素），仅在开启覆盖时生效")]
+    public float optionButtonWidth = 500f;
+    [Tooltip("文字自动大小的最小字号")]
+    public float optionFontSizeMin = 10f;
+    [Tooltip("文字自动大小的最大字号，太大会溢出药丸背景")]
+    public float optionFontSizeMax = 22f;
+    [Tooltip("文字框相对按钮左边缘的内缩（像素），加大让文字框右移、避开左端装饰")]
+    public float optionTextLeftInset = 60f;
+    [Tooltip("文字框相对按钮右边缘的内缩（像素），加大让文字框左移、避开右端箭头装饰")]
+    public float optionTextRightInset = 60f;
+    [Tooltip("选项按钮整体水平偏移（像素），正值右移、负值左移，用于避开左侧装饰图")]
+    public float optionButtonHorizontalOffset = 0f;
+
     private EventData currentEvent;
     private Player currentPlayer;
+    private Vector2 optionsContainerBasePos;
+    private bool optionsContainerBaseCaptured = false;
 
     void Start()
     {
@@ -149,7 +167,23 @@ public class EventPanel : MonoBehaviour
         }
 
         Debug.Log("开始创建选项...");
-        
+
+        if (overrideOptionTextStyle)
+        {
+            RectTransform containerRect = optionsContainer as RectTransform;
+            if (containerRect != null)
+            {
+                if (!optionsContainerBaseCaptured)
+                {
+                    optionsContainerBasePos = containerRect.anchoredPosition;
+                    optionsContainerBaseCaptured = true;
+                }
+                containerRect.anchoredPosition = new Vector2(
+                    optionsContainerBasePos.x + optionButtonHorizontalOffset,
+                    optionsContainerBasePos.y);
+            }
+        }
+
         for (int i = 0; i < options.Length; i++)
         {
             EventData.EventOption option = options[i];
@@ -166,14 +200,25 @@ public class EventPanel : MonoBehaviour
             {
                 buttonText.text = option.optionText;
                 buttonText.enabled = true;
-                
-                buttonText.enableWordWrapping = true;
-                buttonText.overflowMode = TextOverflowModes.Truncate;
-                buttonText.fontSize = 20;
-                buttonText.enableAutoSizing = true;
-                buttonText.fontSizeMin = 12;
-                buttonText.fontSizeMax = 24;
-                
+
+                if (overrideOptionTextStyle)
+                {
+                    // 单行 + 关闭自动换行，让自动大小把字号缩到一行能放下，避免横向溢出
+                    buttonText.enableWordWrapping = false;
+                    buttonText.overflowMode = TextOverflowModes.Overflow;
+                    buttonText.enableAutoSizing = true;
+                    buttonText.fontSizeMin = optionFontSizeMin;
+                    buttonText.fontSizeMax = optionFontSizeMax;
+                    buttonText.margin = new Vector4(0f, buttonText.margin.y, 0f, buttonText.margin.w);
+
+                    // 让文字框在按钮内左右内缩，贴住可见药丸主体（药丸图无九宫格边框，两端装饰会被拉伸）
+                    RectTransform textRect = buttonText.rectTransform;
+                    textRect.anchorMin = new Vector2(0f, textRect.anchorMin.y);
+                    textRect.anchorMax = new Vector2(1f, textRect.anchorMax.y);
+                    textRect.offsetMin = new Vector2(optionTextLeftInset, textRect.offsetMin.y);
+                    textRect.offsetMax = new Vector2(-optionTextRightInset, textRect.offsetMax.y);
+                }
+
                 Debug.Log($"设置按钮文本: {option.optionText}");
             }
             else
@@ -199,9 +244,9 @@ public class EventPanel : MonoBehaviour
             }
 
             RectTransform buttonRect = button.GetComponent<RectTransform>();
-            if (buttonRect != null)
+            if (buttonRect != null && overrideOptionTextStyle)
             {
-                buttonRect.sizeDelta = new Vector2(500f, buttonRect.sizeDelta.y);
+                buttonRect.sizeDelta = new Vector2(optionButtonWidth, buttonRect.sizeDelta.y);
                 Debug.Log($"按钮宽度设置为: {buttonRect.sizeDelta.x}");
             }
 
