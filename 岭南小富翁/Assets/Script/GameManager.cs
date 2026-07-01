@@ -756,13 +756,13 @@ public class GameManager : MonoBehaviour
         if (hasBankruptPlayer && UIManager.Instance != null)
         {
             UIManager.Instance.ShowTurnAnnouncement(
-                $"{currentRound} - {pressureText}"
+                $"轮数：{currentRound} - {pressureText}"
             );
         }
         else if (!hasBankruptPlayer && UIManager.Instance != null)
         {
             UIManager.Instance.ShowTurnAnnouncement(
-                $"{currentRound} - {pressureText}"
+                $"轮数：{currentRound} - {pressureText}"
             );
         }
     }
