@@ -26089,7 +26089,7 @@ MonoBehaviour:
   startingCash: 50
   salaryAmount: 5
   jailTurns: 3
-  maxRounds: 1
+  maxRounds: 8
   enablePressureSystem: 1
   basePressureCost: 10
   pressureMultiplier: 1.2
