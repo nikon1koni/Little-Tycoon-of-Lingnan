@@ -3506,7 +3506,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: -368.8, y: 5}
-  m_SizeDelta: {x: 680, y: 100}
+  m_SizeDelta: {x: 818.13, y: 100}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &222383510
 MonoBehaviour:
@@ -3925,7 +3925,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 29.7, y: 16.800003}
+  m_AnchoredPosition: {x: 45.7, y: 49.5}
   m_SizeDelta: {x: 75.2138, y: 4.3527}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &246358053
@@ -3948,7 +3948,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u56DE\u5408\u6570: 0"
+  m_text: "\u56DE\u5408\u6570: 0/x\u8F6E"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: debef2d43f505b648bea7da222e4dffc, type: 2}
   m_sharedMaterial: {fileID: 3344326692439974671, guid: debef2d43f505b648bea7da222e4dffc, type: 2}
@@ -3975,8 +3975,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
-  m_fontSizeBase: 18
+  m_fontSize: 15
+  m_fontSizeBase: 15
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4011,7 +4011,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 50.84326, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -10953,7 +10953,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 326.9, y: 49.4}
+  m_AnchoredPosition: {x: 392, y: 49.4}
   m_SizeDelta: {x: 75.2138, y: 4.3527}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &945983997
@@ -25047,7 +25047,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 34.7, y: 20.6}
+  m_AnchoredPosition: {x: 34.9, y: -13}
   m_SizeDelta: {x: 18.1568, y: 29.4155}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1353737074
@@ -25070,7 +25070,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u9AB0\u5B50\u6B21\u6570: 0"
+  m_text: "\u9AB0\u5B50\u6B21\u6570: 0/x"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: debef2d43f505b648bea7da222e4dffc, type: 2}
   m_sharedMaterial: {fileID: 3344326692439974671, guid: debef2d43f505b648bea7da222e4dffc, type: 2}
@@ -25097,8 +25097,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
-  m_fontSizeBase: 18
+  m_fontSize: 15
+  m_fontSizeBase: 15
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -25868,6 +25868,7 @@ MonoBehaviour:
   startingCash: 50
   salaryAmount: 5
   jailTurns: 3
+  maxRounds: 12
   enablePressureSystem: 1
   basePressureCost: 10
   pressureMultiplier: 1.2

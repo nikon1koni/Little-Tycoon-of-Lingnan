@@ -1,4 +1,4 @@
-﻿﻿using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
 
     [Header("")]
     public int cash = 1500;  // 
+    public int totalCashEarned = 0;  // 累计获得金币（结算统计用）
     public List<BoardTile> ownedProperties = new List<BoardTile>();  // 
 
     [Header("")]
@@ -80,6 +81,10 @@ public class Player : MonoBehaviour
     {
         int previousCash = cash;
         cash += amount;
+        if (amount > 0)
+        {
+            totalCashEarned += amount;
+        }
         Debug.Log($"{playerName} 获得现金 {amount}，当前现金: {cash}");
 
         NotifyCashChanged();

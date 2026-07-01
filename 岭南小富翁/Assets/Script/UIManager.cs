@@ -295,12 +295,8 @@ public class UIManager : MonoBehaviour
 
         if (currentRoundText != null)
         {
-            string label = "回合数";
-            if (!string.IsNullOrEmpty(currentRoundText.text) && currentRoundText.text.Contains(":"))
-            {
-                label = currentRoundText.text.Substring(0, currentRoundText.text.IndexOf(":") + 1);
-            }
-            currentRoundText.text = $"{label} {currentRound}";
+            int maxRounds = GameManager.Instance.maxRounds;
+            currentRoundText.text = $"轮数：{currentRound}/{maxRounds}";
         }
     }
 
@@ -762,7 +758,9 @@ public class UIManager : MonoBehaviour
         EnsureBuildingTooltip();
         if (buildingTooltipText == null) return;
 
-        buildingTooltipText.text = building.GetTooltipDescription();
+        buildingTooltipText.text = !string.IsNullOrEmpty(building.description)
+            ? building.description
+            : building.GetTooltipDescription();
         buildingTooltipObj.SetActive(true);
         buildingTooltipObj.transform.SetAsLastSibling();
 
@@ -1066,6 +1064,11 @@ public class UIManager : MonoBehaviour
             tile.currentBuilding = buildingObj;
         }
 
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.RegisterBuildingPlaced();
+        }
+
         return true;
     }
 
@@ -1339,8 +1342,10 @@ public class UIManager : MonoBehaviour
 
         UnityEngine.Debug.Log($"玩家={playerName}, 是否获胜={isWinner}, 回合数={roundCount}, 骰子次数={diceCount}, 分数={score}");
 
+        int maxRounds = GameManager.Instance != null ? GameManager.Instance.maxRounds : roundCount;
+
         SetText("ResultText", isWinner ? $"{playerName} 获胜!" : $"{playerName} 失败");
-        SetText("RoundText", $"回合数: {roundCount}");
+        SetText("RoundText", $"轮数：{roundCount}/{maxRounds}");
         SetText("DiceText", $"骰子投掷次数: {diceCount}");
         SetText("ScoreText", $"最终得分: {score}");
 

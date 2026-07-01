@@ -40,6 +40,10 @@ public class GameManager : MonoBehaviour
     public int salaryAmount = 200;
     public int jailTurns = 3;
 
+    [Header("回合设置")]
+    [Tooltip("总轮数（回合上限），达到后跳转到结算场景 End")]
+    public int maxRounds = 12;
+
     [Header("")]
     public bool enablePressureSystem = true;
 
@@ -55,6 +59,14 @@ public class GameManager : MonoBehaviour
 
     public int DiceRollCount => diceRollCount;
     public int CurrentRound => diceRollCount / 6;
+
+    // 已放置建筑次数（主玩家结算统计用）
+    public int BuildingsPlacedCount { get; private set; }
+
+    public void RegisterBuildingPlaced()
+    {
+        BuildingsPlacedCount++;
+    }
 
     // 距离下一次压力（恶性事件）触发还需的掷骰次数；系统关闭时返回 -1
     public int RollsUntilNextPressure => enablePressureSystem ? Mathf.Max(nextPressureAt * 6 - diceRollCount, 0) : -1;
@@ -615,10 +627,35 @@ public class GameManager : MonoBehaviour
             uiManager.UpdatePressureSystemUI();
         }
 
+        // 达到总轮数：结算并跳转 End 场景
+        if (CurrentRound >= maxRounds)
+        {
+            EndGameByRoundLimit();
+            return;
+        }
+
         // 
         CheckDiceEvenBuildings(value);
 
         StartMovePlayer();
+    }
+
+    // 达到总轮数时结算：统计主玩家数据，写入 GameResult 后跳转 End 场景
+    private void EndGameByRoundLimit()
+    {
+        Player mainPlayer = players.Count > 0 ? players[0] : null;
+
+        int rounds = CurrentRound;
+        int diceCount = diceRollCount;
+        int gold = mainPlayer != null ? mainPlayer.totalCashEarned : 0;
+        int buildings = BuildingsPlacedCount;
+        int score = rounds * 100 + diceCount + 10;
+
+        GameResult.Set(score, buildings, diceCount, gold, rounds, maxRounds);
+
+        Debug.Log($"达到总轮数 {maxRounds}，跳转结算场景 End（分数={score}, 建筑={buildings}, 骰子={diceCount}, 金币={gold}）");
+
+        UnityEngine.SceneManagement.SceneManager.LoadScene("End");
     }
 
     /// <summary>
@@ -1535,6 +1572,7 @@ public class GameManager : MonoBehaviour
         diceRollCount = 0;
         nextPressureAt = 1;
         basePressureCost = 7f;
+        BuildingsPlacedCount = 0;
         
         // 
         ResetDiceCooldown();
@@ -1549,6 +1587,7 @@ public class GameManager : MonoBehaviour
         {
             p.isBankrupt = false;
             p.cash = startingCash;
+            p.totalCashEarned = 0;
             p.ownedProperties.Clear();
             p.isInJail = false;
             p.jailTurnsRemaining = 0;
