@@ -11729,6 +11729,12 @@ MonoBehaviour:
   infoToastPanel: {fileID: 1529493083}
   infoToastText: {fileID: 620667435}
   toastInterval: 0.5
+  incomeReportPosition: {x: 0, y: 250}
+  incomeLineInterval: 0.35
+  incomeReportHoldDuration: 1
+  maxIncomeLines: 5
+  incomeHeaderFontSize: 30
+  incomeLineFontSize: 20
 --- !u!1 &999821965
 GameObject:
   m_ObjectHideFlags: 0
@@ -26086,7 +26092,7 @@ MonoBehaviour:
   rollDiceButton: {fileID: 1949729216}
   boardManager: {fileID: 1704728942}
   uiManager: {fileID: 993115949}
-  startingCash: 50
+  startingCash: 5000
   salaryAmount: 5
   jailTurns: 3
   maxRounds: 8

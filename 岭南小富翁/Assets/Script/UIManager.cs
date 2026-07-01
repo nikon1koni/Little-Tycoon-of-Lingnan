@@ -123,6 +123,40 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    [Header("建筑收益明细（代码生成）")]
+    [Tooltip("收益明细整块出现的位置（相对画布中心，y正为上）")]
+    public Vector2 incomeReportPosition = new Vector2(0f, 250f);
+    [Tooltip("每行小字之间出现的间隔（秒）")]
+    public float incomeLineInterval = 0.35f;
+    [Tooltip("最后一行出现后，整块保留多久再消失（秒）")]
+    public float incomeReportHoldDuration = 1.5f;
+    [Tooltip("最多同时显示的收益小字行数，超出则最旧的一行消失")]
+    public int maxIncomeLines = 5;
+    [Tooltip("主行“获得建筑收入”字号")]
+    public float incomeHeaderFontSize = 30f;
+    [Tooltip("每行建筑收益小字的字号")]
+    public float incomeLineFontSize = 20f;
+
+    private GameObject incomeReportObj;
+    private RectTransform incomeReportRect;
+    private TextMeshProUGUI incomeHeaderText;
+    private RectTransform incomeLinesContainer;
+    private readonly List<GameObject> incomeLineObjs = new List<GameObject>();
+    private Coroutine incomeReportCoroutine;
+
+    // 单条建筑收益明细（供调用方组装列表）
+    public struct IncomeEntry
+    {
+        public string buildingName;
+        public int amount;
+
+        public IncomeEntry(string buildingName, int amount)
+        {
+            this.buildingName = buildingName;
+            this.amount = amount;
+        }
+    }
+
     public TextMeshProUGUI CashText => cashText;
 
     // 
@@ -850,6 +884,158 @@ public class UIManager : MonoBehaviour
         {
             UnityEngine.Debug.LogWarning("UIManager: 未设置通关按钮(gameClearButton)，无法自动跳转 End 场景");
         }
+    }
+
+    // === 建筑收益明细：主行汇总 + 逐行滚动的小字 ===
+    // 由建筑联动收入触发，entries 为每个产出收益的建筑（名字+金额）
+    public void ShowBuildingIncomeReport(List<IncomeEntry> entries)
+    {
+        if (entries == null || entries.Count == 0) return;
+
+        EnsureIncomeReportUI();
+        if (incomeReportObj == null) return;
+
+        if (incomeReportRect != null)
+            incomeReportRect.anchoredPosition = incomeReportPosition;
+
+        if (incomeReportCoroutine != null)
+        {
+            StopCoroutine(incomeReportCoroutine);
+            incomeReportCoroutine = null;
+        }
+        incomeReportCoroutine = StartCoroutine(PlayBuildingIncomeReport(entries));
+    }
+
+    private System.Collections.IEnumerator PlayBuildingIncomeReport(List<IncomeEntry> entries)
+    {
+        ClearIncomeLines();
+        incomeReportObj.SetActive(true);
+        incomeReportObj.transform.SetAsLastSibling();
+
+        int runningTotal = 0;
+        if (incomeHeaderText != null)
+            incomeHeaderText.text = $"获得建筑收入 {runningTotal} 铜钱";
+
+        for (int i = 0; i < entries.Count; i++)
+        {
+            runningTotal += entries[i].amount;
+            if (incomeHeaderText != null)
+                incomeHeaderText.text = $"获得建筑收入 {runningTotal} 铜钱";
+
+            AddIncomeLine(entries[i]);
+
+            yield return new WaitForSeconds(incomeLineInterval);
+        }
+
+        yield return new WaitForSeconds(incomeReportHoldDuration);
+
+        ClearIncomeLines();
+        if (incomeReportObj != null)
+            incomeReportObj.SetActive(false);
+        incomeReportCoroutine = null;
+    }
+
+    private void AddIncomeLine(IncomeEntry entry)
+    {
+        if (incomeLinesContainer == null) return;
+
+        TMP_FontAsset font = GetIncomeReportFont();
+
+        GameObject lineObj = new GameObject("IncomeLine");
+        lineObj.transform.SetParent(incomeLinesContainer, false);
+
+        TextMeshProUGUI lineText = lineObj.AddComponent<TextMeshProUGUI>();
+        if (font != null) lineText.font = font;
+        lineText.fontSize = incomeLineFontSize;
+        lineText.color = new Color(0.82f, 1f, 0.82f, 1f);
+        lineText.alignment = TextAlignmentOptions.Center;
+        lineText.enableWordWrapping = false;
+        lineText.raycastTarget = false;
+        lineText.text = $"{entry.buildingName} +{entry.amount} 铜钱";
+
+        incomeLineObjs.Add(lineObj);
+
+        // 超过上限：最旧的一行消失，新行生成在末尾
+        while (incomeLineObjs.Count > Mathf.Max(1, maxIncomeLines))
+        {
+            GameObject oldest = incomeLineObjs[0];
+            incomeLineObjs.RemoveAt(0);
+            if (oldest != null) Destroy(oldest);
+        }
+    }
+
+    private void ClearIncomeLines()
+    {
+        for (int i = 0; i < incomeLineObjs.Count; i++)
+        {
+            if (incomeLineObjs[i] != null) Destroy(incomeLineObjs[i]);
+        }
+        incomeLineObjs.Clear();
+    }
+
+    private void EnsureIncomeReportUI()
+    {
+        if (incomeReportObj != null) return;
+        if (mainCanvas == null) return;
+
+        TMP_FontAsset font = GetIncomeReportFont();
+
+        incomeReportObj = new GameObject("BuildingIncomeReport");
+        incomeReportObj.transform.SetParent(mainCanvas.transform, false);
+
+        incomeReportRect = incomeReportObj.AddComponent<RectTransform>();
+        incomeReportRect.anchorMin = new Vector2(0.5f, 0.5f);
+        incomeReportRect.anchorMax = new Vector2(0.5f, 0.5f);
+        incomeReportRect.pivot = new Vector2(0.5f, 1f);
+        incomeReportRect.anchoredPosition = incomeReportPosition;
+
+        VerticalLayoutGroup rootVlg = incomeReportObj.AddComponent<VerticalLayoutGroup>();
+        rootVlg.childAlignment = TextAnchor.UpperCenter;
+        rootVlg.childControlWidth = true;
+        rootVlg.childControlHeight = true;
+        rootVlg.childForceExpandWidth = false;
+        rootVlg.childForceExpandHeight = false;
+        rootVlg.spacing = 6f;
+
+        ContentSizeFitter rootFitter = incomeReportObj.AddComponent<ContentSizeFitter>();
+        rootFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
+        rootFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+        GameObject headerObj = new GameObject("Header");
+        headerObj.transform.SetParent(incomeReportObj.transform, false);
+        incomeHeaderText = headerObj.AddComponent<TextMeshProUGUI>();
+        if (font != null) incomeHeaderText.font = font;
+        incomeHeaderText.fontSize = incomeHeaderFontSize;
+        incomeHeaderText.color = new Color(1f, 0.9f, 0.35f, 1f);
+        incomeHeaderText.alignment = TextAlignmentOptions.Center;
+        incomeHeaderText.enableWordWrapping = false;
+        incomeHeaderText.raycastTarget = false;
+
+        GameObject linesObj = new GameObject("Lines");
+        linesObj.transform.SetParent(incomeReportObj.transform, false);
+        incomeLinesContainer = linesObj.AddComponent<RectTransform>();
+
+        VerticalLayoutGroup linesVlg = linesObj.AddComponent<VerticalLayoutGroup>();
+        linesVlg.childAlignment = TextAnchor.UpperCenter;
+        linesVlg.childControlWidth = true;
+        linesVlg.childControlHeight = true;
+        linesVlg.childForceExpandWidth = false;
+        linesVlg.childForceExpandHeight = false;
+        linesVlg.spacing = 2f;
+
+        ContentSizeFitter linesFitter = linesObj.AddComponent<ContentSizeFitter>();
+        linesFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
+        linesFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+        incomeReportObj.SetActive(false);
+    }
+
+    private TMP_FontAsset GetIncomeReportFont()
+    {
+        if (infoToastText != null && infoToastText.font != null) return infoToastText.font;
+        if (turnAnnounceText != null && turnAnnounceText.font != null) return turnAnnounceText.font;
+        if (currentRoundText != null && currentRoundText.font != null) return currentRoundText.font;
+        return GetBuildingTooltipFont();
     }
 
     // 

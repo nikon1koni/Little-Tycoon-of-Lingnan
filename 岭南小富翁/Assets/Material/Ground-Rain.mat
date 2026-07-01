@@ -118,9 +118,9 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Ripper_Strengch: 0.83
-    - _RippleAlpha: 0.98424625
-    - _RippleProgress: 0.015753746
-    - _RippleRadius: -0.0063014985
+    - _RippleAlpha: 0.97694755
+    - _RippleProgress: 0.023052454
+    - _RippleRadius: -0.009220982
     - _Ripple_Tile: 7.5
     - _SampleGI: 0
     - _SmoothnessTextureChannel: 0
@@ -139,7 +139,7 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _RipplePosition: {r: -1.4445884, g: 0, b: -4.3968163, a: 0}
+    - _RipplePosition: {r: -3.9391491, g: 0, b: -2.8082843, a: 0}
     - _Tint: {r: 0.6181242, g: 1, b: 0.5503144, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &7177339575206367495

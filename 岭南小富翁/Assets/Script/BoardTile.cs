@@ -1,4 +1,4 @@
-﻿﻿using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
@@ -403,6 +403,7 @@ public class BoardTile : MonoBehaviour
 
         //  Income  Mixed 
         Debug.Log($"TriggerLinkedBuildingIncome: === 处理 Income/Mixed 建筑 ===\n");
+        List<UIManager.IncomeEntry> incomeEntries = new List<UIManager.IncomeEntry>();
         foreach (BoardTile buildingTile in incomeTiles)
         {
             Debug.Log($"建筑: {buildingTile.name ?? "null"}");
@@ -413,6 +414,12 @@ public class BoardTile : MonoBehaviour
             
             player.ReceiveCash(incomeAmount);
             totalIncome += incomeAmount;
+
+            if (incomeAmount > 0)
+            {
+                string buildingName = buildingTile.currentBuildingData.buildingName;
+                incomeEntries.Add(new UIManager.IncomeEntry(buildingName, incomeAmount));
+            }
 
             if (!lastIncomeTime.ContainsKey(buildingTile))
             {
@@ -436,7 +443,7 @@ public class BoardTile : MonoBehaviour
 
         if (totalIncome > 0 && UIManager.Instance != null)
         {
-            UIManager.Instance.ShowToast($"获得建筑收入 {totalIncome} 铜钱", 2f);
+            UIManager.Instance.ShowBuildingIncomeReport(incomeEntries);
         }
 
         Debug.Log($"TriggerLinkedBuildingIncome: 总收入={totalIncome}");
