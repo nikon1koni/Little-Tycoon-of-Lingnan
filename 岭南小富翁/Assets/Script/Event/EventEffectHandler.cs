@@ -83,14 +83,25 @@ public class EventEffectHandler : MonoBehaviour
 
         if (costToPay > 0)
         {
-            bool success = player.PayCash(costToPay);
+            int finalCost = costToPay;
+            if (BuffSystem.Instance != null)
+            {
+                float taxReduction = BuffSystem.Instance.GetTaxReduction(player);
+                if (taxReduction > 0f)
+                {
+                    finalCost = Mathf.Max(0, Mathf.RoundToInt(costToPay * (1f - taxReduction)));
+                    Debug.Log($"{player.playerName} 税务减免 {taxReduction * 100:F0}%：花费 {costToPay} -> {finalCost}");
+                }
+            }
+
+            bool success = player.PayCash(finalCost);
             if (success)
             {
-                Debug.Log($"Paid {costToPay} cash. Player cash: {player.cash}");
+                Debug.Log($"Paid {finalCost} cash. Player cash: {player.cash}");
             }
             else
             {
-                Debug.LogWarning($"{player.playerName} cannot afford {costToPay}");
+                Debug.LogWarning($"{player.playerName} cannot afford {finalCost}");
                 if (UIManager.Instance != null)
                 {
                     UIManager.ShowToastStatic("你余额不足", 2f);
@@ -121,6 +132,18 @@ public class EventEffectHandler : MonoBehaviour
 
     private void ApplySpecialEffects(Player player, EventData.EventOption option)
     {
+        if (IsNegativeEffect(option.effectType)
+            && BuffSystem.Instance != null
+            && BuffSystem.Instance.IsImmuneToNegativeEvents(player))
+        {
+            Debug.Log($"{player.playerName} 免疫生效，负面事件 {option.effectType} 被抵消");
+            if (UIManager.Instance != null)
+            {
+                UIManager.Instance.ShowToast("免疫生效，负面事件被抵消", 2f);
+            }
+            return;
+        }
+
         switch (option.effectType)
         {
             case EventData.EventEffectType.GainMoney:
@@ -198,12 +221,17 @@ public class EventEffectHandler : MonoBehaviour
             case EventData.EventEffectType.TaxReduction:
                 if (option.taxReductionPercent > 0 && option.taxReductionRounds > 0)
                 {
-                    player.AddTaxReductionBuff(option.taxReductionPercent, option.taxReductionRounds);
+                    if (BuffSystem.Instance != null)
+                    {
+                        BuffSystem.Buff buff = BuffSystem.Instance.CreateTaxReductionBuff(
+                            option.taxReductionPercent, option.taxReductionRounds, option.optionText, this);
+                        BuffSystem.Instance.AddBuff(player, buff);
+                    }
                     Debug.Log($"{player.playerName} tax reduced by {option.taxReductionPercent * 100}% for {option.taxReductionRounds} rounds");
                     if (UIManager.Instance != null)
                     {
                         float reductionPercent = option.taxReductionPercent * 100;
-                        UIManager.Instance.ShowToast($"税务减少{reductionPercent:0}%，持续{option.taxReductionRounds}回合", 2f);
+                        UIManager.Instance.ShowToast($"税务减免{reductionPercent:0}%，持续{option.taxReductionRounds}回合", 2f);
                     }
                 }
                 break;
@@ -211,7 +239,12 @@ public class EventEffectHandler : MonoBehaviour
             case EventData.EventEffectType.ImmuneToNegativeEvents:
                 if (option.roundsImmuneToNegativeEvents > 0)
                 {
-                    player.SetImmuneToNegativeEvents(option.roundsImmuneToNegativeEvents);
+                    if (BuffSystem.Instance != null)
+                    {
+                        BuffSystem.Buff buff = BuffSystem.Instance.CreateImmuneBuff(
+                            option.roundsImmuneToNegativeEvents, option.optionText, this);
+                        BuffSystem.Instance.AddBuff(player, buff);
+                    }
                     Debug.Log($"{player.playerName} immune to negative events for {option.roundsImmuneToNegativeEvents} rounds");
                     if (UIManager.Instance != null)
                     {
@@ -224,6 +257,13 @@ public class EventEffectHandler : MonoBehaviour
                 if (option.nextRollMultiplier != 1f)
                 {
                     player.SetNextRollMultiplier(option.nextRollMultiplier);
+                    if (BuffSystem.Instance != null)
+                    {
+                        BuffSystem.Instance.RemoveBuffsByEffect(player, BuildingData.BuffEffect.NextRollMultiplier);
+                        BuffSystem.Buff buff = BuffSystem.Instance.CreateNextRollMultiplierBuff(
+                            option.nextRollMultiplier, option.optionText, this);
+                        BuffSystem.Instance.AddBuff(player, buff);
+                    }
                     Debug.Log($"{player.playerName} next roll multiplier set to {option.nextRollMultiplier}x");
                     if (UIManager.Instance != null)
                     {
@@ -247,6 +287,13 @@ public class EventEffectHandler : MonoBehaviour
                 }
                 break;
         }
+    }
+
+    private bool IsNegativeEffect(EventData.EventEffectType effectType)
+    {
+        return effectType == EventData.EventEffectType.LoseMoney
+            || effectType == EventData.EventEffectType.IncomeReduction
+            || effectType == EventData.EventEffectType.BuildingDowngrade;
     }
 
     private void DowngradeRandomBuildings(Player player, int count)

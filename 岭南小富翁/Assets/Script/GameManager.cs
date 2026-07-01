@@ -1,4 +1,4 @@
-﻿﻿using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
@@ -856,6 +856,10 @@ public class GameManager : MonoBehaviour
         if (multiplier != 1f)
         {
             Debug.Log($"{currentPlayer.playerName} 倍率加成: {boostedDiceValue} * {multiplier} = {finalDiceValue}");
+            if (BuffSystem.Instance != null)
+            {
+                BuffSystem.Instance.RemoveBuffsByEffect(currentPlayer, BuildingData.BuffEffect.NextRollMultiplier);
+            }
         }
 
         // 
@@ -1106,18 +1110,6 @@ public class GameManager : MonoBehaviour
 
         player.ProcessLoanRepayment();
         player.ProcessReceivableRepayment();
-
-        float incomeReduction = player.GetIncomeReduction();
-        if (incomeReduction > 0)
-        {
-            Debug.Log($"{player.playerName} 收入减免: {incomeReduction * 100}%");
-        }
-
-        float taxReduction = player.GetTaxReduction();
-        if (taxReduction > 0)
-        {
-            Debug.Log($"{player.playerName} 税收减免: {taxReduction * 100}%");
-        }
     }
 
     void SwitchToNextPlayer()

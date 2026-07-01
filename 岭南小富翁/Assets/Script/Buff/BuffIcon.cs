@@ -1,4 +1,4 @@
-﻿﻿using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
@@ -134,7 +134,11 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         string timeText = "";
         
-        if (currentBuff.isPermanent)
+        if (currentBuff.effectType == BuildingData.BuffEffect.NextRollMultiplier)
+        {
+            timeText = "生效：<color=green>下次掷骰</color>";
+        }
+        else if (currentBuff.isPermanent)
         {
             timeText = "剩余：<color=green>永久</color>";
         }
@@ -157,6 +161,11 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         if (currentBuff.effectType == BuildingData.BuffEffect.Bankrupt ||
             currentBuff.effectType == BuildingData.BuffEffect.IncomeReduction)
+        {
+            return true;
+        }
+
+        if (currentBuff.effectType == BuildingData.BuffEffect.NextRollMultiplier && currentBuff.value < 1f)
         {
             return true;
         }

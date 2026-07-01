@@ -1,4 +1,4 @@
-﻿﻿﻿using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "NewBuildingData", menuName = "Building/Building Data")]
@@ -180,7 +180,10 @@ public class BuildingData : ScriptableObject
         LuckBoost,
         AllIncomeBoost,
         Bankrupt,
-        IncomeReduction
+        IncomeReduction,
+        TaxReduction,
+        Immune,
+        NextRollMultiplier
     }
 
     // 获取收入金额
@@ -415,6 +418,9 @@ public class BuildingData : ScriptableObject
             case BuffEffect.AllIncomeBoost: return "全玩家收入提升";
             case BuffEffect.Bankrupt: return "破产";
             case BuffEffect.IncomeReduction: return "收入下降";
+            case BuffEffect.TaxReduction: return "税务减免";
+            case BuffEffect.Immune: return "免疫负面事件";
+            case BuffEffect.NextRollMultiplier: return "步数倍率";
             default: return "未知Buff效果";
         }
     }

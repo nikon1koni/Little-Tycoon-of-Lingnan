@@ -337,4 +337,86 @@ public class BuffSystem : MonoBehaviour
             desc
         );
     }
+
+    public Buff CreateTaxReductionBuff(float percent, int rounds, string sourceName, object source)
+    {
+        string buffId = $"tax_reduction_{sourceName}_{Time.frameCount}";
+        string desc = $"{BuildingData.GetBuffEffectName(BuildingData.BuffEffect.TaxReduction)} {percent * 100:F0}%";
+        return new Buff(
+            buffId,
+            sourceName,
+            BuildingData.BuffEffect.TaxReduction,
+            percent,
+            0f,
+            rounds,
+            source,
+            desc
+        );
+    }
+
+    public Buff CreateImmuneBuff(int rounds, string sourceName, object source)
+    {
+        string buffId = $"immune_{sourceName}_{Time.frameCount}";
+        string desc = BuildingData.GetBuffEffectName(BuildingData.BuffEffect.Immune);
+        return new Buff(
+            buffId,
+            sourceName,
+            BuildingData.BuffEffect.Immune,
+            1f,
+            0f,
+            rounds,
+            source,
+            desc
+        );
+    }
+
+    // 显示型 buff：无回合/时间计时（永久），由 GameManager 在掷骰消费倍率后移除
+    public Buff CreateNextRollMultiplierBuff(float multiplier, string sourceName, object source)
+    {
+        string buffId = $"next_roll_{sourceName}_{Time.frameCount}";
+        string desc = $"下次掷骰步数 x{multiplier:0.##}";
+        return new Buff(
+            buffId,
+            sourceName,
+            BuildingData.BuffEffect.NextRollMultiplier,
+            multiplier,
+            0f,
+            0,
+            source,
+            desc
+        );
+    }
+
+    // 税务减免总量（上限 90%，避免完全免费）
+    public float GetTaxReduction(Player player)
+    {
+        float reduction = GetTotalBuffValue(player, BuildingData.BuffEffect.TaxReduction);
+        return Mathf.Clamp(reduction, 0f, 0.9f);
+    }
+
+    public bool IsImmuneToNegativeEvents(Player player)
+    {
+        return GetTotalBuffValue(player, BuildingData.BuffEffect.Immune) > 0f;
+    }
+
+    public void RemoveBuffsByEffect(Player player, BuildingData.BuffEffect effectType)
+    {
+        if (!playerBuffs.ContainsKey(player)) return;
+
+        List<Buff> buffs = playerBuffs[player];
+        bool removed = false;
+        for (int i = buffs.Count - 1; i >= 0; i--)
+        {
+            if (buffs[i].effectType == effectType)
+            {
+                buffs.RemoveAt(i);
+                removed = true;
+            }
+        }
+
+        if (removed)
+        {
+            UpdateBuffDisplay();
+        }
+    }
 }
