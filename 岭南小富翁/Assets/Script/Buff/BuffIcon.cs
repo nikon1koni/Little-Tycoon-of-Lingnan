@@ -155,7 +155,8 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     
     private bool IsDebuff()
     {
-        if (currentBuff.effectType == BuildingData.BuffEffect.Bankrupt)
+        if (currentBuff.effectType == BuildingData.BuffEffect.Bankrupt ||
+            currentBuff.effectType == BuildingData.BuffEffect.IncomeReduction)
         {
             return true;
         }

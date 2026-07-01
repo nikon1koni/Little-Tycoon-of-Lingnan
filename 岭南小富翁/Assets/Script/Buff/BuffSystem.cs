@@ -221,6 +221,7 @@ public class BuffSystem : MonoBehaviour
         float multiplier = 1f;
         multiplier += GetTotalBuffValue(player, BuildingData.BuffEffect.IncomeMultiplier);
         multiplier += GetTotalBuffValue(player, BuildingData.BuffEffect.AllIncomeBoost);
+        multiplier -= GetTotalBuffValue(player, BuildingData.BuffEffect.IncomeReduction);
         return Mathf.Max(0.1f, multiplier);
     }
 
@@ -318,6 +319,22 @@ public class BuffSystem : MonoBehaviour
             0f,
             rounds,
             source
+        );
+    }
+
+    public Buff CreateIncomeReductionBuff(float percent, int rounds, string sourceName, object source)
+    {
+        string buffId = $"income_reduction_{sourceName}_{Time.frameCount}";
+        string desc = $"{BuildingData.GetBuffEffectName(BuildingData.BuffEffect.IncomeReduction)} {percent * 100:F0}%";
+        return new Buff(
+            buffId,
+            sourceName,
+            BuildingData.BuffEffect.IncomeReduction,
+            percent,
+            0f,
+            rounds,
+            source,
+            desc
         );
     }
 }

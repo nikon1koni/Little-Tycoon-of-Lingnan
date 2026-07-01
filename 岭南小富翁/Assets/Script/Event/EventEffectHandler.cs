@@ -180,7 +180,12 @@ public class EventEffectHandler : MonoBehaviour
             case EventData.EventEffectType.IncomeReduction:
                 if (option.incomeReductionPercent > 0 && option.incomeReductionRounds > 0)
                 {
-                    player.AddIncomeReductionDebuff(option.incomeReductionPercent, option.incomeReductionRounds);
+                    if (BuffSystem.Instance != null)
+                    {
+                        BuffSystem.Buff buff = BuffSystem.Instance.CreateIncomeReductionBuff(
+                            option.incomeReductionPercent, option.incomeReductionRounds, option.optionText, this);
+                        BuffSystem.Instance.AddBuff(player, buff);
+                    }
                     Debug.Log($"{player.playerName} income reduced by {option.incomeReductionPercent * 100}% for {option.incomeReductionRounds} rounds");
                     if (UIManager.Instance != null)
                     {

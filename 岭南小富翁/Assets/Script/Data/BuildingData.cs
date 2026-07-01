@@ -1,4 +1,4 @@
-﻿﻿using UnityEngine;
+﻿﻿﻿using UnityEngine;
 using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "NewBuildingData", menuName = "Building/Building Data")]
@@ -179,7 +179,8 @@ public class BuildingData : ScriptableObject
         DefenseBoost,
         LuckBoost,
         AllIncomeBoost,
-        Bankrupt
+        Bankrupt,
+        IncomeReduction
     }
 
     // 获取收入金额
@@ -413,6 +414,7 @@ public class BuildingData : ScriptableObject
             case BuffEffect.LuckBoost: return "运气提升";
             case BuffEffect.AllIncomeBoost: return "全玩家收入提升";
             case BuffEffect.Bankrupt: return "破产";
+            case BuffEffect.IncomeReduction: return "收入下降";
             default: return "未知Buff效果";
         }
     }

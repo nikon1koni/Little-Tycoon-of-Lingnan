@@ -1,4 +1,4 @@
-﻿﻿﻿using System.Collections.Generic;
+﻿﻿﻿﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,6 +20,7 @@ public class BuffDisplayManager : MonoBehaviour
     public Sprite luckBoostIcon;
     public Sprite allIncomeBoostIcon;
     public Sprite bankruptIcon;
+    public Sprite incomeReductionIcon;
     
     [Header("Buff数据配置")]
     public BuffData bankruptBuffData;        // 破产Debuff数据（用于获取图标）
@@ -150,6 +151,8 @@ public class BuffDisplayManager : MonoBehaviour
                 return luckBoostIcon;
             case BuildingData.BuffEffect.AllIncomeBoost:
                 return allIncomeBoostIcon;
+            case BuildingData.BuffEffect.IncomeReduction:
+                return incomeReductionIcon;
             default:
                 return null;
         }
