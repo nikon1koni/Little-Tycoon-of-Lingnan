@@ -37,7 +37,7 @@ MonoBehaviour:
     loanAmount: 0
     loanRepayMultiplier: 1
     loanRepayRounds: 0
-  - optionText: "\u5A49\u8A00\u8C22\u7EDD"
+  - optionText: "\u5A49\u8A00\u8C22\u7EDD(\u83B7\u5F9715\u94DC\u94B1)"
     onOptionSelected:
       m_PersistentCalls:
         m_Calls: []
