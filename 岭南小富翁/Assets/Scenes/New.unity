@@ -23370,7 +23370,7 @@ MonoBehaviour:
     cardPrefab: {fileID: 6252345139265869957, guid: 88aa4acd93183cf42b2f83733fc7d9b5, type: 3}
   cardWidth: 120
   cardSpacing: 10
-  centerOffsetY: -300
+  centerOffsetY: 35
   fanAngle: 15
   hoverScale: 1.1
   hoverYOffset: 75

@@ -94,20 +94,29 @@ public class ItemHandManager : MonoBehaviour
 
     private void CreateHandContainer()
     {
+        // 手牌容器必须挂在满屏的根 Canvas 下，底部中心锚点才会以整屏为基准；
+        // 否则父物体不是满屏 RectTransform 时，改变分辨率会导致手牌不在底部正中间
+        Canvas canvas = GetComponentInParent<Canvas>();
+        if (canvas == null) canvas = FindObjectOfType<Canvas>();
+        Transform containerParent = canvas != null ? canvas.rootCanvas.transform : transform;
+
         if (handContainer == null)
         {
             GameObject container = new GameObject("HandContainer");
-            container.transform.SetParent(transform);
             container.AddComponent<RectTransform>();
             handContainer = container.transform;
         }
+
+        handContainer.SetParent(containerParent, false);
 
         RectTransform rect = handContainer.GetComponent<RectTransform>();
         rect.anchorMin = new Vector2(0.5f, 0f);
         rect.anchorMax = new Vector2(0.5f, 0f);
         rect.pivot = new Vector2(0.5f, 0.5f);
         rect.anchoredPosition = new Vector2(0, centerOffsetY);
-        rect.sizeDelta = new Vector2(Screen.width, 300);
+        rect.sizeDelta = new Vector2(0, 300);
+        rect.localScale = Vector3.one;
+        rect.localRotation = Quaternion.identity;
     }
 
     private void AutoInitialize()
