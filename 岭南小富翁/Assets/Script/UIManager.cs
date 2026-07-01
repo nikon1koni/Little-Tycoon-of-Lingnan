@@ -1,4 +1,4 @@
-﻿﻿using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
@@ -91,6 +91,12 @@ public class UIManager : MonoBehaviour
 
     [Header("UI")]
     public EventPanel eventPanel;
+
+    [Header("通关结算面板")]
+    [Tooltip("达到总轮数后弹出的通关面板（在Unity里自行搭建：恭喜文本+跳转按钮）")]
+    public GameObject gameClearPanel;
+    [Tooltip("通关面板上的“跳转结算”按钮，点击后加载 End 场景")]
+    public Button gameClearButton;
 
     [Header("ToastUI")]
     public GameObject infoToastPanel;
@@ -809,6 +815,41 @@ public class UIManager : MonoBehaviour
         if (pos.y > halfH) pos.y = halfH;
 
         buildingTooltipRect.anchoredPosition = pos;
+    }
+
+    // 达到总轮数：显示通关面板，由玩家点“跳转结算”按钮进入 End 场景
+    public void ShowGameClearPanel()
+    {
+        // 未配置面板时直接跳转，避免卡死
+        if (gameClearPanel == null)
+        {
+            UnityEngine.Debug.LogWarning("UIManager: 未在Inspector中设置通关面板(gameClearPanel)，直接跳转 End 场景");
+            UnityEngine.SceneManagement.SceneManager.LoadScene("End");
+            return;
+        }
+
+        gameClearPanel.SetActive(true);
+        gameClearPanel.transform.SetAsLastSibling();
+
+        SetRollDiceButtonInteractable(false);
+
+        if (SFXManager.Instance != null)
+            SFXManager.Instance.PlaySFX(SFXClip.UIOpen);
+
+        if (gameClearButton != null)
+        {
+            gameClearButton.onClick.RemoveAllListeners();
+            gameClearButton.onClick.AddListener(() =>
+            {
+                if (SFXManager.Instance != null)
+                    SFXManager.Instance.PlaySFX(SFXClip.UIClick);
+                UnityEngine.SceneManagement.SceneManager.LoadScene("End");
+            });
+        }
+        else
+        {
+            UnityEngine.Debug.LogWarning("UIManager: 未设置通关按钮(gameClearButton)，无法自动跳转 End 场景");
+        }
     }
 
     // 

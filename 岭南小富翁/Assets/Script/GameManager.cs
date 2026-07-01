@@ -1,4 +1,4 @@
-﻿﻿using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
@@ -653,9 +653,16 @@ public class GameManager : MonoBehaviour
 
         GameResult.Set(score, buildings, diceCount, gold, rounds, maxRounds);
 
-        Debug.Log($"达到总轮数 {maxRounds}，跳转结算场景 End（分数={score}, 建筑={buildings}, 骰子={diceCount}, 金币={gold}）");
+        Debug.Log($"达到总轮数 {maxRounds}，显示通关面板（分数={score}, 建筑={buildings}, 骰子={diceCount}, 金币={gold}）");
 
-        UnityEngine.SceneManagement.SceneManager.LoadScene("End");
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.ShowGameClearPanel();
+        }
+        else
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("End");
+        }
     }
 
     /// <summary>
