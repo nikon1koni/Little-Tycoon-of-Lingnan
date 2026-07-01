@@ -21,7 +21,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
     optionCostAmount: 30
-    optionRewardAmount: 80
+    optionRewardAmount: 0
     optionIncomeBoost: 0
     optionBuffDurationRounds: 0
     effectType: 0
