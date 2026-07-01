@@ -26940,6 +26940,26 @@ PrefabInstance:
       value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
+      propertyPath: harvestCardChance
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
+      propertyPath: harvestBaseMoneyMax
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
+      propertyPath: harvestBaseMoneyMin
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
+      propertyPath: harvestExtraMoneyMax
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
+      propertyPath: harvestExtraMoneyMin
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
       propertyPath: linkedBuildingTiles.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -29519,6 +29539,22 @@ PrefabInstance:
     - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
       propertyPath: tileType
       value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
+      propertyPath: harvestBaseMoneyMax
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
+      propertyPath: harvestBaseMoneyMin
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
+      propertyPath: harvestExtraMoneyMax
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465103964800882420, guid: d79548990247a1449a08ddcef731d330, type: 3}
+      propertyPath: harvestExtraMoneyMin
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
