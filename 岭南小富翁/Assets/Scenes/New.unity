@@ -24164,7 +24164,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 3c8cd57f2e2966e45867b31f96fbee80, type: 3}
   volume: 0.5
   playOnAwake: 1
-  shufflePlaylist: 0
+  playMode: 1
 --- !u!4 &1262232810
 Transform:
   m_ObjectHideFlags: 0

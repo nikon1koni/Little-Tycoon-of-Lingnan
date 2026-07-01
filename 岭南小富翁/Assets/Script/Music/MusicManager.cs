@@ -3,6 +3,12 @@ using UnityEngine;
 
 public class MusicManager : MonoBehaviour
 {
+    public enum PlayMode
+    {
+        Sequential, // 顺序播放
+        Shuffle     // 乱序播放
+    }
+
     public static MusicManager Instance;
 
     [Header("音乐列表")]
@@ -12,11 +18,14 @@ public class MusicManager : MonoBehaviour
     [Range(0f, 1f)]
     public float volume = 0.5f;
     public bool playOnAwake = true;
-    public bool shufflePlaylist = false;
+
+    [Tooltip("播放模式：顺序播放 / 乱序播放（乱序模式下首曲也随机）")]
+    public PlayMode playMode = PlayMode.Sequential;
 
     private AudioSource audioSource;
     private int currentTrackIndex = 0;
     private bool isPlaying = false;
+    private bool hasStarted = false;
 
     void Awake()
     {
@@ -66,6 +75,14 @@ public class MusicManager : MonoBehaviour
 
         if (!isPlaying)
         {
+            if (!hasStarted)
+            {
+                hasStarted = true;
+                if (playMode == PlayMode.Shuffle)
+                {
+                    currentTrackIndex = Random.Range(0, musicTracks.Count);
+                }
+            }
             isPlaying = true;
             PlayCurrentTrack();
         }
@@ -104,6 +121,7 @@ public class MusicManager : MonoBehaviour
         {
             audioSource.Stop();
             isPlaying = false;
+            hasStarted = false;
             Debug.Log("MusicManager: 停止播放");
         }
     }
@@ -112,7 +130,7 @@ public class MusicManager : MonoBehaviour
     {
         if (musicTracks.Count == 0) return;
 
-        if (shufflePlaylist)
+        if (playMode == PlayMode.Shuffle)
         {
             int randomIndex;
             do
@@ -250,8 +268,18 @@ public class MusicManager : MonoBehaviour
 
     public void ToggleShuffle()
     {
-        shufflePlaylist = !shufflePlaylist;
-        Debug.Log($"MusicManager: 随机播放 = {shufflePlaylist}");
+        SetPlayMode(playMode == PlayMode.Shuffle ? PlayMode.Sequential : PlayMode.Shuffle);
+    }
+
+    public void SetPlayMode(PlayMode mode)
+    {
+        playMode = mode;
+        Debug.Log($"MusicManager: 播放模式 = {(playMode == PlayMode.Shuffle ? "乱序" : "顺序")}");
+    }
+
+    public PlayMode GetPlayMode()
+    {
+        return playMode;
     }
 
     public void TogglePlayPause()
