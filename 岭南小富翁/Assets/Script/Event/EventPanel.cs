@@ -141,6 +141,16 @@ public class EventPanel : MonoBehaviour
     {
         if (optionsContainer == null) return;
 
+#if UNITY_EDITOR
+        // 编辑器下：若当前选中的是即将销毁的运行时按钮（或其子物体），先取消选中，
+        // 否则 Inspector 引用已销毁对象会抛 NullReference/SerializedObjectNotCreatable 噪音
+        if (UnityEditor.Selection.activeTransform != null &&
+            UnityEditor.Selection.activeTransform.IsChildOf(optionsContainer))
+        {
+            UnityEditor.Selection.activeObject = null;
+        }
+#endif
+
         foreach (Transform child in optionsContainer)
         {
             Destroy(child.gameObject);
