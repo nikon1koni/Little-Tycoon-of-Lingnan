@@ -9903,7 +9903,7 @@ MonoBehaviour:
   buffIconPrefab: {fileID: 4716568889123171365, guid: 9714dc2a75e68e34e931aaec35485258, type: 3}
   buffContainer: {fileID: 123285279}
   buffTooltipPrefab: {fileID: 1883676598161276246, guid: f1f3c0e0a97c19541b0c1075877c2054, type: 3}
-  tooltipOffset: {x: -380, y: 120}
+  tooltipOffset: {x: 15, y: 15}
   moveSpeedIcon: {fileID: 21300000, guid: 81bafada34060bb428cb6a62a44e9995, type: 3}
   diceBoostIcon: {fileID: 21300000, guid: 1b9b48c6d84312a43bdb3bb0d3e0d7a5, type: 3}
   incomeMultiplierIcon: {fileID: 21300000, guid: f6671e9c67d88e947992d55cd3c74841, type: 3}
@@ -25875,7 +25875,7 @@ MonoBehaviour:
   startingCash: 50
   salaryAmount: 5
   jailTurns: 3
-  maxRounds: 12
+  maxRounds: 1
   enablePressureSystem: 1
   basePressureCost: 10
   pressureMultiplier: 1.2

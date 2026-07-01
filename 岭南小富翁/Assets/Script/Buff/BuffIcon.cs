@@ -13,6 +13,9 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public GameObject tooltipPrefab;
     public Vector2 tooltipOffset = new Vector2(50, 50);
     private GameObject activeTooltip;
+    private RectTransform activeTooltipRect;
+    private RectTransform tooltipCanvasRect;
+    private Camera tooltipCamera;
     
     [Header("")]
     public int roundThreshold = 3;              // 
@@ -80,25 +83,67 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         
         activeTooltip = Instantiate(tooltipPrefab, parentTransform);
         Debug.Log($"BuffIcon: Tooltip instantiated successfully");
-        
-        RectTransform tooltipRect = activeTooltip.GetComponent<RectTransform>();
-        RectTransform iconRect = GetComponent<RectTransform>();
-        
-        Vector2 anchoredPosition = iconRect.anchoredPosition;
-        tooltipRect.anchoredPosition = anchoredPosition + tooltipOffset;
-        Debug.Log($"BuffIcon: Using tooltipOffset={tooltipOffset}, finalPosition={tooltipRect.anchoredPosition}");
-        
+
+        activeTooltipRect = activeTooltip.GetComponent<RectTransform>();
+        tooltipCanvasRect = parentTransform as RectTransform;
+        Canvas parentCanvas = parentTransform.GetComponent<Canvas>();
+        tooltipCamera = (parentCanvas != null && parentCanvas.renderMode != RenderMode.ScreenSpaceOverlay)
+            ? parentCanvas.worldCamera : null;
+
+        // 统一锚点/轴心，改为跟随鼠标定位（与建筑描述提示一致），避免窗口缩放时错位
+        if (activeTooltipRect != null)
+        {
+            activeTooltipRect.anchorMin = new Vector2(0.5f, 0.5f);
+            activeTooltipRect.anchorMax = new Vector2(0.5f, 0.5f);
+            activeTooltipRect.pivot = new Vector2(0f, 1f);
+        }
+
         TextMeshProUGUI tooltipText = activeTooltip.GetComponentInChildren<TextMeshProUGUI>();
         if (tooltipText != null)
         {
             tooltipText.text = GetBuffDescription();
         }
-        
+
         Image tooltipBg = activeTooltip.GetComponentInChildren<Image>();
         if (tooltipBg != null)
         {
             tooltipBg.color = new Color(0.1f, 0.1f, 0.1f, 0.95f);
         }
+
+        activeTooltip.transform.SetAsLastSibling();
+        UpdateTooltipPosition();
+    }
+
+    private void Update()
+    {
+        if (activeTooltip != null)
+        {
+            UpdateTooltipPosition();
+        }
+    }
+
+    // 让提示框跟随鼠标，并限制在画布范围内（窗口缩放安全）
+    private void UpdateTooltipPosition()
+    {
+        if (activeTooltipRect == null || tooltipCanvasRect == null) return;
+
+        Vector2 localPoint;
+        if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                tooltipCanvasRect, Input.mousePosition, tooltipCamera, out localPoint))
+            return;
+
+        Vector2 size = activeTooltipRect.rect.size;
+        Vector2 pos = localPoint + new Vector2(tooltipOffset.x, -tooltipOffset.y);
+
+        float halfW = tooltipCanvasRect.rect.width * 0.5f;
+        float halfH = tooltipCanvasRect.rect.height * 0.5f;
+
+        if (pos.x + size.x > halfW) pos.x = localPoint.x - tooltipOffset.x - size.x;
+        if (pos.x < -halfW) pos.x = -halfW;
+        if (pos.y - size.y < -halfH) pos.y = -halfH + size.y;
+        if (pos.y > halfH) pos.y = halfH;
+
+        activeTooltipRect.anchoredPosition = pos;
     }
     
     private void HideTooltip()
@@ -107,6 +152,7 @@ public class BuffIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         {
             Destroy(activeTooltip);
             activeTooltip = null;
+            activeTooltipRect = null;
         }
     }
     

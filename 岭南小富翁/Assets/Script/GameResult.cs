@@ -1,4 +1,4 @@
-﻿// Cross-scene settlement data. Populated by GameManager when the round limit
+﻿﻿// Cross-scene settlement data. Populated by GameManager when the round limit
 // is reached, then read by EndSceneController in the "End" scene.
 public static class GameResult
 {
