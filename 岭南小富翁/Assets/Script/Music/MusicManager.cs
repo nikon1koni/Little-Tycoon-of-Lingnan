@@ -1,4 +1,5 @@
-﻿﻿using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class MusicManager : MonoBehaviour
@@ -26,6 +27,8 @@ public class MusicManager : MonoBehaviour
     private int currentTrackIndex = 0;
     private bool isPlaying = false;
     private bool hasStarted = false;
+    private bool isLoading = false;
+    private Coroutine loadRoutine;
 
     void Awake()
     {
@@ -51,7 +54,7 @@ public class MusicManager : MonoBehaviour
 
     void Update()
     {
-        if (isPlaying && audioSource != null && !audioSource.isPlaying)
+        if (isPlaying && !isLoading && audioSource != null && !audioSource.isPlaying)
         {
             PlayNextTrack();
         }
@@ -119,6 +122,12 @@ public class MusicManager : MonoBehaviour
     {
         if (audioSource != null)
         {
+            if (loadRoutine != null)
+            {
+                StopCoroutine(loadRoutine);
+                loadRoutine = null;
+            }
+            isLoading = false;
             audioSource.Stop();
             isPlaying = false;
             hasStarted = false;
@@ -185,9 +194,34 @@ public class MusicManager : MonoBehaviour
             return;
         }
 
+        if (loadRoutine != null)
+        {
+            StopCoroutine(loadRoutine);
+        }
+        loadRoutine = StartCoroutine(LoadAndPlayTrack(track));
+    }
+
+    // 异步预加载音频数据后再播放，避免切歌时在主线程同步解码导致卡顿。
+    // 需在该音频的导入设置里勾选 Load In Background（Streaming 类型则边播边读，同样不卡）。
+    private IEnumerator LoadAndPlayTrack(AudioClip track)
+    {
+        isLoading = true;
+
+        if (track.loadState != AudioDataLoadState.Loaded)
+        {
+            track.LoadAudioData();
+            while (track.loadState == AudioDataLoadState.Loading)
+            {
+                yield return null;
+            }
+        }
+
         audioSource.clip = track;
         audioSource.Play();
         isPlaying = true;
+        isLoading = false;
+        loadRoutine = null;
+
         Debug.Log($"MusicManager: 播放 [{currentTrackIndex + 1}/{musicTracks.Count}] - {track.name}");
     }
 

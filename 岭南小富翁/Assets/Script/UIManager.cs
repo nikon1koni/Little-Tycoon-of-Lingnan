@@ -1,4 +1,4 @@
-﻿﻿using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
@@ -1868,13 +1868,15 @@ public class UIManager : MonoBehaviour
         currentToastMessage = message;
 
         yield return new WaitForSeconds(duration);
-        
-        if (infoToastPanel != null && toastQueue.Count == 0)
+
+        // 始终隐藏本条 info 提示：若队列里下一条是压力公告（走的是另一个面板），
+        // 之前用 toastQueue.Count==0 判断会导致本面板一直挂着不消失
+        if (infoToastPanel != null)
         {
             infoToastPanel.SetActive(false);
-            currentToastMessage = null;
         }
-        
+        currentToastMessage = null;
+
         hideInfoToastCoroutine = null;
     }
 
