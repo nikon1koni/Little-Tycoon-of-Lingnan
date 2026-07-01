@@ -107,11 +107,13 @@ public class UIManager : MonoBehaviour
     {
         public string message;
         public float duration;
+        public bool isAnnouncement;   // true=压力系统横幅(turnAnnouncePanel)，false=普通toast(infoToastPanel)
         
-        public ToastMessage(string msg, float dur)
+        public ToastMessage(string msg, float dur, bool announcement = false)
         {
             message = msg;
             duration = dur;
+            isAnnouncement = announcement;
         }
     }
 
@@ -1562,7 +1564,7 @@ public class UIManager : MonoBehaviour
         Destroy(toastObj, duration);
     }
 
-    private void EnqueueToast(string message, float duration)
+    private void EnqueueToast(string message, float duration, bool isAnnouncement = false)
     {
         // 避免同一条提示重复入队堆叠，导致面板迟迟不按时消失（如反复点击买不起的地块）
         if (message == currentToastMessage)
@@ -1577,7 +1579,7 @@ public class UIManager : MonoBehaviour
             }
         }
 
-        toastQueue.Enqueue(new ToastMessage(message, duration));
+        toastQueue.Enqueue(new ToastMessage(message, duration, isAnnouncement));
         
         if (!isToastPlaying)
         {
@@ -1592,11 +1594,38 @@ public class UIManager : MonoBehaviour
         while (toastQueue.Count > 0)
         {
             ToastMessage msg = toastQueue.Dequeue();
-            yield return StartCoroutine(ShowInfoToastWithDelay(msg.message, msg.duration));
+            if (msg.isAnnouncement)
+            {
+                yield return StartCoroutine(ShowAnnouncementWithDelay(msg.message, msg.duration));
+            }
+            else
+            {
+                yield return StartCoroutine(ShowInfoToastWithDelay(msg.message, msg.duration));
+            }
             yield return new WaitForSeconds(toastInterval);
         }
         
         isToastPlaying = false;
+    }
+
+    private System.Collections.IEnumerator ShowAnnouncementWithDelay(string message, float duration)
+    {
+        if (turnAnnouncePanel == null || turnAnnounceText == null)
+        {
+            yield break;
+        }
+
+        CancelInvoke(nameof(HideTurnAnnouncement));
+        turnAnnounceText.text = message;
+        turnAnnouncePanel.SetActive(true);
+        turnAnnouncePanel.transform.SetAsLastSibling();
+
+        yield return new WaitForSeconds(duration);
+
+        if (turnAnnouncePanel != null)
+        {
+            turnAnnouncePanel.SetActive(false);
+        }
     }
 
     private System.Collections.IEnumerator ShowInfoToastWithDelay(string message, float duration)
@@ -1668,11 +1697,8 @@ public class UIManager : MonoBehaviour
         if (turnAnnouncePanel == null || turnAnnounceText == null)
             return;
 
-        turnAnnouncePanel.SetActive(true);
-        turnAnnounceText.text = msg;
-
-        CancelInvoke(nameof(HideTurnAnnouncement));
-        Invoke(nameof(HideTurnAnnouncement), announceDuration);
+        // 纳入统一的提示队列，和普通 toast 按顺序显示、互不重叠
+        EnqueueToast(msg, announceDuration, true);
     }
     private void HideTurnAnnouncement()
     {
