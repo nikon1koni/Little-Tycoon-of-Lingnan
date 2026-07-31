@@ -1,12 +1,15 @@
-﻿using UnityEngine;
+using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 public class SkyboxHelper : MonoBehaviour
 {
+#if UNITY_EDITOR
     [MenuItem("Tools/Create Procedural SkyDome")]
     public static void CreateSkyDome()
     {
-        // 查找或创建SkyDome对象
+        // ??????SkyDome????
         GameObject skyDome = GameObject.Find("SkyDome");
         if (skyDome == null)
         {
@@ -14,25 +17,25 @@ public class SkyboxHelper : MonoBehaviour
             Undo.RegisterCreatedObjectUndo(skyDome, "Create SkyDome");
         }
         
-        // 添加SkyDome脚本（自动添加MeshFilter和MeshRenderer）
+        // ????SkyDome????????????MeshFilter??MeshRenderer??
         SkyDome dome = skyDome.GetComponent<SkyDome>();
         if (dome == null)
         {
             dome = skyDome.AddComponent<SkyDome>();
         }
         
-        // 查找天空盒材质
+        // ????????????
         Material skyMat = FindSkyboxMaterial();
         if (skyMat != null)
         {
             dome.skyboxMaterial = skyMat;
         }
         
-        // 设置默认参数
+        // ??????????
         dome.domeRadius = 500;
         dome.subdivisions = 64;
         
-        // 选中对象
+        // ???????
         Selection.activeGameObject = skyDome;
         
         Debug.Log("SkyDome created! Don't forget to:");
@@ -49,7 +52,7 @@ public class SkyboxHelper : MonoBehaviour
             return AssetDatabase.LoadAssetAtPath<Material>(path);
         }
         
-        // 尝试找名字包含"Procedural"的材质
+        // ?????????????"Procedural"?????
         guids = AssetDatabase.FindAssets("Procedural t:Material");
         foreach (string guid in guids)
         {
@@ -70,4 +73,5 @@ public class SkyboxHelper : MonoBehaviour
         RenderSettings.skybox = null;
         Debug.Log("Skybox removed from Render Settings!");
     }
+#endif
 }

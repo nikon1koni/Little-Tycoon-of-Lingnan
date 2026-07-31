@@ -1,7 +1,10 @@
-﻿using UnityEngine;
-using UnityEditor;
+using UnityEngine;
 using System.IO;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
+#if UNITY_EDITOR
 public class EventDataConfigurator : EditorWindow
 {
     private string eventDataFolderPath = "Assets/Building/Event Data";
@@ -9,63 +12,63 @@ public class EventDataConfigurator : EditorWindow
     [MenuItem("Tools/Event Data Configurator")]
     public static void ShowWindow()
     {
-        GetWindow<EventDataConfigurator>("事件配置器");
+        GetWindow<EventDataConfigurator>("?????????");
     }
 
     void OnGUI()
     {
-        GUILayout.Label("事件数据配置器 - 点击按钮配置对应事件", EditorStyles.boldLabel);
+        GUILayout.Label("????????????? - ???????????????", EditorStyles.boldLabel);
         GUILayout.Space(10);
 
-        if (GUILayout.Button("配置所有事件"))
+        if (GUILayout.Button("???????????"))
         {
             ConfigureAllEvents();
         }
 
         GUILayout.Space(20);
 
-        if (GUILayout.Button("配置蛋家渔民事件"))
+        if (GUILayout.Button("??????????????"))
         {
             ConfigureDanJiaFishermanEvent();
         }
 
-        if (GUILayout.Button("配置功夫茶事件"))
+        if (GUILayout.Button("????????????"))
         {
             ConfigureHerbalTeaEvent();
         }
 
-        if (GUILayout.Button("配置竞争对手事件"))
+        if (GUILayout.Button("??????????????"))
         {
             ConfigureCompetitorEvent();
         }
 
-        if (GUILayout.Button("配置官府新政事件"))
+        if (GUILayout.Button("??????????????"))
         {
             ConfigureGovernmentEvent();
         }
 
-        if (GUILayout.Button("配置祠堂祈福事件"))
+        if (GUILayout.Button("???????????????"))
         {
             ConfigureAncestralHallEvent();
         }
 
-        if (GUILayout.Button("配置茶摊经营事件"))
+        if (GUILayout.Button("?????????????"))
         {
             ConfigureTeaStandEvent();
         }
 
-        if (GUILayout.Button("配置台风灾害事件"))
+        if (GUILayout.Button("?????????????"))
         {
             ConfigureTyphoonEvent();
         }
 
-        if (GUILayout.Button("配置老字号商会事件"))
+        if (GUILayout.Button("???????????????"))
         {
             ConfigureOldBrandGuildEvent();
         }
 
         GUILayout.Space(20);
-        GUILayout.Label("配置完成后记得保存场景", EditorStyles.miniLabel);
+        GUILayout.Label("????????????????", EditorStyles.miniLabel);
     }
 
     void ConfigureAllEvents()
@@ -80,23 +83,23 @@ public class EventDataConfigurator : EditorWindow
         ConfigureOldBrandGuildEvent();
 
         AssetDatabase.SaveAssets();
-        Debug.Log("所有事件配置完成");
-        EditorUtility.DisplayDialog("配置完成", "已成功配置所有8个事件", "确定");
+        Debug.Log("??????????????");
+        EditorUtility.DisplayDialog("???????", "????????????8?????", "???");
     }
 
     void ConfigureDanJiaFishermanEvent()
     {
-        EventData eventData = LoadOrCreateEventData("蛋家渔民");
+        EventData eventData = LoadOrCreateEventData("????????");
         if (eventData == null) return;
 
-        eventData.eventTitle = "[蛋家渔民]借鱼出海";
-        eventData.eventDescription = "蛋家人世代以捕鱼为生，如今遇到风浪急需周转。他们愿意用未来的渔获作为抵押向你借钱。";
+        eventData.eventTitle = "[????????]???????";
+        eventData.eventDescription = "???????????????????????????????????????????????????????????????????????";
 
         eventData.options = new EventData.EventOption[]
         {
             new EventData.EventOption()
             {
-                optionText = "借20铜钱 -> 2回合后还50铜钱",
+                optionText = "??20?? -> 2????50??",
                 optionCostAmount = 20,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.Loan,
@@ -106,7 +109,7 @@ public class EventDataConfigurator : EditorWindow
             },
             new EventData.EventOption()
             {
-                optionText = "借30铜钱 -> 2回合后还80铜钱",
+                optionText = "??30?? -> 2????80??",
                 optionCostAmount = 30,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.Loan,
@@ -116,7 +119,7 @@ public class EventDataConfigurator : EditorWindow
             },
             new EventData.EventOption()
             {
-                optionText = "婉言拒绝 -> 下一次骰子步数减半",
+                optionText = "?????? -> ????????????????",
                 optionCostAmount = 0,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.NextRollMultiplier,
@@ -124,58 +127,58 @@ public class EventDataConfigurator : EditorWindow
             }
         };
 
-        SaveEventData(eventData, "蛋家渔民");
+        SaveEventData(eventData, "????????");
     }
 
     void ConfigureHerbalTeaEvent()
     {
-        EventData eventData = LoadOrCreateEventData("功夫茶");
+        EventData eventData = LoadOrCreateEventData("?????");
         if (eventData == null) return;
 
-        eventData.eventTitle = "[功夫茶]品茶论道";
-        eventData.eventDescription = "一位老茶师邀请你品尝功夫茶，据说能增进财运。";
+        eventData.eventTitle = "[?????]??????";
+        eventData.eventDescription = "?????????????????????k??????????????";
 
         eventData.options = new EventData.EventOption[]
         {
             new EventData.EventOption()
             {
-                optionText = "花费5铜钱品茶 -> 收入提升10%持续50回合",
+                optionText = "????5????? -> ????????10%????50???",
                 optionCostAmount = 5,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.None
             },
             new EventData.EventOption()
             {
-                optionText = "花费10铜钱品茶 -> 收入提升20%持续100回合",
+                optionText = "????10????? -> ????????20%????100???",
                 optionCostAmount = 10,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.None
             },
             new EventData.EventOption()
             {
-                optionText = "拒绝邀请 -> 无效果",
+                optionText = "??????? -> ??????",
                 optionCostAmount = 0,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.None
             }
         };
 
-        SaveEventData(eventData, "功夫茶");
+        SaveEventData(eventData, "?????");
     }
 
     void ConfigureCompetitorEvent()
     {
-        EventData eventData = LoadOrCreateEventData("竞争对手");
+        EventData eventData = LoadOrCreateEventData("????????");
         if (eventData == null) return;
 
-        eventData.eventTitle = "[竞争对手]商业竞争";
-        eventData.eventDescription = "附近出现了竞争对手，正在抢夺你的客源。";
+        eventData.eventTitle = "[????????]???????";
+        eventData.eventDescription = "?????????????????????????????????";
 
         eventData.options = new EventData.EventOption[]
         {
             new EventData.EventOption()
             {
-                optionText = "硬扛竞争：收入减少50%持续1回合",
+                optionText = "????????????????50%????1???",
                 optionCostAmount = 0,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.IncomeReduction,
@@ -184,29 +187,29 @@ public class EventDataConfigurator : EditorWindow
             },
             new EventData.EventOption()
             {
-                optionText = "花费20铜钱送礼疏通 -> 化解竞争",
+                optionText = "????20????????? -> ??????",
                 optionCostAmount = 20,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.None
             }
         };
 
-        SaveEventData(eventData, "竞争对手");
+        SaveEventData(eventData, "????????");
     }
 
     void ConfigureGovernmentEvent()
     {
-        EventData eventData = LoadOrCreateEventData("官府新政");
+        EventData eventData = LoadOrCreateEventData("???????");
         if (eventData == null) return;
 
-        eventData.eventTitle = "[官府新政]新税政策";
-        eventData.eventDescription = "官府颁布了新的税收政策，可能影响你的资产。";
+        eventData.eventTitle = "[???????]???????";
+        eventData.eventDescription = "?????????????????????????????????";
 
         eventData.options = new EventData.EventOption[]
         {
             new EventData.EventOption()
             {
-                optionText = "配合新政 -> 获得房产价值120%的补偿",
+                optionText = "??????? -> ??????????120%?????",
                 optionCostAmount = 0,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.PropertyCompensation,
@@ -214,29 +217,29 @@ public class EventDataConfigurator : EditorWindow
             },
             new EventData.EventOption()
             {
-                optionText = "花费30铜钱打点 -> 免除影响",
+                optionText = "????30????? -> ??????",
                 optionCostAmount = 30,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.None
             }
         };
 
-        SaveEventData(eventData, "官府新政");
+        SaveEventData(eventData, "???????");
     }
 
     void ConfigureAncestralHallEvent()
     {
-        EventData eventData = LoadOrCreateEventData("祠堂祈福");
+        EventData eventData = LoadOrCreateEventData("????????");
         if (eventData == null) return;
 
-        eventData.eventTitle = "[祠堂祈福]祖先庇佑";
-        eventData.eventDescription = "宗族祠堂举办祈福仪式，你可以选择参加。";
+        eventData.eventTitle = "[????????]???????";
+        eventData.eventDescription = "???????????????????????????????";
 
         eventData.options = new EventData.EventOption[]
         {
             new EventData.EventOption()
             {
-                optionText = "花费30铜钱祭拜 -> 税务减少50%持续2回合",
+                optionText = "????30?????? -> ??????50%????2???",
                 optionCostAmount = 30,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.TaxReduction,
@@ -245,7 +248,7 @@ public class EventDataConfigurator : EditorWindow
             },
             new EventData.EventOption()
             {
-                optionText = "简单祭拜 -> 免疫负面事件1回合",
+                optionText = "????? -> ??????????1???",
                 optionCostAmount = 0,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.ImmuneToNegativeEvents,
@@ -253,22 +256,22 @@ public class EventDataConfigurator : EditorWindow
             }
         };
 
-        SaveEventData(eventData, "祠堂祈福");
+        SaveEventData(eventData, "????????");
     }
 
     void ConfigureTeaStandEvent()
     {
-        EventData eventData = LoadOrCreateEventData("茶摊经营");
+        EventData eventData = LoadOrCreateEventData("??????");
         if (eventData == null) return;
 
-        eventData.eventTitle = "[茶摊经营]茶摊奇遇";
-        eventData.eventDescription = "路边茶摊来了一位神秘客人，可能带来好运。";
+        eventData.eventTitle = "[??????]???????";
+        eventData.eventDescription = "?????????????????????????????????";
 
         eventData.options = new EventData.EventOption[]
         {
             new EventData.EventOption()
             {
-                optionText = "花费5铜钱招待 -> 下一次骰子步数翻倍",
+                optionText = "????5?????? -> ????????????????",
                 optionCostAmount = 5,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.NextRollMultiplier,
@@ -276,29 +279,29 @@ public class EventDataConfigurator : EditorWindow
             },
             new EventData.EventOption()
             {
-                optionText = "不予理会 -> 无效果",
+                optionText = "???????? -> ??????",
                 optionCostAmount = 0,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.None
             }
         };
 
-        SaveEventData(eventData, "茶摊经营");
+        SaveEventData(eventData, "??????");
     }
 
     void ConfigureTyphoonEvent()
     {
-        EventData eventData = LoadOrCreateEventData("台风灾害");
+        EventData eventData = LoadOrCreateEventData("??????");
         if (eventData == null) return;
 
-        eventData.eventTitle = "[台风灾害]狂风来袭";
-        eventData.eventDescription = "台风即将来袭，你的建筑面临损毁风险。";
+        eventData.eventTitle = "[??????]??????";
+        eventData.eventDescription = "????????????????????????????";
 
         eventData.options = new EventData.EventOption[]
         {
             new EventData.EventOption()
             {
-                optionText = "花费20铜钱加固 -> 1栋建筑降级",
+                optionText = "????20????? -> 1??????????",
                 optionCostAmount = 20,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.BuildingDowngrade,
@@ -306,7 +309,7 @@ public class EventDataConfigurator : EditorWindow
             },
             new EventData.EventOption()
             {
-                optionText = "不做准备 -> 2栋建筑降级",
+                optionText = "??????? -> 2??????????",
                 optionCostAmount = 0,
                 optionRewardAmount = 0,
                 effectType = EventData.EventEffectType.BuildingDowngrade,
@@ -314,22 +317,22 @@ public class EventDataConfigurator : EditorWindow
             }
         };
 
-        SaveEventData(eventData, "台风灾害");
+        SaveEventData(eventData, "??????");
     }
 
     void ConfigureOldBrandGuildEvent()
     {
-        EventData eventData = LoadOrCreateEventData("老字号商会");
+        EventData eventData = LoadOrCreateEventData("????????");
         if (eventData == null) return;
 
-        eventData.eventTitle = "[老字号商会]商会邀请";
-        eventData.eventDescription = "城中老字号商会邀请你加入，可获得丰厚回报。";
+        eventData.eventTitle = "[????????]???????";
+        eventData.eventDescription = "????????????????????????????????";
 
         eventData.options = new EventData.EventOption[]
         {
             new EventData.EventOption()
             {
-                optionText = "花费30铜钱入会 -> 收入提升(3回合+40%)",
+                optionText = "????30????? -> ????????(3???+40%)",
                 optionCostAmount = 30,
                 optionRewardAmount = 0,
                 optionIncomeBoost = 0.4f,
@@ -338,14 +341,14 @@ public class EventDataConfigurator : EditorWindow
             },
             new EventData.EventOption()
             {
-                optionText = "婉拒邀请 -> 获得15铜钱补偿",
+                optionText = "??????? -> ???15??????",
                 optionCostAmount = 0,
                 optionRewardAmount = 15,
                 effectType = EventData.EventEffectType.None
             }
         };
 
-        SaveEventData(eventData, "老字号商会");
+        SaveEventData(eventData, "????????");
     }
 
     EventData LoadOrCreateEventData(string eventName)
@@ -357,7 +360,7 @@ public class EventDataConfigurator : EditorWindow
         {
             eventData = ScriptableObject.CreateInstance<EventData>();
             AssetDatabase.CreateAsset(eventData, path);
-            Debug.Log($"创建事件数据: {path}");
+            Debug.Log($"???????????: {path}");
         }
 
         return eventData;
@@ -366,6 +369,7 @@ public class EventDataConfigurator : EditorWindow
     void SaveEventData(EventData eventData, string eventName)
     {
         EditorUtility.SetDirty(eventData);
-        Debug.Log($"已配置事件: {eventName}");
+        Debug.Log($"?????????: {eventName}");
     }
 }
+#endif
