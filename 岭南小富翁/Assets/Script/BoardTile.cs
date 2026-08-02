@@ -1,4 +1,4 @@
-﻿﻿﻿﻿using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
@@ -58,7 +58,7 @@ public class BoardTile : MonoBehaviour
     [Header("Buff")]
     public List<Player> buffedPlayers = new List<Player>(); // Buff
 
-    // 
+    // 格子类型枚举
     public enum TileType
     {
         Start,          // 起点
@@ -79,7 +79,7 @@ public class BoardTile : MonoBehaviour
         LoseMoney       // 失财
     }
 
-    // 
+    // 建筑类型枚举
     public enum BuildingType
     {
         None,
@@ -92,7 +92,7 @@ public class BoardTile : MonoBehaviour
         Special
     }
 
-    // 
+    // 格子事件枚举
     public enum TileEvent
     {
         None,
@@ -107,7 +107,7 @@ public class BoardTile : MonoBehaviour
     {
         InitializeTile();
 
-        // 
+        // 自动获取渲染器组件
         if (tileRenderer == null)
         {
             tileRenderer = GetComponentInChildren<MeshRenderer>();
@@ -123,7 +123,7 @@ public class BoardTile : MonoBehaviour
 
     void Update()
     {
-        // 
+        // 自动收入：周期性触发建筑收入
         if (enableAutoIncome &&
             currentBuildingData != null &&
             ownerPlayer != null &&
@@ -140,13 +140,13 @@ public class BoardTile : MonoBehaviour
 
     void InitializeTile()
     {
-        // 
+        // 若格子名为空，使用ID作为默认名
         if (string.IsNullOrEmpty(tileName))
         {
             tileName = $"_{tileID}";
         }
 
-        // 
+        // 更新格子名UI显示
         if (tileNameText != null)
         {
             tileNameText.text = tileName;
@@ -165,7 +165,7 @@ public class BoardTile : MonoBehaviour
         return maxEffectDuration;
     }
 
-    // 
+    // 玩家踩到格子时触发（落地事件）
     public virtual void OnLanded(Player player)
     {
         switch (tileType)
@@ -247,12 +247,12 @@ public class BoardTile : MonoBehaviour
         }
     }
 
-    // 
+    // 处理地产/铁路/公用事业/普通格子的踩踏
     private void HandlePropertyLanding(Player player)
     {
         if (ownerPlayer == null)
         {
-            // 
+            // 无人拥有，提示购买
             Debug.Log($"{tileName} 可购买 价格 {propertyPrice} 金币");
 
             if (UIManager.Instance != null)
@@ -262,17 +262,17 @@ public class BoardTile : MonoBehaviour
         }
         else if (ownerPlayer == player)
         {
-            // 
+            // 自己拥有，无需付费
             Debug.Log($"{player.playerName} 到达自己的 {tileName}");
         }
         else
         {
-            // 
+            // 他人拥有，支付租金
             PayRent(player);
         }
     }
 
-    // 
+    // 支付租金给拥有者
     private void PayRent(Player player)
     {
         int rent = CalculateRent();
@@ -296,12 +296,12 @@ public class BoardTile : MonoBehaviour
         }
     }
 
-    // 
+    // 计算当前租金
     public int CalculateRent()
     {
         int baseRent = rentPrice;
 
-        // 
+        // 叠加建筑带来的租金加成
         if (currentBuildingData != null)
         {
             baseRent += currentBuildingData.GetIncomeAmountByTurns(GetBuildingTurnsOwned());
@@ -324,7 +324,7 @@ public class BoardTile : MonoBehaviour
 
         Debug.Log($"TriggerLinkedBuildingIncome: 连接建筑数量={linkedBuildingTiles.Count}间隔={incomeInterval}");
         
-        // 
+        // 打印联动建筑基础信息（用于调试）
         for (int i = 0; i < linkedBuildingTiles.Count; i++)
         {
             BoardTile tile = linkedBuildingTiles[i];
@@ -497,7 +497,7 @@ public class BoardTile : MonoBehaviour
         }
     }
 
-    // 
+    // 判断该建筑是否满足收入间隔
     private bool CanGenerateIncome(BoardTile buildingTile, float currentTime)
     {
         if (!lastIncomeTime.ContainsKey(buildingTile))
@@ -538,22 +538,22 @@ public class BoardTile : MonoBehaviour
         return Mathf.Max(1, currentRound - buildingStartRound + 1);
     }
 
-    // 
+    // 设置当前建筑数据
     public void SetBuildingData(BuildingData data, int level = 1)
     {
         currentBuildingData = data;
         buildingLevel = level;
-        // 
+        // 记录建造回合
         buildingStartRound = GameManager.Instance != null ? GameManager.Instance.CurrentRound : 0;
 
         if (data != null)
         {
-            // 
+            // 推断建筑类型
             currentBuildingType = GetBuildingTypeFromData(data);
 
             Debug.Log($"设置 {tileName}: 建筑 {data.buildingName}, 类型: {currentBuildingType}, 等级: {level}");
 
-            // 
+            // 校验建筑功能类型是否合法
             if (data.functionType != BuildingData.BuildingFunctionType.Income &&
                 data.functionType != BuildingData.BuildingFunctionType.Mixed)
             {
@@ -579,7 +579,7 @@ public class BoardTile : MonoBehaviour
 
         if (type == BuildingType.None)
         {
-            // 
+            // 类型未设置时，尝试从名称推断
             Debug.LogWarning($"建筑 {data.buildingName} 的 buildingType 未设置，尝试从名称推断类型");
             return InferBuildingTypeFromName(data.buildingName);
         }
@@ -593,7 +593,7 @@ public class BoardTile : MonoBehaviour
     private BuildingType InferBuildingTypeFromName(string buildingName)
     {
         string name = buildingName.ToLower();
-        //
+        // 按名称关键词推断建筑类型
         if (name.Contains("small") || name.Contains("小"))
             return BuildingType.SmallHouse;
         else if (name.Contains("medium") || name.Contains("中"))
@@ -604,7 +604,7 @@ public class BoardTile : MonoBehaviour
             return BuildingType.Special;
     }
 
-    // 
+    // 获取升级到下一级所需费用
     public int GetUpgradeCost()
     {
         if (currentBuildingData == null || currentBuildingData.nextLevelBuilding == null)
@@ -613,7 +613,7 @@ public class BoardTile : MonoBehaviour
         return currentBuildingData.nextLevelBuilding.purchasePrice;
     }
 
-    // 
+    // 判断是否能升级建筑
     public bool CanUpgradeBuilding(Player player)
     {
         if (currentBuildingData == null || currentBuildingData.nextLevelBuilding == null)
@@ -623,27 +623,27 @@ public class BoardTile : MonoBehaviour
 
         if (player.cash < GetUpgradeCost()) return false;
 
-        // 
+        // 校验格子规模是否满足升级要求
         if (!CheckScaleForUpgrade(currentBuildingData.nextLevelBuilding.requiredScale))
             return false;
 
         return true;
     }
 
-    // 
+    // 检查格子规模是否满足升级要求
     public bool CheckScaleForUpgrade(BuildingData.Scale requiredScale)
     {
         return tileScale >= (int)requiredScale;
     }
 
-    // 
+    // 获取下一级建筑数据
     public BuildingData GetNextUpgradeBuilding()
     {
         if (currentBuildingData == null) return null;
         return currentBuildingData.nextLevelBuilding;
     }
 
-    // 
+    // 升级建筑
     public bool UpgradeBuilding(Player player)
     {
         if (!CanUpgradeBuilding(player)) return false;
@@ -652,30 +652,30 @@ public class BoardTile : MonoBehaviour
 
         if (player.PayCash(upgradeCost))
         {
-            // 
+            // 取下一级建筑数据
             BuildingData nextBuildingData = currentBuildingData.nextLevelBuilding;
             
             buildingLevel++;
             Debug.Log($"{player.playerName} 在 {tileName} 升级到等级 {buildingLevel}");
 
-            // 
+            // 更新建筑数据
             if (nextBuildingData != null)
             {
                 currentBuildingData = nextBuildingData;
-                // 
+                // 重新推断建筑类型
                 currentBuildingType = GetBuildingTypeFromData(nextBuildingData);
             }
 
-            // 
+            // 若存在下一级建筑预制体，则销毁旧建筑并实例化新建筑
             if (nextBuildingData != null && nextBuildingData.buildingPrefab != null)
             {
-                // 
+                // 销毁旧建筑对象
                 if (currentBuilding != null)
                 {
                     Destroy(currentBuilding);
                 }
 
-                // 
+                // 实例化新建筑对象
                 Vector3 pos = transform.position + nextBuildingData.positionOffset;
                 Quaternion rot = Quaternion.Euler(nextBuildingData.rotationEuler);
                 GameObject newBuilding = Instantiate(
@@ -694,7 +694,7 @@ public class BoardTile : MonoBehaviour
                 ApplyBuffToPlayer(player);
             }
 
-            // 
+            // 重新应用 Buff
 
             return true;
         }
@@ -702,14 +702,14 @@ public class BoardTile : MonoBehaviour
         return false;
     }
 
-    // 
+    // 获取出售价格
     public int GetSellPrice()
     {
         if (currentBuildingData == null) return 0;
 
         float ratio = BuildingDataConfig.Instance != null ? BuildingDataConfig.Instance.GetSellPriceRatio() : 0.5f;
 
-        //  =  + 
+        // 增值型：售价 = 增值后价值 × 比例
         if (currentBuildingData.functionType == BuildingData.BuildingFunctionType.Appreciation)
         {
             int roundsOwned = GetBuildingTurnsOwned();
@@ -717,13 +717,13 @@ public class BoardTile : MonoBehaviour
             return Mathf.RoundToInt(appreciatedValue * ratio);
         }
 
-        //  =  * 
+        // 普通型：售价 = 总投资 × 比例
         int totalInvested = currentBuildingData.purchasePrice;
         
         BuildingData nextData = currentBuildingData.nextLevelBuilding;
         int tempLevel = buildingLevel;
         
-        // 
+        // 累加各级投资金额
         while (nextData != null && tempLevel > 1)
         {
             totalInvested += nextData.purchasePrice;
@@ -731,11 +731,11 @@ public class BoardTile : MonoBehaviour
             tempLevel--;
         }
 
-        //  =  * 
+        // 计算最终售价
         return Mathf.RoundToInt(totalInvested * ratio);
     }
 
-    // 
+    // 判断是否能出售建筑
     public bool CanSellBuilding(Player player)
     {
         if (currentBuildingData == null) return false;
@@ -743,7 +743,7 @@ public class BoardTile : MonoBehaviour
         return true;
     }
 
-    // 
+    // 出售建筑
     public bool SellBuilding(Player player)
     {
         if (!CanSellBuilding(player)) return false;
@@ -753,14 +753,14 @@ public class BoardTile : MonoBehaviour
 
         Debug.Log($"{player.playerName} 出售 {tileName} 获得 {sellPrice}");
 
-        // 
+        // 销毁建筑对象
         if (currentBuilding != null)
         {
             Destroy(currentBuilding);
             currentBuilding = null;
         }
 
-        // 
+        // 清空建筑数据
         currentBuildingData = null;
         currentBuildingType = BuildingType.None;
         buildingLevel = 0;
@@ -804,7 +804,7 @@ public class BoardTile : MonoBehaviour
                 }
             }
 
-            // 
+            // 输出 Buff 应用结果
         }
     }
 
@@ -821,10 +821,10 @@ public class BoardTile : MonoBehaviour
         buffedPlayers.Clear();
     }
 
-    // 
+    // 抽取机会卡
     private void DrawChanceCard(Player player)
     {
-        // 
+        // 随机选择一种机会事件
         int random = Random.Range(1, 4);
 
         switch (random)
@@ -850,7 +850,7 @@ public class BoardTile : MonoBehaviour
                 break;
 
             case 3:
-                // 
+                // 随机移动到某格子
                 if (BoardManager.Instance != null && BoardManager.Instance.allTiles.Count > 0)
                 {
                     int randomTileIndex = Random.Range(0, BoardManager.Instance.allTiles.Count);
@@ -862,10 +862,10 @@ public class BoardTile : MonoBehaviour
         }
     }
 
-    // 
+    // 抽取公共宝箱卡
     private void DrawCommunityChestCard(Player player)
     {
-        // 
+        // 随机选择一种宝箱事件
         int random = Random.Range(1, 4);
 
         switch (random)
@@ -901,7 +901,7 @@ public class BoardTile : MonoBehaviour
         }
     }
 
-    // 
+    // 支付税款
     private void PayTax(Player player)
     {
         int taxAmount = propertyPrice / 10; // 10%
@@ -915,7 +915,7 @@ public class BoardTile : MonoBehaviour
         }
     }
 
-    // 
+    // 送入监狱
     private void SendToJail(Player player)
     {
         player.isInJail = true;
@@ -932,7 +932,7 @@ public class BoardTile : MonoBehaviour
         }
     }
 
-    // 
+    // 触发随机事件
     private void TriggerRandomEvent(Player player)
     {
         if (eventDataArray != null && eventDataArray.Length > 0)
@@ -962,7 +962,7 @@ public class BoardTile : MonoBehaviour
             }
         }
 
-        // 
+        // 无事件数据时，随机生成一个事件
         TileEvent randomEvent = (TileEvent)Random.Range(1, 6);
 
         switch (randomEvent)
@@ -1019,7 +1019,7 @@ public class BoardTile : MonoBehaviour
         }
     }
 
-    // 
+    // 更新格子外观
     public void UpdateTileVisual()
     {
         if (tileRenderer == null) return;
@@ -1027,7 +1027,7 @@ public class BoardTile : MonoBehaviour
        
     }
 
-    // 
+    // 添加联动建筑
     public void AddLinkedBuildingTile(BoardTile buildingTile)
     {
         if (linkedBuildingTiles == null)
@@ -1042,7 +1042,7 @@ public class BoardTile : MonoBehaviour
         }
     }
 
-    // 
+    // 移除联动建筑
     public void RemoveLinkedBuildingTile(BoardTile buildingTile)
     {
         if (linkedBuildingTiles != null && linkedBuildingTiles.Contains(buildingTile))
@@ -1052,7 +1052,7 @@ public class BoardTile : MonoBehaviour
         }
     }
 
-    // 
+    // 清空联动建筑列表
     public void ClearAllLinkedBuildingTiles()
     {
         if (linkedBuildingTiles != null)
@@ -1062,7 +1062,7 @@ public class BoardTile : MonoBehaviour
         }
     }
 
-    // 
+    // 获取联动建筑列表
     public List<BoardTile> GetLinkedBuildingTiles()
     {
         if (linkedBuildingTiles == null)
@@ -1072,19 +1072,19 @@ public class BoardTile : MonoBehaviour
         return linkedBuildingTiles;
     }
 
-    // 
+    // 设置联动收入开关
     public void SetLinkedIncomeEnabled(bool enabled)
     {
         enableLinkedIncome = enabled;
     }
 
-    // 
+    // 设置收入间隔（最小1秒）
     public void SetIncomeInterval(float interval)
     {
         incomeInterval = Mathf.Max(1.0f, interval); // 1
     }
 
-    // 
+    // 设置自动收入开关及间隔
     public void SetAutoIncomeEnabled(bool enabled, float interval = 10.0f)
     {
         enableAutoIncome = enabled;
@@ -1114,7 +1114,7 @@ public class BoardTile : MonoBehaviour
         set { incomeInterval = Mathf.Max(1.0f, value); }
     }
 
-    // 
+    // 获取某联动建筑的上次收入时间
     public float GetLastIncomeTime(BoardTile buildingTile)
     {
         if (buildingTile == null) return 0f;

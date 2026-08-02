@@ -5,7 +5,7 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
-    // 
+    // 单例
     public static GameManager Instance;
 
     [Header("游戏状态")]
@@ -101,7 +101,7 @@ public class GameManager : MonoBehaviour
     public float diceCooldownTime = 0f; // 
     private float lastDiceRollTime = -1000f; // 
 
-    // 
+    // 游戏状态枚举
     public enum GameState
     {
         Waiting,           // 
@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        // 
+        // 单例初始化
         if (Instance == null)
         {
             Instance = this;
@@ -137,7 +137,7 @@ public class GameManager : MonoBehaviour
         StartCoroutine(StartInitialBuildingPhase());
     }
 
-    // 
+    // 初始化游戏
     void InitializeGame()
     {
         FindRequiredComponents();
@@ -150,7 +150,7 @@ public class GameManager : MonoBehaviour
             currentPlayer = players[currentPlayerIndex];
         }
 
-        // 
+        // 发放初始物品
         GiveStartingItemsToPlayers();
 
         currentState = GameState.Waiting;
@@ -252,7 +252,7 @@ public class GameManager : MonoBehaviour
                 }
             }
 
-            // 
+            // 设置事件音量
             sfxManager.SetCategoryVolume(SFXCategory.Event, eventSoundVolume);
             sfxManager.SetCategoryVolume(SFXCategory.UI, uiSoundVolume);
             sfxManager.SetCategoryVolume(SFXCategory.Character, characterSoundVolume);
@@ -407,7 +407,7 @@ public class GameManager : MonoBehaviour
             // === UI ===
             if (UIManager.Instance != null)
             {
-                // 
+                // 主玩家
                 if (i == 0) // 
                 {
                     UIManager.Instance.UpdateCashDisplay(player.cash);
@@ -417,7 +417,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // 
+    // 处理地产格子
     void HandlePropertyTile()
     {
         BoardTile tile = currentPlayer.currentTile;
@@ -455,7 +455,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // 
+    // 检查联动建筑收入
     private void CheckLinkedBuildingIncome(BoardTile tile, Player player)
     {
         if (tile == null || player == null) return;
@@ -554,7 +554,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log($"当前状态无法掷骰子: {currentState}");
 
-            // 
+            // 建筑选择阶段
             if (currentState == GameState.BuildingSelection)
             {
                 if (uiManager != null)
@@ -634,7 +634,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        // 
+        // 检查骰子双数建筑
         CheckDiceEvenBuildings(value);
 
         StartMovePlayer();
@@ -678,7 +678,7 @@ public class GameManager : MonoBehaviour
         int buildingCount = 0;
         List<UIManager.IncomeEntry> incomeEntries = new List<UIManager.IncomeEntry>();
 
-        // 
+        // 遍历玩家地产
         foreach (BoardTile property in currentPlayer.ownedProperties)
         {
             if (property == null || property.currentBuildingData == null) continue;
@@ -696,7 +696,7 @@ public class GameManager : MonoBehaviour
 
                 Debug.Log($"骰子触发: {property.tileName} ({property.currentBuildingData.buildingName}) 获得 {reward} 铜板");
 
-                // 
+                // 设置特效位置
                 Transform effectTransform = property.transform;
                 if (property.currentBuilding != null)
                 {
@@ -709,7 +709,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        // 
+        // 显示奖励
         if (totalReward > 0 && uiManager != null)
         {
             uiManager.ShowBuildingIncomeReport(incomeEntries);
@@ -717,7 +717,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // 
+    // 检查压力触发
     private void CheckPressureTrigger()
     {
         if (!enablePressureSystem)
@@ -727,7 +727,7 @@ public class GameManager : MonoBehaviour
         
         Debug.Log($"CheckPressureTrigger: diceRollCount={diceRollCount}, currentRound={currentRound}, nextPressureAt={nextPressureAt}");
 
-        // 
+        // 达到压力触发回合
         if (currentRound >= nextPressureAt)
         {
             TriggerPressure(currentRound);
@@ -869,7 +869,7 @@ public class GameManager : MonoBehaviour
     // === 3:  ===
     public bool CanRollDice()
     {
-        // 
+        // 骰子冷却检查
         float timeSinceLastRoll = Time.time - lastDiceRollTime;
         bool cooldownFinished = timeSinceLastRoll >= diceCooldownTime;
         
@@ -894,7 +894,7 @@ public class GameManager : MonoBehaviour
         // 骰子加成 buff（移动加成等）：在原始点数上叠加额外步数
         int boostedDiceValue = currentPlayer.GetDiceValueWithBoost(lastDiceValue);
 
-        // 
+        // 计算掷骰乘数
         float multiplier = currentPlayer.GetNextRollMultiplier();
         int finalDiceValue = Mathf.RoundToInt(boostedDiceValue * multiplier);
         
@@ -907,7 +907,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        // 
+        // 计算步数修正
         int stepsModifier = currentPlayer.GetStepsModifier();
         if (stepsModifier != 0)
         {
@@ -1024,12 +1024,12 @@ public class GameManager : MonoBehaviour
         else
         {
             Debug.Log($"{currentPlayer.playerName} 在起点，但UIManager为空");
-            // 
+            // 建筑购买完成
             OnBuildingPurchaseCompleted();
         }
     }
 
-    // 
+    // 处理当前格子
     void ProcessCurrentTile()
     {
         if (currentPlayer == null || currentPlayer.currentTile == null)
@@ -1336,7 +1336,7 @@ public class GameManager : MonoBehaviour
 
         isMoving = false;//
 
-        // 
+        // 进入玩家回合
         currentState = GameState.PlayerTurn;
         isPlayerTurn = true;
 
@@ -1354,14 +1354,14 @@ public class GameManager : MonoBehaviour
         }
         
         // ()
-        // 
+        // 检查破产
         if (currentPlayer != null && currentPlayer.isBankrupt)
         {
             Debug.Log($"{currentPlayer.playerName} 已破产，跳过此回合");
             return;
         }
         
-        // 
+        // 检查压力触发
         CheckPressureTrigger();
         
         // ()
@@ -1371,7 +1371,7 @@ public class GameManager : MonoBehaviour
             return;
         }
         
-        // 
+        // 结束回合
         EndTurn();
     }
 
@@ -1582,10 +1582,10 @@ public class GameManager : MonoBehaviour
         basePressureCost = 7f;
         BuildingsPlacedCount = 0;
         
-        // 
+        // 重置骰子冷却
         ResetDiceCooldown();
         
-        // 
+        // 清除所有建筑
         ClearAllBuildings();
         startPurchaseTileCache = null;
         
@@ -1600,7 +1600,7 @@ public class GameManager : MonoBehaviour
             p.isInJail = false;
             p.jailTurnsRemaining = 0;
             
-            // 
+            // 物品管理器检查
             if (ItemManager.Instance != null)
             {
                 ItemManager.Instance.ResetPlayerInventory(p);
@@ -1635,13 +1635,13 @@ public class GameManager : MonoBehaviour
         
         UpdateUI();
         
-        // 
+        // 延迟显示建筑面板
         StartCoroutine(DelayedShowBuildingPanelAfterRestart());
         
         Debug.Log("重新初始化完成");
     }
     
-    // 
+    // 重启后延迟显示建筑面板
     IEnumerator DelayedShowBuildingPanelAfterRestart()
     {
         yield return new WaitForSeconds(2f);
@@ -1669,7 +1669,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // 
+    // 清除所有建筑
     private void ClearAllBuildings()
     {
         Debug.Log("清除所有建筑数据...");
@@ -1684,13 +1684,13 @@ public class GameManager : MonoBehaviour
         {
             if (tile == null) continue;
             
-            // 
+            // 清空建筑数据
             tile.currentBuildingData = null;
             tile.currentBuildingType = BoardTile.BuildingType.None;
             tile.buildingLevel = 0;
             tile.ownerPlayer = null;
             
-            // 
+            // 清除建筑对象
             if (tile.currentBuilding != null)
             {
                 Destroy(tile.currentBuilding);
@@ -1800,7 +1800,7 @@ public class GameManager : MonoBehaviour
 
     public void OnEventPanelClosed()
     {
-        // 
+        // 关闭事件面板
         Debug.Log("事件面板已关闭");
         
         // Debuff
@@ -1811,17 +1811,17 @@ public class GameManager : MonoBehaviour
             return;
         }
         
-        // 
+        // 启用掷骰按钮
         SetRollDiceButtonInteractable(true);
         
-        // 
+        // 建筑选择状态检查
         if (currentState == GameState.BuildingSelection)
         {
             Debug.Log("保持建筑选择状态");
             return;
         }
         
-        // 
+        // 延迟结束移动
         StartCoroutine(EndMoveAfterDelay(0.1f));
         UpdateUI();
     }
@@ -1837,13 +1837,13 @@ public class GameManager : MonoBehaviour
                 {
                     Debug.Log($"起点: {tile.tileName}, ID: {tile.tileID}");
 
-                    // 
+                    // 可建造格子
                     if (tile.isBuildable)
                     {
                         Debug.LogError($"警告: {tile.tileName} 不应该是可建造的");
                     }
 
-                    // 
+                    // 已有建筑
                     if (tile.currentBuilding != null)
                     {
                         Debug.LogError($"警告: {tile.tileName} 不应该有建筑");
@@ -1853,7 +1853,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // 
+    // 设置骰子滚动速度
     public void SetDiceRollSpeed(float multiplier)
     {
         if (dice3DController != null)
@@ -1867,34 +1867,34 @@ public class GameManager : MonoBehaviour
         Debug.Log($"GameManager: 设置骰子滚动速度为 {multiplier}x");
     }
 
-    // 
+    // 设置骰子冷却
     public void SetDiceCooldown(float cooldownSeconds)
     {
         diceCooldownTime = Mathf.Max(0f, cooldownSeconds);
         Debug.Log($"GameManager: 设置骰子冷却时间为 {diceCooldownTime}秒");
     }
 
-    // 
+    // 获取骰子冷却
     public float GetDiceCooldown()
     {
         return diceCooldownTime;
     }
 
-    // 
+    // 获取骰子剩余冷却
     public float GetDiceCooldownRemaining()
     {
         float timeSinceLastRoll = Time.time - lastDiceRollTime;
         return Mathf.Max(0f, diceCooldownTime - timeSinceLastRoll);
     }
 
-    // 
+    // 重置骰子冷却
     public void ResetDiceCooldown()
     {
         lastDiceRollTime = -1000f;
         Debug.Log("GameManager: 骰子冷却已重置");
     }
 
-    // 
+    // 禁用骰子冷却
     public void DisableDiceCooldown()
     {
         diceCooldownTime = 0f;
