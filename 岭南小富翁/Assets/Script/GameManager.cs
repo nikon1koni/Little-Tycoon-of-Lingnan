@@ -8,18 +8,18 @@ public class GameManager : MonoBehaviour
     // 
     public static GameManager Instance;
 
-    [Header("")]
+    [Header("游戏状态")]
     public GameState currentState = GameState.Waiting;
     public int currentPlayerIndex = 0;
     public bool isGameStarted = false;
     public bool isPlayerTurn = true;
     public bool isMoving = false;
 
-    [Header("")]
+    [Header("玩家")]
     public List<Player> players = new List<Player>();
     public Player currentPlayer;
 
-    [Header("")]
+    [Header("骰子")]
     public DiceController diceController;
     public Dice3DController dice3DController;
     public int lastDiceValue = 0;
@@ -31,20 +31,20 @@ public class GameManager : MonoBehaviour
     public Text currentTileText;
     public Button rollDiceButton;
 
-    [Header("")]
+    [Header("管理器")]
     public BoardManager boardManager;
     public UIManager uiManager;
 
-    [Header("")]
+    [Header("基础设置")]
     public int startingCash = 1500;
     public int salaryAmount = 200;
     public int jailTurns = 3;
 
     [Header("回合设置")]
     [Tooltip("总轮数（回合上限），达到后跳转到结算场景 End")]
-    public int maxRounds = 12;
+    public int maxRounds = 24;
 
-    [Header("")]
+    [Header("压力系统")]
     public bool enablePressureSystem = true;
 
     private int diceRollCount = 0;          // 
@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
     public float basePressureCost = 7f;   // 
     public float pressureMultiplier = 1.2f;
     
-    [Header("")]
+    [Header("破产设置")]
     public BuffData bankruptBuffData;        // Debuff(Inspector)
     public int bankruptGraceRounds = 3;     // 
 
@@ -71,32 +71,32 @@ public class GameManager : MonoBehaviour
     // 距离下一次压力（恶性事件）触发还需的掷骰次数；系统关闭时返回 -1
     public int RollsUntilNextPressure => enablePressureSystem ? Mathf.Max(nextPressureAt * 6 - diceRollCount, 0) : -1;
 
-    [Header("")]
+    [Header("调试")]
     public bool enableDebugKeys = true;
 
-    [Header("")]
+    [Header("背景音乐")]
     public bool enableBackgroundMusic = true;
     public MusicManager musicManager;
 
-    [Header("")]
+    [Header("音效")]
     public SFXConfig sfxConfig;
     public bool enableSFX = true;
 
-    [Header("")]
+    [Header("声音音量")]
     [Range(0f, 1f)]
-    [Tooltip("")]
+    [Tooltip("事件音量")]
     public float eventSoundVolume = 0.4f;
     [Range(0f, 1f)]
     [Tooltip("UI")]
     public float uiSoundVolume = 0.8f;
     [Range(0f, 1f)]
-    [Tooltip("")]
+    [Tooltip("角色音量")]
     public float characterSoundVolume = 0.7f;
     [Range(0f, 1f)]
-    [Tooltip("")]
+    [Tooltip("骰子音量")]
     public float diceSoundVolume = 0.8f;
 
-    [Header("")]
+    [Header("骰子冷却")]
     [Range(0f, 10f)]
     public float diceCooldownTime = 0f; // 
     private float lastDiceRollTime = -1000f; // 

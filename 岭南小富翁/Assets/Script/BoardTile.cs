@@ -4,17 +4,17 @@ using TMPro;
 
 public class BoardTile : MonoBehaviour
 {
-    [Header("")]
+    [Header("建筑类型")]
     public BoardTile.BuildingType buildingType = BoardTile.BuildingType.None;
 
-    [Header("")]
+    [Header("格子基础信息")]
     public string tileName = "";
     public int tileID = 0;
-    public int tileScale = 1; // 
-    public int propertyPrice = 100; // 
-    public int rentPrice = 10; // 
+    public int tileScale = 1; // 格子缩放 
+    public int propertyPrice = 100; // 购买价格 
+    public int rentPrice = 10; // 租金 
     public TileType tileType = TileType.Property;
-    public bool isBuildable = false; // 
+    public bool isBuildable = false; // 是否可建造 
 
     [Header("Harvest 收获格设置")]
     [Tooltip("每次踩到必得的基础铜钱下限（含）")]
@@ -28,31 +28,31 @@ public class BoardTile : MonoBehaviour
     [Tooltip("额外铜钱的随机上限（含）")]
     public int harvestExtraMoneyMax = 10;
 
-    [Header("")]
-    public BuildingData currentBuildingData; // 
+    [Header("当前建筑")]
+    public BuildingData currentBuildingData; // 当前建筑数据 
     public BuildingType currentBuildingType = BuildingType.None;
-    public int buildingLevel = 0; // 
-    public int buildingStartRound = 0; // 
-    public GameObject currentBuilding; // 
-    public Player ownerPlayer; // 
+    public int buildingLevel = 0; // 建筑等级 
+    public int buildingStartRound = 0; // 建造回合 
+    public GameObject currentBuilding; // 建筑对象 
+    public Player ownerPlayer; // 拥有者 
 
-    [Header("")]
-    [SerializeField] private List<BoardTile> linkedBuildingTiles; // 
-    [SerializeField] private float incomeInterval = 5.0f; // 
-    private Dictionary<BoardTile, float> lastIncomeTime = new Dictionary<BoardTile, float>(); // 
-    [SerializeField] private bool enableLinkedIncome = true; // 
+    [Header("联动建筑收入")]
+    [SerializeField] private List<BoardTile> linkedBuildingTiles; // 联动建筑列表 
+    [SerializeField] private float incomeInterval = 5.0f; // 收入间隔(秒) 
+    private Dictionary<BoardTile, float> lastIncomeTime = new Dictionary<BoardTile, float>(); // 上次收入时间 
+    [SerializeField] private bool enableLinkedIncome = true; // 是否启用联动收入 
 
-    [Header("")]
-    [SerializeField] private bool enableAutoIncome = false; // 
-    [SerializeField] private float autoIncomeInterval = 10.0f; // 
+    [Header("自动收入")]
+    [SerializeField] private bool enableAutoIncome = false; // 是否启用自动收入 
+    [SerializeField] private float autoIncomeInterval = 10.0f; // 自动收入间隔(秒) 
     private float lastAutoIncomeTime = 0f;
 
-    [Header("")]
-    public EventData[] eventDataArray; // 
+    [Header("事件数据")]
+    public EventData[] eventDataArray; // 事件数据数组 
 
     [Header("UI")]
-    public TextMeshProUGUI tileNameText; // 
-    public MeshRenderer tileRenderer; // 
+    public TextMeshProUGUI tileNameText; // 格子名文本 
+    public MeshRenderer tileRenderer; // 格子渲染器 
 
 
     [Header("Buff")]
@@ -61,22 +61,22 @@ public class BoardTile : MonoBehaviour
     // 
     public enum TileType
     {
-        Start,          // 
-        Property,       // 
-        Railroad,       // 
-        Utility,        // 
-        Chance,         // 
-        CommunityChest, // 
-        Tax,            // ?
-        Jail,           // 
-        FreeParking,    // 
-        GoToJail,       // 
-        Buildable,      // 
-        BuildingSite,   // 
-        Event,          // 
+        Start,          // 起点
+        Property,       // 地产
+        Railroad,       // 铁路
+        Utility,        // 公用事业
+        Chance,         // 机会
+        CommunityChest, // 公共宝箱
+        Tax,            // 税务
+        Jail,           // 监狱
+        FreeParking,    // 免费停车
+        GoToJail,       // 入狱
+        Buildable,      // 可建造
+        BuildingSite,   // 建筑用地
+        Event,          // 事件
         Normal,
-        Harvest,      // 
-        LoseMoney       // 
+        Harvest,      // 收获
+        LoseMoney       // 失财
     }
 
     // 
@@ -333,7 +333,7 @@ public class BoardTile : MonoBehaviour
             Debug.Log($"  [{i}]: {tile.name ?? "null"} - 建筑名: {dataName}, 拥有者: {ownerName}");
         }
 
-        //  Income 
+        // 筛选 Income 建筑
         bool hasIncomeBuilding = false;
         List<BoardTile> incomeTiles = new List<BoardTile>();
         
@@ -356,7 +356,7 @@ public class BoardTile : MonoBehaviour
             }
         }
 
-        //  Buff 
+        // 处理 Buff 建筑
         if (hasIncomeBuilding)
         {
             Debug.Log($"TriggerLinkedBuildingIncome: === 处理 Buff 建筑 ===");
@@ -379,14 +379,14 @@ public class BoardTile : MonoBehaviour
 
                 if (buildingTile.currentBuildingData == null)
                 {
-                    Debug.Log($"  - ??н???????");
+                    Debug.Log($"  - 建筑数据为空");
                     continue;
                 }
 
                 // BuffDiceEven
                 if (buildingTile.currentBuildingData.functionType == BuildingData.BuildingFunctionType.Buff)
                 {
-                    Debug.Log($"  - ???? Buff Ч??");
+                    Debug.Log($"  - 触发 Buff 效果");
                     PlayBuildingEffect(buildingTile);
                     
                     if (buildingTile.currentBuildingData.effectDuration > maxEffectDuration)
@@ -396,12 +396,12 @@ public class BoardTile : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log($"  - ???? {buildingTile.currentBuildingData.functionType} Ч??");
+                    Debug.Log($"  - 触发 {buildingTile.currentBuildingData.functionType} 效果");
                 }
             }
         }
 
-        //  Income  Mixed 
+        // 筛选 Income 建筑 Mixed 
         Debug.Log($"TriggerLinkedBuildingIncome: === 处理 Income/Mixed 建筑 ===\n");
         List<UIManager.IncomeEntry> incomeEntries = new List<UIManager.IncomeEntry>();
         foreach (BoardTile buildingTile in incomeTiles)
@@ -432,7 +432,7 @@ public class BoardTile : MonoBehaviour
                 Debug.Log($"  - 更新 lastIncomeTime");
             }
 
-            Debug.Log($"  - ????Ч??");
+            Debug.Log($"  - 触发效果");
             PlayBuildingEffect(buildingTile);
             
             if (buildingTile.currentBuildingData.effectDuration > maxEffectDuration)
@@ -461,7 +461,7 @@ public class BoardTile : MonoBehaviour
 
         BuildingData data = buildingTile.currentBuildingData;
         
-        Debug.Log($"PlayBuildingEffect: ???? {data.buildingName} Ч??");
+        Debug.Log($"PlayBuildingEffect: 播放 {data.buildingName} 效果");
         Debug.Log($"  - effectIconPrefab: {(data.effectIconPrefab != null ? "已设置" : "null")}");
         Debug.Log($"  - effectSound: {(data.effectSound != null ? "已设置" : "null")}");
         
@@ -507,7 +507,7 @@ public class BoardTile : MonoBehaviour
         return timeSinceLastIncome >= incomeInterval;
     }
 
-    // ===  ===
+    // === 自动收入 ===
     private void GenerateAutoIncome()
     {
         if (currentBuildingData == null || ownerPlayer == null) return;
@@ -526,7 +526,7 @@ public class BoardTile : MonoBehaviour
         }
     }
 
-    //  -  -  + 1
+    // 持有回合 = 当前回合 - 建造回合 + 1
     public int GetBuildingTurnsOwned()
     {
         if (GameManager.Instance == null || currentBuildingData == null)
@@ -534,7 +534,7 @@ public class BoardTile : MonoBehaviour
             return 1;
         }
         int currentRound = GameManager.Instance.CurrentRound;
-        //  =  -  + 11
+        // 持有回合 = 当前回合 - 建造回合 + 1
         return Mathf.Max(1, currentRound - buildingStartRound + 1);
     }
 
@@ -574,13 +574,13 @@ public class BoardTile : MonoBehaviour
             return BuildingType.None;
         }
 
-        //  BuildingData  buildingType
+        // 从 BuildingData 获取 buildingType
         BoardTile.BuildingType type = data.buildingType;
 
         if (type == BuildingType.None)
         {
             // 
-            Debug.LogWarning($"???? {data.buildingName} ?? buildingTypeδ?????????????????");
+            Debug.LogWarning($"建筑 {data.buildingName} 的 buildingType 未设置，尝试从名称推断类型");
             return InferBuildingTypeFromName(data.buildingName);
         }
         else
@@ -594,11 +594,11 @@ public class BoardTile : MonoBehaviour
     {
         string name = buildingName.ToLower();
         //
-        if (name.Contains("small") || name.Contains(""))
+        if (name.Contains("small") || name.Contains("小"))
             return BuildingType.SmallHouse;
-        else if (name.Contains("medium") || name.Contains(""))
+        else if (name.Contains("medium") || name.Contains("中"))
             return BuildingType.MediumHouse;
-        else if (name.Contains("large") || name.Contains(""))
+        else if (name.Contains("large") || name.Contains("大"))
             return BuildingType.LargeHouse;
         else
             return BuildingType.Special;
