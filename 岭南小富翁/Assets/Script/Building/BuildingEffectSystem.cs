@@ -6,33 +6,33 @@ public class BuildingEffectSystem : MonoBehaviour
 {
     public static BuildingEffectSystem Instance;
 
-    [Header("Ч����ʾ����")]
+    [Header("特效显示设置")]
     public float iconOffsetY = 2.0f;
     public float rotateSpeed = 360f;
     public float fadeDuration = 0.3f;
     public float delayBetweenEffects = 0.2f;
 
-    [Header("�����ٶ�����")]
-    [Tooltip("�������������ٶ�")]
+    [Header("动画速度设置")]
+    [Tooltip("建筑效果播放的动画速度")]
     public float animationSpeed = 1.0f;
 
-    [Header("���ٶ�������")]
-    [Tooltip("ǰN��Ч�����������ٶ�")]
+    [Header("加速效果设置")]
+    [Tooltip("前N个效果保持正常速度")]
     public int normalSpeedCount = 3;
-    
-    [Tooltip("ÿ������Ч�����ٶȱ���")]
+
+    [Tooltip("每个额外效果的速度倍率")]
     public float speedMultiplierPerEffect = 1.15f;
-    
-    [Tooltip("����ٶȱ�������")]
+
+    [Tooltip("最大速度倍率上限")]
     public float maxSpeedMultiplier = 3.0f;
 
-    [Header("��Ч����")]
-[Tooltip("��Ч����0-1")]
-[Range(0f, 1f)]
-public float effectSoundVolume = 0.4f;
+    [Header("音效设置")]
+    [Tooltip("音效音量(0-1)")]
+    [Range(0f, 1f)]
+    public float effectSoundVolume = 0.4f;
 
-    [Header("Debug����")]
-    [Tooltip("�Ƿ�����Debug��־")]
+    [Header("Debug设置")]
+    [Tooltip("是否开启Debug日志")]
     public bool enableDebugLog = true;
 
     private Queue<EffectRequest> effectQueue = new Queue<EffectRequest>();
@@ -62,7 +62,7 @@ public float effectSoundVolume = 0.4f;
         }
     }
 
-    // Debug��־��������
+    // Debug 日志辅助方法
     private void DebugLog(string message)
     {
         if (enableDebugLog)
@@ -91,29 +91,29 @@ public float effectSoundVolume = 0.4f;
     {
         if (buildingData == null)
         {
-            DebugLogWarning("QueueBuildingEffect: buildingData Ϊ��");
+            DebugLogWarning("QueueBuildingEffect: buildingData 为空");
             return;
         }
 
         if (buildingTransform == null)
         {
-            DebugLogWarning($"QueueBuildingEffect: buildingTransform Ϊ�� for {buildingData.buildingName}");
+            DebugLogWarning($"QueueBuildingEffect: buildingTransform 为空 for {buildingData.buildingName}");
             return;
         }
 
-        // �����Ѵ��ڵ� BuildingEffectSystem ʵ��
+        // 检查已存在的 BuildingEffectSystem 实例
         if (Instance == null)
         {
-            DebugLogWarning("BuildingEffectSystem.Instance Ϊ�գ����Բ���...");
+            DebugLogWarning("BuildingEffectSystem.Instance 为空，尝试查找...");
             BuildingEffectSystem existing = FindObjectOfType<BuildingEffectSystem>();
             if (existing != null)
             {
                 Instance = existing;
-                DebugLog("�ҵ��Ѵ��ڵ� BuildingEffectSystem");
+                DebugLog("找到已存在的 BuildingEffectSystem");
             }
             else
             {
-                DebugLogError("δ�ҵ� BuildingEffectSystem����ȷ������ȷ���� BuildingEffectSystem ���");
+                DebugLogError("未找到 BuildingEffectSystem，请确保场景中正确添加了 BuildingEffectSystem 组件");
                 return;
             }
         }
@@ -121,11 +121,11 @@ public float effectSoundVolume = 0.4f;
         bool hasEffect = buildingData.effectIconPrefab != null || buildingData.effectSound != null;
         if (!hasEffect)
         {
-            DebugLog($"QueueBuildingEffect: {buildingData.buildingName} û������ effectIconPrefab �� effectSound");
+            DebugLog($"QueueBuildingEffect: {buildingData.buildingName} 没有配置 effectIconPrefab 或 effectSound");
             return;
         }
 
-        DebugLog($"QueueBuildingEffect: Ϊ {buildingData.buildingName} ���Ч��������");
+        DebugLog($"QueueBuildingEffect: 为 {buildingData.buildingName} 添加效果到队列");
 
         effectQueue.Enqueue(new EffectRequest
         {
@@ -147,9 +147,9 @@ public float effectSoundVolume = 0.4f;
         while (effectQueue.Count > 0)
         {
             effectIndex++;
-            
+
             float currentSpeed = GetCurrentSpeed(effectIndex);
-            DebugLog($"ProcessEffectQueue: �����{effectIndex}��Ч�����ٶ�={currentSpeed:F2}x");
+            DebugLog($"ProcessEffectQueue: 处理第{effectIndex}个效果，播放速度={currentSpeed:F2}x");
 
             EffectRequest request = effectQueue.Dequeue();
             yield return StartCoroutine(PlayBuildingEffect(request.buildingTransform, request.buildingData, currentSpeed));
@@ -169,7 +169,7 @@ public float effectSoundVolume = 0.4f;
         {
             return animationSpeed;
         }
-        
+
         int acceleratedIndex = effectIndex - normalSpeedCount;
         float speed = animationSpeed * Mathf.Pow(speedMultiplierPerEffect, acceleratedIndex);
         return Mathf.Min(speed, animationSpeed * maxSpeedMultiplier);
@@ -183,7 +183,7 @@ public float effectSoundVolume = 0.4f;
         }
 
         bool hasEffect = buildingData.effectIconPrefab != null || buildingData.effectSound != null;
-        
+
         if (!hasEffect)
         {
             yield break;
@@ -194,7 +194,7 @@ public float effectSoundVolume = 0.4f;
 
         if (buildingData.effectSound != null)
         {
-            DebugLog($"BuildingEffectSystem: �����Զ�����Ч {buildingData.buildingName}");
+            DebugLog($"BuildingEffectSystem: 自动播放自定义音效 {buildingData.buildingName}");
             if (SFXManager.Instance != null)
             {
                 SFXManager.Instance.PlayCustomClip(buildingData.effectSound, effectSoundVolume);
@@ -206,14 +206,14 @@ public float effectSoundVolume = 0.4f;
         }
         else if (SFXManager.Instance != null)
         {
-            DebugLog($"BuildingEffectSystem: �����Զ�����Ч {buildingData.buildingName}");
+            DebugLog($"BuildingEffectSystem: 自动播放默认音效 {buildingData.buildingName}");
             SFXManager.Instance.PlaySFX(SFXClip.EventBuffActivated, effectSoundVolume);
         }
 
         if (buildingData.effectIconPrefab != null)
         {
             iconInstance = Instantiate(buildingData.effectIconPrefab, spawnPosition, Quaternion.identity);
-            
+
             float elapsed = 0f;
             float totalDuration = buildingData.effectDuration / speed;
             float adjustedFadeDuration = fadeDuration / speed;
@@ -221,11 +221,11 @@ public float effectSoundVolume = 0.4f;
             while (elapsed < totalDuration)
             {
                 elapsed += Time.deltaTime * speed;
-                
+
                 if (iconInstance != null)
                 {
                     iconInstance.transform.Rotate(Vector3.up, rotateSpeed * Time.deltaTime * speed);
-                    
+
                     float alpha = 1f;
                     if (elapsed < adjustedFadeDuration)
                     {
@@ -246,7 +246,7 @@ public float effectSoundVolume = 0.4f;
                     float scale = Mathf.Lerp(0.5f, 1.2f, Mathf.Sin(elapsed / totalDuration * Mathf.PI));
                     iconInstance.transform.localScale = Vector3.one * scale;
                 }
-                
+
                 yield return null;
             }
 
@@ -266,54 +266,54 @@ public float effectSoundVolume = 0.4f;
     public void SetAnimationSpeed(float speed)
     {
         animationSpeed = Mathf.Max(0.1f, speed);
-        DebugLog($"BuildingEffectSystem: ���ö����ٶ�={animationSpeed}x");
+        DebugLog($"BuildingEffectSystem: 设置动画速度={animationSpeed}x");
     }
 
     public void SetNormalSpeedCount(int count)
     {
         normalSpeedCount = Mathf.Max(0, count);
-        DebugLog($"BuildingEffectSystem: ���������ٶ�Ч������={normalSpeedCount}");
+        DebugLog($"BuildingEffectSystem: 设置正常速度效果数量={normalSpeedCount}");
     }
 
     public void SetSpeedMultiplierPerEffect(float multiplier)
     {
         speedMultiplierPerEffect = Mathf.Max(1.0f, multiplier);
-        DebugLog($"BuildingEffectSystem: �����ٶȱ���={speedMultiplierPerEffect}");
+        DebugLog($"BuildingEffectSystem: 设置速度倍率={speedMultiplierPerEffect}");
     }
 
     public void SetMaxSpeedMultiplier(float multiplier)
     {
         maxSpeedMultiplier = Mathf.Max(1.0f, multiplier);
-        DebugLog($"BuildingEffectSystem: ��������ٶȱ���={maxSpeedMultiplier}");
+        DebugLog($"BuildingEffectSystem: 设置最大速度倍率={maxSpeedMultiplier}");
     }
 
     public void SetDelayBetweenEffects(float delay)
     {
         delayBetweenEffects = Mathf.Max(0f, delay);
-        DebugLog($"BuildingEffectSystem: ����Ч�����={delayBetweenEffects}��");
+        DebugLog($"BuildingEffectSystem: 设置效果间隔={delayBetweenEffects}秒");
     }
 
     public void SetEffectSoundVolume(float volume)
     {
         effectSoundVolume = Mathf.Clamp01(volume);
-        DebugLog($"BuildingEffectSystem: ������Ч����={effectSoundVolume}");
+        DebugLog($"BuildingEffectSystem: 设置音效音量={effectSoundVolume}");
     }
 
     public void ClearEffectQueue()
     {
         effectQueue.Clear();
-        DebugLog($"BuildingEffectSystem: ���Ч������");
+        DebugLog($"BuildingEffectSystem: 已清空效果队列");
     }
 
-    // Debug��־���ƽӿ�
+    // Debug 日志开关接口
     public void SetDebugLogEnabled(bool enabled)
     {
         enableDebugLog = enabled;
-        string status = enabled ? "������" : "�ѹر�";
-        Debug.Log($"BuildingEffectSystem: Debug��־{status}");
+        string status = enabled ? "已开启" : "已关闭";
+        Debug.Log($"BuildingEffectSystem: Debug日志{status}");
     }
 
-    // ��ȡDebug��־״̬
+    // 获取 Debug 日志状态
     public bool IsDebugLogEnabled()
     {
         return enableDebugLog;
