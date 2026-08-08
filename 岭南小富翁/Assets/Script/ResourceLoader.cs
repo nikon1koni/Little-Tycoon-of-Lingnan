@@ -42,12 +42,13 @@ public static class ResourceLoader
         yield return AssetBundleManager.Instance.InitializeAsync();
     }
 
-    [Obsolete("使用带bundleName的版本更推荐")]
+    [Obsolete("同步加载会卡主线程，推荐使用 LoadAsync<T> 异步版本")]
     public static T Load<T>(string assetName) where T : UnityEngine.Object
     {
         return LoadInternal<T>(null, assetName);
     }
 
+    [Obsolete("同步加载会卡主线程，推荐使用 LoadAsync<T> 异步版本")]
     public static T Load<T>(string bundleName, string assetName) where T : UnityEngine.Object
     {
         return LoadInternal<T>(bundleName, assetName);
@@ -136,20 +137,35 @@ public static class ResourceLoader
 
         AsyncAssetLoadOperation<T> abOp = AssetBundleManager.Instance.LoadAssetAsync<T>(bundleName, assetName);
         yield return abOp.WaitForCompletion();
+
+        // AB包异步加载失败时，回退 Resources.LoadAsync
+        if (abOp.Result == null)
+        {
+            Debug.LogWarning("[ResourceLoader] AB包异步加载失败: " + bundleName + "/" + assetName + "，回退Resources.LoadAsync");
+            ResourceRequest rr = Resources.LoadAsync<T>(assetName);
+            yield return rr;
+            op.SetResult(rr.asset as T, rr.asset != null);
+            yield break;
+        }
+
         op.SetResult(abOp.Result, abOp.Success);
     }
 
+    [Obsolete("同步实例化会卡主线程，推荐使用 InstantiatePrefabAsync 异步版本")]
     public static GameObject InstantiatePrefab(string assetName)
     {
         return InstantiatePrefab(assetName, null, false);
     }
 
+    [Obsolete("同步实例化会卡主线程，推荐使用 InstantiatePrefabAsync 异步版本")]
     public static GameObject InstantiatePrefab(string assetName, Transform parent, bool worldPositionStays = false)
     {
+#pragma warning disable CS0618
         GameObject prefab = Load<GameObject>(null, assetName);
+#pragma warning restore CS0618
         if (prefab == null)
         {
-            Debug.LogError($"[ResourceLoader] 未找到预制体: {assetName}");
+            Debug.LogError("[ResourceLoader] 未找到预制体: " + assetName);
             return null;
         }
         return parent == null
@@ -159,18 +175,25 @@ public static class ResourceLoader
 
     public static AsyncInstantiateOperation InstantiatePrefabAsync(string assetName, Transform parent = null, bool worldPositionStays = false)
     {
+        return InstantiatePrefabAsync(null, assetName, parent, worldPositionStays);
+    }
+
+    public static AsyncInstantiateOperation InstantiatePrefabAsync(string bundleName, string assetName, Transform parent = null, bool worldPositionStays = false)
+    {
         AsyncInstantiateOperation op = new AsyncInstantiateOperation();
-        AssetBundleManager.Instance.StartCoroutine(DoInstantiateAsync(assetName, parent, worldPositionStays, op));
+        EnsureManagerExists();
+        AssetBundleManager.Instance.StartCoroutine(DoInstantiateAsync(bundleName, assetName, parent, worldPositionStays, op));
         return op;
     }
 
-    private static IEnumerator DoInstantiateAsync(string assetName, Transform parent, bool worldPositionStays, AsyncInstantiateOperation op)
+    private static IEnumerator DoInstantiateAsync(string bundleName, string assetName, Transform parent, bool worldPositionStays, AsyncInstantiateOperation op)
     {
-        AsyncLoadOperation<GameObject> loadOp = LoadAsync<GameObject>(assetName);
+        AsyncLoadOperation<GameObject> loadOp = LoadAsync<GameObject>(bundleName, assetName);
         yield return loadOp.WaitForCompletion();
 
         if (loadOp.Result == null)
         {
+            Debug.LogError("[ResourceLoader] 异步实例化失败，未找到预制体: " + assetName);
             op.SetResult(null, false);
             yield break;
         }
@@ -199,13 +222,7 @@ public static class ResourceLoader
         if (typeof(T) == typeof(Sprite) || typeof(T) == typeof(Texture2D) ||
             typeof(T) == typeof(Texture) || typeof(T) == typeof(Material))
         {
-            if (assetName.IndexOf("UI", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                assetName.IndexOf("开始", StringComparison.Ordinal) >= 0 ||
-                assetName.IndexOf("游玩", StringComparison.Ordinal) >= 0 ||
-                assetName.IndexOf("购买", StringComparison.Ordinal) >= 0)
-            {
-                return "ui_art";
-            }
+            // 贴图/材质类 — 默认归到 ui_art（若包含地形关键字可扩展区分terrain_art）
             return "ui_art";
         }
 
@@ -241,7 +258,7 @@ public class AsyncLoadOperation<T> where T : UnityEngine.Object
         Success = success;
         IsDone = true;
         try { OnCompleted?.Invoke(result, success); }
-        catch (Exception e) { Debug.LogError($"[AsyncLoadOperation] 回调异常: {e}"); }
+        catch (Exception e) { Debug.LogError("[AsyncLoadOperation] 回调异常: " + e); }
     }
 
     public IEnumerator WaitForCompletion()
@@ -263,7 +280,7 @@ public class AsyncInstantiateOperation
         Success = success;
         IsDone = true;
         try { OnCompleted?.Invoke(result, success); }
-        catch (Exception e) { Debug.LogError($"[AsyncInstantiateOperation] 回调异常: {e}"); }
+        catch (Exception e) { Debug.LogError("[AsyncInstantiateOperation] 回调异常: " + e); }
     }
 
     public IEnumerator WaitForCompletion()

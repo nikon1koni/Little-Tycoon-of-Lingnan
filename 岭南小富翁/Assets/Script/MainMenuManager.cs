@@ -1,18 +1,18 @@
-using System.Collections;
+ï»¿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainMenuManager : MonoBehaviour
 {
-    [Header("³¡¾°ÉèÖÃ")]
+    [Header("åœºæ™¯è®¾ç½®")]
     [SerializeField] private string gameSceneName = "New";
 
-    [Header("°´Å¥ÅäÖÃ")]
+    [Header("æŒ‰é’®å¼•ç”¨")]
     [SerializeField] private Button startButton;
     [SerializeField] private Button quitButton;
 
-    [Header("ÒôĞ§ÅäÖÃ")]
+    [Header("éŸ³æ•ˆé…ç½®")]
     [SerializeField] private SFXConfig sfxConfig;
 
     private void Start()
@@ -23,8 +23,8 @@ public class MainMenuManager : MonoBehaviour
     IEnumerator StartWithABInit()
     {
         yield return ResourceLoader.InitializeAsync();
-        Debug.Log($"[MainMenu] ResourceLoader³õÊ¼»¯Íê³É, UseAssetBundles={ResourceLoader.UseAssetBundles}");
-        EnsureSFXManagerExists();
+        Debug.Log("[MainMenu] ResourceLoaderåˆå§‹åŒ–å®Œæˆ, UseAssetBundles=" + ResourceLoader.UseAssetBundles);
+        yield return EnsureSFXManagerExistsAsync();
 
         if (startButton == null)
             startButton = GameObject.Find("StartButton")?.GetComponent<Button>();
@@ -34,12 +34,12 @@ public class MainMenuManager : MonoBehaviour
         if (startButton != null)
             startButton.onClick.AddListener(OnStartGame);
         else
-            Debug.LogError("Î´ÕÒµ½¿ªÊ¼°´Å¥£¬ÇëÈ·±£°´Å¥Ãû³ÆÎªStartButton»òÊÖ¶¯ÍÏ×§");
+            Debug.LogError("æœªæ‰¾åˆ°å¼€å§‹æŒ‰é’®ï¼Œè¯·ç¡®ä¿æŒ‰é’®åç§°ä¸ºStartButtonæˆ–æ‰‹åŠ¨æ‹–æ‹½");
 
         if (quitButton != null)
             quitButton.onClick.AddListener(OnQuitGame);
         else
-            Debug.LogError("Î´ÕÒµ½ÍË³ö°´Å¥£¬ÇëÈ·±£°´Å¥Ãû³ÆÎªQuitButton»òÊÖ¶¯ÍÏ×§");
+            Debug.LogError("æœªæ‰¾åˆ°é€€å‡ºæŒ‰é’®ï¼Œè¯·ç¡®ä¿æŒ‰é’®åç§°ä¸ºQuitButtonæˆ–æ‰‹åŠ¨æ‹–æ‹½");
     }
 
     public void OnStartGame()
@@ -50,7 +50,7 @@ public class MainMenuManager : MonoBehaviour
         if (!string.IsNullOrEmpty(gameSceneName))
             SceneManager.LoadScene(gameSceneName);
         else
-            Debug.LogError("Î´ÉèÖÃÓÎÏ·³¡¾°Ãû³Æ");
+            Debug.LogError("æœªè®¾ç½®æ¸¸æˆåœºæ™¯åç§°");
     }
 
     public void OnQuitGame()
@@ -58,7 +58,7 @@ public class MainMenuManager : MonoBehaviour
         if (SFXManager.Instance != null)
             SFXManager.Instance.PlaySFX(SFXClip.UIClick);
 
-        Debug.Log("ÍË³öÓÎÏ·");
+        Debug.Log("é€€å‡ºæ¸¸æˆ");
 
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
@@ -67,9 +67,9 @@ public class MainMenuManager : MonoBehaviour
 #endif
     }
 
-    void EnsureSFXManagerExists()
+    IEnumerator EnsureSFXManagerExistsAsync()
     {
-        if (SFXManager.Instance != null) return;
+        if (SFXManager.Instance != null) yield break;
 
         GameObject sfxObj = new GameObject("SFXManager");
         SFXManager sfxManager = sfxObj.AddComponent<SFXManager>();
@@ -81,15 +81,25 @@ public class MainMenuManager : MonoBehaviour
         }
         else
         {
-            sfxConfig = ResourceLoader.Load<SFXConfig>("config_data", "SFXConfig");
+            // å¼‚æ­¥ä»ABåŒ…åŠ è½½ SFXConfig
+            Debug.Log("[MainMenu] å¼‚æ­¥åŠ è½½ SFXConfig (ABåŒ…)...");
+            var op = ResourceLoader.LoadAsync<SFXConfig>("config_data", "SFXConfig");
+            yield return op.WaitForCompletion();
+            sfxConfig = op.Result;
+
+            // å›é€€ï¼šå¼‚æ­¥ä» Resources åŠ è½½
             if (sfxConfig == null)
             {
-                sfxConfig = Resources.Load<SFXConfig>("SFXConfig");
+                Debug.LogWarning("[MainMenu] ABåŒ…æœªæ‰¾åˆ°SFXConfigï¼Œå›é€€Resources.LoadAsync...");
+                ResourceRequest rr = Resources.LoadAsync<SFXConfig>("SFXConfig");
+                yield return rr;
+                sfxConfig = rr.asset as SFXConfig;
             }
             if (sfxConfig != null)
             {
                 sfxManager.config = sfxConfig;
                 sfxManager.ReloadClips();
+                Debug.Log("[MainMenu] SFXConfig å¼‚æ­¥åŠ è½½å®Œæˆ");
             }
         }
     }

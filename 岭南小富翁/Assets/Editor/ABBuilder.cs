@@ -53,7 +53,9 @@ public static class ABBuilder
         AddArtAssets(ref pathToBundle, "Assets/Data/BoardData/BuidingPrefabs", "buildings_prefabs");
         AddArtAssets(ref pathToBundle, "Assets/Prefabs", "buildings_prefabs");
 
-        AddDataAssets(ref pathToBundle, "Assets/Data", "config_data");
+        // 注意：AddDataAssets 必须在 AddArtAssets 之后调用，因为 .asset 应该归类为配置数据
+        // 会覆盖掉 AddArtAssets 中对 .asset 文件的错误分配（如 Assets/Music/SFX/SFXConfig.asset 被归为 audio_art）
+        AddDataAssets(ref pathToBundle, "Assets", "config_data");
 
         foreach (var kv in pathToBundle)
         {
@@ -73,15 +75,16 @@ public static class ABBuilder
                 importer.assetBundleVariant = string.Empty;
                 importer.SaveAndReimport();
                 changedCount++;
-                Debug.Log($"[ABBuilder] 设置标签: {assetPath} -> {targetLower}");
+                Debug.Log("[ABBuilder] 变更标签: " + assetPath + " -> " + targetLower);
             }
         }
 
         AssetDatabase.RemoveUnusedAssetBundleNames();
         AssetDatabase.Refresh();
 
-        Debug.Log($"[ABBuilder] 标签设置完成！共扫描 {originalCount} 个资源，更新 {changedCount} 个标签");
-        EditorUtility.DisplayDialog("AB包标签设置", $"扫描资源 {originalCount} 个\n更新标签 {changedCount} 个", "确定");
+        Debug.Log("[ABBuilder] 标签设置完成，共扫描 " + originalCount + " 个资源，更新 " + changedCount + " 个标签");
+        EditorUtility.DisplayDialog("AB包标签完成",
+            "扫描资源 " + originalCount + " 个\n更新标签 " + changedCount + " 个", "确定");
     }
 
     [MenuItem("Tools/AssetBundle/2. 构建AB包 (Windows)")]
@@ -134,8 +137,8 @@ public static class ABBuilder
         }
         AssetDatabase.RemoveUnusedAssetBundleNames();
         AssetDatabase.Refresh();
-        Debug.Log($"[ABBuilder] 已清除 {cleared} 个资源的AB包标签");
-        EditorUtility.DisplayDialog("清除完成", $"已清除 {cleared} 个标签", "确定");
+        Debug.Log("[ABBuilder] 清除了 " + cleared + " 个资源的AB包标签");
+        EditorUtility.DisplayDialog("清除完成", "清除了 " + cleared + " 个标签", "确定");
     }
 
     [MenuItem("Tools/AssetBundle/7. 查看当前AB包统计")]
@@ -160,17 +163,17 @@ public static class ABBuilder
                 }
             }
             totalSize += bundleSize;
-            sb.AppendLine($"  {name}: {assets.Length} 个资源, 约 {FormatSize(bundleSize)}");
+            sb.AppendLine("  " + name + ": " + assets.Length + " 个资源, 约 " + FormatSize(bundleSize));
         }
 
         sb.AppendLine();
-        sb.AppendLine($"总计 {names.Length} 个AB包, 约 {FormatSize(totalSize)}");
+        sb.AppendLine("总计 " + names.Length + " 个AB包，约 " + FormatSize(totalSize));
 
         Debug.Log(sb.ToString());
         EditorUtility.DisplayDialog("AB包统计", sb.ToString(), "确定");
     }
 
-    [MenuItem("Tools/AssetBundle/8. 导出标签配置到JSON")]
+    [MenuItem("Tools/AssetBundle/8. 导出当前标签配置JSON")]
     public static void ExportBundleConfig()
     {
         BundleConfig config = new BundleConfig();
@@ -186,8 +189,8 @@ public static class ABBuilder
         if (!string.IsNullOrEmpty(savePath))
         {
             File.WriteAllText(savePath, json, Encoding.UTF8);
-            EditorUtility.DisplayDialog("导出成功", $"配置已保存到:\n{savePath}\n(UTF-8编码,中文无乱码)", "确定");
-            Debug.Log($"[ABBuilder] 配置已导出: {savePath}");
+            EditorUtility.DisplayDialog("导出成功", "配置已保存到:\n" + savePath + "\n(UTF-8编码，中文不会乱码)", "确定");
+            Debug.Log("[ABBuilder] 配置已导出: " + savePath);
         }
     }
 
@@ -195,212 +198,208 @@ public static class ABBuilder
     {
         if (EditorApplication.isCompiling)
         {
-            EditorUtility.DisplayDialog("错误", "Unity正在编译脚本，请稍后再试", "确定");
+            EditorUtility.DisplayDialog("错误", "Unity 正在编译脚本，请稍后再试", "确定");
             return;
         }
 
-        if (EditorApplication.isPlaying)
+        string platformFolder = GetPlatformFolder(target);
+        string outputPath = Path.Combine(OutputRoot, platformFolder);
+
+        if (!Directory.Exists(outputPath))
         {
-            if (!EditorUtility.DisplayDialog("警告", "当前正在运行游戏模式，是否退出后再构建？", "退出并构建", "取消"))
-            {
-                return;
-            }
-            EditorApplication.isPlaying = false;
+            Directory.CreateDirectory(outputPath);
         }
+
+        Debug.Log("[ABBuilder] 开始构建 " + platformFolder + " AB包到: " + outputPath);
+
+        // 注意：不要使用 DisableWriteTypeTree，否则 Editor 中无法加载 AB 包
+        // TypeTree 在 Editor 运行时和跨平台兼容时必需
+        BuildAssetBundleOptions options =
+            BuildAssetBundleOptions.ChunkBasedCompression |
+            BuildAssetBundleOptions.ForceRebuildAssetBundle;
 
         try
         {
-            BuildTargetGroup group = BuildPipeline.GetBuildTargetGroup(target);
-            string platformFolder = GetPlatformFolderName(target);
-            string outputPath = Path.Combine(OutputRoot, platformFolder);
-
-            if (!Directory.Exists(outputPath))
-            {
-                Directory.CreateDirectory(outputPath);
-            }
-
-            Debug.Log($"[ABBuilder] 开始构建 {platformFolder} AB包到: {outputPath}");
-            EditorUtility.DisplayProgressBar("构建AB包", $"准备 {platformFolder} ...", 0.1f);
-
-            BuildAssetBundleOptions options =
-                BuildAssetBundleOptions.ChunkBasedCompression |
-                BuildAssetBundleOptions.DisableWriteTypeTree;
-
-            AssetBundleManifest manifest = BuildPipeline.BuildAssetBundles(
-                outputPath,
-                options,
-                target
-            );
-
-            EditorUtility.ClearProgressBar();
+            AssetBundleManifest manifest = BuildPipeline.BuildAssetBundles(outputPath, options, target);
 
             if (manifest == null)
             {
-                Debug.LogError("[ABBuilder] 构建失败，请查看Console中的错误信息");
-                EditorUtility.DisplayDialog("构建失败", "请查看Console错误详情", "确定");
+                Debug.LogError("[ABBuilder] 构建失败，请查看 Console 报错（Unity弹窗/无法识别的资产类型）");
+                EditorUtility.DisplayDialog("构建失败", "BuildPipeline.BuildAssetBundles 返回 null\n请查看 Console 中的错误详情", "确定");
                 return;
             }
 
             string[] bundles = manifest.GetAllAssetBundles();
-            StringBuilder report = new StringBuilder();
-            report.AppendLine($"===== {platformFolder} AB包构建完成 =====");
-            report.AppendLine($"输出路径: {Path.GetFullPath(outputPath)}");
-            report.AppendLine($"AB包数量: {bundles.Length}");
-            report.AppendLine();
-
-            long totalBuildSize = 0;
+            long totalSize = 0;
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("构建成功！");
+            sb.AppendLine("平台: " + platformFolder);
+            sb.AppendLine("AB包数量: " + bundles.Length);
+            sb.AppendLine();
             foreach (string b in bundles)
             {
-                string filePath = Path.Combine(outputPath, b);
+                string fullPath = Path.Combine(outputPath, b);
                 long size = 0;
-                if (File.Exists(filePath))
+                if (File.Exists(fullPath))
                 {
-                    FileInfo fi = new FileInfo(filePath);
+                    FileInfo fi = new FileInfo(fullPath);
                     size = fi.Length;
-                    totalBuildSize += size;
+                    totalSize += size;
                 }
-                string[] deps = manifest.GetDirectDependencies(b);
-                report.AppendLine($"  {b} ({FormatSize(size)}) deps=[{string.Join(", ", deps)}]");
+                sb.AppendLine("  " + b + " (" + FormatSize(size) + ")");
             }
-            report.AppendLine();
-            report.AppendLine($"构建总大小: {FormatSize(totalBuildSize)}");
+            sb.AppendLine();
+            sb.AppendLine("总大小: " + FormatSize(totalSize));
+            sb.AppendLine();
+            sb.AppendLine("输出目录: " + outputPath);
 
-            string manifestPath = Path.Combine(outputPath, platformFolder + ".manifest");
-            if (File.Exists(manifestPath))
-            {
-                string manifestText = File.ReadAllText(manifestPath, Encoding.UTF8);
-                report.AppendLine();
-                report.AppendLine("Manifest内容:");
-                report.AppendLine(manifestText);
-            }
-
-            Debug.Log(report.ToString());
+            Debug.Log("[ABBuilder] 构建完成: " + bundles.Length + " 个AB包, 总大小: " + FormatSize(totalSize));
             AssetDatabase.Refresh();
-
-            EditorUtility.DisplayDialog(
-                "构建成功",
-                $"平台: {platformFolder}\n" +
-                $"AB包数量: {bundles.Length}\n" +
-                $"总大小: {FormatSize(totalBuildSize)}\n" +
-                $"输出目录:\n{Path.GetFullPath(outputPath)}",
-                "确定"
-            );
-
-            CopyToProjectOutputIfNeeded(outputPath, target);
+            EditorUtility.DisplayDialog("构建成功", sb.ToString(), "确定");
         }
         catch (Exception e)
         {
-            EditorUtility.ClearProgressBar();
-            Debug.LogError($"[ABBuilder] 构建异常: {e}");
+            Debug.LogError("[ABBuilder] 构建抛出异常: " + e);
             EditorUtility.DisplayDialog("构建异常", e.Message, "确定");
         }
     }
 
-    private static void CopyToProjectOutputIfNeeded(string sourceFolder, BuildTarget target)
+    private static string GetPlatformFolder(BuildTarget target)
     {
-        try
+        switch (target)
         {
-            string buildDir = EditorUserBuildSettings.GetBuildLocation(target);
-            if (string.IsNullOrEmpty(buildDir) || !File.Exists(buildDir))
-            {
-                return;
-            }
-
-            buildDir = Path.GetDirectoryName(buildDir);
-            if (string.IsNullOrEmpty(buildDir) || !Directory.Exists(buildDir))
-            {
-                return;
-            }
-
-            string platformFolder = GetPlatformFolderName(target);
-            string productName = Application.productName;
-            string streamingTarget;
-
-            if (target == BuildTarget.StandaloneWindows64 || target == BuildTarget.StandaloneWindows)
-            {
-                streamingTarget = Path.Combine(buildDir, productName + "_Data", "StreamingAssets", "AssetBundles", platformFolder);
-            }
-            else if (target == BuildTarget.StandaloneOSX)
-            {
-                streamingTarget = Path.Combine(buildDir, productName + ".app", "Contents", "Resources", "Data", "StreamingAssets", "AssetBundles", platformFolder);
-            }
-            else
-            {
-                return;
-            }
-
-            string parentDir = Path.GetDirectoryName(streamingTarget);
-            if (!string.IsNullOrEmpty(parentDir) && !Directory.Exists(parentDir))
-            {
-                Directory.CreateDirectory(parentDir);
-            }
-
-            if (Directory.Exists(streamingTarget))
-            {
-                Directory.Delete(streamingTarget, true);
-            }
-            DirectoryCopy(sourceFolder, streamingTarget, true);
-            Debug.Log($"[ABBuilder] 已同步AB包到构建输出目录: {streamingTarget}");
-        }
-        catch (Exception e)
-        {
-            Debug.LogWarning($"[ABBuilder] 同步到输出目录失败(可忽略): {e.Message}");
+            case BuildTarget.StandaloneWindows:
+            case BuildTarget.StandaloneWindows64:
+                return "StandaloneWindows";
+            case BuildTarget.StandaloneOSX:
+                return "StandaloneOSX";
+            case BuildTarget.Android:
+                return "Android";
+            case BuildTarget.iOS:
+                return "iOS";
+            default:
+                return target.ToString();
         }
     }
 
-    private static void DirectoryCopy(string sourceDir, string destDir, bool copySubDirs)
+    private static readonly HashSet<string> ExcludedFolders = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
     {
-        DirectoryInfo dir = new DirectoryInfo(sourceDir);
-        if (!dir.Exists) throw new DirectoryNotFoundException(sourceDir);
-        Directory.CreateDirectory(destDir);
+        "Assets/TextMesh Pro",
+        "Assets/Editor",
+        "Assets/StreamingAssets",
+        "Assets/Plugins",
+        "Assets/Standard Assets",
+        "Assets/ProjectSettings",
+        "Assets/Scenes",
+    };
 
-        foreach (FileInfo file in dir.GetFiles())
+    private static readonly HashSet<string> ExcludedAssetFiles = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+    {
+        // Unity 编辑器专用配置，不能包含在 AssetBundles 中
+        "LightingData.asset",
+        "EditorBuildSettings.asset",
+        "EditorSettings.asset",
+        "UnityConnectSettings.asset",
+        "ProjectSettings.asset",
+        "TagManager.asset",
+        "GraphicsSettings.asset",
+        "PhysicsSettings.asset",
+        "Physics2DSettings.asset",
+        "QualitySettings.asset",
+        "InputManager.asset",
+        "AudioManager.asset",
+        "AudioMixers.asset",
+        "TimeManager.asset",
+        "NavMeshAreas.asset",
+        "DynamicsManager.asset",
+        "PresetManager.asset",
+        "VFXManager.asset",
+        "HDRenderPipelineGlobalSettings.asset",
+        "URPProjectSettings.asset",
+        "EditorResources.asset",
+    };
+
+    private static bool IsExcludedPath(string path)
+    {
+        foreach (string folder in ExcludedFolders)
         {
-            string tPath = Path.Combine(destDir, file.Name);
-            file.CopyTo(tPath, true);
-        }
-        if (copySubDirs)
-        {
-            foreach (DirectoryInfo sub in dir.GetDirectories())
+            if (path.StartsWith(folder, StringComparison.OrdinalIgnoreCase))
             {
-                string t = Path.Combine(destDir, sub.Name);
-                DirectoryCopy(sub.FullName, t, copySubDirs);
+                return true;
             }
         }
+        string fileName = Path.GetFileName(path);
+        if (ExcludedAssetFiles.Contains(fileName))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private static bool ShouldIncludeFile(string path)
+    {
+        string ext = Path.GetExtension(path).ToLowerInvariant();
+
+        // 注意：.asset（ScriptableObject 配置）不在这里处理，由 AddDataAssets 统一分配到 config_data
+        // shadergraph 在某些 Unity 版本无法直接打包到 AB，排除
+        if (ext == ".shadergraph" || ext == ".asset") return false;
+
+        HashSet<string> includeExt = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            ".png", ".jpg", ".jpeg", ".tga", ".bmp", ".gif", ".psd",
+            ".fbx", ".obj", ".max", ".blend", ".mb", ".ma",
+            ".mat",
+            ".prefab",
+            ".wav", ".mp3", ".ogg", ".aiff", ".flac",
+            ".shader",
+            ".ttf", ".otf",
+            ".lighting",
+            ".exr", ".hdr",
+        };
+        return includeExt.Contains(ext);
     }
 
     private static void AddArtAssets(ref Dictionary<string, string> mapping, string path, string bundleName)
     {
-        if (!Directory.Exists(path) && !File.Exists(path))
+        if (string.IsNullOrEmpty(path)) return;
+
+        if (File.Exists(path))
         {
+            string ext = Path.GetExtension(path).ToLowerInvariant();
+            if (ext == ".shadergraph") return;
+            // 单个文件（非目录），只允许特定扩展名
+            HashSet<string> allAcceptable = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ".png", ".jpg", ".jpeg", ".tga", ".bmp", ".gif", ".psd",
+                ".fbx", ".obj", ".max", ".blend", ".mb", ".ma",
+                ".mat", ".prefab", ".wav", ".mp3", ".ogg", ".aiff", ".flac",
+                ".shader", ".ttf", ".otf", ".lighting", ".exr", ".hdr"
+            };
+            if (!allAcceptable.Contains(ext)) return;
+            mapping[path] = bundleName;
             return;
         }
 
-        FileAttributes attr = File.GetAttributes(path);
-        if ((attr & FileAttributes.Directory) != FileAttributes.Directory)
-        {
-            if (ShouldIncludeFile(path))
-            {
-                mapping[path] = bundleName;
-            }
-            return;
-        }
+        if (!Directory.Exists(path)) return;
 
         string[] files = Directory.GetFiles(path, "*", SearchOption.AllDirectories);
         foreach (string f in files)
         {
-            string assetPath = f.Replace(Path.DirectorySeparatorChar, '/').Replace(Path.AltDirectorySeparatorChar, '/');
-            if (assetPath.StartsWith("./") || assetPath.StartsWith(".\\"))
-            {
-                assetPath = assetPath.Substring(2);
-            }
+            string assetPath = f.Replace(Path.DirectorySeparatorChar, '/');
             if (!assetPath.StartsWith("Assets/", StringComparison.OrdinalIgnoreCase))
             {
                 int idx = assetPath.IndexOf("Assets/", StringComparison.OrdinalIgnoreCase);
-                if (idx >= 0) assetPath = assetPath.Substring(idx);
+                if (idx >= 0)
+                {
+                    assetPath = assetPath.Substring(idx);
+                }
+                else
+                {
+                    continue;
+                }
             }
-
             if (assetPath.EndsWith(".meta", StringComparison.OrdinalIgnoreCase)) continue;
+            if (IsExcludedPath(assetPath)) continue;
             if (!ShouldIncludeFile(assetPath)) continue;
 
             mapping[assetPath] = bundleName;
@@ -421,6 +420,8 @@ public static class ABBuilder
                 if (idx >= 0) assetPath = assetPath.Substring(idx);
             }
             if (assetPath.EndsWith(".meta", StringComparison.OrdinalIgnoreCase)) continue;
+            if (IsExcludedPath(assetPath)) continue;
+            // 覆盖写入：确保 .asset 一律归到 config_data，即使被之前的 Art 归类错
             mapping[assetPath] = bundleName;
         }
 
@@ -434,57 +435,26 @@ public static class ABBuilder
                 if (idx >= 0) assetPath = assetPath.Substring(idx);
             }
             if (assetPath.EndsWith(".meta", StringComparison.OrdinalIgnoreCase)) continue;
+            if (IsExcludedPath(assetPath)) continue;
             if (mapping.ContainsKey(assetPath)) continue;
             mapping[assetPath] = bundleName;
         }
     }
 
-    private static bool ShouldIncludeFile(string path)
-    {
-        string ext = Path.GetExtension(path).ToLowerInvariant();
-        HashSet<string> includeExt = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-        {
-            ".png", ".jpg", ".jpeg", ".tga", ".bmp", ".gif", ".psd",
-            ".fbx", ".obj", ".max", ".blend", ".mb", ".ma",
-            ".mat",
-            ".prefab",
-            ".wav", ".mp3", ".ogg", ".aiff", ".flac",
-            ".shader", ".shadergraph",
-            ".asset",
-            ".ttf", ".otf",
-            ".lighting",
-            ".exr", ".hdr",
-        };
-        return includeExt.Contains(ext);
-    }
-
-    private static string GetPlatformFolderName(BuildTarget target)
-    {
-        switch (target)
-        {
-            case BuildTarget.StandaloneWindows:
-            case BuildTarget.StandaloneWindows64:
-                return "StandaloneWindows";
-            case BuildTarget.StandaloneOSX:
-                return "StandaloneOSX";
-            case BuildTarget.StandaloneLinux64:
-                return "StandaloneLinux64";
-            case BuildTarget.Android:
-                return "Android";
-            case BuildTarget.iOS:
-                return "iOS";
-            case BuildTarget.WebGL:
-                return "WebGL";
-            default:
-                return target.ToString();
-        }
-    }
-
     private static string FormatSize(long bytes)
     {
-        if (bytes < 1024) return $"{bytes} B";
-        if (bytes < 1024 * 1024) return $"{bytes / 1024f:F2} KB";
-        if (bytes < 1024L * 1024 * 1024) return $"{bytes / 1024f / 1024f:F2} MB";
-        return $"{bytes / 1024f / 1024f / 1024f:F2} GB";
+        if (bytes < 1024)
+        {
+            return bytes + " B";
+        }
+        if (bytes < 1024 * 1024)
+        {
+            return (bytes / 1024.0).ToString("F2") + " KB";
+        }
+        if (bytes < 1024 * 1024 * 1024)
+        {
+            return (bytes / (1024.0 * 1024.0)).ToString("F2") + " MB";
+        }
+        return (bytes / (1024.0 * 1024.0 * 1024.0)).ToString("F2") + " GB";
     }
 }

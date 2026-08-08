@@ -1,22 +1,18 @@
 ManifestFileVersion: 0
-CRC: 4235703864
+CRC: 1788645408
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: b9e124c3e0f67f4839076741f705a686
+    Hash: d52e3d78b0c9fdf14249d1515f3378c2
   TypeTreeHash:
     serializedVersion: 2
-    Hash: 913c41d16f0c30916420e7ed6a88f514
+    Hash: 9a2ca7bdbd1871f7131daf57de908e0c
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: b9e124c3e0f67f4839076741f705a686
+    Hash: d52e3d78b0c9fdf14249d1515f3378c2
 HashAppended: 0
 ClassTypes:
 - Class: 83
-  Script: {instanceID: 0}
-- Class: 114
-  Script: {fileID: 11500000, guid: 1189c22e753af3e42a41c68dafec7b7a, type: 3}
-- Class: 115
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
@@ -26,13 +22,12 @@ Assets:
 - "Assets/Music/SFX/\u4EA4\u4E92/\u51FA\u552E\u5EFA\u7B51.mp3"
 - Assets/Music/SFX/Event/building_upgraded.wav
 - Assets/Music/SFX/Event/tax_paid.wav
-- Assets/Music/SFX/SFXConfig.asset
+- Assets/Music/SFX/UI/click.wav
 - Assets/Music/SFX/UI/close.wav
 - "Assets/Music/SFX/Event/\u91D1\u5E01\u97F3\u6548.mp3"
 - Assets/Music/SFX/Character/land.wav
 - Assets/Music/SFX/UI/open.wav
 - "Assets/Music/\u300A\u590F\u300B.wav"
-- Assets/Music/SFX/UI/click.wav
 - Assets/Music/SFX/Event/gain_money.wav
 - Assets/Music/SFX/Character/move.wav
 - Assets/Music/SFX/Event/property_bought.wav
