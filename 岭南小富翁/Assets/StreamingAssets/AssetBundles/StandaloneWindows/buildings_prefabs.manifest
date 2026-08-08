@@ -1,0 +1,168 @@
+ManifestFileVersion: 0
+CRC: 1072186088
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: d85164b12824730f4769839458f4227e
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: ee4c503a6f90a6c436657a4f2dac44f7
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: d85164b12824730f4769839458f4227e
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 20
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 54
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 108
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: b57f996d03a791c45a9a4c2b4d058074, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: de5a73b884ffa0d4eb82e93dbaef6913, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 6d1a7656f01562d4ab86b83d97e5ac21, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: afe2b2606aa673b448a64ae0caa59920, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: eb8dacb6dbacbf24cac93f6c22ae78d8, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 128
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 222
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers:
+- AssemblyName: Unity.RenderPipelines.Universal.Runtime
+  ClassName: UnityEngine.Rendering.Universal.TemporalAA/Settings
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.FaceInfo_Legacy
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.FontAssetCreationSettings
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.KerningTable
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_Character
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_FontFeatureTable
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_FontWeightPair
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_GlyphAdjustmentRecord
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_GlyphPairAdjustmentRecord
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.TMP_GlyphValueRecord
+- AssemblyName: Unity.TextMeshPro
+  ClassName: TMPro.VertexGradient
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.Events.ArgumentCache
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.Events.PersistentCallGroup
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.Events.PersistentListenerMode
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.RectOffset
+- AssemblyName: UnityEngine.TextCoreFontEngineModule
+  ClassName: UnityEngine.TextCore.FaceInfo
+- AssemblyName: UnityEngine.TextCoreFontEngineModule
+  ClassName: UnityEngine.TextCore.Glyph
+- AssemblyName: UnityEngine.TextCoreFontEngineModule
+  ClassName: UnityEngine.TextCore.GlyphMetrics
+- AssemblyName: UnityEngine.TextCoreFontEngineModule
+  ClassName: UnityEngine.TextCore.GlyphRect
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.AnimationTriggers
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.Button/ButtonClickedEvent
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.ColorBlock
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.FontData
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.MaskableGraphic/CullStateChangedEvent
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.Navigation
+- AssemblyName: UnityEngine.UI
+  ClassName: UnityEngine.UI.SpriteState
+Assets:
+- Assets/Prefabs/Buff-Icon-Prefab/BuffIcon.prefab
+- Assets/Prefabs/Button/RollDiceButton.prefab
+- Assets/Prefabs/Tile_Start.prefab
+- "Assets/Prefabs/\u8D77\u70B9\u989C\u8272.mat"
+- Assets/Prefabs/Player1.prefab
+- "Assets/Data/BoardData/BuidingPrefabs/\u91D1\u5E01/\u6750\u8D28.mat"
+- Assets/Prefabs/ItemPerfabs/DragCard.prefab
+- "Assets/Data/BoardData/BuidingPrefabs/\u91D1\u5E01/\u91D1\u5E01.fbx"
+- "Assets/Data/BoardData/BuidingPrefabs/\u4EA4\u6613\u5904.prefab"
+- Assets/Prefabs/Tile_Template.prefab
+- Assets/Prefabs/ItemPerfabs/Level/EpicCard.prefab
+- "Assets/Prefabs/\u8DEF\u9762\u989C\u8272.mat"
+- "Assets/Data/BoardData/BuidingPrefabs/\u94B1\u5E84.prefab"
+- "Assets/Data/BoardData/BuidingPrefabs/\u9152\u697C.prefab"
+- Assets/Prefabs/Buff-Icon-Prefab/BuffTooltip.prefab
+- Assets/Prefabs/BuildingSelectionPanel.prefab
+- Assets/Prefabs/ItemPerfabs/Level/RareCard.prefab
+- Assets/Prefabs/Tile_Buiding.prefab
+- Assets/Prefabs/ItemPerfabs/Level/CommonCard.prefab
+- Assets/Prefabs/UpgradePanel/UpgradePanel_Basic.prefab
+- Assets/Prefabs/UpgradePanel/UpgradePanel_Complete.prefab
+- Assets/Prefabs/Tile_Event.prefab
+- "Assets/Data/BoardData/BuidingPrefabs/\u62CD\u5356\u884C.prefab"
+- Assets/Prefabs/ItemPerfabs/Level/LegendaryCard.prefab
+- Assets/Prefabs/PersistentToastPrefab.prefab
+- "Assets/Data/BoardData/BuidingPrefabs/\u9152\u8086.prefab"
+- Assets/Prefabs/Tile_Property.prefab
+- "Assets/Data/BoardData/BuidingPrefabs/\u6D4B\u8BD5/SmallHouse.prefab"
+- "Assets/Data/BoardData/BuidingPrefabs/\u5C0F\u644A.prefab"
+- "Assets/Prefabs/\u5EFA\u7B51\u5730\u5757\u989C\u8272.mat"
+- "Assets/Data/BoardData/BuidingPrefabs/\u8336\u94FA.prefab"
+- Assets/Prefabs/EventButton.prefab
+- "Assets/Data/BoardData/BuidingPrefabs/\u5F53\u94FA.prefab"
+Dependencies:
+- "D:/GitHub/Project-3D/114514/\u5CAD\u5357\u5C0F\u5BCC\u7FC1/Assets/StreamingAssets/AssetBundles/StandaloneWindows/buildings_art"
+- "D:/GitHub/Project-3D/114514/\u5CAD\u5357\u5C0F\u5BCC\u7FC1/Assets/StreamingAssets/AssetBundles/StandaloneWindows/ui_art"

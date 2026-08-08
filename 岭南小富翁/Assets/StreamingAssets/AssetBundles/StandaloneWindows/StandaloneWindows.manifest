@@ -1,0 +1,34 @@
+ManifestFileVersion: 0
+CRC: 2160538258
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: ui_art
+      Dependencies: {}
+    Info_1:
+      Name: buildings_art
+      Dependencies:
+        Dependency_0: ui_art
+    Info_2:
+      Name: terrain_art
+      Dependencies:
+        Dependency_0: effects_art
+    Info_3:
+      Name: effects_art
+      Dependencies: {}
+    Info_4:
+      Name: audio_art
+      Dependencies: {}
+    Info_5:
+      Name: buildings_prefabs
+      Dependencies:
+        Dependency_0: ui_art
+        Dependency_1: buildings_art
+    Info_6:
+      Name: config_data
+      Dependencies:
+        Dependency_0: ui_art
+        Dependency_1: buildings_art
+        Dependency_2: effects_art
+        Dependency_3: audio_art
+        Dependency_4: buildings_prefabs

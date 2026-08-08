@@ -1,0 +1,67 @@
+ManifestFileVersion: 0
+CRC: 370816926
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 2c3ec691a4c4b9aafdf7aec5990534c6
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 8605ebde96b9de8e7a65d48085f5ce24
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 2c3ec691a4c4b9aafdf7aec5990534c6
+HashAppended: 0
+ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: bf2edee5c58d82540a51f03df9d42094, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 307a736764ebbce44b54d72f8467b6fd, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 2ec995e51a6e251468d2a3fd8a686257, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 572910c10080c0945a0ef731ccedc739, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: de640fe3d0db1804a85f9fc8f5cadab6, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers:
+- AssemblyName: Unity.RenderPipelines.Universal.Runtime
+  ClassName: UnityEngine.Rendering.Universal.PostProcessData/ShaderResources
+- AssemblyName: Unity.RenderPipelines.Universal.Runtime
+  ClassName: UnityEngine.Rendering.Universal.PostProcessData/TextureResources
+- AssemblyName: Unity.RenderPipelines.Universal.Runtime
+  ClassName: UnityEngine.Rendering.Universal.ScriptableRendererData/DebugShaderResources
+- AssemblyName: Unity.RenderPipelines.Universal.Runtime
+  ClassName: UnityEngine.Rendering.Universal.StencilStateData
+- AssemblyName: Unity.RenderPipelines.Universal.Runtime
+  ClassName: UnityEngine.Rendering.Universal.UniversalRenderPipelineAsset/TextureResources
+- AssemblyName: Unity.RenderPipelines.Universal.Runtime
+  ClassName: UnityEngine.Rendering.Universal.UniversalRendererData/ShaderResources
+- AssemblyName: Unity.RenderPipelines.Universal.Runtime
+  ClassName: UnityEngine.Rendering.Universal.XRSystemData/ShaderResources
+Assets:
+- Assets/Shader/URP_Renderer.asset
+- "Assets/Shader/URP/\u4E91\u672C\u4F53.jpg"
+- "Assets/Shader/URP/\u6D9F\u6F2A 1.png"
+- Assets/Shader/URP/RainRipples-b.shadergraph
+- "Assets/Art/rain/\u65B0\u5EFA\u6750\u8D28.mat"
+- Assets/Shader/UniversalRenderPipelineGlobalSettings.asset
+- Assets/Shader/Custom/ProceduralSkybox.shader
+- "Assets/Shader/URP/\u6D9F\u6F2A - solo.png"
+- Assets/Shader/URP.asset
+- Assets/Shader/URP/RainRipples.shadergraph
+- Assets/Shader/URP/RainRipples-t.shadergraph
+- "Assets/Shader/URP/\u4E91\u6CD5\u7EBF\u56FE.png"
+- Assets/Shader/Custom/CloudLayer.shader
+- Assets/Shader/Custom/Atmosphere.shader
+- "Assets/Shader/URP/\u6D9F\u6F2A.png"
+- Assets/Art/rain/circle.png
+Dependencies: []

@@ -1,0 +1,49 @@
+ManifestFileVersion: 0
+CRC: 4235703864
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: b9e124c3e0f67f4839076741f705a686
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 913c41d16f0c30916420e7ed6a88f514
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: b9e124c3e0f67f4839076741f705a686
+HashAppended: 0
+ClassTypes:
+- Class: 83
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 1189c22e753af3e42a41c68dafec7b7a, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Music/SFX/UI/hover.wav
+- Assets/Music/SFX/Dice/dice_stop.wav
+- Assets/Music/SFX/Event/lose_money.wav
+- "Assets/Music/SFX/\u4EA4\u4E92/\u51FA\u552E\u5EFA\u7B51.mp3"
+- Assets/Music/SFX/Event/building_upgraded.wav
+- Assets/Music/SFX/Event/tax_paid.wav
+- Assets/Music/SFX/SFXConfig.asset
+- Assets/Music/SFX/UI/close.wav
+- "Assets/Music/SFX/Event/\u91D1\u5E01\u97F3\u6548.mp3"
+- Assets/Music/SFX/Character/land.wav
+- Assets/Music/SFX/UI/open.wav
+- "Assets/Music/\u300A\u590F\u300B.wav"
+- Assets/Music/SFX/UI/click.wav
+- Assets/Music/SFX/Event/gain_money.wav
+- Assets/Music/SFX/Character/move.wav
+- Assets/Music/SFX/Event/property_bought.wav
+- Assets/Music/SFX/Dice/dice_roll.wav
+- Assets/Music/SFX/Event/building_placed.wav
+- "Assets/Music/SFX/\u4EA4\u4E92/\u9009\u62E9\u5730\u5757.mp3"
+- Assets/Music/SFX/Character/jump.wav
+- "Assets/Music/SFX/Dice/\u9AB0\u5B50\u6EDA\u52A8.mp3"
+- "Assets/Music/SFX/\u4EA4\u4E92/\u4E8B\u4EF6\u9009\u62E9.mp3"
+- "Assets/Music/\u300A\u51AC\u300B.wav"
+- Assets/Music/SFX/Event/buff_activated.wav
+- "Assets/Music/\u300A\u6625\u300B.wav"
+- Assets/Music/SFX/Event/go_to_jail.wav
+Dependencies: []

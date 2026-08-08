@@ -1,0 +1,82 @@
+ManifestFileVersion: 0
+CRC: 810153467
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 672df9679c3df35959907226324e4f1e
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: bba080b701ba05fb323dc0a61b9104cb
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 672df9679c3df35959907226324e4f1e
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 83
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 4404edfab9b351047bb3a495ff5da6fa, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: a476e0b345cc52d4194ddfcec2ae8c03, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 486435897247d9b41a67e28dcdbad85e, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: c96baef71f7b2f047958df9fbfc2bcd4, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 6d2d4598ad43c9b4c9588967c26b1eb0, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers:
+- AssemblyName: Assembly-CSharp
+  ClassName: BuildingData/BuildingBuffConfig
+- AssemblyName: Assembly-CSharp
+  ClassName: CardPool/RarityGold
+- AssemblyName: Assembly-CSharp
+  ClassName: CardPool/RarityWeight
+- AssemblyName: Assembly-CSharp
+  ClassName: EventData/EventOption
+- AssemblyName: Assembly-CSharp
+  ClassName: ItemEffect
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.Events.PersistentCallGroup
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.Events.UnityEvent
+Assets:
+- "Assets/Data/Event Data/\u8001\u5B57\u53F7\u5546\u4F1A\u9080\u7EA6.asset"
+- "Assets/Data/BoardData/\u9152\u8086.asset"
+- Assets/Data/ItemData/StartingCapital.asset
+- Assets/Data/ItemData/GainCoin8.asset
+- Assets/Data/ItemData/Move6.asset
+- "Assets/Data/BoardData/\u94B1\u5E84.asset"
+- "Assets/Data/BoardData/\u5F53\u94FA.asset"
+- "Assets/Data/Event Data/\u53F0\u98CE\u8FC7\u5883.asset"
+- Assets/Data/BoardData/BuffTestBuilding.asset
+- "Assets/Data/Event Data/\u758D\u5BB6\u6E14\u6C11\u6C42\u52A9.asset"
+- Assets/Data/Card Pool Data/CardPoolData.asset
+- Assets/Data/ItemData/Move2.asset
+- "Assets/Data/BoardData/\u5C0F\u644A.asset"
+- "Assets/Data/BoardData/\u62CD\u5356\u884C.asset"
+- "Assets/Data/Event Data/\u7960\u5802\u7948\u798F.asset"
+- Assets/Data/Event Data/NewEvent.asset
+- "Assets/Data/BoardData/\u53E4\u73A9\u5E97.asset"
+- "Assets/Data/Event Data/\u5B98\u5E9C\u57FA\u5EFA\u5F81\u7528.asset"
+- Assets/Data/Event Data/EventTest.asset
+- Assets/Data/Buff Data/BankruptBuff.asset
+- Assets/Data/ItemData/Move1.asset
+- "Assets/Data/Event Data/\u540C\u884C\u6076\u6027\u7ADE\u4E89.asset"
+- Assets/Data/ItemData/One-MoveAddEffect.asset
+- "Assets/Data/Event Data/\u795E\u79D8\u7684\u529F\u592B\u8336\u644A.asset"
+- "Assets/Data/BoardData/\u8336\u94FA.asset"
+- "Assets/Data/BoardData/\u4EA4\u6613\u5904.asset"
+- "Assets/Data/BoardData/\u9152\u697C.asset"
+- "Assets/Data/Event Data/\u767E\u5E74\u51C9\u8336\u79D8\u65B9.asset"
+Dependencies:
+- "D:/GitHub/Project-3D/114514/\u5CAD\u5357\u5C0F\u5BCC\u7FC1/Assets/StreamingAssets/AssetBundles/StandaloneWindows/audio_art"
+- "D:/GitHub/Project-3D/114514/\u5CAD\u5357\u5C0F\u5BCC\u7FC1/Assets/StreamingAssets/AssetBundles/StandaloneWindows/buildings_art"
+- "D:/GitHub/Project-3D/114514/\u5CAD\u5357\u5C0F\u5BCC\u7FC1/Assets/StreamingAssets/AssetBundles/StandaloneWindows/buildings_prefabs"
+- "D:/GitHub/Project-3D/114514/\u5CAD\u5357\u5C0F\u5BCC\u7FC1/Assets/StreamingAssets/AssetBundles/StandaloneWindows/effects_art"
+- "D:/GitHub/Project-3D/114514/\u5CAD\u5357\u5C0F\u5BCC\u7FC1/Assets/StreamingAssets/AssetBundles/StandaloneWindows/ui_art"

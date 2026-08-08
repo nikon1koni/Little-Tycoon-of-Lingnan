@@ -1,0 +1,128 @@
+ManifestFileVersion: 0
+CRC: 3267508162
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 115e375cc2cd3f745096244c0a110610
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: eb513b2d9228c497b0b79ef976796f53
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 115e375cc2cd3f745096244c0a110610
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- "Assets/Icon/\u91D1\u5E01\u52A0\u6210.png"
+- "Assets/Art/UI/\u8D2D\u4E70\u754C\u9762/\u8D44\u4EA7/\u9152\u697C.png"
+- "Assets/Art/\u6309\u952E\u603B\u8D44\u4EA7/\u6A2A\u7978\u6309\u94AE/\u8DEF\u5730\u5757.fbx"
+- "Assets/Art/\u6309\u952E\u603B\u8D44\u4EA7/\u6B63\u5E38\u5730\u5757/\u8DEF\u5730\u5757.fbx"
+- "Assets/Art/\u6309\u952E\u603B\u8D44\u4EA7/\u6B63\u5E38\u5730\u5757/Materials/\u8DEF\u5730\u5757_lambert1_AlbedoTransparency.mat"
+- "Assets/Art/\u6309\u952E\u603B\u8D44\u4EA7/\u6A2A\u7978\u6309\u94AE/Materials/\u8DEF\u5730\u5757_lambert1_AlbedoTransparency.mat"
+- "Assets/Art/UI/\u8D2D\u4E70\u754C\u9762/\u8D44\u4EA7\u6570\u91CF\u680F.png"
+- "Assets/Art/UI/\u8D2D\u4E70\u754C\u9762/\u80CC\u666F.png"
+- "Assets/Icon/\u901F\u5EA6\u52A0\u6210.png"
+- "Assets/Art/\u9AB0\u5B50/\u989C\u8272\u53CD\u5C04\u7387.png"
+- "Assets/Art/\u5F39\u7A97/\u79D8\u65B9.png"
+- "Assets/Art/\u6309\u952E\u603B\u8D44\u4EA7/\u4E8B\u4EF6\u6309\u94AE/Materials/\u8DEF\u5730\u5757_lambert1_AlbedoTransparency.mat"
+- "Assets/Art/\u5F39\u7A97/\u529F\u592B\u8336.png"
+- "Assets/Art/\u6309\u952E\u603B\u8D44\u4EA7/\u6A2A\u7978\u6309\u94AE/\u8DEF\u5730\u5757_lambert1_MetallicSmoothness.png"
+- "Assets/Art/\u6309\u952E\u603B\u8D44\u4EA7/\u597D\u8FD0\u6309\u94AE/Materials/\u8DEF\u5730\u5757_lambert1_Normal.mat"
+- "Assets/Art/\u8D44\u4EA7/\u94B1\u5E84.png"
+- "Assets/Art/\u8D44\u4EA7/\u4EA4\u6613\u51FA.png"
+- "Assets/Art/\u6309\u952E\u603B\u8D44\u4EA7/\u6A2A\u7978\u6309\u94AE/\u8DEF\u5730\u5757_lambert1_AlbedoTransparency.png"
+- "Assets/Art/\u5F39\u7A97/\u5546\u4F1A\u9080\u7EA6.png"
+- "Assets/Art/UI/\u8D2D\u4E70\u754C\u9762/\u8D44\u4EA7/\u94B1\u5E84.png"
+- "Assets/Art/UI/\u5F00\u59CB\u754C\u9762/\u8BBE\u7F6E.png"
+- "Assets/Art/\u6309\u952E\u603B\u8D44\u4EA7/\u5EFA\u7B51\u6309\u94AE/\u5EFA\u7B51\u5730\u5757.fbx"
+- "Assets/Art/\u8D44\u4EA7/\u8336\u94FA.png"
+- "Assets/Art/\u5F39\u7A97/\u4FEE\u8DEF\u5F81\u7528.png"
+- "Assets/Art/\u8D44\u4EA7/\u9152\u8086.png"
+- "Assets/Art/UI/\u6E38\u73A9\u754C\u9762/\u5934\u50CF.png"
+- "Assets/Art/UI/\u5F00\u59CB\u754C\u9762/\u672A\u6807\u9898-1.png"
+- "Assets/Art/UI/\u8D2D\u4E70\u754C\u9762/\u8D44\u4EA7/\u4EA4\u6613\u51FA.png"
+- "Assets/Art/\u5F39\u7A97/\u6E14\u6C11\u501F\u8D37.png"
+- "Assets/Art/\u8D44\u4EA7/\u9152\u697C.png"
+- "Assets/Art/\u8D44\u4EA7/\u5BBD.png"
+- "Assets/Art/\u6309\u952E\u603B\u8D44\u4EA7/\u8D77\u59CB\u70B9\u6309\u94AE/\u8DEF\u5730\u5757_lambert1_Normal.png"
+- "Assets/Art/UI/\u8D2D\u4E70\u754C\u9762/\u8D44\u4EA7/\u5C0F\u644A\u8D29.png"
+- "Assets/Art/UI/\u8D2D\u4E70\u754C\u9762/\u8D2D\u4E70\u6309\u952E.png"
+- "Assets/Art/\u6309\u952E\u603B\u8D44\u4EA7/\u4E8B\u4EF6\u6309\u94AE/\u8DEF\u5730\u5757_lambert1_Normal.png"
+- "Assets/Art/UI/\u6E38\u73A9\u754C\u9762/\u5947\u7269.png"
+- "Assets/Art/\u6309\u952E\u603B\u8D44\u4EA7/\u8D77\u59CB\u70B9\u6309\u94AE/\u8DEF\u5730\u5757_lambert1_AlbedoTransparency.png"
+- "Assets/Art/UI/\u5F00\u59CB\u754C\u9762/\u56FE\u72471.png"
+- "Assets/Art/UI/\u5F00\u59CB\u754C\u9762/\u901A\u7528\u8FD4\u56DE.png"
+- "Assets/Art/UI/\u5F00\u59CB\u754C\u9762/\u901A\u7528\u6309\u94AE\u6D45.png"
+- "Assets/Art/\u6309\u952E\u603B\u8D44\u4EA7/\u4E8B\u4EF6\u6309\u94AE/\u8DEF\u5730\u5757.fbx"
+- "Assets/Art/UI/\u6E38\u73A9\u754C\u9762/\u80CC\u5305.png"
+- "Assets/Art/UI/\u5F00\u59CB\u754C\u9762/\u8D2D\u4E70\u754C\u9762\u8FD4\u56DE.png"
+- "Assets/Art/\u6309\u952E\u603B\u8D44\u4EA7/\u4E8B\u4EF6\u6309\u94AE/\u8DEF\u5730\u5757_lambert1_AlbedoTransparency.png"
+- "Assets/Art/\u9AB0\u5B50/\u9AD8\u5EA6.png"
+- "Assets/Art/UI/\u8D2D\u4E70\u754C\u9762/\u8D44\u4EA7/\u5F53\u94FA.png"
+- "Assets/Art/UI/\u8D2D\u4E70\u754C\u9762/\u8D44\u4EA7/\u9152\u8086.png"
+- "Assets/Art/UI/\u8D2D\u4E70\u754C\u9762/\u8D44\u4EA7/\u53E4\u73A9\u5E97.png"
+- "Assets/Art/\u6309\u952E\u603B\u8D44\u4EA7/\u6B63\u5E38\u5730\u5757/\u8DEF\u5730\u5757_lambert1_AlbedoTransparency.png"
+- "Assets/Art/\u6309\u952E\u603B\u8D44\u4EA7/\u6B63\u5E38\u5730\u5757/\u8DEF\u5730\u5757_lambert1_MetallicSmoothness.png"
+- "Assets/Art/\u6309\u952E\u603B\u8D44\u4EA7/\u8D77\u59CB\u70B9\u6309\u94AE/Materials/\u8DEF\u5730\u5757_lambert1_AlbedoTransparency.mat"
+- "Assets/Art/UI/\u5F00\u59CB\u754C\u9762/\u901A\u7528\u6309\u94AE\u6DF1.png"
+- "Assets/Art/\u6309\u952E\u603B\u8D44\u4EA7/\u5EFA\u7B51\u6309\u94AE/Materials/\u5EFA\u7B51\u5730\u5757_lambert1_AlbedoTransparency.mat"
+- "Assets/Art/\u9AB0\u5B50/\u9AB0\u5B50.obj"
+- "Assets/Art/\u6309\u952E\u603B\u8D44\u4EA7/\u5EFA\u7B51\u6309\u94AE/\u5EFA\u7B51\u5730\u5757_lambert1_AlbedoTransparency.png"
+- "Assets/Art/UI/\u8D2D\u4E70\u754C\u9762/\u53F3\u5212.png"
+- "Assets/Art/UI/\u6E38\u73A9\u754C\u9762/\u6295\u63B7.png"
+- "Assets/Art/\u9AB0\u5B50/\u91D1\u5C5E.png"
+- "Assets/Art/UI/\u6E38\u73A9\u754C\u9762/\u8D44\u4EA7.png"
+- "Assets/Art/\u5F39\u7A97/\u53F0\u98CE.png"
+- "Assets/Art/\u6309\u952E\u603B\u8D44\u4EA7/\u8D77\u59CB\u70B9\u6309\u94AE/\u8DEF\u5730\u5757.fbx"
+- "Assets/Art/UI/\u8D2D\u4E70\u754C\u9762/\u8D44\u4EA7/\u62CD\u5356\u884C.png"
+- "Assets/Icon/\u5360\u4F4D\u7B26-\u6D4B\u8BD5\u900F\u660E\u901A\u9053.png"
+- "Assets/Art/\u8D44\u4EA7/\u5C0F\u644A\u8D29.png"
+- "Assets/Art/\u6309\u952E\u603B\u8D44\u4EA7/\u6B63\u5E38\u5730\u5757/\u8DEF\u5730\u5757_lambert1_Normal.png"
+- "Assets/Art/\u8D44\u4EA7/\u62CD\u5356\u884C.png"
+- "Assets/Icon/\u7834\u4EA7\u56FE\u6807.png"
+- "Assets/Art/\u5F39\u7A97/\u7948\u798F.png"
+- "Assets/Art/\u6309\u952E\u603B\u8D44\u4EA7/\u5EFA\u7B51\u6309\u94AE/\u5EFA\u7B51\u5730\u5757_lambert1_MetallicSmoothness.png"
+- "Assets/Art/UI/\u8D2D\u4E70\u754C\u9762/\u8D44\u4EA7/\u8336\u94FA.png"
+- "Assets/Art/\u6309\u952E\u603B\u8D44\u4EA7/\u597D\u8FD0\u6309\u94AE/\u8DEF\u5730\u5757.fbx"
+- "Assets/Art/\u6309\u952E\u603B\u8D44\u4EA7/\u8D77\u59CB\u70B9\u6309\u94AE/Materials/\u8DEF\u5730\u5757_lambert1_MetallicSmoothness.mat"
+- "Assets/Art/UI/\u6E38\u73A9\u754C\u9762/\u9636\u6BB5.png"
+- "Assets/Art/\u6309\u952E\u603B\u8D44\u4EA7/\u6A2A\u7978\u6309\u94AE/\u8DEF\u5730\u5757_lambert1_Normal.png"
+- "Assets/Art/UI/\u8D2D\u4E70\u754C\u9762/\u8D2D\u4E70\u80CC\u666F\u677F.png"
+- "Assets/Art/\u9AB0\u5B50/\u6CD5\u7EBF.jpg"
+- "Assets/Art/\u6309\u952E\u603B\u8D44\u4EA7/\u597D\u8FD0\u6309\u94AE/\u8DEF\u5730\u5757_lambert1_Normal.png"
+- "Assets/Art/\u8D44\u4EA7/\u53E4\u73A9\u5E97.png"
+- "Assets/Art/\u6309\u952E\u603B\u8D44\u4EA7/\u5EFA\u7B51\u6309\u94AE/\u5EFA\u7B51\u5730\u5757_lambert1_Normal.png"
+- "Assets/Art/UI/\u8D2D\u4E70\u754C\u9762/\u8D44\u4EA7\u6570\u91CF.png"
+- "Assets/Art/UI/\u5F00\u59CB\u754C\u9762/\u6E38\u620F\u540D.png"
+- "Assets/Art/\u6309\u952E\u603B\u8D44\u4EA7/\u597D\u8FD0\u6309\u94AE/\u8DEF\u5730\u5757_lambert1_AlbedoTransparency.png"
+- "Assets/Art/\u6309\u952E\u603B\u8D44\u4EA7/\u4E8B\u4EF6\u6309\u94AE/Materials/\u8DEF\u5730\u5757_lambert1_Normal.mat"
+- "Assets/Art/\u5F39\u7A97/\u9009\u9879\u6D45.png"
+- "Assets/Art/\u8D44\u4EA7/\u5F53\u94FA.png"
+- "Assets/Art/\u9AB0\u5B50/DICE Material.mat"
+- "Assets/Art/\u6309\u952E\u603B\u8D44\u4EA7/\u4E8B\u4EF6\u6309\u94AE/\u8DEF\u5730\u5757_lambert1_MetallicSmoothness.png"
+- "Assets/Art/\u6309\u952E\u603B\u8D44\u4EA7/\u8D77\u59CB\u70B9\u6309\u94AE/\u8DEF\u5730\u5757_lambert1_MetallicSmoothness.png"
+- "Assets/Art/\u5F39\u7A97/\u9009\u9879\u6DF1.png"
+- "Assets/Art/\u6309\u952E\u603B\u8D44\u4EA7/\u597D\u8FD0\u6309\u94AE/\u8DEF\u5730\u5757_lambert1_MetallicSmoothness.png"
+- "Assets/Art/UI/\u8D2D\u4E70\u754C\u9762/\u5DE6\u5212.png"
+- "Assets/Art/\u6309\u952E\u603B\u8D44\u4EA7/\u597D\u8FD0\u6309\u94AE/Materials/\u8DEF\u5730\u5757_lambert1_AlbedoTransparency.mat"
+- "Assets/Art/\u5F39\u7A97/\u6076\u6027\u7ADE\u4E89.png"
+Dependencies: []

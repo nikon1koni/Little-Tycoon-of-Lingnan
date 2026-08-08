@@ -1,0 +1,96 @@
+ManifestFileVersion: 0
+CRC: 2457969973
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: a17ae754bbed08bbe18cfcf599b7133f
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: d27d605e56b00c7d193d3604b99a7461
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: a17ae754bbed08bbe18cfcf599b7133f
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u60AC\u5D16/\u989C\u8272.png"
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u77F3\u5934/\u77F3\u59346.fbx"
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u704C\u6728\u4E1B/2.fbx"
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u5C0F\u5C71\u8D34\u56FE/\u989C\u8272.png"
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u6709\u7EB9\u7406\u7684\u6B63\u65B9\u5F62\u5730\u5757/\u6CD5\u7EBF.png"
+- "Assets/Art/\u5730\u5F62/\u5730\u5F62\u5C42\u7B14\u5237\u8D34\u56FE/\u8349\u5730/\u6D45/Foliage001_2K-JPG_Color.mat"
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u60AC\u5D16/\u6CD5\u7EBF.png"
+- "Assets/Art/\u5730\u5F62/\u5730\u5F62\u5C42\u7B14\u5237\u8D34\u56FE/\u8349\u5730/\u6D45/\u6CD5\u7EBF.png"
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u6709\u7EB9\u7406\u7684\u6B63\u65B9\u5F62\u5730\u5757/\u91D1\u5C5E\u5EA6.png"
+- Assets/Material/TileBase.mat
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u6709\u7EB9\u7406\u7684\u6B63\u65B9\u5F62\u5730\u5757/\u989C\u8272.png"
+- "Assets/Art/\u5730\u5F62/\u5730\u5F62\u5C42\u7B14\u5237\u8D34\u56FE/\u8349\u5730/\u6D45/\u8349\u57301.fbx"
+- "Assets/Art/\u5730\u5F62/\u5730\u5F62\u5C42\u7B14\u5237\u8D34\u56FE/\u6C99\u5730/\u6D45/\u6F2B\u53CD\u5C04.png"
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u6709\u7EB9\u7406\u7684\u6B63\u65B9\u5F62\u5730\u5757/\u8DEF\u9762\u4F4E\u6A21.fbx"
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u77F3\u677F\u8DEF/\u77F3\u677F\u8DEF1.obj"
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u5C0F\u5C71\u8D34\u56FE/\u9AD8\u5EA6.png"
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u704C\u6728\u4E1B/\u65B0\u5EFA\u6750\u8D28.mat"
+- "Assets/Art/\u5730\u5F62/\u5730\u5F62\u5C42\u7B14\u5237\u8D34\u56FE/\u8349\u5730/\u6DF1/\u6CD5\u7EBF.png"
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u704C\u6728\u4E1B/\u6CD5\u7EBF.png"
+- Assets/Material/ProceduralSkyboxMat.mat
+- Assets/Material/Special-Ground.mat
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u77F3\u677F\u8DEF/\u77F3\u677F\u8DEF3.obj"
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u60AC\u5D16/\u65B0\u5EFA\u6750\u8D28.mat"
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u77F3\u677F\u8DEF/\u77F3\u677F\u8DEF4.obj"
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u77F3\u677F\u8DEF/\u77F3\u677F\u8DEF5.obj"
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u5C0F\u5C71\u8D34\u56FE/\u8349\u57301.fbx"
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u5C0F\u5C71\u8D34\u56FE/\u65B0\u5EFA\u6750\u8D28.mat"
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u77F3\u5934/\u77F3\u59345.fbx"
+- Assets/Material/Ground.mat
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u5C0F\u5C71\u8D34\u56FE/\u6CD5\u7EBF.png"
+- Assets/Material/Rain.mat
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u60AC\u5D16/\u60AC\u5D16\uFF08\u6B63\u5E38\u5927\u5C0F\uFF09.obj"
+- "Assets/Art/\u5730\u5F62/\u5730\u5F62\u5C42\u7B14\u5237\u8D34\u56FE/\u8349\u5730/\u6D45/\u6750\u8D28.002.mat"
+- "Assets/Art/\u5730\u5F62/\u5730\u5F62\u5C42\u7B14\u5237\u8D34\u56FE/\u8349\u5730/\u6DF1/\u6F2B\u53CD\u5C04.png"
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u60AC\u5D16/\u9AD8\u5EA6.png"
+- Assets/Material/Ground-Rain.mat
+- Assets/Material/Poliigon_GrassPatchyGround_4585_Normal.png
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u77F3\u5934/\u77F3\u59344.fbx"
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u5C0F\u5C71\u8D34\u56FE/\u4F4E\u6A21\u6D6E\u5C9B.fbx"
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u704C\u6728\u4E1B/\u989C\u8272.png"
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u77F3\u5934/\u77F3\u59346.mat"
+- Assets/Material/Player.mat
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u77F3\u5934/\u77F3\u59343.fbx"
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u5C0F\u5C71\u8D34\u56FE/\u91D1\u5C5E.png"
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u60AC\u5D16/\u91D1\u5C5E.png"
+- "Assets/Art/\u5730\u5F62/\u5730\u5F62\u5C42\u7B14\u5237\u8D34\u56FE/\u8349\u5730/\u6D45/\u6F2B\u53CD\u5C04.png"
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u77F3\u5934/\u77F3\u59343.mat"
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u704C\u6728\u4E1B/guanmucong.obj"
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u6811/\u68112.fbx"
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u77F3\u677F\u8DEF/\u77F3\u677F\u8DEF2.obj"
+- "Assets/Art/\u5730\u5F62/\u5730\u5F62\u5C42\u7B14\u5237\u8D34\u56FE/\u6C99\u5730/\u6D45/\u6CD5\u7EBF.png"
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u77F3\u5934/\u77F3\u59341.mat"
+- "Assets/Art/\u5730\u5F62/\u5730\u5F62\u5C42\u7B14\u5237\u8D34\u56FE/\u6C99\u5730/\u6DF1/\u6CD5\u7EBF.png"
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u704C\u6728\u4E1B/1.fbx"
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u704C\u6728\u4E1B/\u91D1\u5C5E\u5EA6.png"
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u5C0F\u5C71\u8D34\u56FE/\u5C0F\u5C71\u8D34\u56FE.obj"
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u77F3\u5934/\u77F3\u59341.fbx"
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u704C\u6728\u4E1B/Materials/\u989C\u8272.mat"
+- "Assets/Art/\u5730\u5F62/\u5730\u5F62\u5C42\u7B14\u5237\u8D34\u56FE/\u6C99\u5730/\u6DF1/\u6F2B\u53CD\u5C04.png"
+- Assets/Material/Poliigon_GrassPatchyGround_4585_BaseColor.jpg
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u6811/\u68111.fbx"
+- "Assets/Art/\u5730\u5F62/\u8D44\u6E90/\u6709\u7EB9\u7406\u7684\u6B63\u65B9\u5F62\u5730\u5757/\u9AD8\u5EA6.png"
+Dependencies:
+- "D:/GitHub/Project-3D/114514/\u5CAD\u5357\u5C0F\u5BCC\u7FC1/Assets/StreamingAssets/AssetBundles/StandaloneWindows/effects_art"

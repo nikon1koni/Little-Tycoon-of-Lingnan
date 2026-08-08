@@ -1,21 +1,29 @@
-ï»¿using UnityEngine;
+using System.Collections;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainMenuManager : MonoBehaviour
 {
-    [Header("åœºæ™¯è®¾ç½®")]
+    [Header("³¡¾°ÉèÖÃ")]
     [SerializeField] private string gameSceneName = "New";
 
-    [Header("æŒ‰é’®é…ç½®")]
+    [Header("°´Å¥ÅäÖÃ")]
     [SerializeField] private Button startButton;
     [SerializeField] private Button quitButton;
 
-    [Header("éŸ³æ•ˆé…ç½®")]
+    [Header("ÒôĞ§ÅäÖÃ")]
     [SerializeField] private SFXConfig sfxConfig;
 
     private void Start()
     {
+        StartCoroutine(StartWithABInit());
+    }
+
+    IEnumerator StartWithABInit()
+    {
+        yield return ResourceLoader.InitializeAsync();
+        Debug.Log($"[MainMenu] ResourceLoader³õÊ¼»¯Íê³É, UseAssetBundles={ResourceLoader.UseAssetBundles}");
         EnsureSFXManagerExists();
 
         if (startButton == null)
@@ -26,12 +34,12 @@ public class MainMenuManager : MonoBehaviour
         if (startButton != null)
             startButton.onClick.AddListener(OnStartGame);
         else
-            Debug.LogError("æœªæ‰¾åˆ°å¼€å§‹æŒ‰é’®ï¼Œè¯·ç¡®ä¿æŒ‰é’®åç§°ä¸ºStartButtonæˆ–æ‰‹åŠ¨æ‹–æ‹½");
+            Debug.LogError("Î´ÕÒµ½¿ªÊ¼°´Å¥£¬ÇëÈ·±£°´Å¥Ãû³ÆÎªStartButton»òÊÖ¶¯ÍÏ×§");
 
         if (quitButton != null)
             quitButton.onClick.AddListener(OnQuitGame);
         else
-            Debug.LogError("æœªæ‰¾åˆ°é€€å‡ºæŒ‰é’®ï¼Œè¯·ç¡®ä¿æŒ‰é’®åç§°ä¸ºQuitButtonæˆ–æ‰‹åŠ¨æ‹–æ‹½");
+            Debug.LogError("Î´ÕÒµ½ÍË³ö°´Å¥£¬ÇëÈ·±£°´Å¥Ãû³ÆÎªQuitButton»òÊÖ¶¯ÍÏ×§");
     }
 
     public void OnStartGame()
@@ -42,7 +50,7 @@ public class MainMenuManager : MonoBehaviour
         if (!string.IsNullOrEmpty(gameSceneName))
             SceneManager.LoadScene(gameSceneName);
         else
-            Debug.LogError("æœªè®¾ç½®æ¸¸æˆåœºæ™¯åç§°");
+            Debug.LogError("Î´ÉèÖÃÓÎÏ·³¡¾°Ãû³Æ");
     }
 
     public void OnQuitGame()
@@ -50,7 +58,7 @@ public class MainMenuManager : MonoBehaviour
         if (SFXManager.Instance != null)
             SFXManager.Instance.PlaySFX(SFXClip.UIClick);
 
-        Debug.Log("é€€å‡ºæ¸¸æˆ");
+        Debug.Log("ÍË³öÓÎÏ·");
 
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
@@ -73,7 +81,11 @@ public class MainMenuManager : MonoBehaviour
         }
         else
         {
-            sfxConfig = Resources.Load<SFXConfig>("SFXConfig");
+            sfxConfig = ResourceLoader.Load<SFXConfig>("config_data", "SFXConfig");
+            if (sfxConfig == null)
+            {
+                sfxConfig = Resources.Load<SFXConfig>("SFXConfig");
+            }
             if (sfxConfig != null)
             {
                 sfxManager.config = sfxConfig;

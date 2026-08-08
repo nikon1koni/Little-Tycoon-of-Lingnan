@@ -1,25 +1,25 @@
-ï»¿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
-    // å•ä¾‹
+    // µ¥Àı
     public static GameManager Instance;
 
-    [Header("æ¸¸æˆçŠ¶æ€")]
+    [Header("ÓÎÏ·×´Ì¬")]
     public GameState currentState = GameState.Waiting;
     public int currentPlayerIndex = 0;
     public bool isGameStarted = false;
     public bool isPlayerTurn = true;
     public bool isMoving = false;
 
-    [Header("ç©å®¶")]
+    [Header("Íæ¼Ò")]
     public List<Player> players = new List<Player>();
     public Player currentPlayer;
 
-    [Header("éª°å­")]
+    [Header("÷»×Ó")]
     public DiceController diceController;
     public Dice3DController dice3DController;
     public int lastDiceValue = 0;
@@ -31,20 +31,20 @@ public class GameManager : MonoBehaviour
     public Text currentTileText;
     public Button rollDiceButton;
 
-    [Header("ç®¡ç†å™¨")]
+    [Header("¹ÜÀíÆ÷")]
     public BoardManager boardManager;
     public UIManager uiManager;
 
-    [Header("åŸºç¡€è®¾ç½®")]
+    [Header("»ù´¡ÉèÖÃ")]
     public int startingCash = 1500;
     public int salaryAmount = 200;
     public int jailTurns = 3;
 
-    [Header("å›åˆè®¾ç½®")]
-    [Tooltip("æ€»è½®æ•°ï¼ˆå›åˆä¸Šé™ï¼‰ï¼Œè¾¾åˆ°åè·³è½¬åˆ°ç»“ç®—åœºæ™¯ End")]
+    [Header("»ØºÏÉèÖÃ")]
+    [Tooltip("×ÜÂÖÊı£¨»ØºÏÉÏÏŞ£©£¬´ïµ½ºóÌø×ªµ½½áËã³¡¾° End")]
     public int maxRounds = 24;
 
-    [Header("å‹åŠ›ç³»ç»Ÿ")]
+    [Header("Ñ¹Á¦ÏµÍ³")]
     public bool enablePressureSystem = true;
 
     private int diceRollCount = 0;          // 
@@ -53,14 +53,14 @@ public class GameManager : MonoBehaviour
     public float basePressureCost = 7f;   // 
     public float pressureMultiplier = 1.2f;
     
-    [Header("ç ´äº§è®¾ç½®")]
+    [Header("ÆÆ²úÉèÖÃ")]
     public BuffData bankruptBuffData;        // Debuff(Inspector)
     public int bankruptGraceRounds = 3;     // 
 
     public int DiceRollCount => diceRollCount;
     public int CurrentRound => diceRollCount / 6;
 
-    // å·²æ”¾ç½®å»ºç­‘æ¬¡æ•°ï¼ˆä¸»ç©å®¶ç»“ç®—ç»Ÿè®¡ç”¨ï¼‰
+    // ÒÑ·ÅÖÃ½¨Öş´ÎÊı£¨Ö÷Íæ¼Ò½áËãÍ³¼ÆÓÃ£©
     public int BuildingsPlacedCount { get; private set; }
 
     public void RegisterBuildingPlaced()
@@ -68,40 +68,40 @@ public class GameManager : MonoBehaviour
         BuildingsPlacedCount++;
     }
 
-    // è·ç¦»ä¸‹ä¸€æ¬¡å‹åŠ›ï¼ˆæ¶æ€§äº‹ä»¶ï¼‰è§¦å‘è¿˜éœ€çš„æ·éª°æ¬¡æ•°ï¼›ç³»ç»Ÿå…³é—­æ—¶è¿”å› -1
+    // ¾àÀëÏÂÒ»´ÎÑ¹Á¦£¨¶ñĞÔÊÂ¼ş£©´¥·¢»¹ĞèµÄÖÀ÷»´ÎÊı£»ÏµÍ³¹Ø±ÕÊ±·µ»Ø -1
     public int RollsUntilNextPressure => enablePressureSystem ? Mathf.Max(nextPressureAt * 6 - diceRollCount, 0) : -1;
 
-    [Header("è°ƒè¯•")]
+    [Header("µ÷ÊÔ")]
     public bool enableDebugKeys = true;
 
-    [Header("èƒŒæ™¯éŸ³ä¹")]
+    [Header("±³¾°ÒôÀÖ")]
     public bool enableBackgroundMusic = true;
     public MusicManager musicManager;
 
-    [Header("éŸ³æ•ˆ")]
+    [Header("ÒôĞ§")]
     public SFXConfig sfxConfig;
     public bool enableSFX = true;
 
-    [Header("å£°éŸ³éŸ³é‡")]
+    [Header("ÉùÒôÒôÁ¿")]
     [Range(0f, 1f)]
-    [Tooltip("äº‹ä»¶éŸ³é‡")]
+    [Tooltip("ÊÂ¼şÒôÁ¿")]
     public float eventSoundVolume = 0.4f;
     [Range(0f, 1f)]
     [Tooltip("UI")]
     public float uiSoundVolume = 0.8f;
     [Range(0f, 1f)]
-    [Tooltip("è§’è‰²éŸ³é‡")]
+    [Tooltip("½ÇÉ«ÒôÁ¿")]
     public float characterSoundVolume = 0.7f;
     [Range(0f, 1f)]
-    [Tooltip("éª°å­éŸ³é‡")]
+    [Tooltip("÷»×ÓÒôÁ¿")]
     public float diceSoundVolume = 0.8f;
 
-    [Header("éª°å­å†·å´")]
+    [Header("÷»×ÓÀäÈ´")]
     [Range(0f, 10f)]
     public float diceCooldownTime = 0f; // 
     private float lastDiceRollTime = -1000f; // 
 
-    // æ¸¸æˆçŠ¶æ€æšä¸¾
+    // ÓÎÏ·×´Ì¬Ã¶¾Ù
     public enum GameState
     {
         Waiting,           // 
@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        // å•ä¾‹åˆå§‹åŒ–
+        // µ¥Àı³õÊ¼»¯
         if (Instance == null)
         {
             Instance = this;
@@ -131,13 +131,20 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("=== å²­å—å¯Œç¿æ¸¸æˆå¼€å§‹å¯åŠ¨ ===");
+        Debug.Log("=== ÁëÄÏ¸»ÎÌÓÎÏ·¿ªÊ¼Æô¶¯ ===");
+        StartCoroutine(StartWithABInit());
+    }
+
+    IEnumerator StartWithABInit()
+    {
+        yield return ResourceLoader.InitializeAsync();
+        Debug.Log($"ResourceLoader³õÊ¼»¯Íê³É, UseAssetBundles={ResourceLoader.UseAssetBundles}, IsReady={ResourceLoader.IsReady}");
         InitializeGame();
         // === 1:  ===
         StartCoroutine(StartInitialBuildingPhase());
     }
 
-    // åˆå§‹åŒ–æ¸¸æˆ
+    // ³õÊ¼»¯ÓÎÏ·
     void InitializeGame()
     {
         FindRequiredComponents();
@@ -150,7 +157,7 @@ public class GameManager : MonoBehaviour
             currentPlayer = players[currentPlayerIndex];
         }
 
-        // å‘æ”¾åˆå§‹ç‰©å“
+        // ·¢·Å³õÊ¼ÎïÆ·
         GiveStartingItemsToPlayers();
 
         currentState = GameState.Waiting;
@@ -161,15 +168,15 @@ public class GameManager : MonoBehaviour
         InitializeMusicSystem();
         InitializeSFXSystem();
 
-        Debug.Log($"ç©å®¶æ•°é‡: {players.Count}");
-        Debug.Log($"å½“å‰ç©å®¶: {currentPlayer?.playerName ?? ""}");
+        Debug.Log($"Íæ¼ÒÊıÁ¿: {players.Count}");
+        Debug.Log($"µ±Ç°Íæ¼Ò: {currentPlayer?.playerName ?? ""}");
     }
 
     void InitializeMusicSystem()
     {
         if (!enableBackgroundMusic)
         {
-            Debug.Log("èƒŒæ™¯éŸ³ä¹å·²ç¦ç”¨");
+            Debug.Log("±³¾°ÒôÀÖÒÑ½ûÓÃ");
             return;
         }
 
@@ -184,18 +191,18 @@ public class GameManager : MonoBehaviour
             {
                 musicObj = new GameObject("MusicManager");
                 musicManager = musicObj.AddComponent<MusicManager>();
-                Debug.Log("MusicManager å·²åˆ›å»º");
+                Debug.Log("MusicManager ÒÑ´´½¨");
             }
         }
 
         if (musicManager != null && musicManager.GetTotalTracks() > 0)
         {
             musicManager.Play();
-            Debug.Log("èƒŒæ™¯éŸ³ä¹ç³»ç»Ÿå·²å¯åŠ¨");
+            Debug.Log("±³¾°ÒôÀÖÏµÍ³ÒÑÆô¶¯");
         }
         else
         {
-            Debug.LogWarning("MusicManager æœªæ‰¾åˆ°æˆ–æ²¡æœ‰éŸ³è½¨");
+            Debug.LogWarning("MusicManager Î´ÕÒµ½»òÃ»ÓĞÒô¹ì");
         }
     }
 
@@ -203,20 +210,20 @@ public class GameManager : MonoBehaviour
     {
         if (ItemManager.Instance == null)
         {
-            Debug.LogWarning("ItemManager æœªæ‰¾åˆ°ï¼Œæ— æ³•å‘æ”¾åˆå§‹ç‰©å“");
+            Debug.LogWarning("ItemManager Î´ÕÒµ½£¬ÎŞ·¨·¢·Å³õÊ¼ÎïÆ·");
             return;
         }
 
         foreach (Player player in players)
         {
             ItemManager.Instance.GiveStartingItemsToPlayer(player);
-            Debug.Log($"å·²ç»™ç©å®¶ {player.playerName} å‘æ”¾åˆå§‹ç‰©å“");
+            Debug.Log($"ÒÑ¸øÍæ¼Ò {player.playerName} ·¢·Å³õÊ¼ÎïÆ·");
         }
 
         if (ItemHandManager.Instance != null && currentPlayer != null)
         {
             ItemHandManager.Instance.SetupHand(currentPlayer);
-            Debug.Log("ç‰©å“æ å·²è®¾ç½®");
+            Debug.Log("ÎïÆ·À¸ÒÑÉèÖÃ");
         }
     }
 
@@ -224,7 +231,7 @@ public class GameManager : MonoBehaviour
     {
         if (!enableSFX)
         {
-            Debug.Log("éŸ³æ•ˆå·²ç¦ç”¨");
+            Debug.Log("ÒôĞ§ÒÑ½ûÓÃ");
             return;
         }
 
@@ -239,26 +246,30 @@ public class GameManager : MonoBehaviour
                 sfxManager.ReloadClips();
             }
             else
-            {
-                sfxConfig = Resources.Load<SFXConfig>("SFXConfig");
-                if (sfxConfig != null)
                 {
-                    sfxManager.config = sfxConfig;
-                    sfxManager.ReloadClips();
+                    sfxConfig = ResourceLoader.Load<SFXConfig>("config_data", "SFXConfig");
+                    if (sfxConfig == null)
+                    {
+                        sfxConfig = Resources.Load<SFXConfig>("SFXConfig");
+                    }
+                    if (sfxConfig != null)
+                    {
+                        sfxManager.config = sfxConfig;
+                        sfxManager.ReloadClips();
+                    }
+                    else
+                    {
+                        Debug.LogWarning("SFXConfig Î´ÕÒµ½£¬ÇëÔÚInspectorÖĞÒıÓÃ»ò·ÅÔÚResourcesÎÄ¼ş¼ĞÖĞ");
+                    }
                 }
-                else
-                {
-                    Debug.LogWarning("SFXConfig æœªæ‰¾åˆ°ï¼Œè¯·åœ¨Inspectorä¸­å¼•ç”¨æˆ–æ”¾åœ¨Resourcesæ–‡ä»¶å¤¹ä¸­");
-                }
-            }
 
-            // è®¾ç½®äº‹ä»¶éŸ³é‡
+            // ÉèÖÃÊÂ¼şÒôÁ¿
             sfxManager.SetCategoryVolume(SFXCategory.Event, eventSoundVolume);
             sfxManager.SetCategoryVolume(SFXCategory.UI, uiSoundVolume);
             sfxManager.SetCategoryVolume(SFXCategory.Character, characterSoundVolume);
             sfxManager.SetCategoryVolume(SFXCategory.Dice, diceSoundVolume);
 
-            Debug.Log("SFXManager å·²åˆ›å»º");
+            Debug.Log("SFXManager ÒÑ´´½¨");
         }
         else if (sfxConfig != null && SFXManager.Instance.config == null)
         {
@@ -275,7 +286,7 @@ public class GameManager : MonoBehaviour
 
         if (currentPlayer != null)
         {
-            Debug.Log($"=== é˜¶æ®µ: {currentPlayer.playerName} é€‰æ‹©åˆå§‹å»ºç­‘ ===");
+            Debug.Log($"=== ½×¶Î: {currentPlayer.playerName} Ñ¡Ôñ³õÊ¼½¨Öş ===");
 
             // 1. 
             currentState = GameState.BuildingSelection;
@@ -293,7 +304,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("UIManager æœªæ‰¾åˆ°ï¼Œè·³è¿‡å»ºç­‘é€‰æ‹©é˜¶æ®µ");
+                Debug.LogWarning("UIManager Î´ÕÒµ½£¬Ìø¹ı½¨ÖşÑ¡Ôñ½×¶Î");
                 // UI
                 OnBuildingPurchaseCompleted();
             }
@@ -332,7 +343,7 @@ public class GameManager : MonoBehaviour
         if (uiManager == null)
             uiManager = FindObjectOfType<UIManager>();
 
-        Debug.Log($"æŸ¥æ‰¾ç»„ä»¶ç»“æœ: DiceController={diceController != null}, BoardManager={boardManager != null}, UIManager={uiManager != null}");
+        Debug.Log($"²éÕÒ×é¼ş½á¹û: DiceController={diceController != null}, BoardManager={boardManager != null}, UIManager={uiManager != null}");
     }
 
     void FindAllPlayers()
@@ -344,7 +355,7 @@ public class GameManager : MonoBehaviour
 
         if (players.Count == 0)
         {
-            Debug.LogWarning("æœªæ‰¾åˆ°ç©å®¶");
+            Debug.LogWarning("Î´ÕÒµ½Íæ¼Ò");
         }
     }
 
@@ -352,17 +363,17 @@ public class GameManager : MonoBehaviour
     {
         if (boardManager == null)
         {
-            Debug.LogError("BoardManager æœªæ‰¾åˆ°");
+            Debug.LogError("BoardManager Î´ÕÒµ½");
             return;
         }
 
         if (boardManager.allTiles == null || boardManager.allTiles.Count == 0)
         {
-            Debug.LogWarning("æ²¡æœ‰æ‰¾åˆ°ä»»ä½•æ ¼å­");
+            Debug.LogWarning("Ã»ÓĞÕÒµ½ÈÎºÎ¸ñ×Ó");
         }
         else
         {
-            Debug.Log($"æ ¼å­æ•°é‡: {boardManager.allTiles.Count} ");
+            Debug.Log($"¸ñ×ÓÊıÁ¿: {boardManager.allTiles.Count} ");
         }
     }
 
@@ -373,7 +384,7 @@ public class GameManager : MonoBehaviour
         BoardTile startTile = GetStartTile();
         if (startTile == null)
         {
-            Debug.LogError("æ²¡æœ‰æ‰¾åˆ°èµ·å§‹æ ¼å­");
+            Debug.LogError("Ã»ÓĞÕÒµ½ÆğÊ¼¸ñ×Ó");
             return;
         }
 
@@ -402,12 +413,12 @@ public class GameManager : MonoBehaviour
             player.currentTileIndex = 0;
             player.cash = startingCash;
 
-            Debug.Log($"{player.playerName} èµ·å§‹èµ„é‡‘: {player.cash}");
+            Debug.Log($"{player.playerName} ÆğÊ¼×Ê½ğ: {player.cash}");
 
             // === UI ===
             if (UIManager.Instance != null)
             {
-                // ä¸»ç©å®¶
+                // Ö÷Íæ¼Ò
                 if (i == 0) // 
                 {
                     UIManager.Instance.UpdateCashDisplay(player.cash);
@@ -417,7 +428,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // å¤„ç†åœ°äº§æ ¼å­
+    // ´¦ÀíµØ²ú¸ñ×Ó
     void HandlePropertyTile()
     {
         BoardTile tile = currentPlayer.currentTile;
@@ -427,7 +438,7 @@ public class GameManager : MonoBehaviour
             if (tile.tileType == BoardTile.TileType.Buildable)
             {
                 currentState = GameState.BuildingSelection;
-                Debug.Log($"{tile.tileName} æ˜¯å¯å»ºé€ åœ°å—: {tile.propertyPrice} é‡‘å¸");
+                Debug.Log($"{tile.tileName} ÊÇ¿É½¨ÔìµØ¿é: {tile.propertyPrice} ½ğ±Ò");
 
                 if (uiManager != null)
                 {
@@ -437,7 +448,7 @@ public class GameManager : MonoBehaviour
             else
             {
                 currentState = GameState.BuyingProperty;
-                Debug.Log($"{tile.tileName} æ˜¯å¯è´­ä¹°åœ°äº§: {tile.propertyPrice} é‡‘å¸");
+                Debug.Log($"{tile.tileName} ÊÇ¿É¹ºÂòµØ²ú: {tile.propertyPrice} ½ğ±Ò");
 
                 if (uiManager != null)
                 {
@@ -455,7 +466,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // æ£€æŸ¥è”åŠ¨å»ºç­‘æ”¶å…¥
+    // ¼ì²éÁª¶¯½¨ÖşÊÕÈë
     private void CheckLinkedBuildingIncome(BoardTile tile, Player player)
     {
         if (tile == null || player == null) return;
@@ -497,7 +508,7 @@ public class GameManager : MonoBehaviour
 
             if (totalIncome > 0 && uiManager != null)
             {
-                uiManager.ShowToast($"è·å¾—å»ºç­‘æ”¶å…¥ {totalIncome} é“œé’±", 2f);
+                uiManager.ShowToast($"»ñµÃ½¨ÖşÊÕÈë {totalIncome} Í­Ç®", 2f);
             }
         }
     }
@@ -524,11 +535,11 @@ public class GameManager : MonoBehaviour
         {
             rollDiceButton.onClick.RemoveAllListeners();
             rollDiceButton.onClick.AddListener(OnRollDiceButtonClicked);
-            Debug.Log("æ·éª°å­æŒ‰é’®äº‹ä»¶å·²è®¾ç½®");
+            Debug.Log("ÖÀ÷»×Ó°´Å¥ÊÂ¼şÒÑÉèÖÃ");
         }
         else
         {
-            Debug.LogWarning("RollDiceButton æœªè®¾ç½®ï¼Œè¯·åœ¨Inspectorä¸­å¼•ç”¨æˆ–é€šè¿‡åç§°æŸ¥æ‰¾");
+            Debug.LogWarning("RollDiceButton Î´ÉèÖÃ£¬ÇëÔÚInspectorÖĞÒıÓÃ»òÍ¨¹ıÃû³Æ²éÕÒ");
 
             GameObject buttonObj = GameObject.Find("RollDiceButton");
             if (buttonObj != null)
@@ -537,7 +548,7 @@ public class GameManager : MonoBehaviour
                 if (rollDiceButton != null)
                 {
                     rollDiceButton.onClick.AddListener(OnRollDiceButtonClicked);
-                    Debug.Log("é€šè¿‡åç§°æ‰¾åˆ°äº†æ·éª°å­æŒ‰é’®");
+                    Debug.Log("Í¨¹ıÃû³ÆÕÒµ½ÁËÖÀ÷»×Ó°´Å¥");
                 }
             }
         }
@@ -547,19 +558,19 @@ public class GameManager : MonoBehaviour
 
     public void OnRollDiceButtonClicked()
     {
-        Debug.Log("æ·éª°å­æŒ‰é’®è¢«ç‚¹å‡»");
+        Debug.Log("ÖÀ÷»×Ó°´Å¥±»µã»÷");
 
         // === 2:  ===
         if (!CanRollDice())
         {
-            Debug.Log($"å½“å‰çŠ¶æ€æ— æ³•æ·éª°å­: {currentState}");
+            Debug.Log($"µ±Ç°×´Ì¬ÎŞ·¨ÖÀ÷»×Ó: {currentState}");
 
-            // å»ºç­‘é€‰æ‹©é˜¶æ®µ
+            // ½¨ÖşÑ¡Ôñ½×¶Î
             if (currentState == GameState.BuildingSelection)
             {
                 if (uiManager != null)
                 {
-                    uiManager.ShowToast("è¯·å…ˆå®Œæˆå»ºç­‘é€‰æ‹©æˆ–æŒ‰ESCè·³è¿‡", 2f);
+                    uiManager.ShowToast("ÇëÏÈÍê³É½¨ÖşÑ¡Ôñ»ò°´ESCÌø¹ı", 2f);
                 }
             }
             return;
@@ -567,11 +578,11 @@ public class GameManager : MonoBehaviour
 
         if (currentPlayer == null)
         {
-            Debug.LogError("æ²¡æœ‰å½“å‰ç©å®¶");
+            Debug.LogError("Ã»ÓĞµ±Ç°Íæ¼Ò");
             return;
         }
 
-        Debug.Log($"{currentPlayer.playerName} å¼€å§‹æ·éª°å­");
+        Debug.Log($"{currentPlayer.playerName} ¿ªÊ¼ÖÀ÷»×Ó");
 
         currentState = GameState.RollingDice;
         isPlayerTurn = false;
@@ -593,7 +604,7 @@ public class GameManager : MonoBehaviour
     void RollDiceSimple()
     {
         lastDiceValue = Random.Range(1, 7);
-        Debug.Log($"{currentPlayer.playerName} æ·å‡º {lastDiceValue} ç‚¹");
+        Debug.Log($"{currentPlayer.playerName} ÖÀ³ö {lastDiceValue} µã");
 
         if (diceResultText != null)
             diceResultText.text = lastDiceValue.ToString();
@@ -608,11 +619,11 @@ public class GameManager : MonoBehaviour
     {
         lastDiceValue = value;
         lastDiceRollTime = Time.time;
-        Debug.Log($"éª°å­ç‚¹æ•°: {value}");
+        Debug.Log($"÷»×ÓµãÊı: {value}");
 
         int previousRound = CurrentRound;
         diceRollCount++;
-        Debug.Log($"éª°å­æŠ•æ·æ¬¡æ•°: {diceRollCount}");
+        Debug.Log($"÷»×ÓÍ¶ÖÀ´ÎÊı: {diceRollCount}");
 
         // Buff
         if (CurrentRound != previousRound && BuffSystem.Instance != null)
@@ -627,20 +638,20 @@ public class GameManager : MonoBehaviour
             uiManager.UpdatePressureSystemUI();
         }
 
-        // è¾¾åˆ°æ€»è½®æ•°ï¼šç»“ç®—å¹¶è·³è½¬ End åœºæ™¯
+        // ´ïµ½×ÜÂÖÊı£º½áËã²¢Ìø×ª End ³¡¾°
         if (CurrentRound >= maxRounds)
         {
             EndGameByRoundLimit();
             return;
         }
 
-        // æ£€æŸ¥éª°å­åŒæ•°å»ºç­‘
+        // ¼ì²é÷»×ÓË«Êı½¨Öş
         CheckDiceEvenBuildings(value);
 
         StartMovePlayer();
     }
 
-    // è¾¾åˆ°æ€»è½®æ•°æ—¶ç»“ç®—ï¼šç»Ÿè®¡ä¸»ç©å®¶æ•°æ®ï¼Œå†™å…¥ GameResult åè·³è½¬ End åœºæ™¯
+    // ´ïµ½×ÜÂÖÊıÊ±½áËã£ºÍ³¼ÆÖ÷Íæ¼ÒÊı¾İ£¬Ğ´Èë GameResult ºóÌø×ª End ³¡¾°
     private void EndGameByRoundLimit()
     {
         Player mainPlayer = players.Count > 0 ? players[0] : null;
@@ -653,7 +664,7 @@ public class GameManager : MonoBehaviour
 
         GameResult.Set(score, buildings, diceCount, gold, rounds, maxRounds);
 
-        Debug.Log($"è¾¾åˆ°æ€»è½®æ•° {maxRounds}ï¼Œæ˜¾ç¤ºé€šå…³é¢æ¿ï¼ˆåˆ†æ•°={score}, å»ºç­‘={buildings}, éª°å­={diceCount}, é‡‘å¸={gold}ï¼‰");
+        Debug.Log($"´ïµ½×ÜÂÖÊı {maxRounds}£¬ÏÔÊ¾Í¨¹ØÃæ°å£¨·ÖÊı={score}, ½¨Öş={buildings}, ÷»×Ó={diceCount}, ½ğ±Ò={gold}£©");
 
         if (UIManager.Instance != null)
         {
@@ -672,13 +683,13 @@ public class GameManager : MonoBehaviour
     {
         if (currentPlayer == null) return;
 
-        Debug.Log($"æ£€æŸ¥éª°å­è§¦å‘å»ºç­‘: éª°å­å€¼={diceValue}...");
+        Debug.Log($"¼ì²é÷»×Ó´¥·¢½¨Öş: ÷»×ÓÖµ={diceValue}...");
 
         int totalReward = 0;
         int buildingCount = 0;
         List<UIManager.IncomeEntry> incomeEntries = new List<UIManager.IncomeEntry>();
 
-        // éå†ç©å®¶åœ°äº§
+        // ±éÀúÍæ¼ÒµØ²ú
         foreach (BoardTile property in currentPlayer.ownedProperties)
         {
             if (property == null || property.currentBuildingData == null) continue;
@@ -694,9 +705,9 @@ public class GameManager : MonoBehaviour
                 buildingCount++;
                 incomeEntries.Add(new UIManager.IncomeEntry(property.currentBuildingData.buildingName, reward));
 
-                Debug.Log($"éª°å­è§¦å‘: {property.tileName} ({property.currentBuildingData.buildingName}) è·å¾— {reward} é“œæ¿");
+                Debug.Log($"÷»×Ó´¥·¢: {property.tileName} ({property.currentBuildingData.buildingName}) »ñµÃ {reward} Í­°å");
 
-                // è®¾ç½®ç‰¹æ•ˆä½ç½®
+                // ÉèÖÃÌØĞ§Î»ÖÃ
                 Transform effectTransform = property.transform;
                 if (property.currentBuilding != null)
                 {
@@ -709,15 +720,15 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        // æ˜¾ç¤ºå¥–åŠ±
+        // ÏÔÊ¾½±Àø
         if (totalReward > 0 && uiManager != null)
         {
             uiManager.ShowBuildingIncomeReport(incomeEntries);
-            Debug.Log($"å…± {buildingCount} åº§å»ºç­‘è§¦å‘ï¼Œè·å¾— {totalReward} ç°é‡‘");
+            Debug.Log($"¹² {buildingCount} ×ù½¨Öş´¥·¢£¬»ñµÃ {totalReward} ÏÖ½ğ");
         }
     }
 
-    // æ£€æŸ¥å‹åŠ›è§¦å‘
+    // ¼ì²éÑ¹Á¦´¥·¢
     private void CheckPressureTrigger()
     {
         if (!enablePressureSystem)
@@ -727,7 +738,7 @@ public class GameManager : MonoBehaviour
         
         Debug.Log($"CheckPressureTrigger: diceRollCount={diceRollCount}, currentRound={currentRound}, nextPressureAt={nextPressureAt}");
 
-        // è¾¾åˆ°å‹åŠ›è§¦å‘å›åˆ
+        // ´ïµ½Ñ¹Á¦´¥·¢»ØºÏ
         if (currentRound >= nextPressureAt)
         {
             TriggerPressure(currentRound);
@@ -736,7 +747,7 @@ public class GameManager : MonoBehaviour
 
     private void TriggerPressure(int currentRound)
     {
-        Debug.Log($"å‹åŠ›è§¦å‘: å›åˆ {currentRound}");
+        Debug.Log($"Ñ¹Á¦´¥·¢: »ØºÏ {currentRound}");
 
         int cost = Mathf.RoundToInt(basePressureCost);
 
@@ -764,13 +775,13 @@ public class GameManager : MonoBehaviour
         if (hasBankruptPlayer && UIManager.Instance != null)
         {
             UIManager.Instance.ShowTurnAnnouncement(
-                $"è½®æ•°ï¼š{currentRound} - {pressureText}"
+                $"ÂÖÊı£º{currentRound} - {pressureText}"
             );
         }
         else if (!hasBankruptPlayer && UIManager.Instance != null)
         {
             UIManager.Instance.ShowTurnAnnouncement(
-                $"è½®æ•°ï¼š{currentRound} - {pressureText}"
+                $"ÂÖÊı£º{currentRound} - {pressureText}"
             );
         }
     }
@@ -778,12 +789,12 @@ public class GameManager : MonoBehaviour
     private string GetRandomPressureText(int cost)
     {
         string[] pressureTexts = {
-            $"è·¯é‡ä¹ä¸ï¼Œå¿ƒç”Ÿæ€œæ‚¯ï¼Œæ–½èˆäº†{cost}é“œé’±",
-            $"å®¶ä¸­å¤±çªƒï¼ŒæŸå¤±{cost}é“œé’±",
-            $"å®˜åºœå¾ç¨ï¼Œç¼´çº³{cost}é“œé’±",
-            $"å‹äººå€Ÿé’±ï¼Œæ…·æ…¨ç›¸åŠ©{cost}é“œé’±",
-            $"èµŒåŠè¾“é’±ï¼Œç™½ç™½æŸå¤±{cost}é“œé’±",
-            $"ä¿®ç¼®æˆ¿å±‹ï¼ŒèŠ±è´¹{cost}é“œé’±"
+            $"Â·ÓöÆòØ¤£¬ĞÄÉúÁ¯Ãõ£¬Ê©ÉáÁË{cost}Í­Ç®",
+            $"¼ÒÖĞÊ§ÇÔ£¬ËğÊ§{cost}Í­Ç®",
+            $"¹Ù¸®Õ÷Ë°£¬½ÉÄÉ{cost}Í­Ç®",
+            $"ÓÑÈË½èÇ®£¬¿¶¿®ÏàÖú{cost}Í­Ç®",
+            $"¶Ä·»ÊäÇ®£¬°×°×ËğÊ§{cost}Í­Ç®",
+            $"ĞŞÉÉ·¿Îİ£¬»¨·Ñ{cost}Í­Ç®"
         };
 
         int index = Random.Range(0, pressureTexts.Length);
@@ -795,7 +806,7 @@ public class GameManager : MonoBehaviour
         // Debuff
         if (player.HasBankruptBuff())
         {
-            Debug.Log($"{player.playerName} å·²ç»æœ‰ç ´äº§Debuffï¼Œæ— éœ€é‡å¤æ·»åŠ ");
+            Debug.Log($"{player.playerName} ÒÑ¾­ÓĞÆÆ²úDebuff£¬ÎŞĞèÖØ¸´Ìí¼Ó");
             return;
         }
         
@@ -830,7 +841,7 @@ public class GameManager : MonoBehaviour
                     description
                 );
                 BuffSystem.Instance.AddBuff(player, bankruptBuff);
-                Debug.Log($"{player.playerName} è·å¾—ç ´äº§Debuffï¼ˆé€šè¿‡BuffDataé…ç½®ï¼‰ï¼ŒæŒç»­ {durationRounds} å›åˆ");
+                Debug.Log($"{player.playerName} »ñµÃÆÆ²úDebuff£¨Í¨¹ıBuffDataÅäÖÃ£©£¬³ÖĞø {durationRounds} »ØºÏ");
             }
             else
             {
@@ -846,7 +857,7 @@ public class GameManager : MonoBehaviour
                     description
                 );
                 BuffSystem.Instance.AddBuff(player, bankruptBuff);
-                Debug.Log($"{player.playerName} è·å¾—ç ´äº§Debuffï¼ŒæŒç»­ {durationRounds} å›åˆ");
+                Debug.Log($"{player.playerName} »ñµÃÆÆ²úDebuff£¬³ÖĞø {durationRounds} »ØºÏ");
             }
         }
         
@@ -860,7 +871,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                toastMessage = $"{player.playerName} é™·å…¥ç ´äº§å±æœºï¼";
+                toastMessage = $"{player.playerName} ÏİÈëÆÆ²úÎ£»ú£¡";
             }
             UIManager.Instance.ShowToast(toastMessage, 3f);
         }
@@ -869,7 +880,7 @@ public class GameManager : MonoBehaviour
     // === 3:  ===
     public bool CanRollDice()
     {
-        // éª°å­å†·å´æ£€æŸ¥
+        // ÷»×ÓÀäÈ´¼ì²é
         float timeSinceLastRoll = Time.time - lastDiceRollTime;
         bool cooldownFinished = timeSinceLastRoll >= diceCooldownTime;
         
@@ -891,34 +902,34 @@ public class GameManager : MonoBehaviour
     {
         if (currentPlayer == null) return;
 
-        // éª°å­åŠ æˆ buffï¼ˆç§»åŠ¨åŠ æˆç­‰ï¼‰ï¼šåœ¨åŸå§‹ç‚¹æ•°ä¸Šå åŠ é¢å¤–æ­¥æ•°
+        // ÷»×Ó¼Ó³É buff£¨ÒÆ¶¯¼Ó³ÉµÈ£©£ºÔÚÔ­Ê¼µãÊıÉÏµş¼Ó¶îÍâ²½Êı
         int boostedDiceValue = currentPlayer.GetDiceValueWithBoost(lastDiceValue);
 
-        // è®¡ç®—æ·éª°ä¹˜æ•°
+        // ¼ÆËãÖÀ÷»³ËÊı
         float multiplier = currentPlayer.GetNextRollMultiplier();
         int finalDiceValue = Mathf.RoundToInt(boostedDiceValue * multiplier);
         
         if (multiplier != 1f)
         {
-            Debug.Log($"{currentPlayer.playerName} å€ç‡åŠ æˆ: {boostedDiceValue} * {multiplier} = {finalDiceValue}");
+            Debug.Log($"{currentPlayer.playerName} ±¶ÂÊ¼Ó³É: {boostedDiceValue} * {multiplier} = {finalDiceValue}");
             if (BuffSystem.Instance != null)
             {
                 BuffSystem.Instance.RemoveBuffsByEffect(currentPlayer, BuildingData.BuffEffect.NextRollMultiplier);
             }
         }
 
-        // è®¡ç®—æ­¥æ•°ä¿®æ­£
+        // ¼ÆËã²½ÊıĞŞÕı
         int stepsModifier = currentPlayer.GetStepsModifier();
         if (stepsModifier != 0)
         {
             finalDiceValue += stepsModifier;
-            Debug.Log($"{currentPlayer.playerName} æ­¥æ•°ä¿®æ­£: {finalDiceValue} + {stepsModifier} = {finalDiceValue}");
+            Debug.Log($"{currentPlayer.playerName} ²½ÊıĞŞÕı: {finalDiceValue} + {stepsModifier} = {finalDiceValue}");
         }
 
         // 1
         finalDiceValue = Mathf.Max(1, finalDiceValue);
 
-        Debug.Log($"{currentPlayer.playerName} ç§»åŠ¨ {finalDiceValue} æ­¥");
+        Debug.Log($"{currentPlayer.playerName} ÒÆ¶¯ {finalDiceValue} ²½");
 
         currentState = GameState.Moving;
         isMoving = true;
@@ -926,7 +937,7 @@ public class GameManager : MonoBehaviour
         PlayerMovement movement = currentPlayer.GetComponent<PlayerMovement>();
         if (movement == null)
         {
-            Debug.LogError($"{currentPlayer.playerName} æ²¡æœ‰ PlayerMovement ç»„ä»¶");
+            Debug.LogError($"{currentPlayer.playerName} Ã»ÓĞ PlayerMovement ×é¼ş");
             EndMove();
             return;
         }
@@ -942,7 +953,7 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
-        Debug.Log($"{currentPlayer.playerName} ç§»åŠ¨å®Œæˆ");
+        Debug.Log($"{currentPlayer.playerName} ÒÆ¶¯Íê³É");
 
         // === 4:  ===
         CheckPassingStart();
@@ -977,16 +988,16 @@ public class GameManager : MonoBehaviour
         // ()
         if (!isOnStartTile && previousIndex > currentIndex)
         {
-            Debug.Log($"{currentPlayer.playerName} ç»è¿‡äº†èµ·ç‚¹");
+            Debug.Log($"{currentPlayer.playerName} ¾­¹ıÁËÆğµã");
 
             // 1. 
             int salary = salaryAmount;
             currentPlayer.ReceiveCash(salary);
-            Debug.Log($"{currentPlayer.playerName} è·å¾— {salary} è¿‡è·¯è´¹");
+            Debug.Log($"{currentPlayer.playerName} »ñµÃ {salary} ¹ıÂ··Ñ");
 
             if (uiManager != null)
             {
-                uiManager.ShowToast($"å®Œæˆä¸€åœˆè·å¾—æ”¶ç›Šï¼š{salary}", 2f);
+                uiManager.ShowToast($"Íê³ÉÒ»È¦»ñµÃÊÕÒæ£º{salary}", 2f);
             }
 
             // 2. 
@@ -999,7 +1010,7 @@ public class GameManager : MonoBehaviour
         }
         else if (isOnStartTile)
         {
-            Debug.Log($"{currentPlayer.playerName} åœåœ¨äº†èµ·ç‚¹æ ¼å­ä¸Š");
+            Debug.Log($"{currentPlayer.playerName} Í£ÔÚÁËÆğµã¸ñ×ÓÉÏ");
 
             // (BoardTile.OnLanded)
             currentState = GameState.BuildingSelection;
@@ -1023,13 +1034,13 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.Log($"{currentPlayer.playerName} åœ¨èµ·ç‚¹ï¼Œä½†UIManagerä¸ºç©º");
-            // å»ºç­‘è´­ä¹°å®Œæˆ
+            Debug.Log($"{currentPlayer.playerName} ÔÚÆğµã£¬µ«UIManagerÎª¿Õ");
+            // ½¨Öş¹ºÂòÍê³É
             OnBuildingPurchaseCompleted();
         }
     }
 
-    // å¤„ç†å½“å‰æ ¼å­
+    // ´¦Àíµ±Ç°¸ñ×Ó
     void ProcessCurrentTile()
     {
         if (currentPlayer == null || currentPlayer.currentTile == null)
@@ -1040,7 +1051,7 @@ public class GameManager : MonoBehaviour
 
         currentState = GameState.ProcessingTile;
 
-        Debug.Log($"{currentPlayer.playerName} åˆ°è¾¾ {currentPlayer.currentTile.tileName}");
+        Debug.Log($"{currentPlayer.playerName} µ½´ï {currentPlayer.currentTile.tileName}");
 
         BoardTile currentTile = currentPlayer.currentTile;
 
@@ -1089,12 +1100,12 @@ public class GameManager : MonoBehaviour
         {
             if (currentPlayer.BuyProperty(tile))
             {
-                Debug.Log($"{currentPlayer.playerName} è‡ªåŠ¨è´­ä¹°äº† {tile.tileName}");
+                Debug.Log($"{currentPlayer.playerName} ×Ô¶¯¹ºÂòÁË {tile.tileName}");
             }
         }
         else
         {
-            Debug.Log($"{currentPlayer.playerName} ä¹°ä¸èµ· {tile.tileName}");
+            Debug.Log($"{currentPlayer.playerName} Âò²»Æğ {tile.tileName}");
         }
 
         StartCoroutine(EndMoveAfterDelay(1f));
@@ -1102,7 +1113,7 @@ public class GameManager : MonoBehaviour
 
     public void OnPropertyPurchaseComplete(bool purchased)
     {
-        Debug.Log($"è´­ä¹°å®Œæˆ: {(purchased ? "å·²è´­ä¹°" : "æœªè´­ä¹°")}");
+        Debug.Log($"¹ºÂòÍê³É: {(purchased ? "ÒÑ¹ºÂò" : "Î´¹ºÂò")}");
         StartCoroutine(EndMoveAfterDelay(0.5f));
     }
 
@@ -1114,7 +1125,7 @@ public class GameManager : MonoBehaviour
 
     void EndMove()
     {
-        Debug.Log($"{currentPlayer.playerName} ç§»åŠ¨ç»“æŸ");
+        Debug.Log($"{currentPlayer.playerName} ÒÆ¶¯½áÊø");
 
         isMoving = false;
 
@@ -1129,7 +1140,7 @@ public class GameManager : MonoBehaviour
         else if (currentPlayer.cash < 0)
         {
             // Debuff
-            Debug.Log($"{currentPlayer.playerName} ç°é‡‘ä¸è¶³ï¼Œç»™äºˆç ´äº§Debuff");
+            Debug.Log($"{currentPlayer.playerName} ÏÖ½ğ²»×ã£¬¸øÓèÆÆ²úDebuff");
             ApplyBankruptDebuff(currentPlayer);
         }
 
@@ -1141,7 +1152,7 @@ public class GameManager : MonoBehaviour
 
     public void EndTurn()
     {
-        Debug.Log($"{currentPlayer.playerName} å›åˆç»“æŸ");
+        Debug.Log($"{currentPlayer.playerName} »ØºÏ½áÊø");
 
         ProcessPlayerEndTurnEffects(currentPlayer);
 
@@ -1188,7 +1199,7 @@ public class GameManager : MonoBehaviour
 
         //  buildingStartRound == CurrentRound
 
-        Debug.Log($"=== {currentPlayer.playerName} çš„å›åˆ ===");
+        Debug.Log($"=== {currentPlayer.playerName} µÄ»ØºÏ ===");
         UpdateUI();
 
         // === UI ===
@@ -1217,16 +1228,16 @@ public class GameManager : MonoBehaviour
         if (currentPlayer.jailTurnsRemaining <= 0)
         {
             currentPlayer.isInJail = false;
-            Debug.Log($"{currentPlayer.playerName} å‡ºç‹±äº†");
+            Debug.Log($"{currentPlayer.playerName} ³öÓüÁË");
             StartPlayerTurn();
         }
         else
         {
-            Debug.Log($"{currentPlayer.playerName} åœ¨ç›‘ç‹±é‡Œï¼Œè¿˜å‰© {currentPlayer.jailTurnsRemaining} å›åˆ");
+            Debug.Log($"{currentPlayer.playerName} ÔÚ¼àÓüÀï£¬»¹Ê£ {currentPlayer.jailTurnsRemaining} »ØºÏ");
 
             if (uiManager != null)
             {
-                uiManager.ShowToast($"{currentPlayer.playerName} åœ¨ç›‘ç‹±é‡Œï¼Œè¿˜å‰©{currentPlayer.jailTurnsRemaining}å›åˆ", 2f);
+                uiManager.ShowToast($"{currentPlayer.playerName} ÔÚ¼àÓüÀï£¬»¹Ê£{currentPlayer.jailTurnsRemaining}»ØºÏ", 2f);
             }
 
             EndTurn();
@@ -1235,22 +1246,22 @@ public class GameManager : MonoBehaviour
 
     void HandlePlayerBankrupt(Player player)
     {
-        Debug.Log($"=== ç©å®¶ç ´äº§: {player.playerName} ===");
+        Debug.Log($"=== Íæ¼ÒÆÆ²ú: {player.playerName} ===");
 
         player.isBankrupt = true;
 
         foreach (BoardTile property in player.ownedProperties)
         {
             property.ownerPlayer = null;
-            Debug.Log($"é‡Šæ”¾åœ°äº§: {property.tileName}");
+            Debug.Log($"ÊÍ·ÅµØ²ú: {property.tileName}");
         }
         player.ownedProperties.Clear();
 
-        Debug.Log($"{player.playerName} å·²ç ´äº§");
+        Debug.Log($"{player.playerName} ÒÑÆÆ²ú");
 
         if (uiManager != null)
         {
-            uiManager.ShowToast($"{player.playerName} ç ´äº§äº†!", 3f);
+            uiManager.ShowToast($"{player.playerName} ÆÆ²úÁË!", 3f);
         }
     }
 
@@ -1263,7 +1274,7 @@ public class GameManager : MonoBehaviour
         {
             Player player = players[0];
             bool isWinner = !player.isBankrupt;
-            Debug.Log($"=== æ¸¸æˆç»“æŸ! {player.playerName}: {(isWinner ? "èƒœåˆ©" : "å¤±è´¥")} ===");
+            Debug.Log($"=== ÓÎÏ·½áÊø! {player.playerName}: {(isWinner ? "Ê¤Àû" : "Ê§°Ü")} ===");
 
             if (uiManager != null)
             {
@@ -1275,7 +1286,7 @@ public class GameManager : MonoBehaviour
             Player winner = players.Find(p => !p.isBankrupt);
             if (winner != null)
             {
-                Debug.Log($"=== æ¸¸æˆç»“æŸ! è·èƒœè€…: {winner.playerName} ===");
+                Debug.Log($"=== ÓÎÏ·½áÊø! »ñÊ¤Õß: {winner.playerName} ===");
                 if (uiManager != null)
                 {
                     uiManager.ShowGameOverPanel(winner.playerName, true);
@@ -1283,7 +1294,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                Debug.Log("=== æ²¡æœ‰äººè·èƒœï¼Œæ‰€æœ‰äººéƒ½ç ´äº§äº† ===");
+                Debug.Log("=== Ã»ÓĞÈË»ñÊ¤£¬ËùÓĞÈË¶¼ÆÆ²úÁË ===");
             }
         }
     }
@@ -1295,16 +1306,16 @@ public class GameManager : MonoBehaviour
         if (currentPlayer == null) return;
 
         if (currentPlayerText != null)
-            currentPlayerText.text = $"ç©å®¶: {currentPlayer.playerName}";
+            currentPlayerText.text = $"Íæ¼Ò: {currentPlayer.playerName}";
 
         if (playerCashText != null)
-            playerCashText.text = $"ç°é‡‘: {currentPlayer.cash}";
+            playerCashText.text = $"ÏÖ½ğ: {currentPlayer.cash}";
 
         if (diceResultText != null)
-            diceResultText.text = $"éª°å­: {lastDiceValue}";
+            diceResultText.text = $"÷»×Ó: {lastDiceValue}";
 
         if (currentTileText != null && currentPlayer.currentTile != null)
-            currentTileText.text = $"ä½ç½®: {currentPlayer.currentTile.tileName}";
+            currentTileText.text = $"Î»ÖÃ: {currentPlayer.currentTile.tileName}";
 
         if (uiManager != null)
         {
@@ -1332,11 +1343,11 @@ public class GameManager : MonoBehaviour
     // === 6:  ===
     public void OnBuildingPurchaseCompleted()
     {
-        Debug.Log("å»ºç­‘è´­ä¹°å®Œæˆï¼Œè¿›å…¥æ­£å¸¸å›åˆæµç¨‹");
+        Debug.Log("½¨Öş¹ºÂòÍê³É£¬½øÈëÕı³£»ØºÏÁ÷³Ì");
 
         isMoving = false;//
 
-        // è¿›å…¥ç©å®¶å›åˆ
+        // ½øÈëÍæ¼Ò»ØºÏ
         currentState = GameState.PlayerTurn;
         isPlayerTurn = true;
 
@@ -1354,24 +1365,24 @@ public class GameManager : MonoBehaviour
         }
         
         // ()
-        // æ£€æŸ¥ç ´äº§
+        // ¼ì²éÆÆ²ú
         if (currentPlayer != null && currentPlayer.isBankrupt)
         {
-            Debug.Log($"{currentPlayer.playerName} å·²ç ´äº§ï¼Œè·³è¿‡æ­¤å›åˆ");
+            Debug.Log($"{currentPlayer.playerName} ÒÑÆÆ²ú£¬Ìø¹ı´Ë»ØºÏ");
             return;
         }
         
-        // æ£€æŸ¥å‹åŠ›è§¦å‘
+        // ¼ì²éÑ¹Á¦´¥·¢
         CheckPressureTrigger();
         
         // ()
         if (currentPlayer != null && currentPlayer.isBankrupt)
         {
-            Debug.Log($"{currentPlayer.playerName} å› å‹åŠ›ç³»ç»Ÿè§¦å‘ç ´äº§");
+            Debug.Log($"{currentPlayer.playerName} ÒòÑ¹Á¦ÏµÍ³´¥·¢ÆÆ²ú");
             return;
         }
         
-        // ç»“æŸå›åˆ
+        // ½áÊø»ØºÏ
         EndTurn();
     }
 
@@ -1413,7 +1424,7 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.N))
         {
-            Debug.Log("æµ‹è¯•ï¼šè·³è¿‡å›åˆ");
+            Debug.Log("²âÊÔ£ºÌø¹ı»ØºÏ");
             EndTurn();
         }
 
@@ -1449,17 +1460,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Debugï¼šæŒ‰ 0 ä»å¡æ± éšæœºæŠ½ä¸€å¼ å¡ç»™å½“å‰ç©å®¶ï¼ˆä»… enableDebugKeys å¼€å¯æ—¶å¯ç”¨ï¼‰
+    // Debug£º°´ 0 ´Ó¿¨³ØËæ»ú³éÒ»ÕÅ¿¨¸øµ±Ç°Íæ¼Ò£¨½ö enableDebugKeys ¿ªÆôÊ±¿ÉÓÃ£©
     private void DebugDrawCardFromPool()
     {
         if (ItemManager.Instance == null)
         {
-            Debug.LogWarning("DebugDrawCardFromPool: ItemManager æœªå°±ç»ª");
+            Debug.LogWarning("DebugDrawCardFromPool: ItemManager Î´¾ÍĞ÷");
             return;
         }
         if (currentPlayer == null)
         {
-            Debug.LogWarning("DebugDrawCardFromPool: æ— å½“å‰ç©å®¶");
+            Debug.LogWarning("DebugDrawCardFromPool: ÎŞµ±Ç°Íæ¼Ò");
             return;
         }
 
@@ -1467,14 +1478,14 @@ public class GameManager : MonoBehaviour
         switch (result)
         {
             case ItemManager.HarvestCardResult.GotCard:
-                Debug.Log($"[Debug] {currentPlayer.playerName} ä»å¡æ± è·å¾—å¡ç‰Œï¼š{drawnCard.itemName}({drawnCard.rarity})");
+                Debug.Log($"[Debug] {currentPlayer.playerName} ´Ó¿¨³Ø»ñµÃ¿¨ÅÆ£º{drawnCard.itemName}({drawnCard.rarity})");
                 break;
             case ItemManager.HarvestCardResult.HandFull:
-                Debug.Log($"[Debug] {currentPlayer.playerName} æ‰‹ç‰Œå·²æ»¡ï¼Œå¡ç‰ŒæŠ˜ç®— {compensationGold} é‡‘å¸");
-                UIManager.Instance?.ShowToast($"æ‰‹ç‰Œå·²æ»¡ï¼Œå¡ç‰ŒæŠ˜ç®— {compensationGold} é‡‘å¸ï¼", 2f);
+                Debug.Log($"[Debug] {currentPlayer.playerName} ÊÖÅÆÒÑÂú£¬¿¨ÅÆÕÛËã {compensationGold} ½ğ±Ò");
+                UIManager.Instance?.ShowToast($"ÊÖÅÆÒÑÂú£¬¿¨ÅÆÕÛËã {compensationGold} ½ğ±Ò£¡", 2f);
                 break;
             case ItemManager.HarvestCardResult.NoPool:
-                Debug.LogWarning("[Debug] å¡æ± æœªé…ç½®æˆ–ä¸ºç©ºï¼Œæ— æ³•æŠ½å¡");
+                Debug.LogWarning("[Debug] ¿¨³ØÎ´ÅäÖÃ»òÎª¿Õ£¬ÎŞ·¨³é¿¨");
                 break;
         }
     }
@@ -1505,30 +1516,30 @@ public class GameManager : MonoBehaviour
 
     void TestRollDice()
     {
-        Debug.Log("æµ‹è¯•ï¼šæ·éª°å­");
+        Debug.Log("²âÊÔ£ºÖÀ÷»×Ó");
         OnRollDiceButtonClicked();
     }
 
-    // é“å…·é©±åŠ¨ï¼šè®©å½“å‰ç©å®¶é¢å¤–å‘å‰ç§»åŠ¨ steps æ­¥ï¼Œå¤ç”¨æ·éª°çš„ç§»åŠ¨ä¸è½åœ°ç»“ç®—ï¼ˆä¸å åŠ æ·éª°å€ç‡/æ­¥æ•°ä¿®æ­£ï¼‰
+    // µÀ¾ßÇı¶¯£ºÈÃµ±Ç°Íæ¼Ò¶îÍâÏòÇ°ÒÆ¶¯ steps ²½£¬¸´ÓÃÖÀ÷»µÄÒÆ¶¯ÓëÂäµØ½áËã£¨²»µş¼ÓÖÀ÷»±¶ÂÊ/²½ÊıĞŞÕı£©
     public void MovePlayerExtraSteps(int steps)
     {
         if (currentPlayer == null || isMoving)
         {
-            Debug.LogWarning("MovePlayerExtraSteps: æ— å½“å‰ç©å®¶æˆ–æ­£åœ¨ç§»åŠ¨ä¸­ï¼Œå¿½ç•¥");
+            Debug.LogWarning("MovePlayerExtraSteps: ÎŞµ±Ç°Íæ¼Ò»òÕıÔÚÒÆ¶¯ÖĞ£¬ºöÂÔ");
             return;
         }
         if (steps <= 0) return;
 
-        Debug.Log($"{currentPlayer.playerName} ä½¿ç”¨é“å…·å‘å‰ç§»åŠ¨ {steps} æ­¥");
+        Debug.Log($"{currentPlayer.playerName} Ê¹ÓÃµÀ¾ßÏòÇ°ÒÆ¶¯ {steps} ²½");
 
-        lastDiceValue = steps; // ä¾›è¿‡èµ·ç‚¹ç»“ç®—ä½¿ç”¨
+        lastDiceValue = steps; // ¹©¹ıÆğµã½áËãÊ¹ÓÃ
         currentState = GameState.Moving;
         isMoving = true;
 
         PlayerMovement movement = currentPlayer.GetComponent<PlayerMovement>();
         if (movement == null)
         {
-            Debug.LogError($"{currentPlayer.playerName} ç¼ºå°‘ PlayerMovementï¼Œæ— æ³•ç§»åŠ¨");
+            Debug.LogError($"{currentPlayer.playerName} È±ÉÙ PlayerMovement£¬ÎŞ·¨ÒÆ¶¯");
             EndMove();
             return;
         }
@@ -1541,7 +1552,7 @@ public class GameManager : MonoBehaviour
     {
         if (currentPlayer == null || isMoving) return;
 
-        Debug.Log($"æµ‹è¯•ç§»åŠ¨: {currentPlayer.playerName} ç§»åŠ¨ {steps} æ­¥");
+        Debug.Log($"²âÊÔÒÆ¶¯: {currentPlayer.playerName} ÒÆ¶¯ {steps} ²½");
 
         lastDiceValue = steps;
         StartMovePlayer();
@@ -1549,28 +1560,28 @@ public class GameManager : MonoBehaviour
 
     void DebugGameState()
     {
-        Debug.Log("=== æ¸¸æˆçŠ¶æ€ ===");
-        Debug.Log($"çŠ¶æ€: {currentState}");
-        Debug.Log($"å½“å‰ç©å®¶: {currentPlayer.playerName}");
-        Debug.Log($"ç©å®¶æ•°é‡: {players.Count}");
-        Debug.Log($"å½“å‰ç´¢å¼•: {currentPlayerIndex}");
-        Debug.Log($"æ¸¸æˆå¼€å§‹: {isGameStarted}");
-        Debug.Log($"ç©å®¶å›åˆ: {isPlayerTurn}");
-        Debug.Log($"æ­£åœ¨ç§»åŠ¨: {isMoving}");
-        Debug.Log($"éª°å­ç‚¹æ•°: {lastDiceValue}");
+        Debug.Log("=== ÓÎÏ·×´Ì¬ ===");
+        Debug.Log($"×´Ì¬: {currentState}");
+        Debug.Log($"µ±Ç°Íæ¼Ò: {currentPlayer.playerName}");
+        Debug.Log($"Íæ¼ÒÊıÁ¿: {players.Count}");
+        Debug.Log($"µ±Ç°Ë÷Òı: {currentPlayerIndex}");
+        Debug.Log($"ÓÎÏ·¿ªÊ¼: {isGameStarted}");
+        Debug.Log($"Íæ¼Ò»ØºÏ: {isPlayerTurn}");
+        Debug.Log($"ÕıÔÚÒÆ¶¯: {isMoving}");
+        Debug.Log($"÷»×ÓµãÊı: {lastDiceValue}");
 
         if (currentPlayer != null)
         {
-            Debug.Log($"ç°é‡‘: {currentPlayer.cash}");
-            Debug.Log($"å½“å‰ä½ç½®: {currentPlayer.currentTile.tileName}");
-            Debug.Log($"æ˜¯å¦åœ¨ç›‘ç‹±: {currentPlayer.isInJail}");
-            Debug.Log($"ç›‘ç‹±å‰©ä½™å›åˆ: {currentPlayer.jailTurnsRemaining}");
+            Debug.Log($"ÏÖ½ğ: {currentPlayer.cash}");
+            Debug.Log($"µ±Ç°Î»ÖÃ: {currentPlayer.currentTile.tileName}");
+            Debug.Log($"ÊÇ·ñÔÚ¼àÓü: {currentPlayer.isInJail}");
+            Debug.Log($"¼àÓüÊ£Óà»ØºÏ: {currentPlayer.jailTurnsRemaining}");
         }
     }
 
     public void RestartFromGameOver()
     {
-        Debug.Log("ä»æ¸¸æˆç»“æŸé‡æ–°å¼€å§‹");
+        Debug.Log("´ÓÓÎÏ·½áÊøÖØĞÂ¿ªÊ¼");
         
         currentState = GameState.PlayerTurn;
         isGameStarted = true;
@@ -1582,10 +1593,10 @@ public class GameManager : MonoBehaviour
         basePressureCost = 7f;
         BuildingsPlacedCount = 0;
         
-        // é‡ç½®éª°å­å†·å´
+        // ÖØÖÃ÷»×ÓÀäÈ´
         ResetDiceCooldown();
         
-        // æ¸…é™¤æ‰€æœ‰å»ºç­‘
+        // Çå³ıËùÓĞ½¨Öş
         ClearAllBuildings();
         startPurchaseTileCache = null;
         
@@ -1600,7 +1611,7 @@ public class GameManager : MonoBehaviour
             p.isInJail = false;
             p.jailTurnsRemaining = 0;
             
-            // ç‰©å“ç®¡ç†å™¨æ£€æŸ¥
+            // ÎïÆ·¹ÜÀíÆ÷¼ì²é
             if (ItemManager.Instance != null)
             {
                 ItemManager.Instance.ResetPlayerInventory(p);
@@ -1610,7 +1621,7 @@ public class GameManager : MonoBehaviour
             if (startTile != null)
             {
                 p.MoveToTile(startTile, false);
-                Debug.Log($"é‡ç½®ç©å®¶ä½ç½®: {p.playerName} ");
+                Debug.Log($"ÖØÖÃÍæ¼ÒÎ»ÖÃ: {p.playerName} ");
             }
         }
         
@@ -1635,13 +1646,13 @@ public class GameManager : MonoBehaviour
         
         UpdateUI();
         
-        // å»¶è¿Ÿæ˜¾ç¤ºå»ºç­‘é¢æ¿
+        // ÑÓ³ÙÏÔÊ¾½¨ÖşÃæ°å
         StartCoroutine(DelayedShowBuildingPanelAfterRestart());
         
-        Debug.Log("é‡æ–°åˆå§‹åŒ–å®Œæˆ");
+        Debug.Log("ÖØĞÂ³õÊ¼»¯Íê³É");
     }
     
-    // é‡å¯åå»¶è¿Ÿæ˜¾ç¤ºå»ºç­‘é¢æ¿
+    // ÖØÆôºóÑÓ³ÙÏÔÊ¾½¨ÖşÃæ°å
     IEnumerator DelayedShowBuildingPanelAfterRestart()
     {
         yield return new WaitForSeconds(2f);
@@ -1655,7 +1666,7 @@ public class GameManager : MonoBehaviour
         
         if (isOnStart)
         {
-            Debug.Log($"{currentPlayer.playerName} åœ¨èµ·ç‚¹ï¼Œæ˜¾ç¤ºå»ºç­‘è´­ä¹°é¢æ¿");
+            Debug.Log($"{currentPlayer.playerName} ÔÚÆğµã£¬ÏÔÊ¾½¨Öş¹ºÂòÃæ°å");
             
             currentState = GameState.BuildingSelection;
             isPlayerTurn = false;
@@ -1669,14 +1680,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // æ¸…é™¤æ‰€æœ‰å»ºç­‘
+    // Çå³ıËùÓĞ½¨Öş
     private void ClearAllBuildings()
     {
-        Debug.Log("æ¸…é™¤æ‰€æœ‰å»ºç­‘æ•°æ®...");
+        Debug.Log("Çå³ıËùÓĞ½¨ÖşÊı¾İ...");
         
         if (boardManager == null || boardManager.allTiles == null)
         {
-            Debug.LogWarning("BoardManager æˆ– allTiles æœªæ‰¾åˆ°");
+            Debug.LogWarning("BoardManager »ò allTiles Î´ÕÒµ½");
             return;
         }
         
@@ -1684,13 +1695,13 @@ public class GameManager : MonoBehaviour
         {
             if (tile == null) continue;
             
-            // æ¸…ç©ºå»ºç­‘æ•°æ®
+            // Çå¿Õ½¨ÖşÊı¾İ
             tile.currentBuildingData = null;
             tile.currentBuildingType = BoardTile.BuildingType.None;
             tile.buildingLevel = 0;
             tile.ownerPlayer = null;
             
-            // æ¸…é™¤å»ºç­‘å¯¹è±¡
+            // Çå³ı½¨Öş¶ÔÏó
             if (tile.currentBuilding != null)
             {
                 Destroy(tile.currentBuilding);
@@ -1698,12 +1709,12 @@ public class GameManager : MonoBehaviour
             }
         }
         
-        Debug.Log("æ¸…é™¤æ‰€æœ‰å»ºç­‘å®Œæˆ");
+        Debug.Log("Çå³ıËùÓĞ½¨ÖşÍê³É");
     }
 
     public void ResetGame()
     {
-        Debug.Log("é‡ç½®æ¸¸æˆ");
+        Debug.Log("ÖØÖÃÓÎÏ·");
 
         UnityEngine.SceneManagement.SceneManager.LoadScene(
             UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex
@@ -1715,7 +1726,7 @@ public class GameManager : MonoBehaviour
         if (!players.Contains(player))
         {
             players.Add(player);
-            Debug.Log($"æ·»åŠ ç©å®¶: {player.playerName}");
+            Debug.Log($"Ìí¼ÓÍæ¼Ò: {player.playerName}");
         }
     }
 
@@ -1724,7 +1735,7 @@ public class GameManager : MonoBehaviour
         if (players.Contains(player))
         {
             players.Remove(player);
-            Debug.Log($"ç§»é™¤ç©å®¶: {player.playerName}");
+            Debug.Log($"ÒÆ³ıÍæ¼Ò: {player.playerName}");
 
             if (players.Count > 0 && currentPlayer == player)
             {
@@ -1775,12 +1786,12 @@ public class GameManager : MonoBehaviour
     // Debuff
     public void CheckGameOverAfterBankrupt()
     {
-        Debug.Log("æ£€æŸ¥ç ´äº§åçš„æ¸¸æˆçŠ¶æ€...");
+        Debug.Log("¼ì²éÆÆ²úºóµÄÓÎÏ·×´Ì¬...");
         
         Player winner = GetWinner();
         if (winner != null)
         {
-            Debug.Log($"æ¸¸æˆç»“æŸï¼è·èƒœè€…: {winner.playerName}");
+            Debug.Log($"ÓÎÏ·½áÊø£¡»ñÊ¤Õß: {winner.playerName}");
             if (UIManager.Instance != null)
             {
                 UIManager.Instance.ShowGameOverPanel(winner.playerName, true);
@@ -1789,7 +1800,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("æ‰€æœ‰ç©å®¶éƒ½ç ´äº§äº†ï¼");
+            Debug.Log("ËùÓĞÍæ¼Ò¶¼ÆÆ²úÁË£¡");
             if (UIManager.Instance != null)
             {
                 UIManager.Instance.ShowGameOverPanel("", false);
@@ -1800,28 +1811,28 @@ public class GameManager : MonoBehaviour
 
     public void OnEventPanelClosed()
     {
-        // å…³é—­äº‹ä»¶é¢æ¿
-        Debug.Log("äº‹ä»¶é¢æ¿å·²å…³é—­");
+        // ¹Ø±ÕÊÂ¼şÃæ°å
+        Debug.Log("ÊÂ¼şÃæ°åÒÑ¹Ø±Õ");
         
         // Debuff
         if (currentPlayer != null && currentPlayer.cash < 0 && !currentPlayer.HasBankruptBuff())
         {
-            Debug.Log($"{currentPlayer.playerName} åœ¨äº‹ä»¶åç ´äº§äº†");
+            Debug.Log($"{currentPlayer.playerName} ÔÚÊÂ¼şºóÆÆ²úÁË");
             ApplyBankruptDebuff(currentPlayer);
             return;
         }
         
-        // å¯ç”¨æ·éª°æŒ‰é’®
+        // ÆôÓÃÖÀ÷»°´Å¥
         SetRollDiceButtonInteractable(true);
         
-        // å»ºç­‘é€‰æ‹©çŠ¶æ€æ£€æŸ¥
+        // ½¨ÖşÑ¡Ôñ×´Ì¬¼ì²é
         if (currentState == GameState.BuildingSelection)
         {
-            Debug.Log("ä¿æŒå»ºç­‘é€‰æ‹©çŠ¶æ€");
+            Debug.Log("±£³Ö½¨ÖşÑ¡Ôñ×´Ì¬");
             return;
         }
         
-        // å»¶è¿Ÿç»“æŸç§»åŠ¨
+        // ÑÓ³Ù½áÊøÒÆ¶¯
         StartCoroutine(EndMoveAfterDelay(0.1f));
         UpdateUI();
     }
@@ -1830,30 +1841,30 @@ public class GameManager : MonoBehaviour
     {
         if (boardManager != null)
         {
-            Debug.Log("=== æ£€æŸ¥èµ·ç‚¹æ ¼å­ ===");
+            Debug.Log("=== ¼ì²éÆğµã¸ñ×Ó ===");
             foreach (BoardTile tile in boardManager.allTiles)
             {
                 if (tile.tileType == BoardTile.TileType.Start)
                 {
-                    Debug.Log($"èµ·ç‚¹: {tile.tileName}, ID: {tile.tileID}");
+                    Debug.Log($"Æğµã: {tile.tileName}, ID: {tile.tileID}");
 
-                    // å¯å»ºé€ æ ¼å­
+                    // ¿É½¨Ôì¸ñ×Ó
                     if (tile.isBuildable)
                     {
-                        Debug.LogError($"è­¦å‘Š: {tile.tileName} ä¸åº”è¯¥æ˜¯å¯å»ºé€ çš„");
+                        Debug.LogError($"¾¯¸æ: {tile.tileName} ²»Ó¦¸ÃÊÇ¿É½¨ÔìµÄ");
                     }
 
-                    // å·²æœ‰å»ºç­‘
+                    // ÒÑÓĞ½¨Öş
                     if (tile.currentBuilding != null)
                     {
-                        Debug.LogError($"è­¦å‘Š: {tile.tileName} ä¸åº”è¯¥æœ‰å»ºç­‘");
+                        Debug.LogError($"¾¯¸æ: {tile.tileName} ²»Ó¦¸ÃÓĞ½¨Öş");
                     }
                 }
             }
         }
     }
 
-    // è®¾ç½®éª°å­æ»šåŠ¨é€Ÿåº¦
+    // ÉèÖÃ÷»×Ó¹ö¶¯ËÙ¶È
     public void SetDiceRollSpeed(float multiplier)
     {
         if (dice3DController != null)
@@ -1864,41 +1875,41 @@ public class GameManager : MonoBehaviour
         {
             // DiceController
         }
-        Debug.Log($"GameManager: è®¾ç½®éª°å­æ»šåŠ¨é€Ÿåº¦ä¸º {multiplier}x");
+        Debug.Log($"GameManager: ÉèÖÃ÷»×Ó¹ö¶¯ËÙ¶ÈÎª {multiplier}x");
     }
 
-    // è®¾ç½®éª°å­å†·å´
+    // ÉèÖÃ÷»×ÓÀäÈ´
     public void SetDiceCooldown(float cooldownSeconds)
     {
         diceCooldownTime = Mathf.Max(0f, cooldownSeconds);
-        Debug.Log($"GameManager: è®¾ç½®éª°å­å†·å´æ—¶é—´ä¸º {diceCooldownTime}ç§’");
+        Debug.Log($"GameManager: ÉèÖÃ÷»×ÓÀäÈ´Ê±¼äÎª {diceCooldownTime}Ãë");
     }
 
-    // è·å–éª°å­å†·å´
+    // »ñÈ¡÷»×ÓÀäÈ´
     public float GetDiceCooldown()
     {
         return diceCooldownTime;
     }
 
-    // è·å–éª°å­å‰©ä½™å†·å´
+    // »ñÈ¡÷»×ÓÊ£ÓàÀäÈ´
     public float GetDiceCooldownRemaining()
     {
         float timeSinceLastRoll = Time.time - lastDiceRollTime;
         return Mathf.Max(0f, diceCooldownTime - timeSinceLastRoll);
     }
 
-    // é‡ç½®éª°å­å†·å´
+    // ÖØÖÃ÷»×ÓÀäÈ´
     public void ResetDiceCooldown()
     {
         lastDiceRollTime = -1000f;
-        Debug.Log("GameManager: éª°å­å†·å´å·²é‡ç½®");
+        Debug.Log("GameManager: ÷»×ÓÀäÈ´ÒÑÖØÖÃ");
     }
 
-    // ç¦ç”¨éª°å­å†·å´
+    // ½ûÓÃ÷»×ÓÀäÈ´
     public void DisableDiceCooldown()
     {
         diceCooldownTime = 0f;
         ResetDiceCooldown();
-        Debug.Log("GameManager: éª°å­å†·å´å·²ç¦ç”¨");
+        Debug.Log("GameManager: ÷»×ÓÀäÈ´ÒÑ½ûÓÃ");
     }
 }
