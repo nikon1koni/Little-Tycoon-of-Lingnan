@@ -923,7 +923,7 @@ public class GameManager : MonoBehaviour
         // 下次投掷倍率
         float multiplier = currentPlayer.GetNextRollMultiplier();
         int finalDiceValue = Mathf.RoundToInt(boostedDiceValue * multiplier);
-        
+
         if (multiplier != 1f)
         {
             Debug.Log($"{currentPlayer.playerName} 骰子加成: {boostedDiceValue} * {multiplier} = {finalDiceValue}");
@@ -945,6 +945,16 @@ public class GameManager : MonoBehaviour
         finalDiceValue = Mathf.Max(1, finalDiceValue);
 
         Debug.Log($"{currentPlayer.playerName} 移动 {finalDiceValue} 步");
+
+        // 当有步数加成时，更新骰子结果显示为最终步数（格式：原始值→最终值），
+        // 让玩家清楚知道实际移动步数，而不是只看到原始骰子值
+        if (finalDiceValue != lastDiceValue)
+        {
+            if (diceResultText != null)
+                diceResultText.text = $"{lastDiceValue}→{finalDiceValue}";
+            if (uiManager != null)
+                uiManager.UpdateDiceResult(finalDiceValue);
+        }
 
         currentState = GameState.Moving;
         isMoving = true;
