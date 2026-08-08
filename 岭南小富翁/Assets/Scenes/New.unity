@@ -26101,7 +26101,8 @@ MonoBehaviour:
   pressureMultiplier: 1.2
   bankruptBuffData: {fileID: 11400000, guid: e44fa2a885efced49a398c882846efc1, type: 2}
   bankruptGraceRounds: 1
-  enableDebugKeys: 1
+  enableDebugKeys: 0
+  enableInventoryHotkey: 1
   enableBackgroundMusic: 1
   musicManager: {fileID: 0}
   sfxConfig: {fileID: 11400000, guid: d32ad7b7a21f2ae4eb3e1cb120263198, type: 2}

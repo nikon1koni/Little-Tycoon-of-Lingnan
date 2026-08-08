@@ -72,7 +72,12 @@ public class GameManager : MonoBehaviour
     public int RollsUntilNextPressure => enablePressureSystem ? Mathf.Max(nextPressureAt * 6 - diceRollCount, 0) : -1;
 
     [Header("调试开关")]
-    public bool enableDebugKeys = true;
+    [Tooltip("测试用快捷键（Space/0-3/N/R/G/P/M等），正式发布时请关闭")]
+    public bool enableDebugKeys = false;
+
+    [Header("正式游戏快捷键")]
+    [Tooltip("按B键打开/关闭手牌背包")]
+    public bool enableInventoryHotkey = true;
 
     [Header("背景音乐设置")]
     public bool enableBackgroundMusic = true;
@@ -1400,6 +1405,20 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        // ===== 正式游戏快捷键（始终生效）=====
+        if (enableInventoryHotkey && Input.GetKeyDown(KeyCode.B))
+        {
+            if (ItemHandManager.Instance != null)
+            {
+                ItemHandManager.Instance.ToggleHand();
+            }
+            else
+            {
+                Debug.LogWarning("[GameManager] 按B键切换背包失败：ItemHandManager.Instance 为空");
+            }
+        }
+
+        // ===== 调试用快捷键（默认关闭，仅开发时在Inspector勾选开启）=====
         if (!enableDebugKeys) return;
 
         Debug_Test();
