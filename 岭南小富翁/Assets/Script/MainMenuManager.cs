@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class MainMenuManager : MonoBehaviour
 {
     [Header("场景设置")]
-    [SerializeField] private string gameSceneName = "New";
+    [Tooltip("点击开始后跳转到的场景（加载场景）")]
+    [SerializeField] private string gameSceneName = "Loading";
 
     [Header("按钮引用")]
     [SerializeField] private Button startButton;

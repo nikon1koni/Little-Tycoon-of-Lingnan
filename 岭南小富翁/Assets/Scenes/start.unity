@@ -600,7 +600,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e62b1844530f3a541aa94a3ca7524699, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameSceneName: New
+  gameSceneName: Loading
   startButton: {fileID: 844002634}
   quitButton: {fileID: 1875079425}
   sfxConfig: {fileID: 0}
