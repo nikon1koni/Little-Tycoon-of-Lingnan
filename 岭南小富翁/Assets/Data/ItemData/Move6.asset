@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Move6
   m_EditorClassIdentifier: 
   itemName: "\u6FC0\u6D41\u52C7\u8FDB"
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: 21300000, guid: d2dd42a6f82c525499e3e38ae5e59cd2, type: 3}
   itemDescription: "\u5411\u524D\u8FDB6\u6B65,\u83B7\u5F971\u56DE\u5408\u7684\u79FB\u52A8\u52A0\u6210\u3002"
   rarity: 3
   effects:

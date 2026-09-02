@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Move1
   m_EditorClassIdentifier: 
   itemName: "\u524D\u8FDB1"
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: 21300000, guid: d703f5bccc4aed44e8ddf44ff4efccc2, type: 3}
   itemDescription: "\u5411\u524D\u8FDB1\u6B65\u3002"
   rarity: 0
   effects:

@@ -10116,17 +10116,17 @@ MonoBehaviour:
   buffContainer: {fileID: 123285279}
   buffTooltipPrefab: {fileID: 1883676598161276246, guid: f1f3c0e0a97c19541b0c1075877c2054, type: 3}
   tooltipOffset: {x: 15, y: 15}
-  moveSpeedIcon: {fileID: 21300000, guid: 81bafada34060bb428cb6a62a44e9995, type: 3}
-  diceBoostIcon: {fileID: 21300000, guid: 1b9b48c6d84312a43bdb3bb0d3e0d7a5, type: 3}
-  incomeMultiplierIcon: {fileID: 21300000, guid: f6671e9c67d88e947992d55cd3c74841, type: 3}
-  defenseBoostIcon: {fileID: 21300000, guid: 81bafada34060bb428cb6a62a44e9995, type: 3}
-  luckBoostIcon: {fileID: 21300000, guid: 81bafada34060bb428cb6a62a44e9995, type: 3}
-  allIncomeBoostIcon: {fileID: 21300000, guid: 81bafada34060bb428cb6a62a44e9995, type: 3}
+  moveSpeedIcon: {fileID: 21300000, guid: e1219d02320309a46b9fee7c2e69d4f3, type: 3}
+  diceBoostIcon: {fileID: 21300000, guid: f2e184232f94b98459657b3c7c5c4559, type: 3}
+  incomeMultiplierIcon: {fileID: 21300000, guid: eabb76d52238dd846bcc50fba9902bb8, type: 3}
+  defenseBoostIcon: {fileID: 21300000, guid: 19d3f2264f7daf243980fd0d949ddf6f, type: 3}
+  luckBoostIcon: {fileID: 21300000, guid: e3f69845a5a5ea744a36147d79596fb5, type: 3}
+  allIncomeBoostIcon: {fileID: 21300000, guid: eabb76d52238dd846bcc50fba9902bb8, type: 3}
   bankruptIcon: {fileID: 21300000, guid: 02f058db8e0d63a47aeb2a36b8167549, type: 3}
-  incomeReductionIcon: {fileID: 21300000, guid: 81bafada34060bb428cb6a62a44e9995, type: 3}
-  taxReductionIcon: {fileID: 21300000, guid: 81bafada34060bb428cb6a62a44e9995, type: 3}
-  immuneIcon: {fileID: 21300000, guid: 81bafada34060bb428cb6a62a44e9995, type: 3}
-  nextRollMultiplierIcon: {fileID: 21300000, guid: 81bafada34060bb428cb6a62a44e9995, type: 3}
+  incomeReductionIcon: {fileID: 21300000, guid: 60555a229b8cb3141bceea2fd86fd7ce, type: 3}
+  taxReductionIcon: {fileID: 21300000, guid: 0e768d79946bd4d4e872f37b5e9f6dea, type: 3}
+  immuneIcon: {fileID: 21300000, guid: 04d689c0772ae8548a7f9b5bc537a28d, type: 3}
+  nextRollMultiplierIcon: {fileID: 21300000, guid: f419f4f5c8baf25428c6495b43610d2f, type: 3}
   bankruptBuffData: {fileID: 11400000, guid: e44fa2a885efced49a398c882846efc1, type: 2}
 --- !u!1 &834194393
 GameObject:

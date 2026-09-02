@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: StartingCapital
   m_EditorClassIdentifier: 
   itemName: "\u542F\u52A8\u8D44\u91D1"
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: 21300000, guid: 4b4f785cc1037464b94e97f66af5b4c1, type: 3}
   itemDescription: "\u83B7\u5F9750\u91D1\u5E01"
   rarity: 3
   effects:

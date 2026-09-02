@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BankruptBuff
   m_EditorClassIdentifier: 
   buffName: "\u7834\u4EA7"
-  buffIcon: {fileID: 0}
+  buffIcon: {fileID: 21300000, guid: 73469f56357eb924a96c7a9fe9c91339, type: 3}
   isDebuff: 1
   effectType: 6
   value: 0
